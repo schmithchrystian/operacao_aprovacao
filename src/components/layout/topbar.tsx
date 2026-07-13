@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getCurrentSession } from "@/server/authorization";
+import { logoutAction } from "@/server/actions/auth";
 import { MobileNav } from "./mobile-nav";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -35,8 +36,8 @@ function getInitials(name: string): string {
  */
 const FALLBACK_USER = { name: "Aluno", email: "" } as const;
 
-export function Topbar() {
-  const session = getCurrentSession();
+export async function Topbar() {
+  const session = await getCurrentSession();
   const currentUser = session ?? FALLBACK_USER;
 
   return (
@@ -65,7 +66,9 @@ export function Topbar() {
 
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={<Button variant="ghost" size="icon" aria-label="Notificações" className="relative" />}
+          render={
+            <Button variant="ghost" size="icon" aria-label="Notificações" className="relative" />
+          }
         >
           <Bell className="h-4 w-4" aria-hidden="true" />
           <span
@@ -84,7 +87,13 @@ export function Topbar() {
 
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={<Button variant="ghost" className="flex items-center gap-2 px-2" aria-label="Menu do perfil" />}
+          render={
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 px-2"
+              aria-label="Menu do perfil"
+            />
+          }
         >
           <Avatar className="h-8 w-8">
             <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
@@ -96,13 +105,19 @@ export function Topbar() {
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel className="font-normal">
             <p className="text-sm leading-none font-medium">{currentUser.name}</p>
-            <p className="text-muted-foreground mt-1 truncate text-xs leading-none">{currentUser.email}</p>
+            <p className="text-muted-foreground mt-1 truncate text-xs leading-none">
+              {currentUser.email}
+            </p>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem render={<Link href="/perfil" />}>Perfil</DropdownMenuItem>
           <DropdownMenuItem disabled>Configurações</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem disabled>Sair (em breve)</DropdownMenuItem>
+          <form action={logoutAction}>
+            <DropdownMenuItem render={<button type="submit" className="w-full text-left" />}>
+              Sair
+            </DropdownMenuItem>
+          </form>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

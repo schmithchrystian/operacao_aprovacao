@@ -8,7 +8,8 @@ export type Role = "aluno" | "professor" | "moderador" | "admin";
 
 /**
  * Sessão mínima usada pela camada de autorização.
- * TODO Fase 4: substituir pelo shape de sessão real do Auth.js (NextAuth v5, JWT).
+ * Preenchida a partir da sessão real do Auth.js (NextAuth v5, JWT) — ver
+ * `@/server/authorization.getCurrentSession()` e `@/server/auth`.
  */
 export interface Session {
   userId: string;

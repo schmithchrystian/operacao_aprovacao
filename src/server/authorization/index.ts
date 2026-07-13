@@ -1,29 +1,33 @@
+import { auth } from "@/server/auth";
 import { AuthError, ForbiddenError } from "@/server/errors";
-import { mockUsers } from "@/mocks";
 import type { Role, Session } from "@/types";
 
 /**
  * Autorização server-side centralizada (ADR-0006, CLAUDE.md §11).
  * Nunca considerar "esconder botão/menu" ou redirecionamento no cliente como autorização.
  *
- * TODO Fase 4: integrar Auth.js (NextAuth v5, Credentials + JWT) e ler a sessão real
- * a partir do cookie assinado em vez do usuário mock abaixo.
+ * A sessão vem sempre do Auth.js (NextAuth v5) — cookie httpOnly assinado, estratégia JWT
+ * (`@/server/auth`). `getCurrentSession`/`requireUser`/`requireRole` são assíncronas porque
+ * `auth()` lê a sessão real do request atual; nunca aceitar um `role`/sessão vindo do corpo
+ * da requisição ou de qualquer entrada do cliente.
  */
-export function getCurrentSession(): Session | null {
-  const mockUser = mockUsers[0];
-  if (!mockUser) return null;
+export async function getCurrentSession(): Promise<Session | null> {
+  const authSession = await auth();
+  if (!authSession?.user?.id || !authSession.user.role) {
+    return null;
+  }
 
   return {
-    userId: mockUser.id,
-    role: mockUser.role,
-    name: mockUser.name,
-    email: mockUser.email,
+    userId: authSession.user.id,
+    role: authSession.user.role,
+    name: authSession.user.name ?? "",
+    email: authSession.user.email ?? "",
   };
 }
 
 /** Garante que existe uma sessão autenticada. Lança `AuthError` caso contrário. */
-export function requireUser(): Session {
-  const session = getCurrentSession();
+export async function requireUser(): Promise<Session> {
+  const session = await getCurrentSession();
   if (!session) {
     throw new AuthError();
   }
@@ -31,8 +35,8 @@ export function requireUser(): Session {
 }
 
 /** Garante sessão autenticada com um dos papéis informados. Lança `ForbiddenError` caso contrário. */
-export function requireRole(...roles: Role[]): Session {
-  const session = requireUser();
+export async function requireRole(...roles: Role[]): Promise<Session> {
+  const session = await requireUser();
   if (!roles.includes(session.role)) {
     throw new ForbiddenError();
   }
