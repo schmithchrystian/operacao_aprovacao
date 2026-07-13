@@ -5,6 +5,7 @@ import type {
   LessonProgressRepository,
   LessonRepository,
   ModuleRepository,
+  StudySessionRepository,
   SubjectRepository,
   UserRepository,
 } from "./contracts";
@@ -13,6 +14,7 @@ import { MockEnrollmentRepository } from "./mock/enrollment-repository";
 import { MockLessonProgressRepository } from "./mock/lesson-progress-repository";
 import { MockLessonRepository } from "./mock/lesson-repository";
 import { MockModuleRepository } from "./mock/module-repository";
+import { MockStudySessionRepository } from "./mock/study-session-repository";
 import { MockSubjectRepository } from "./mock/subject-repository";
 import { MockUserRepository } from "./mock/user-repository";
 import { PrismaCourseRepository } from "./prisma/course-repository";
@@ -20,6 +22,7 @@ import { PrismaEnrollmentRepository } from "./prisma/enrollment-repository";
 import { PrismaLessonProgressRepository } from "./prisma/lesson-progress-repository";
 import { PrismaLessonRepository } from "./prisma/lesson-repository";
 import { PrismaModuleRepository } from "./prisma/module-repository";
+import { PrismaStudySessionRepository } from "./prisma/study-session-repository";
 import { PrismaSubjectRepository } from "./prisma/subject-repository";
 import { PrismaUserRepository } from "./prisma/user-repository";
 
@@ -32,6 +35,7 @@ export interface Repositories {
   subjects: SubjectRepository;
   enrollments: EnrollmentRepository;
   lessonProgress: LessonProgressRepository;
+  studySessions: StudySessionRepository;
 }
 
 let cached: Repositories | null = null;
@@ -46,6 +50,7 @@ function buildRepositories(): Repositories {
       subjects: new PrismaSubjectRepository(),
       enrollments: new PrismaEnrollmentRepository(),
       lessonProgress: new PrismaLessonProgressRepository(),
+      studySessions: new PrismaStudySessionRepository(),
     };
   }
   return {
@@ -56,6 +61,7 @@ function buildRepositories(): Repositories {
     subjects: new MockSubjectRepository(),
     enrollments: new MockEnrollmentRepository(),
     lessonProgress: new MockLessonProgressRepository(),
+    studySessions: new MockStudySessionRepository(),
   };
 }
 

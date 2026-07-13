@@ -62,7 +62,39 @@ export class ConflictError extends DomainError {
   }
 }
 
+/** Requisição excede o limite permitido — rate limit leve (429, CLAUDE.md §24). */
+export class RateLimitError extends DomainError {
+  readonly code = "RATE_LIMITED";
+
+  constructor(message = "Muitas requisições. Tente novamente em instantes.") {
+    super(message);
+  }
+}
+
 /** Type guard utilitário para uso nas fronteiras (actions/route handlers). */
 export function isDomainError(error: unknown): error is DomainError {
   return error instanceof DomainError;
+}
+
+/**
+ * Mapeia um `DomainError` para o status HTTP correspondente — uso em Route Handlers
+ * (docs/ARCHITECTURE.md §6), que, diferente de Server Actions, precisam de um status real.
+ */
+export function httpStatusForDomainError(error: DomainError): number {
+  switch (error.code) {
+    case "UNAUTHENTICATED":
+      return 401;
+    case "FORBIDDEN":
+      return 403;
+    case "NOT_FOUND":
+      return 404;
+    case "VALIDATION_ERROR":
+      return 422;
+    case "CONFLICT":
+      return 409;
+    case "RATE_LIMITED":
+      return 429;
+    default:
+      return 500;
+  }
 }

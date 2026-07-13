@@ -1,6 +1,7 @@
 import type {
   LessonProgressEntity,
   LessonProgressRepository,
+  LessonProgressUpsertInput,
 } from "../contracts/lesson-progress-repository";
 
 /**
@@ -17,5 +18,10 @@ export class PrismaLessonProgressRepository implements LessonProgressRepository 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
   async listByUserId(_userId: string): Promise<LessonProgressEntity[]> {
     throw new Error("not implemented: PrismaLessonProgressRepository.listByUserId");
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
+  async upsert(_input: LessonProgressUpsertInput): Promise<LessonProgressEntity> {
+    throw new Error("not implemented: PrismaLessonProgressRepository.upsert");
   }
 }
