@@ -1,0 +1,1129 @@
+// Prisma schema — Operação Aprovação
+// Ver docs/DATA-MODEL.md para a descrição completa da modelagem.
+//
+// IMPORTANTE (Prisma 7): a partir da major 7, a `datasource` NÃO aceita mais `url` no
+// schema. A connection string vive em `prisma.config.ts` (lida de `DATABASE_URL` via
+// dotenv) e, em runtime, o `PrismaClient` exige um *driver adapter*
+// (`@prisma/adapter-pg` + `PrismaPg`) — ver `docs/DATA-MODEL.md` §"Prisma 7".
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =============================================================================
+// ENUMS
+// =============================================================================
+
+enum SystemRole {
+  STUDENT
+  TEACHER
+  MODERATOR
+  ADMIN
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum LessonMaterialType {
+  PDF
+  LINK
+  SLIDE
+  VIDEO
+  AUDIO
+  IMAGE
+  OTHER
+}
+
+enum LessonProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  CANCELLED
+  COMPLETED
+  EXPIRED
+}
+
+enum EnrollmentSource {
+  SUBSCRIPTION
+  MANUAL
+  PROMOTIONAL
+}
+
+enum StudySessionSource {
+  LESSON
+  POMODORO
+  FLASHCARD
+  SIMULATION
+  FREE
+}
+
+enum StudySessionStatus {
+  ACTIVE
+  FINISHED
+  DISCARDED
+}
+
+enum StudyActivityType {
+  VIDEO_HEARTBEAT
+  TAB_VISIBILITY
+  POMODORO_TICK
+  FLASHCARD_REVIEW
+  QUESTION_ANSWERED
+  NOTE_EDIT
+  NAVIGATION
+}
+
+enum StudyPlanStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+enum StudyPlanItemStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+  SKIPPED
+}
+
+enum MockExamAttemptStatus {
+  IN_PROGRESS
+  FINISHED
+  EXPIRED
+  CANCELLED
+}
+
+enum FlashcardReviewRating {
+  AGAIN // Errei
+  HARD // Difícil
+  GOOD // Médio
+  EASY // Fácil
+}
+
+enum BrainstormCardPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum BrainstormCardStatus {
+  OPEN
+  ARCHIVED
+  CONVERTED
+}
+
+enum GamificationEventType {
+  LESSON_COMPLETED
+  MODULE_COMPLETED
+  COURSE_COMPLETED
+  FLASHCARD_CORRECT
+  POMODORO_COMPLETED
+  MOCK_EXAM_COMPLETED
+  QUESTION_CORRECT
+  DAILY_GOAL_COMPLETED
+  WEEKLY_GOAL_COMPLETED
+  STREAK_7
+  STREAK_30
+  MANUAL_ADJUSTMENT
+}
+
+enum GamificationEventStatus {
+  PENDING
+  PROCESSED
+  FAILED
+  SKIPPED
+}
+
+enum PointTransactionType {
+  EARN
+  ADJUSTMENT
+  REVERSAL
+}
+
+enum RankingPeriodType {
+  DAILY
+  WEEKLY
+  MONTHLY
+  ALL_TIME
+}
+
+enum RankingScopeType {
+  GLOBAL
+  CONTEST
+  COURSE
+  CITY
+  STATE
+}
+
+enum NotificationType {
+  ACHIEVEMENT_UNLOCKED
+  LEVEL_UP
+  GOAL_COMPLETED
+  STREAK_AT_RISK
+  STREAK_LOST
+  RANKING_UPDATE
+  COURSE_ANNOUNCEMENT
+  SUBSCRIPTION
+  SYSTEM
+}
+
+enum SubscriptionPlan {
+  FREE
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  TRIALING
+  PAST_DUE
+  CANCELED
+  EXPIRED
+}
+
+// =============================================================================
+// IDENTIDADE E ACESSO
+// =============================================================================
+
+/// Conta de autenticação. `role` é o papel primário (fast-path de autorização,
+/// ADR-0006); `userRoles` permite papéis adicionais/customizados via RBAC granular.
+model User {
+  id            String     @id @default(cuid())
+  name          String
+  email         String     @unique
+  passwordHash  String
+  role          SystemRole @default(STUDENT)
+  emailVerified DateTime?
+  isActive      Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  deletedAt     DateTime?
+
+  profile   Profile?
+  userRoles UserRole[]
+  teacher   Teacher?
+
+  enrollments        Enrollment[]
+  lessonProgresses   LessonProgress[]
+  studySessions      StudySession[]
+  studyPlans         StudyPlan[]
+  mockExamAttempts   MockExamAttempt[]
+  questionAttempts   QuestionAttempt[]
+  questionFavorites  QuestionFavorite[]
+  flashcardDecks     FlashcardDeck[]
+  flashcardReviews   FlashcardReview[]
+  brainstormBoards   BrainstormBoard[]
+  userAchievements   UserAchievement[]
+  gamificationEvents GamificationEvent[]
+  pointTransactions  PointTransaction[]
+  rankingScores      RankingScore[]
+  dailyGoals         DailyGoal[]
+  weeklyGoals        WeeklyGoal[]
+  streak             UserStreak?
+  notifications      Notification[]
+  subscriptions      Subscription[]
+  auditLogs          AuditLog[]          @relation("AuditLogActor")
+
+  createdCourses   Course[]   @relation("CourseCreatedBy")
+  createdMockExams MockExam[] @relation("MockExamCreatedBy")
+  createdQuestions Question[] @relation("QuestionCreatedBy")
+
+  @@index([role])
+  @@index([deletedAt])
+}
+
+/// Dados de perfil público/privado do aluno. 1:1 com User.
+model Profile {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  bio             String?
+  avatarUrl       String?
+  phone           String?
+  birthDate       DateTime?
+  city            String?
+  state           String?
+  targetContestId String?
+
+  // Flags de privacidade — nenhum dado pessoal deve ser exposto sem consentimento explícito.
+  isProfilePublic Boolean @default(false)
+  showInRanking   Boolean @default(true)
+  showRealName    Boolean @default(true)
+  showCityState   Boolean @default(true)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetContest Contest? @relation(fields: [targetContestId], references: [id])
+
+  @@index([targetContestId])
+}
+
+/// Papel customizável (além do `SystemRole` fixo em User) — permite RBAC granular
+/// administrável sem alterar código (ex.: "coordenador-de-turma").
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  permissions RolePermission[]
+  users       UserRole[]
+}
+
+/// Permissão granular (ex.: "course:publish", "question:review").
+model Permission {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+
+  roles RolePermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  createdAt    DateTime @default(now())
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@index([permissionId])
+}
+
+model UserRole {
+  userId    String
+  roleId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@index([roleId])
+}
+
+// =============================================================================
+// CONCURSOS, CURSOS E CONTEÚDO
+// =============================================================================
+
+/// Concurso-alvo (Polícia Militar, GCM, Polícia Penal, Bombeiro Militar, ...).
+model Contest {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  name            String
+  organizingBoard String?
+  description     String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  courses  Course[]
+  profiles Profile[]
+
+  @@index([deletedAt])
+}
+
+model Course {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  title         String
+  description   String
+  coverImageUrl String?
+  status        ContentStatus @default(DRAFT)
+  contestId     String?
+  createdById   String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  deletedAt     DateTime?
+
+  contest     Contest?     @relation(fields: [contestId], references: [id])
+  createdBy   User?        @relation("CourseCreatedBy", fields: [createdById], references: [id])
+  modules     Module[]
+  enrollments Enrollment[]
+
+  @@index([contestId])
+  @@index([status])
+  @@index([deletedAt])
+}
+
+model Module {
+  id          String        @id @default(cuid())
+  courseId    String
+  title       String
+  description String?
+  order       Int
+  teacherId   String?
+  status      ContentStatus @default(DRAFT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+
+  course  Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  teacher Teacher? @relation(fields: [teacherId], references: [id])
+  lessons Lesson[]
+
+  @@unique([courseId, order])
+  @@index([teacherId])
+  @@index([deletedAt])
+}
+
+/// Aula. `minCompletionPercent` sobrescreve o default global (`LESSON_COMPLETION_MIN_PERCENT`,
+/// 80% — CLAUDE.md §12/§13) quando necessário para uma aula específica.
+model Lesson {
+  id                   String        @id @default(cuid())
+  moduleId             String
+  title                String
+  description          String?
+  order                Int
+  durationSeconds      Int
+  videoUrl             String?
+  videoProvider        String?
+  teacherId            String?
+  minCompletionPercent Float?
+  requiresLessonId     String?
+  status               ContentStatus @default(DRAFT)
+  publishedAt          DateTime?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  deletedAt            DateTime?
+
+  module         Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  teacher        Teacher?         @relation(fields: [teacherId], references: [id])
+  requiresLesson Lesson?          @relation("LessonPrerequisite", fields: [requiresLessonId], references: [id])
+  unlockedBy     Lesson[]         @relation("LessonPrerequisite")
+  materials      LessonMaterial[]
+  progresses     LessonProgress[]
+  studyPlanItems StudyPlanItem[]
+
+  @@unique([moduleId, order])
+  @@index([teacherId])
+  @@index([status])
+  @@index([deletedAt])
+}
+
+model LessonMaterial {
+  id        String             @id @default(cuid())
+  lessonId  String
+  type      LessonMaterialType
+  title     String
+  url       String
+  order     Int                @default(0)
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  deletedAt DateTime?
+
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@index([lessonId])
+}
+
+/// Progresso do aluno numa aula. ÚNICO por (userId, lessonId) — uma aula não pode ser
+/// concluída (nem pontuar) mais de uma vez pelo mesmo usuário (CLAUDE.md §13/§25).
+model LessonProgress {
+  id               String               @id @default(cuid())
+  userId           String
+  lessonId         String
+  status           LessonProgressStatus @default(NOT_STARTED)
+  watchedPercent   Float                @default(0)
+  lastPositionSecs Int                  @default(0)
+  validSeconds     Int                  @default(0)
+  completedAt      DateTime?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([lessonId, status])
+}
+
+model Subject {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  topics          Topic[]
+  questions       Question[]
+  flashcards      Flashcard[]
+  flashcardDecks  FlashcardDeck[]
+  brainstormCards BrainstormCard[]
+  studyPlanItems  StudyPlanItem[]
+
+  @@index([deletedAt])
+}
+
+model Topic {
+  id        String    @id @default(cuid())
+  subjectId String
+  slug      String
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  subject         Subject          @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  questions       Question[]
+  flashcards      Flashcard[]
+  brainstormCards BrainstormCard[]
+  studyPlanItems  StudyPlanItem[]
+
+  @@unique([subjectId, slug])
+  @@index([deletedAt])
+}
+
+/// Professor/instrutor exibido no conteúdo. Pode ou não corresponder a um `User`
+/// autenticado (`userId` nullable) — permite cadastrar instrutores só para atribuição
+/// de créditos no conteúdo, sem necessariamente ter login na plataforma.
+model Teacher {
+  id        String    @id @default(cuid())
+  userId    String?   @unique
+  name      String
+  bio       String?
+  avatarUrl String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  user    User?    @relation(fields: [userId], references: [id])
+  modules Module[]
+  lessons Lesson[]
+
+  @@index([deletedAt])
+}
+
+/// Matrícula do aluno num curso. ÚNICA por (userId, courseId) — reinscrição usa o
+/// mesmo registro (troca de `status`), preservando histórico de progresso vinculado.
+model Enrollment {
+  id          String           @id @default(cuid())
+  userId      String
+  courseId    String
+  status      EnrollmentStatus @default(ACTIVE)
+  source      EnrollmentSource @default(MANUAL)
+  enrolledAt  DateTime         @default(now())
+  expiresAt   DateTime?
+  cancelledAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([courseId, status])
+}
+
+// =============================================================================
+// ACOMPANHAMENTO DE ESTUDOS
+// =============================================================================
+
+/// Sessão de estudo (aula, Pomodoro, flashcards, simulado ou livre). O tempo válido
+/// (`validSeconds`) é reconstruído a partir de `StudyActivity` — nunca aceito como
+/// diferença bruta entre início e fim enviada pelo cliente (CLAUDE.md §14).
+model StudySession {
+  id           String             @id @default(cuid())
+  userId       String
+  source       StudySessionSource
+  status       StudySessionStatus @default(ACTIVE)
+  startedAt    DateTime           @default(now())
+  endedAt      DateTime?
+  validSeconds Int                @default(0)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activities StudyActivity[]
+
+  @@index([userId, startedAt])
+  @@index([status])
+}
+
+/// Sinal bruto de atividade dentro de uma sessão (heartbeat de vídeo, visibilidade de
+/// aba, tick de Pomodoro, etc.). `isValid` é o veredito do servidor sobre o sinal
+/// (descarta heartbeats duplicados/saltos artificiais — CLAUDE.md §13/§14).
+model StudyActivity {
+  id         String            @id @default(cuid())
+  sessionId  String
+  type       StudyActivityType
+  occurredAt DateTime          @default(now())
+  payload    Json
+  isValid    Boolean           @default(true)
+  createdAt  DateTime          @default(now())
+
+  session StudySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, occurredAt])
+  @@index([type])
+}
+
+model StudyPlan {
+  id        String          @id @default(cuid())
+  userId    String
+  title     String
+  startDate DateTime
+  endDate   DateTime?
+  status    StudyPlanStatus @default(ACTIVE)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  deletedAt DateTime?
+
+  user  User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items StudyPlanItem[]
+
+  @@index([userId, status])
+}
+
+model StudyPlanItem {
+  id               String              @id @default(cuid())
+  studyPlanId      String
+  subjectId        String?
+  topicId          String?
+  lessonId         String?
+  title            String
+  targetDate       DateTime?
+  estimatedMinutes Int?
+  order            Int                 @default(0)
+  status           StudyPlanItemStatus @default(PENDING)
+  completedAt      DateTime?
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  deletedAt        DateTime?
+
+  studyPlan StudyPlan @relation(fields: [studyPlanId], references: [id], onDelete: Cascade)
+  subject   Subject?  @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  topic     Topic?    @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  lesson    Lesson?   @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+
+  @@index([studyPlanId, status])
+  @@index([subjectId])
+  @@index([topicId])
+  @@index([lessonId])
+}
+
+// =============================================================================
+// SIMULADOS E QUESTÕES
+// =============================================================================
+
+model MockExam {
+  id              String        @id @default(cuid())
+  title           String
+  description     String?
+  durationMinutes Int
+  status          ContentStatus @default(DRAFT)
+  createdById     String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  deletedAt       DateTime?
+
+  createdBy User?              @relation("MockExamCreatedBy", fields: [createdById], references: [id])
+  questions MockExamQuestion[]
+  attempts  MockExamAttempt[]
+
+  @@index([status])
+  @@index([deletedAt])
+}
+
+/// Questão. `board` (banca examinadora) é texto livre por ser um domínio aberto e
+/// numeroso (CESPE, FGV, VUNESP, ...); um índice cobre buscas/filtros por banca.
+model Question {
+  id          String        @id @default(cuid())
+  statement   String
+  subjectId   String
+  topicId     String?
+  board       String?
+  difficulty  Difficulty    @default(MEDIUM)
+  explanation String?
+  status      ContentStatus @default(DRAFT)
+  createdById String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+
+  subject   Subject            @relation(fields: [subjectId], references: [id])
+  topic     Topic?             @relation(fields: [topicId], references: [id])
+  createdBy User?              @relation("QuestionCreatedBy", fields: [createdById], references: [id])
+  options   QuestionOption[]
+  mockExams MockExamQuestion[]
+  attempts  QuestionAttempt[]
+  favorites QuestionFavorite[]
+
+  @@index([subjectId, topicId])
+  @@index([board])
+  @@index([difficulty])
+  @@index([status])
+  @@index([deletedAt])
+}
+
+/// Alternativa da questão. `isCorrect` existe apenas para fins de correção
+/// server-side — a camada de aplicação (agente `simulations`/`backend`) NUNCA deve
+/// projetar este campo para o cliente antes da correção (CLAUDE.md §18/§25).
+model QuestionOption {
+  id         String   @id @default(cuid())
+  questionId String
+  label      String
+  text       String
+  isCorrect  Boolean  @default(false)
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  question Question          @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answers  QuestionAttempt[]
+
+  @@index([questionId])
+}
+
+/// Junção N:N — a mesma questão pode compor vários simulados.
+model MockExamQuestion {
+  mockExamId String
+  questionId String
+  order      Int    @default(0)
+
+  mockExam MockExam @relation(fields: [mockExamId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@id([mockExamId, questionId])
+  @@index([questionId])
+}
+
+/// Tentativa de simulado. Finalização é protegida por `status` + `version`
+/// (concorrência otimista): o `backend` deve finalizar com
+/// `UPDATE ... WHERE id = ? AND status = 'IN_PROGRESS' AND version = ?`,
+/// garantindo que a mesma tentativa não seja finalizada (nem pontuada) duas vezes
+/// (CLAUDE.md §18/§25). Ver limitação documentada em docs/DATA-MODEL.md.
+model MockExamAttempt {
+  id           String                @id @default(cuid())
+  userId       String
+  mockExamId   String
+  status       MockExamAttemptStatus @default(IN_PROGRESS)
+  startedAt    DateTime              @default(now())
+  finishedAt   DateTime?
+  correctCount Int?
+  wrongCount   Int?
+  blankCount   Int?
+  scorePercent Float?
+  version      Int                   @default(0)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mockExam         MockExam          @relation(fields: [mockExamId], references: [id])
+  questionAttempts QuestionAttempt[]
+
+  @@index([userId, status])
+  @@index([mockExamId])
+}
+
+/// Resposta a uma questão. Quando vinculada a uma tentativa de simulado
+/// (`mockExamAttemptId` não nulo), é ÚNICA por (tentativa, questão) — não é possível
+/// responder a mesma questão duas vezes dentro da mesma tentativa (upsert na
+/// alteração de resposta enquanto em andamento). Fora de simulado (prática/caderno de
+/// erros, `mockExamAttemptId = null`), múltiplas respostas são permitidas.
+model QuestionAttempt {
+  id                String   @id @default(cuid())
+  userId            String
+  questionId        String
+  mockExamAttemptId String?
+  selectedOptionId  String?
+  isCorrect         Boolean?
+  timeSpentSeconds  Int?
+  answeredAt        DateTime @default(now())
+  createdAt         DateTime @default(now())
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question        Question         @relation(fields: [questionId], references: [id])
+  mockExamAttempt MockExamAttempt? @relation(fields: [mockExamAttemptId], references: [id], onDelete: Cascade)
+  selectedOption  QuestionOption?  @relation(fields: [selectedOptionId], references: [id])
+
+  @@unique([mockExamAttemptId, questionId])
+  @@index([userId, questionId])
+  @@index([questionId])
+}
+
+/// Questão favoritada pelo usuário (independe de tentativas). ÚNICA por (user, question).
+model QuestionFavorite {
+  userId     String
+  questionId String
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@id([userId, questionId])
+  @@index([questionId])
+}
+
+// =============================================================================
+// FLASHCARDS
+// =============================================================================
+
+/// Baralho de flashcards. `userId` nulo = baralho do sistema (compartilhado/público).
+model FlashcardDeck {
+  id        String    @id @default(cuid())
+  userId    String?
+  subjectId String?
+  title     String
+  isPublic  Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  user       User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject    Subject?    @relation(fields: [subjectId], references: [id])
+  flashcards Flashcard[]
+
+  @@index([userId])
+  @@index([subjectId])
+}
+
+model Flashcard {
+  id         String        @id @default(cuid())
+  deckId     String
+  subjectId  String?
+  topicId    String?
+  question   String
+  answer     String
+  difficulty Difficulty    @default(MEDIUM)
+  tags       String[]      @default([])
+  status     ContentStatus @default(PUBLISHED)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  deletedAt  DateTime?
+
+  deck    FlashcardDeck     @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  subject Subject?          @relation(fields: [subjectId], references: [id])
+  topic   Topic?            @relation(fields: [topicId], references: [id])
+  reviews FlashcardReview[]
+
+  @@index([deckId])
+  @@index([subjectId, topicId])
+  @@index([deletedAt])
+}
+
+/// Revisão de flashcard (algoritmo de repetição espaçada estilo SM-2). Histórico
+/// append-only: cada revisão gera uma nova linha; `nextReviewAt` na última revisão
+/// determina a próxima exibição do card.
+model FlashcardReview {
+  id           String                @id @default(cuid())
+  userId       String
+  flashcardId  String
+  rating       FlashcardReviewRating
+  intervalDays Int                   @default(0)
+  easeFactor   Float                 @default(2.5)
+  repetition   Int                   @default(0)
+  reviewedAt   DateTime              @default(now())
+  nextReviewAt DateTime
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  flashcard Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
+
+  @@index([userId, flashcardId, reviewedAt])
+  @@index([userId, nextReviewAt])
+}
+
+// =============================================================================
+// BRAINSTORM
+// =============================================================================
+
+model BrainstormBoard {
+  id        String    @id @default(cuid())
+  userId    String
+  title     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  user    User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  columns BrainstormColumn[]
+
+  @@index([userId])
+}
+
+/// Colunas iniciais: Ideias, Estudar, Revisar, Dúvidas, Resolvido (CLAUDE.md §20).
+model BrainstormColumn {
+  id        String    @id @default(cuid())
+  boardId   String
+  name      String
+  order     Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  board BrainstormBoard  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards BrainstormCard[]
+
+  @@unique([boardId, order])
+}
+
+model BrainstormCard {
+  id                       String                 @id @default(cuid())
+  columnId                 String
+  subjectId                String?
+  topicId                  String?
+  title                    String
+  content                  String?
+  tags                     String[]               @default([])
+  priority                 BrainstormCardPriority @default(MEDIUM)
+  status                   BrainstormCardStatus   @default(OPEN)
+  order                    Int                    @default(0)
+  convertedFlashcardId     String?                @unique
+  convertedStudyPlanItemId String?                @unique
+  createdAt                DateTime               @default(now())
+  updatedAt                DateTime               @updatedAt
+  deletedAt                DateTime?
+
+  column  BrainstormColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  subject Subject?         @relation(fields: [subjectId], references: [id])
+  topic   Topic?           @relation(fields: [topicId], references: [id])
+
+  @@index([columnId, order])
+  @@index([status])
+}
+
+// =============================================================================
+// GAMIFICAÇÃO
+// =============================================================================
+
+model Achievement {
+  id          String    @id @default(cuid())
+  key         String    @unique
+  name        String
+  description String?
+  icon        String?
+  criteria    Json?
+  points      Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  users UserAchievement[]
+
+  @@index([deletedAt])
+}
+
+/// Conquista desbloqueada. ÚNICA por (userId, achievementId) — impossível receber a
+/// mesma conquista duas vezes (CLAUDE.md §25).
+model UserAchievement {
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@id([userId, achievementId])
+  @@index([achievementId])
+}
+
+/// Evento de gamificação (padrão outbox — ADR-0007). `idempotencyKey` é ÚNICA e
+/// segue o padrão `<tipo>:<userId>:<entidadeOrigem>` (ex.:
+/// `lesson-completed:<userId>:<lessonId>`), garantindo que o mesmo fato de origem
+/// nunca gere dois eventos processáveis (CLAUDE.md §15/§25).
+model GamificationEvent {
+  id             String                  @id @default(cuid())
+  userId         String
+  type           GamificationEventType
+  idempotencyKey String                  @unique
+  sourceType     String
+  sourceId       String?
+  points         Int
+  xp             Int
+  ruleVersion    Int                     @default(1)
+  context        Json?
+  status         GamificationEventStatus @default(PENDING)
+  processedAt    DateTime?
+  createdAt      DateTime                @default(now())
+
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pointTransaction PointTransaction?
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@index([sourceType, sourceId])
+}
+
+/// Ledger IMUTÁVEL de pontos: sem `updatedAt`/`deletedAt` — nenhuma linha é
+/// atualizada ou apagada após criada. Correções usam uma nova linha do tipo
+/// `REVERSAL` referenciando a transação original via `reversedTransactionId`
+/// (auto-relação). `idempotencyKey` espelha a do `GamificationEvent` de origem como
+/// segunda barreira contra dupla concessão de pontos (CLAUDE.md §15/§25).
+model PointTransaction {
+  id                    String               @id @default(cuid())
+  userId                String
+  gamificationEventId   String?              @unique
+  idempotencyKey        String               @unique
+  type                  PointTransactionType @default(EARN)
+  points                Int
+  xp                    Int
+  reason                String
+  reversedTransactionId String?              @unique
+  createdAt             DateTime             @default(now())
+
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gamificationEvent   GamificationEvent? @relation(fields: [gamificationEventId], references: [id])
+  reversedTransaction PointTransaction?  @relation("PointTransactionReversal", fields: [reversedTransactionId], references: [id])
+  reversalOf          PointTransaction?  @relation("PointTransactionReversal")
+
+  @@index([userId, createdAt])
+}
+
+/// Pontuação de ranking materializada. ÚNICA por (usuário, tipo de período, período,
+/// escopo, versão do cálculo) — permite recálculo idempotente (mesma versão não
+/// duplica linha) e múltiplas versões de fórmula convivendo para auditoria/rollback.
+/// `scopeKey` nunca é nulo (default "global") de propósito: no Postgres, colunas NULL
+/// não são consideradas iguais por uma constraint UNIQUE, então usar `scopeId`
+/// nullable no índice permitiria duplicar linhas "globais" a cada recálculo — ver
+/// docs/DATA-MODEL.md.
+model RankingScore {
+  id                 String            @id @default(cuid())
+  userId             String
+  periodType         RankingPeriodType
+  periodKey          String
+  scopeType          RankingScopeType  @default(GLOBAL)
+  scopeKey           String            @default("global")
+  calculationVersion Int               @default(1)
+  score              Float
+  rank               Int?
+  breakdown          Json?
+  calculatedAt       DateTime          @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, periodType, periodKey, scopeType, scopeKey, calculationVersion])
+  @@index([periodType, periodKey, scopeType, scopeKey, calculationVersion, score])
+}
+
+/// Meta diária. ÚNICA por (userId, date).
+model DailyGoal {
+  id            String    @id @default(cuid())
+  userId        String
+  date          DateTime  @db.Date
+  targetMinutes Int?
+  targetPoints  Int?
+  achieved      Boolean   @default(false)
+  achievedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+}
+
+/// Meta semanal. ÚNICA por (userId, weekStart).
+model WeeklyGoal {
+  id            String    @id @default(cuid())
+  userId        String
+  weekStart     DateTime  @db.Date
+  targetMinutes Int?
+  targetPoints  Int?
+  achieved      Boolean   @default(false)
+  achievedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, weekStart])
+}
+
+/// Sequência (streak) de dias ativos. 1:1 com User (userId é a própria PK).
+model UserStreak {
+  userId           String    @id
+  currentStreak    Int       @default(0)
+  longestStreak    Int       @default(0)
+  lastActiveDate   DateTime? @db.Date
+  freezesAvailable Int       @default(0)
+  updatedAt        DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// =============================================================================
+// NOTIFICAÇÕES, ASSINATURA E AUDITORIA
+// =============================================================================
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  data      Json?
+  isRead    Boolean          @default(false)
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead, createdAt])
+}
+
+model Subscription {
+  id                 String             @id @default(cuid())
+  userId             String
+  plan               SubscriptionPlan   @default(FREE)
+  status             SubscriptionStatus @default(ACTIVE)
+  provider           String?
+  externalId         String?
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  cancelAtPeriodEnd  Boolean            @default(false)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([externalId])
+}
+
+/// Log de auditoria IMUTÁVEL (sem `updatedAt`/`deletedAt`/update path) para operações
+/// administrativas e eventos sensíveis (CLAUDE.md §24/§25).
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorUserId String?
+  action      String
+  entityType  String
+  entityId    String?
+  before      Json?
+  after       Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  actor User? @relation("AuditLogActor", fields: [actorUserId], references: [id])
+
+  @@index([entityType, entityId, createdAt])
+  @@index([actorUserId, createdAt])
+}
