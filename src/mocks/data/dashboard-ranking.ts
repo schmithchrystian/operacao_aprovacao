@@ -19,5 +19,5 @@ export const mockRankings: Record<string, RankingEntity> = {
   "user-1": { position: 342, totalParticipants: 5810, contestId: "contest-pm-soldado" },
   "user-2": { position: 12, totalParticipants: 2140, contestId: "contest-gcm-agente" },
   "user-3": { position: 4102, totalParticipants: 5810, contestId: "contest-pm-soldado" },
-  "user-4": { position: 1, totalParticipants: 980, contestId: "contest-bombeiro" },
+  "user-4": { position: 1, totalParticipants: 980, contestId: "contest-pp-agente" },
 };

@@ -1,11 +1,18 @@
+import { mockModules, mockLessons } from "./modules";
+import { mockCourses } from "./courses";
+import { mockLessonProgress } from "./lesson-progress";
+import { mockUsers } from "./users";
+
 /**
  * Mock da próxima aula recomendada por aluno (ADR-0011, CLAUDE.md §23).
  *
- * TODO(Fase 7 — cursos/aulas): ainda não existem repositórios de `Module`/`Lesson` (só
- * `CourseRepository`, ver `src/server/repositories/contracts/course-repository.ts`).
- * `courseId` referencia `src/mocks/data/courses.ts` — o `dashboard-service` busca o
- * título do curso via `CourseRepository` em vez de duplicá-lo aqui. `moduleTitle` e os
- * dados de aula continuam mock até o repositório de aulas existir.
+ * Fase 6 (cursos/aulas): agora derivado do catálogo real (`modules.ts`/`lessons.ts`) e do
+ * progresso mock (`lesson-progress.ts`) em vez de literais soltos — elimina o risco de
+ * divergência que causou a inconsistência da Fase 5 (o concurso selecionado de `user-4`
+ * era "contest-bombeiro", sem curso correspondente no catálogo de 3 cursos, enquanto a
+ * próxima aula apontava para `course-2`/GCM; ver `dashboard-contest.ts`). Cada entrada
+ * agora aponta para a aula `in_progress` (ponto de retomada) do curso em que o aluno está
+ * matriculado — sempre coerente com `contestId` do curso e com `mockSelectedContests`.
  */
 
 export interface NextLessonEntity {
@@ -18,38 +25,37 @@ export interface NextLessonEntity {
   href: string;
 }
 
+function buildNextLesson(userId: string): NextLessonEntity | null {
+  const progress = mockLessonProgress.find(
+    (record) => record.userId === userId && record.status === "in_progress",
+  );
+  if (!progress) return null;
+
+  const lesson = mockLessons.find((item) => item.id === progress.lessonId);
+  if (!lesson) return null;
+
+  const lessonModule = mockModules.find((item) => item.id === lesson.moduleId);
+  if (!lessonModule) return null;
+
+  const course = mockCourses.find((item) => item.id === lessonModule.courseId);
+  if (!course) return null;
+
+  return {
+    courseId: course.id,
+    moduleTitle: lessonModule.title,
+    lessonId: lesson.id,
+    lessonTitle: lesson.title,
+    progressPercent: Math.round(progress.watchedPercent * 100),
+    href: `/cursos/${course.slug}/modulos/${lessonModule.slug}/aulas/${lesson.id}`,
+  };
+}
+
 /** Chave: `userId` (ver `src/mocks/data/users.ts`). Ausência de entrada = sem recomendação. */
-export const mockNextLessons: Record<string, NextLessonEntity> = {
-  "user-1": {
-    courseId: "course-1",
-    moduleTitle: "Direito Constitucional aplicado à segurança pública",
-    lessonId: "lesson-12",
-    lessonTitle: "Direitos e garantias fundamentais",
-    progressPercent: 35,
-    href: "/cursos/pm-soldado/modulos/direito-constitucional/aulas/lesson-12",
+export const mockNextLessons: Record<string, NextLessonEntity> = mockUsers.reduce(
+  (acc, user) => {
+    const nextLesson = buildNextLesson(user.id);
+    if (nextLesson) acc[user.id] = nextLesson;
+    return acc;
   },
-  "user-2": {
-    courseId: "course-2",
-    moduleTitle: "Legislação da Guarda Civil Municipal",
-    lessonId: "lesson-05",
-    lessonTitle: "Estatuto Geral das Guardas Municipais",
-    progressPercent: 60,
-    href: "/cursos/gcm-agente/modulos/legislacao/aulas/lesson-05",
-  },
-  "user-3": {
-    courseId: "course-1",
-    moduleTitle: "Português para concursos",
-    lessonId: "lesson-02",
-    lessonTitle: "Interpretação de texto",
-    progressPercent: 10,
-    href: "/cursos/pm-soldado/modulos/portugues/aulas/lesson-02",
-  },
-  "user-4": {
-    courseId: "course-2",
-    moduleTitle: "Direito Administrativo",
-    lessonId: "lesson-20",
-    lessonTitle: "Poderes administrativos",
-    progressPercent: 90,
-    href: "/cursos/gcm-agente/modulos/direito-administrativo/aulas/lesson-20",
-  },
-};
+  {} as Record<string, NextLessonEntity>,
+);

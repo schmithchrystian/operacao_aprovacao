@@ -1,5 +1,9 @@
 export { mockUsers } from "./data/users";
 export { mockCourses } from "./data/courses";
+export { mockSubjects, SUBJECT_IDS } from "./data/subjects";
+export { mockModules, mockLessons } from "./data/modules";
+export { mockEnrollments } from "./data/enrollments";
+export { mockLessonProgress } from "./data/lesson-progress";
 export { mockCredentials, DEV_MOCK_PASSWORD, DEV_PASSWORD_HASH } from "./data/credentials";
 export {
   GAMIFICATION_LEVEL_NAMES,

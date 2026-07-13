@@ -14,4 +14,8 @@ export class MockCourseRepository implements CourseRepository {
   async list(): Promise<CourseEntity[]> {
     return [...mockCourses];
   }
+
+  async listByContestId(contestId: string): Promise<CourseEntity[]> {
+    return mockCourses.filter((course) => course.contestId === contestId);
+  }
 }

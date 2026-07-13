@@ -18,4 +18,9 @@ export class PrismaCourseRepository implements CourseRepository {
   async list(): Promise<CourseEntity[]> {
     throw new Error("not implemented: PrismaCourseRepository.list");
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
+  async listByContestId(_contestId: string): Promise<CourseEntity[]> {
+    throw new Error("not implemented: PrismaCourseRepository.listByContestId");
+  }
 }
