@@ -41,16 +41,17 @@ export function registerGamificationEventHandlers(): void {
   eventBus.subscribe<LessonCompletedPayload>("LessonCompleted", handleLessonCompleted);
   eventBus.subscribe<ModuleCompletedPayload>("ModuleCompleted", handleModuleCompleted);
   eventBus.subscribe<CourseCompletedPayload>("CourseCompleted", handleCourseCompleted);
-  // Os handlers abaixo estão prontos (tipagem + lógica de premiação), mas nenhum emissor real
-  // existe ainda — registrá-los é inofensivo e evita esquecer a assinatura quando a fase dona
-  // implementar a emissão (ver TODO em `./events.ts`).
-  eventBus.subscribe<FlashcardCorrectPayload>("FlashcardCorrect", handleFlashcardCorrect);
-  eventBus.subscribe<PomodoroCompletedPayload>("PomodoroCompleted", handlePomodoroCompleted);
   eventBus.subscribe<MockExamCompletedPayload>("MockExamCompleted", handleMockExamCompleted);
   eventBus.subscribe<QuestionCorrectPayload>("QuestionCorrect", handleQuestionCorrect);
+  // Emissores reais na Fase 12 (`study-tracking/goals.ts`/`streak.ts`).
   eventBus.subscribe<DailyGoalCompletedPayload>("DailyGoalCompleted", handleDailyGoalCompleted);
   eventBus.subscribe<WeeklyGoalCompletedPayload>("WeeklyGoalCompleted", handleWeeklyGoalCompleted);
   eventBus.subscribe<StreakReachedPayload>("StreakReached", handleStreakReached);
+  // Os dois handlers abaixo estão prontos (tipagem + lógica de premiação), mas nenhum emissor
+  // real existe ainda — registrá-los é inofensivo e evita esquecer a assinatura quando a fase
+  // dona implementar a emissão (ver TODO em `./events.ts`).
+  eventBus.subscribe<FlashcardCorrectPayload>("FlashcardCorrect", handleFlashcardCorrect);
+  eventBus.subscribe<PomodoroCompletedPayload>("PomodoroCompleted", handlePomodoroCompleted);
 
   registered = true;
 }

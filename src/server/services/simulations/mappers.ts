@@ -71,7 +71,13 @@ export async function buildAttemptDTO(attempt: MockExamAttemptEntity, now: Date 
   };
 }
 
-function computePerformance(
+/**
+ * Agrega entradas de resposta (matéria/assunto/acerto) em aproveitamento por matéria/assunto.
+ * Exportada para reaproveitamento pela Fase 12 (`@/server/services/study-tracking/tracking-overview`),
+ * que agrega o HISTÓRICO COMPLETO de `QuestionAttempt` do usuário (não só uma tentativa) com a
+ * mesma fórmula — evita duplicar a lógica de acerto/total/percentual em dois lugares.
+ */
+export function computePerformance(
   entries: Array<{ subjectId: string; subjectName: string; topicId: string | null; topicName: string | null; isCorrect: boolean | null }>,
 ): { bySubject: SubjectPerformanceDTO[]; byTopic: TopicPerformanceDTO[] } {
   const bySubjectMap = new Map<string, SubjectPerformanceDTO>();

@@ -20,3 +20,7 @@ export * from "./question-favorite-repository";
 export * from "./study-plan-repository";
 export * from "./study-plan-item-repository";
 export * from "./study-mission-repository";
+// Fase 12 — agente `study-tracking` (acompanhamento: sequência + metas).
+export * from "./user-streak-repository";
+export * from "./daily-goal-repository";
+export * from "./weekly-goal-repository";

@@ -221,6 +221,62 @@ export const STUDY_SESSION = {
 } as const;
 
 /**
+ * Parâmetros de acompanhamento/sequência/metas (Fase 12 — agente `study-tracking`, CLAUDE.md
+ * §14/§31 item "acompanhamento"). Heurística determinística: `now`/timezone são sempre entrada
+ * explícita dos serviços (`src/server/services/study-tracking/{streak,goals,diagnosis}.ts`),
+ * nunca lidos direto por uma função pura.
+ */
+export const STUDY_TRACKING_OVERVIEW = {
+  /**
+   * Timezone default para resolver "dia civil" a partir de um instante (heartbeat/transação) —
+   * `Intl.DateTimeFormat` com IANA timezone (`@/server/services/study-tracking/activity-days`).
+   * TODO(pendência explícita — sem fonte no schema atual): `Profile` (docs/DATA-MODEL.md) não
+   * tem coluna de timezone do usuário; usar sempre UTC até essa fonte existir.
+   */
+  defaultTimezone: "UTC",
+  /** Marcos de sequência com recompensa própria (CLAUDE.md §15) — `STREAK_7`/`STREAK_30` em
+   *  `GAMIFICATION_REWARDS`. Cruzar cada marco pela primeira vez emite `StreakReached` uma
+   *  única vez por usuário (idempotencyKey sem data — nunca reconcede o mesmo marco). */
+  streakMilestones: [7, 30] as const,
+  // Tolerância de sequência ("freeze"): `computeStreak` (`@/server/services/study-tracking/
+  // activity-days`) perdoa cada dia perdido CONSUMINDO 1 de `UserStreak.freezesAvailable` — a
+  // sequência só quebra ao encontrar um dia perdido sem freeze restante (com N freezes é
+  // possível atravessar até N dias perdidos, contíguos ou não). Não há parâmetro de config aqui:
+  // o único "botão" é `freezesAvailable` por usuário (persistido em `UserStreak`), e a mecânica
+  // de CONCESSÃO de freezes (quando/como o aluno ganha um) não é especificada em CLAUDE.md —
+  // decisão/pendência documentada em `UserStreakEntity.freezesAvailable`
+  // (`@/server/repositories/contracts/user-streak-repository`).
+  /** Alvo default da meta diária (pontos) — mesmo valor já exibido no mock legado
+   *  (`src/mocks/data/dashboard-goals.ts`), agora usado como default REAL configurável. */
+  dailyGoalTargetPoints: 150,
+  /** Alvo default da meta semanal (pontos). */
+  weeklyGoalTargetPoints: 500,
+  /** Percentual mínimo de acerto (0–100) abaixo do qual uma matéria/assunto é considerado
+   *  "ponto fraco" — mesmo limiar já usado em `buildSuggestions`
+   *  (`@/server/services/simulations/mappers.ts`), reaproveitado aqui para coerência. */
+  weakSubjectAccuracyThreshold: 60,
+  /** Nº mínimo de questões respondidas numa matéria/assunto para considerá-la no diagnóstico —
+   *  evita classificar como "forte"/"fraco" a partir de uma amostra estatisticamente irrelevante. */
+  minSampleForPerformance: 3,
+  /** Janela (dias) usada para o indicador de "consistência" do acompanhamento. */
+  consistencyWindowDays: 30,
+  /** Dias até a prova abaixo dos quais o risco de atraso começa a ser avaliado com mais rigor. */
+  examRiskHorizonDays: 30,
+  /**
+   * Limiares do diagnóstico de preparação (`@/server/services/study-tracking/diagnosis.ts`),
+   * aplicados sobre `planProgressPercent - expectedProgressPercent` (progresso real menos o
+   * esperado pelo tempo decorrido — negativo = atrasado):
+   * - `progressGapHighRiskPercent`: gap igual ou mais negativo que isto → risco ALTO.
+   * - `progressGapMediumRiskPercent`: gap igual ou mais negativo que isto (mas acima do limiar
+   *   ALTO) → risco MÉDIO.
+   */
+  progressGapHighRiskPercent: -15,
+  progressGapMediumRiskPercent: -5,
+  /** Consistência (%) abaixo disto, isoladamente, já eleva o risco de atraso para MÉDIO. */
+  lowConsistencyRiskPercent: 40,
+} as const;
+
+/**
  * Parâmetros do gerador de "Plano de estudos" (Fase 11). Heurística determinística: nunca lê
  * `Date.now()`/`Math.random()` internamente — `startDate`/`examDate`/`now` são sempre entrada
  * explícita do serviço (`src/server/services/study-plan/generate-plan.ts`), nunca lidos direto

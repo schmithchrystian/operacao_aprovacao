@@ -17,3 +17,6 @@ export {
   simulationsRateLimitKey,
   __resetSimulationsRateLimitStore,
 } from "./rate-limit";
+/** Reaproveitado pela Fase 12 (`@/server/services/study-tracking/tracking-overview`) para
+ *  agregar aproveitamento por matéria/assunto sobre TODO o histórico de `QuestionAttempt`. */
+export { computePerformance } from "./mappers";

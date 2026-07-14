@@ -1,6 +1,7 @@
 import { env } from "@/config/env";
 import type {
   CourseRepository,
+  DailyGoalRepository,
   EnrollmentRepository,
   GamificationEventRepository,
   LessonProgressRepository,
@@ -22,8 +23,11 @@ import type {
   TopicRepository,
   UserAchievementRepository,
   UserRepository,
+  UserStreakRepository,
+  WeeklyGoalRepository,
 } from "./contracts";
 import { MockCourseRepository } from "./mock/course-repository";
+import { MockDailyGoalRepository } from "./mock/daily-goal-repository";
 import { MockEnrollmentRepository } from "./mock/enrollment-repository";
 import { MockGamificationEventRepository } from "./mock/gamification-event-repository";
 import { MockLessonProgressRepository } from "./mock/lesson-progress-repository";
@@ -45,7 +49,10 @@ import { MockSubjectRepository } from "./mock/subject-repository";
 import { MockTopicRepository } from "./mock/topic-repository";
 import { MockUserAchievementRepository } from "./mock/user-achievement-repository";
 import { MockUserRepository } from "./mock/user-repository";
+import { MockUserStreakRepository } from "./mock/user-streak-repository";
+import { MockWeeklyGoalRepository } from "./mock/weekly-goal-repository";
 import { PrismaCourseRepository } from "./prisma/course-repository";
+import { PrismaDailyGoalRepository } from "./prisma/daily-goal-repository";
 import { PrismaEnrollmentRepository } from "./prisma/enrollment-repository";
 import { PrismaGamificationEventRepository } from "./prisma/gamification-event-repository";
 import { PrismaLessonProgressRepository } from "./prisma/lesson-progress-repository";
@@ -67,6 +74,8 @@ import { PrismaSubjectRepository } from "./prisma/subject-repository";
 import { PrismaTopicRepository } from "./prisma/topic-repository";
 import { PrismaUserAchievementRepository } from "./prisma/user-achievement-repository";
 import { PrismaUserRepository } from "./prisma/user-repository";
+import { PrismaUserStreakRepository } from "./prisma/user-streak-repository";
+import { PrismaWeeklyGoalRepository } from "./prisma/weekly-goal-repository";
 
 /** Container de repositórios do processo, selecionado por `DATA_SOURCE` (ADR-0002). */
 export interface Repositories {
@@ -94,6 +103,10 @@ export interface Repositories {
   studyPlans: StudyPlanRepository;
   studyPlanItems: StudyPlanItemRepository;
   studyMissions: StudyMissionRepository;
+  /** Fase 12 — agente `study-tracking` (acompanhamento: sequência + metas). */
+  userStreaks: UserStreakRepository;
+  dailyGoals: DailyGoalRepository;
+  weeklyGoals: WeeklyGoalRepository;
 }
 
 let cached: Repositories | null = null;
@@ -123,6 +136,9 @@ function buildRepositories(): Repositories {
       studyPlans: new PrismaStudyPlanRepository(),
       studyPlanItems: new PrismaStudyPlanItemRepository(),
       studyMissions: new PrismaStudyMissionRepository(),
+      userStreaks: new PrismaUserStreakRepository(),
+      dailyGoals: new PrismaDailyGoalRepository(),
+      weeklyGoals: new PrismaWeeklyGoalRepository(),
     };
   }
   return {
@@ -148,6 +164,9 @@ function buildRepositories(): Repositories {
     studyPlans: new MockStudyPlanRepository(),
     studyPlanItems: new MockStudyPlanItemRepository(),
     studyMissions: new MockStudyMissionRepository(),
+    userStreaks: new MockUserStreakRepository(),
+    dailyGoals: new MockDailyGoalRepository(),
+    weeklyGoals: new MockWeeklyGoalRepository(),
   };
 }
 

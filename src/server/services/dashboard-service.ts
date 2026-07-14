@@ -1,16 +1,16 @@
-import { assertOwnership, requireUser } from "@/server/authorization";
-import { NotFoundError } from "@/server/errors";
-import { getRepositories } from "@/server/repositories";
-import { getUserGamification } from "@/server/services/gamification";
+import type { DashboardGoal } from "@/contracts/dashboard";
 import {
-  mockGamificationStates,
-  mockGoals,
   mockNextLessons,
   mockPerformanceSummaries,
   mockRankings,
   mockSelectedContests,
   mockStudyStats,
 } from "@/mocks";
+import { assertOwnership, requireUser } from "@/server/authorization";
+import { NotFoundError } from "@/server/errors";
+import { getRepositories } from "@/server/repositories";
+import { getUserGamification } from "@/server/services/gamification";
+import { recalculateDailyGoal, recalculateWeeklyGoal, recalculateStreak } from "@/server/services/study-tracking";
 import type { DashboardDTO } from "@/contracts/dashboard";
 
 /**
@@ -23,9 +23,15 @@ import type { DashboardDTO } from "@/contracts/dashboard";
  * Nenhuma regra de pontos/XP/nível/tempo válido/sequência é calculada aqui:
  * - Pontos, XP, nível e conquistas vêm do motor de gamificação real (Fase 8,
  *   `@/server/services/gamification`), lido a partir de `PointTransaction`/`UserAchievement`
- *   (ledger auditável) — não são mais literais fixos. `streakDays` continua vindo do mock
- *   (`mockGamificationStates`) porque sua fonte definitiva é `UserStreak`, de propriedade do
- *   agente `study-tracking` (Fase 12), fora do escopo de `gamification`.
+ *   (ledger auditável) — não são mais literais fixos.
+ * - `streakDays`/`goals` (Fase 12 — agente `study-tracking`): agora vêm de
+ *   `recalculateStreak`/`recalculateDailyGoal`/`recalculateWeeklyGoal`
+ *   (`@/server/services/study-tracking`), que recalculam a partir de `StudySession`/
+ *   `PointTransaction` reais e persistem em `UserStreak`/`DailyGoal`/`WeeklyGoal` — não são
+ *   mais literais fixos do mock (`mockGamificationStates`/`mockGoals`, mantidos só como
+ *   histórico de decisão em `src/mocks/data/dashboard-{gamification,goals}.ts`). Num processo
+ *   mock "frio" (sem nenhuma `StudySession`/`PointTransaction` recente para o usuário), estes
+ *   valores começam honestamente em zero — ver pendência no relatório da Fase 12.
  * - TODO(Fase 9 — agente `gamification`): o motor de ranking real já existe
  *   (`@/server/services/gamification/ranking`, `getRanking`), mas este widget simples de
  *   dashboard (posição + total no concurso) ainda lê `mockRankings` em vez de chamar
@@ -33,9 +39,13 @@ import type { DashboardDTO } from "@/contracts/dashboard";
  *   os valores do mock foram ajustados para não divergir do resultado real (ver
  *   `dashboard-ranking.ts`), mas a troca de fonte fica como pendência (fora do escopo desta
  *   fase, que focou no motor/backend do ranking).
- * - TODO(Fase 12 — agente `study-tracking`): tempo estudado, aulas concluídas, simulados,
- *   percentual de acertos e metas devem passar a vir do tempo válido real (heartbeat,
- *   sinais de atividade — CLAUDE.md §14), não da diferença simples entre início e fim.
+ * - TODO(Fase 12 — agente `study-tracking`): tempo estudado/aulas concluídas/simulados/
+ *   percentual de acertos (`study.*`) ainda vêm do mock (`mockStudyStats`) — a fonte real e
+ *   mais rica (evolução semanal/mensal, aproveitamento por matéria, etc.) já existe em
+ *   `getTrackingOverview` (`@/server/services/study-tracking/tracking-overview`), consumida
+ *   pela página dedicada de Acompanhamento; portar este widget resumido do dashboard principal
+ *   para a mesma fonte fica como pendência (mantido aqui para não regredir o layout desta
+ *   fase, focada no serviço de acompanhamento).
  * - TODO(Fase 7 — cursos/concursos): `selectedContest` e a próxima aula recomendada
  *   (módulo/aula) devem passar a vir de repositórios reais de `Contest`/`Module`/`Lesson`
  *   quando existirem; hoje só `CourseRepository` existe.
@@ -44,6 +54,34 @@ import type { DashboardDTO } from "@/contracts/dashboard";
  * `requireUser` garante sessão real (nunca aceitar `userId` do corpo da requisição) e
  * `assertOwnership` impede que um usuário autenticado leia o dashboard de outro (anti-IDOR).
  */
+
+interface GoalLike {
+  targetMinutes: number | null;
+  targetPoints: number | null;
+  progressMinutes: number;
+  progressPoints: number;
+  achieved: boolean;
+}
+
+/** Mapeia o resultado real de `recalculateDailyGoal`/`recalculateWeeklyGoal` para
+ *  `DashboardGoal` (contrato já existente da Fase 5) — prioriza a dimensão de PONTOS (default
+ *  configurado, `STUDY_TRACKING_OVERVIEW.dailyGoalTargetPoints`/`weeklyGoalTargetPoints`) e só
+ *  cai para minutos quando não há alvo de pontos definido. */
+function toDashboardGoal(goal: GoalLike, periodDescription: string): DashboardGoal {
+  const usesPoints = goal.targetPoints !== null;
+  const target = usesPoints ? goal.targetPoints! : (goal.targetMinutes ?? 0);
+  const progress = usesPoints ? goal.progressPoints : goal.progressMinutes;
+  const unit = usesPoints ? "pontos" : "minutos";
+
+  return {
+    description: `Conquiste ${target} ${unit} ${periodDescription}`,
+    target,
+    progress,
+    unit,
+    completed: goal.achieved,
+  };
+}
+
 export async function getStudentDashboard(userId: string): Promise<DashboardDTO> {
   const session = await requireUser();
   assertOwnership(userId, session.userId);
@@ -54,21 +92,29 @@ export async function getStudentDashboard(userId: string): Promise<DashboardDTO>
     throw new NotFoundError("Aluno não encontrado.");
   }
 
-  const gamificationMock = mockGamificationStates[userId];
   const study = mockStudyStats[userId];
   const performanceSummary = mockPerformanceSummaries[userId];
-  const goals = mockGoals[userId];
   const ranking = mockRankings[userId];
   const contest = mockSelectedContests[userId];
 
-  if (!gamificationMock || !study || !performanceSummary || !goals || !ranking || !contest) {
+  if (!study || !performanceSummary || !ranking || !contest) {
     throw new NotFoundError("Dados de dashboard indisponíveis para este aluno.");
   }
 
-  // Fonte real de pontos/XP/nível/conquistas (Fase 8) — `streakDays` permanece do mock (ver
-  // nota acima). `getUserGamification` já reaplica `requireUser`/`assertOwnership`; chamado
-  // depois da checagem já feita no topo desta função (redundante, mas seguro e barato).
+  // Fonte real de pontos/XP/nível/conquistas (Fase 8). `getUserGamification` já reaplica
+  // `requireUser`/`assertOwnership`; chamado depois da checagem já feita no topo desta função
+  // (redundante, mas seguro e barato).
   const gamification = await getUserGamification(userId);
+
+  // Fonte real de sequência/metas (Fase 12) — recalcula e persiste a partir de
+  // `StudySession`/`PointTransaction` (nunca `Date.now()` aqui; `now` é a única leitura do
+  // relógio real desta função, injetada explicitamente nos três serviços).
+  const now = new Date();
+  const [streak, dailyGoal, weeklyGoal] = await Promise.all([
+    recalculateStreak(userId, now),
+    recalculateDailyGoal(userId, now),
+    recalculateWeeklyGoal(userId, now),
+  ]);
 
   const nextLessonEntity = mockNextLessons[userId];
   let nextLesson: DashboardDTO["nextLesson"] = null;
@@ -109,7 +155,7 @@ export async function getStudentDashboard(userId: string): Promise<DashboardDTO>
       xp: gamification.xp,
       currentLevelXp: gamification.level.currentLevelXp,
       nextLevelXp: gamification.level.nextLevelXp,
-      streakDays: gamificationMock.streakDays,
+      streakDays: streak.currentStreak,
     },
     study: {
       weeklyStudyMinutes: study.weeklyStudyMinutes,
@@ -123,7 +169,10 @@ export async function getStudentDashboard(userId: string): Promise<DashboardDTO>
       contestId: ranking.contestId,
     },
     nextLesson,
-    goals,
+    goals: {
+      daily: toDashboardGoal(dailyGoal, "estudando hoje"),
+      weekly: toDashboardGoal(weeklyGoal, "essa semana"),
+    },
     performanceSummary,
     studyHoursSeries: study.studyHoursSeries,
     subjectPerformance: study.subjectPerformance,

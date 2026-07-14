@@ -2,10 +2,11 @@ import type { GamificationEventType } from "@/server/repositories/contracts/gami
 
 /**
  * Payloads de eventos de domínio que alimentam a gamificação (Fase 8 — ADR-0007). Cada tipo
- * tem seu handler correspondente em `./handlers.ts`. Handlers marcados "TODO" abaixo estão
- * PRONTOS (tipagem + lógica de premiação) mas ainda não têm emissor real — a fase dona do
- * domínio de origem deve chamar `eventBus.emit` com o payload/idempotencyKey correspondentes
- * quando implementar o fluxo (ver comentário de cada tipo).
+ * tem seu handler correspondente em `./handlers.ts`. Só `FlashcardCorrect`/`PomodoroCompleted`
+ * seguem marcados "TODO" abaixo: estão PRONTOS (tipagem + lógica de premiação) mas ainda não
+ * têm emissor real — a fase dona do domínio de origem deve chamar `eventBus.emit` com o
+ * payload/idempotencyKey correspondentes quando implementar o fluxo. Todos os demais já têm
+ * emissor real (aula/módulo/curso: Fase 7/8; simulado/questão: Fase 10; metas/streak: Fase 12).
  */
 
 export interface LessonCompletedPayload {
@@ -56,7 +57,7 @@ export interface QuestionCorrectPayload {
   questionId: string;
 }
 
-/** TODO(Fase 11/12 — plano de estudos/study-tracking): emitir ao fechar o dia com a meta batida. */
+/** Emitido por `study-tracking/goals.ts` (Fase 12) ao fechar o dia com a meta batida. */
 export interface DailyGoalCompletedPayload {
   userId: string;
   dailyGoalId: string;
@@ -64,7 +65,7 @@ export interface DailyGoalCompletedPayload {
   date: string;
 }
 
-/** TODO(Fase 11/12 — plano de estudos/study-tracking): emitir ao fechar a semana com a meta batida. */
+/** Emitido por `study-tracking/goals.ts` (Fase 12) ao fechar a semana com a meta batida. */
 export interface WeeklyGoalCompletedPayload {
   userId: string;
   weeklyGoalId: string;
@@ -72,7 +73,7 @@ export interface WeeklyGoalCompletedPayload {
   weekStart: string;
 }
 
-/** TODO(Fase 12 — study-tracking/`UserStreak`): emitir quando o streak cruzar 7 ou 30 dias. */
+/** Emitido por `study-tracking/streak.ts` (Fase 12) quando o streak cruza 7 ou 30 dias. */
 export interface StreakReachedPayload {
   userId: string;
   /** Só os marcos com recompensa própria (CLAUDE.md §15). */

@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ArrowRight, Compass } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ProgressBar } from "@/components/shared/progress-bar";
+import { cn } from "@/lib/utils";
 import type { DashboardNextLesson } from "@/contracts/dashboard";
 
 interface ContinueMissionCardProps {
@@ -32,10 +33,19 @@ export function ContinueMissionCard({ nextLesson }: ContinueMissionCardProps) {
               <p className="text-foreground text-base font-semibold">{nextLesson.lessonTitle}</p>
             </div>
             <ProgressBar value={nextLesson.progressPercent} label="Progresso no módulo" variant="success" />
-            <Button render={<Link href={nextLesson.href} />}>
+            {/* Link de navegação com APARÊNCIA de botão: aplica `buttonVariants` direto no
+                `<Link>` em vez de `<Button render={<Link/>}>`. O primitivo `Button` do Base UI
+                é semanticamente um botão — via `render` de um `<a>` ele ou avisa no console
+                (`nativeButton` default `true` vs. elemento não-`<button>`) ou, com
+                `nativeButton={false}`, força `role="button"` num link (semântica errada p/ algo
+                que NAVEGA). Aqui o elemento deve ser um link (role "link"), então o caminho
+                correto é estilizar o `<Link>` — sem primitivo de botão, sem warning. Mesmo
+                idioma `<Button render={<Link/>}>` aparece em ~17 outros pontos do projeto — ver
+                nota no relatório. */}
+            <Link href={nextLesson.href} className={cn(buttonVariants())}>
               Continuar estudando
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Button>
+            </Link>
           </div>
         ) : (
           <EmptyState

@@ -24,10 +24,10 @@ import type {
  *
  * `LessonCompleted`/`ModuleCompleted`/`CourseCompleted` já têm emissor real (Fase 7/8,
  * `study-tracking/record-heartbeat.ts`); `MockExamCompleted`/`QuestionCorrect` também (Fase 10,
- * `simulations/submit-and-finalize.ts`). Os demais (flashcard/Pomodoro/metas/streak) estão
- * prontos — TIPO E LÓGICA DE PREMIAÇÃO — mas aguardam o emissor da fase dona (ver `./events.ts`
- * para o TODO específico de cada um); registrá-los aqui não tem efeito hoje porque nada ainda
- * invoca `eventBus.emit` para esses tipos.
+ * `simulations/submit-and-finalize.ts`); `DailyGoalCompleted`/`WeeklyGoalCompleted`/`StreakReached`
+ * também (Fase 12, `study-tracking/goals.ts`/`streak.ts`). Só `FlashcardCorrect`/`PomodoroCompleted`
+ * ainda aguardam o emissor da fase dona (ver `./events.ts` para o TODO específico de cada um) —
+ * registrá-los aqui é inofensivo porque nada ainda invoca `eventBus.emit` para esses dois tipos.
  */
 
 export async function handleLessonCompleted(event: DomainEvent<LessonCompletedPayload>): Promise<void> {
@@ -133,7 +133,7 @@ export async function handleQuestionCorrect(event: DomainEvent<QuestionCorrectPa
   await syncAchievementsForUser(userId, event.occurredAt);
 }
 
-/** TODO(Fase 11/12 — plano de estudos/study-tracking): sem emissor ainda; pronto para ser ligado. */
+/** Emissor real: `src/server/services/study-tracking/goals.ts` (Fase 12), ao fechar o dia com a meta batida. */
 export async function handleDailyGoalCompleted(event: DomainEvent<DailyGoalCompletedPayload>): Promise<void> {
   const { userId, dailyGoalId, date } = event.payload;
   await awardGamificationEvent({
@@ -148,7 +148,7 @@ export async function handleDailyGoalCompleted(event: DomainEvent<DailyGoalCompl
   await syncAchievementsForUser(userId, event.occurredAt);
 }
 
-/** TODO(Fase 11/12 — plano de estudos/study-tracking): sem emissor ainda; pronto para ser ligado. */
+/** Emissor real: `src/server/services/study-tracking/goals.ts` (Fase 12), ao fechar a semana com a meta batida. */
 export async function handleWeeklyGoalCompleted(event: DomainEvent<WeeklyGoalCompletedPayload>): Promise<void> {
   const { userId, weeklyGoalId, weekStart } = event.payload;
   await awardGamificationEvent({
@@ -163,7 +163,7 @@ export async function handleWeeklyGoalCompleted(event: DomainEvent<WeeklyGoalCom
   await syncAchievementsForUser(userId, event.occurredAt);
 }
 
-/** TODO(Fase 12 — study-tracking/`UserStreak`): sem emissor ainda; pronto para ser ligado. */
+/** Emissor real: `src/server/services/study-tracking/streak.ts` (Fase 12), ao cruzar o marco de 7/30 dias. */
 export async function handleStreakReached(event: DomainEvent<StreakReachedPayload>): Promise<void> {
   const { userId, milestone } = event.payload;
   const type = milestone === 30 ? "STREAK_30" : "STREAK_7";
