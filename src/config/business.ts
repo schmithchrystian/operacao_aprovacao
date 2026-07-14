@@ -149,3 +149,91 @@ export const RANKING_TOP_HIGHLIGHT_COUNT = 3;
  * parte informando `periodType` no corpo da requisição.
  */
 export const RANKING_DEFAULT_RECALC_PERIOD_TYPES = ["WEEKLY", "MONTHLY", "ALL_TIME"] as const;
+
+/**
+ * Tipos de conteúdo de um bloco de sessão gerada (Fase 11 — agente `study-tracking`, "Montar
+ * estudo"). Espelhado em `contentTypeSchema` (`@/contracts/study-session`) — manter as duas
+ * listas sincronizadas (mesmo padrão de `questionDifficultySchema` espelhando `Difficulty`).
+ */
+export type StudySessionContentType =
+  | "videoaula"
+  | "pdf"
+  | "questoes"
+  | "flashcards"
+  | "revisao"
+  | "simulado"
+  | "resumo"
+  | "mapa_mental";
+
+/**
+ * Pesos RELATIVOS de cada tipo de conteúdo na alocação proporcional de uma sessão (Fase 11).
+ * Não precisam somar 1: o gerador (`src/server/services/study-plan/session-generator.ts`)
+ * sempre normaliza sobre o SUBCONJUNTO de tipos escolhido pelo aluno numa chamada — por isso
+ * só a proporção ENTRE os pesos selecionados importa, nunca o valor absoluto isolado.
+ *
+ * Cenário de referência (usado em `tests/unit/study-session-generator.test.ts`): com os tipos
+ * `videoaula/questoes/flashcards/revisao` (pesos 5/3/2/2) e 60 minutos disponíveis, a alocação
+ * resultante é 25/15/10/10 — a proporção 5:3:2:2 aplicada a 60 minutos.
+ */
+export const STUDY_SESSION_BLOCK_WEIGHTS: Record<StudySessionContentType, number> = {
+  videoaula: 5,
+  questoes: 3,
+  simulado: 4,
+  flashcards: 2,
+  revisao: 2,
+  pdf: 2,
+  resumo: 2,
+  mapa_mental: 1,
+};
+
+/** Ordem de exibição/estudo coerente (aprender → praticar → reforçar) — independe da ordem em
+ *  que o aluno selecionou os tipos no formulário; o gerador sempre reordena por esta lista. */
+export const STUDY_SESSION_BLOCK_ORDER: readonly StudySessionContentType[] = [
+  "videoaula",
+  "pdf",
+  "resumo",
+  "mapa_mental",
+  "questoes",
+  "simulado",
+  "flashcards",
+  "revisao",
+];
+
+/** Rótulo exibido de cada tipo de conteúdo (usado no título default de um bloco genérico). */
+export const STUDY_SESSION_BLOCK_LABELS: Record<StudySessionContentType, string> = {
+  videoaula: "Videoaula",
+  pdf: "PDF",
+  questoes: "Questões",
+  flashcards: "Flashcards",
+  revisao: "Revisão",
+  simulado: "Simulado",
+  resumo: "Resumo",
+  mapa_mental: "Mapa mental",
+};
+
+export const STUDY_SESSION = {
+  /** Minutos mínimos para um bloco "fazer sentido" isoladamente. O alocador tenta garantir
+   *  esse mínimo redistribuindo dos blocos maiores, mas só quando o tempo total disponível
+   *  permite pelo menos `minBlockMinutes` para CADA tipo escolhido — caso contrário (poucos
+   *  minutos para muitos tipos), mantém a alocação proporcional pura (pode incluir blocos
+   *  menores que o mínimo, nunca negativos). */
+  minBlockMinutes: 5,
+} as const;
+
+/**
+ * Parâmetros do gerador de "Plano de estudos" (Fase 11). Heurística determinística: nunca lê
+ * `Date.now()`/`Math.random()` internamente — `startDate`/`examDate`/`now` são sempre entrada
+ * explícita do serviço (`src/server/services/study-plan/generate-plan.ts`), nunca lidos direto
+ * pela função pura (`plan-generator.ts`).
+ */
+export const STUDY_PLAN = {
+  /** A partir deste nº de horas/dia, o dia é dividido em 2 blocos de matérias distintas (mais
+   *  variedade); abaixo disso, um único bloco ocupa o dia inteiro. */
+  minHoursForTwoSubjectsPerDay: 2,
+  /** Duração padrão (minutos) de um item de revisão gerado automaticamente num dia de folga. */
+  defaultReviewMinutes: 45,
+  /** Duração padrão (minutos) do simulado semanal gerado automaticamente. */
+  defaultWeeklyMockExamMinutes: 90,
+  /** Título default do plano quando o aluno não informa um título próprio. */
+  defaultPlanTitle: "Plano de estudos",
+} as const;

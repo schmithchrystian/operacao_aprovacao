@@ -5,3 +5,5 @@ export * from "./courses";
 export * from "./progress";
 export * from "./ranking";
 export * from "./simulations";
+export * from "./study-session";
+export * from "./study-plan";

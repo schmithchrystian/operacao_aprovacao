@@ -14,6 +14,9 @@ import type {
   QuestionOptionRepository,
   QuestionRepository,
   RankingScoreRepository,
+  StudyMissionRepository,
+  StudyPlanItemRepository,
+  StudyPlanRepository,
   StudySessionRepository,
   SubjectRepository,
   TopicRepository,
@@ -34,6 +37,9 @@ import { MockQuestionFavoriteRepository } from "./mock/question-favorite-reposit
 import { MockQuestionOptionRepository } from "./mock/question-option-repository";
 import { MockQuestionRepository } from "./mock/question-repository";
 import { MockRankingScoreRepository } from "./mock/ranking-score-repository";
+import { MockStudyMissionRepository } from "./mock/study-mission-repository";
+import { MockStudyPlanItemRepository } from "./mock/study-plan-item-repository";
+import { MockStudyPlanRepository } from "./mock/study-plan-repository";
 import { MockStudySessionRepository } from "./mock/study-session-repository";
 import { MockSubjectRepository } from "./mock/subject-repository";
 import { MockTopicRepository } from "./mock/topic-repository";
@@ -53,6 +59,9 @@ import { PrismaQuestionFavoriteRepository } from "./prisma/question-favorite-rep
 import { PrismaQuestionOptionRepository } from "./prisma/question-option-repository";
 import { PrismaQuestionRepository } from "./prisma/question-repository";
 import { PrismaRankingScoreRepository } from "./prisma/ranking-score-repository";
+import { PrismaStudyMissionRepository } from "./prisma/study-mission-repository";
+import { PrismaStudyPlanItemRepository } from "./prisma/study-plan-item-repository";
+import { PrismaStudyPlanRepository } from "./prisma/study-plan-repository";
 import { PrismaStudySessionRepository } from "./prisma/study-session-repository";
 import { PrismaSubjectRepository } from "./prisma/subject-repository";
 import { PrismaTopicRepository } from "./prisma/topic-repository";
@@ -81,6 +90,10 @@ export interface Repositories {
   mockExamAttempts: MockExamAttemptRepository;
   questionAttempts: QuestionAttemptRepository;
   questionFavorites: QuestionFavoriteRepository;
+  /** Fase 11 — agente `study-tracking` ("Montar estudo" + "Plano de estudos"). */
+  studyPlans: StudyPlanRepository;
+  studyPlanItems: StudyPlanItemRepository;
+  studyMissions: StudyMissionRepository;
 }
 
 let cached: Repositories | null = null;
@@ -107,6 +120,9 @@ function buildRepositories(): Repositories {
       mockExamAttempts: new PrismaMockExamAttemptRepository(),
       questionAttempts: new PrismaQuestionAttemptRepository(),
       questionFavorites: new PrismaQuestionFavoriteRepository(),
+      studyPlans: new PrismaStudyPlanRepository(),
+      studyPlanItems: new PrismaStudyPlanItemRepository(),
+      studyMissions: new PrismaStudyMissionRepository(),
     };
   }
   return {
@@ -129,6 +145,9 @@ function buildRepositories(): Repositories {
     mockExamAttempts: new MockMockExamAttemptRepository(),
     questionAttempts: new MockQuestionAttemptRepository(),
     questionFavorites: new MockQuestionFavoriteRepository(),
+    studyPlans: new MockStudyPlanRepository(),
+    studyPlanItems: new MockStudyPlanItemRepository(),
+    studyMissions: new MockStudyMissionRepository(),
   };
 }
 

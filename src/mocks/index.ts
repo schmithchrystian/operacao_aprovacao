@@ -35,3 +35,4 @@ export {
   mockQuestionAttempts,
   mockQuestionFavorites,
 } from "./data/mock-exam-attempts";
+export { mockStudyPlans, mockStudyPlanItems, mockPlanSubjectWeights } from "./data/study-plan";

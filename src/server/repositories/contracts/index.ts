@@ -17,3 +17,6 @@ export * from "./mock-exam-repository";
 export * from "./mock-exam-attempt-repository";
 export * from "./question-attempt-repository";
 export * from "./question-favorite-repository";
+export * from "./study-plan-repository";
+export * from "./study-plan-item-repository";
+export * from "./study-mission-repository";
