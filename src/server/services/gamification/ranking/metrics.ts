@@ -16,7 +16,10 @@ import type { RankingPeriodWindow } from "./scope";
  *   do período (proxy honesto de constância a partir do ledger auditável — ver nota em
  *   `computeConsistency`). TODO(Fase 12 — `study-tracking`/`UserStreak`): substituir por
  *   calendário de atividade definitivo quando existir.
- * - `mockExamPerformance`: MOCK — TODO(Fase 10 — `simulations`): sem `MockExamAttempt` real.
+ * - `mockExamPerformance`: REAL (Fase 10 — `simulations`), via `MockExamAttemptRepository` —
+ *   média de `scorePercent` das tentativas `FINISHED` na janela; cai para o mock
+ *   (`fallbackPercent`/`mockExamAccuracyPercent`) quando o usuário não tem tentativa finalizada
+ *   na janela (ver `computeMockExamPerformance`).
  * - `goalsCompleted`: MOCK — TODO(Fases 11/12/15 — `study-tracking`): sem `DailyGoal`/
  *   `WeeklyGoal` real ainda.
  *
@@ -42,6 +45,36 @@ function isoWithinWindow(iso: string, window: RankingPeriodWindow): boolean {
 function countDistinctUtcDays(isoDates: readonly string[]): number {
   const days = new Set(isoDates.map((iso) => iso.slice(0, 10)));
   return days.size;
+}
+
+/**
+ * Desempenho em simulados (Fase 10 — agente `simulations`): média de `scorePercent` das
+ * tentativas `FINISHED` do usuário com `finishedAt` dentro da janela do período. Cai para
+ * `fallbackPercent` (mock, `RankingParticipantEntity.mockExamAccuracyPercent`) quando o usuário
+ * não tem nenhuma tentativa finalizada na janela — evita que quem nunca fez simulado apareça
+ * com 0% (penalização indevida) em vez de "sem dado" antes de existir histórico real.
+ */
+async function computeMockExamPerformance(
+  userId: string,
+  window: RankingPeriodWindow,
+  fallbackPercent: number,
+): Promise<number> {
+  const repos = getRepositories();
+  const attempts = await repos.mockExamAttempts.listByUserId(userId);
+  const finishedInWindow = attempts.filter(
+    (attempt): attempt is typeof attempt & { finishedAt: string; scorePercent: number } =>
+      attempt.status === "FINISHED" &&
+      attempt.finishedAt !== null &&
+      attempt.scorePercent !== null &&
+      isoWithinWindow(attempt.finishedAt, window),
+  );
+
+  if (finishedInWindow.length === 0) {
+    return fallbackPercent;
+  }
+
+  const total = finishedInWindow.reduce((sum, attempt) => sum + attempt.scorePercent, 0);
+  return Math.round((total / finishedInWindow.length) * 100) / 100;
 }
 
 /**
@@ -119,8 +152,14 @@ export async function gatherRawMetrics(
   const hasStreak7 = events.some((event) => event.type === "STREAK_7");
   const streakDays = hasStreak30 ? 30 : hasStreak7 ? 7 : 0;
 
+  const mockExamPerformance = await computeMockExamPerformance(
+    participant.userId,
+    window,
+    participant.mockExamAccuracyPercent,
+  );
+
   return {
-    mockExamPerformance: participant.mockExamAccuracyPercent, // TODO(Fase 10 — simulations)
+    mockExamPerformance,
     lessonsCompleted: completedInWindow.length,
     consistency,
     validHours: totalValidSeconds / 3600,

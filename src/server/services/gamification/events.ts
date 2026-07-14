@@ -40,7 +40,7 @@ export interface PomodoroCompletedPayload {
   pomodoroSessionId: string;
 }
 
-/** TODO(Fase 10 — simulados): emitir ao finalizar (corrigir) uma tentativa de simulado. */
+/** Emitido por `simulations/submit-and-finalize.ts` ao finalizar (corrigir) uma tentativa. */
 export interface MockExamCompletedPayload {
   userId: string;
   mockExamAttemptId: string;
@@ -49,7 +49,7 @@ export interface MockExamCompletedPayload {
   accuracyPercent: number;
 }
 
-/** TODO(Fase 10 — simulados): emitir por questão corrigida como correta (ou em lote por tentativa). */
+/** Emitido por `simulations/submit-and-finalize.ts`, uma vez por questão corrigida como correta. */
 export interface QuestionCorrectPayload {
   userId: string;
   questionAttemptId: string;

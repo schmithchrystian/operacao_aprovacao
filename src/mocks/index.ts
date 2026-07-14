@@ -27,3 +27,11 @@ export {
   mockUserAchievementSeed,
 } from "./data/gamification-ledger-seed";
 export { mockRankingParticipants, type RankingParticipantEntity } from "./data/ranking-participants";
+export { mockTopics, TOPIC_IDS } from "./data/topics";
+export { mockQuestions, mockQuestionOptions } from "./data/questions";
+export { mockMockExams, MOCK_EXAM_IDS } from "./data/mock-exams";
+export {
+  mockMockExamAttempts,
+  mockQuestionAttempts,
+  mockQuestionFavorites,
+} from "./data/mock-exam-attempts";

@@ -5,11 +5,18 @@ import type {
   GamificationEventRepository,
   LessonProgressRepository,
   LessonRepository,
+  MockExamAttemptRepository,
+  MockExamRepository,
   ModuleRepository,
   PointTransactionRepository,
+  QuestionAttemptRepository,
+  QuestionFavoriteRepository,
+  QuestionOptionRepository,
+  QuestionRepository,
   RankingScoreRepository,
   StudySessionRepository,
   SubjectRepository,
+  TopicRepository,
   UserAchievementRepository,
   UserRepository,
 } from "./contracts";
@@ -18,11 +25,18 @@ import { MockEnrollmentRepository } from "./mock/enrollment-repository";
 import { MockGamificationEventRepository } from "./mock/gamification-event-repository";
 import { MockLessonProgressRepository } from "./mock/lesson-progress-repository";
 import { MockLessonRepository } from "./mock/lesson-repository";
+import { MockMockExamAttemptRepository } from "./mock/mock-exam-attempt-repository";
+import { MockMockExamRepository } from "./mock/mock-exam-repository";
 import { MockModuleRepository } from "./mock/module-repository";
 import { MockPointTransactionRepository } from "./mock/point-transaction-repository";
+import { MockQuestionAttemptRepository } from "./mock/question-attempt-repository";
+import { MockQuestionFavoriteRepository } from "./mock/question-favorite-repository";
+import { MockQuestionOptionRepository } from "./mock/question-option-repository";
+import { MockQuestionRepository } from "./mock/question-repository";
 import { MockRankingScoreRepository } from "./mock/ranking-score-repository";
 import { MockStudySessionRepository } from "./mock/study-session-repository";
 import { MockSubjectRepository } from "./mock/subject-repository";
+import { MockTopicRepository } from "./mock/topic-repository";
 import { MockUserAchievementRepository } from "./mock/user-achievement-repository";
 import { MockUserRepository } from "./mock/user-repository";
 import { PrismaCourseRepository } from "./prisma/course-repository";
@@ -30,11 +44,18 @@ import { PrismaEnrollmentRepository } from "./prisma/enrollment-repository";
 import { PrismaGamificationEventRepository } from "./prisma/gamification-event-repository";
 import { PrismaLessonProgressRepository } from "./prisma/lesson-progress-repository";
 import { PrismaLessonRepository } from "./prisma/lesson-repository";
+import { PrismaMockExamAttemptRepository } from "./prisma/mock-exam-attempt-repository";
+import { PrismaMockExamRepository } from "./prisma/mock-exam-repository";
 import { PrismaModuleRepository } from "./prisma/module-repository";
 import { PrismaPointTransactionRepository } from "./prisma/point-transaction-repository";
+import { PrismaQuestionAttemptRepository } from "./prisma/question-attempt-repository";
+import { PrismaQuestionFavoriteRepository } from "./prisma/question-favorite-repository";
+import { PrismaQuestionOptionRepository } from "./prisma/question-option-repository";
+import { PrismaQuestionRepository } from "./prisma/question-repository";
 import { PrismaRankingScoreRepository } from "./prisma/ranking-score-repository";
 import { PrismaStudySessionRepository } from "./prisma/study-session-repository";
 import { PrismaSubjectRepository } from "./prisma/subject-repository";
+import { PrismaTopicRepository } from "./prisma/topic-repository";
 import { PrismaUserAchievementRepository } from "./prisma/user-achievement-repository";
 import { PrismaUserRepository } from "./prisma/user-repository";
 
@@ -52,6 +73,14 @@ export interface Repositories {
   pointTransactions: PointTransactionRepository;
   userAchievements: UserAchievementRepository;
   rankingScores: RankingScoreRepository;
+  /** Fase 10 — agente `simulations` (docs/DATA-MODEL.md, "Simulados e questões"). */
+  topics: TopicRepository;
+  questions: QuestionRepository;
+  questionOptions: QuestionOptionRepository;
+  mockExams: MockExamRepository;
+  mockExamAttempts: MockExamAttemptRepository;
+  questionAttempts: QuestionAttemptRepository;
+  questionFavorites: QuestionFavoriteRepository;
 }
 
 let cached: Repositories | null = null;
@@ -71,6 +100,13 @@ function buildRepositories(): Repositories {
       pointTransactions: new PrismaPointTransactionRepository(),
       userAchievements: new PrismaUserAchievementRepository(),
       rankingScores: new PrismaRankingScoreRepository(),
+      topics: new PrismaTopicRepository(),
+      questions: new PrismaQuestionRepository(),
+      questionOptions: new PrismaQuestionOptionRepository(),
+      mockExams: new PrismaMockExamRepository(),
+      mockExamAttempts: new PrismaMockExamAttemptRepository(),
+      questionAttempts: new PrismaQuestionAttemptRepository(),
+      questionFavorites: new PrismaQuestionFavoriteRepository(),
     };
   }
   return {
@@ -86,6 +122,13 @@ function buildRepositories(): Repositories {
     pointTransactions: new MockPointTransactionRepository(),
     userAchievements: new MockUserAchievementRepository(),
     rankingScores: new MockRankingScoreRepository(),
+    topics: new MockTopicRepository(),
+    questions: new MockQuestionRepository(),
+    questionOptions: new MockQuestionOptionRepository(),
+    mockExams: new MockMockExamRepository(),
+    mockExamAttempts: new MockMockExamAttemptRepository(),
+    questionAttempts: new MockQuestionAttemptRepository(),
+    questionFavorites: new MockQuestionFavoriteRepository(),
   };
 }
 

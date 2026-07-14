@@ -77,6 +77,30 @@ export const LESSON_COMPLETION_POINTS = GAMIFICATION_REWARDS.LESSON_COMPLETED.po
 export const LESSON_COMPLETION_XP = GAMIFICATION_REWARDS.LESSON_COMPLETED.xp;
 
 /**
+ * Parâmetros de simulados (Fase 10 — agente `simulations`, CLAUDE.md §18/§25).
+ * Nenhum valor de tempo é lido do cliente: a tentativa registra `startedAt`/`timeLimitSeconds`
+ * no servidor (`MockExamAttempt`, docs/DATA-MODEL.md) e a submissão mede o tempo decorrido
+ * sempre a partir do relógio do servidor (`Date.now() - startedAt`), nunca de um valor
+ * enviado pelo cliente (`SubmitAnswersInput` não possui nenhum campo de tempo).
+ */
+export const SIMULATIONS = {
+  /** Tolerância (segundos) além do `timeLimitSeconds` configurado antes de expirar a tentativa
+   *  — cobre latência de rede entre o fim do cronômetro no cliente e a chegada da submissão. */
+  timeOverageToleranceSeconds: 30,
+  /** Minutos por questão usados como duração padrão de um simulado personalizado (filtros/pool)
+   *  quando o aluno não informa `timeLimitMinutes` explicitamente. */
+  customExamMinutesPerQuestion: 3,
+  /** Duração mínima (minutos) de um simulado personalizado, mesmo com poucas questões. */
+  customExamMinDurationMinutes: 10,
+  /** Rate limit LEVE (CLAUDE.md §24, "limitar requisições críticas"): intervalo mínimo entre
+   *  criações de tentativa por usuário. Cada `createAttempt` grava um registro (e, no modo
+   *  personalizado, um `MockExam` ad-hoc) — sem isto o endpoint seria "spammável". */
+  createAttemptMinIntervalMs: 2_000,
+  /** Rate limit LEVE: intervalo mínimo entre submissões/finalizações por usuário. */
+  submitAttemptMinIntervalMs: 1_000,
+} as const;
+
+/**
  * Rate limiting / lockout do login (CLAUDE.md §24 — "limitar requisições críticas").
  * Após `maxFailures` falhas dentro de `windowMs`, a chave (e-mail [+ IP]) fica bloqueada
  * por `lockoutMs`. Valores conservadores para o MVP; ajustar conforme telemetria real.

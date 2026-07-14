@@ -23,10 +23,11 @@ import type {
  * do motor.
  *
  * `LessonCompleted`/`ModuleCompleted`/`CourseCompleted` já têm emissor real (Fase 7/8,
- * `study-tracking/record-heartbeat.ts`). Os demais (simulado/questão/flashcard/Pomodoro/
- * metas/streak) estão prontos — TIPO E LÓGICA DE PREMIAÇÃO — mas aguardam o emissor da fase
- * dona (ver `./events.ts` para o TODO específico de cada um); registrá-los aqui não tem
- * efeito hoje porque nada ainda invoca `eventBus.emit` para esses tipos.
+ * `study-tracking/record-heartbeat.ts`); `MockExamCompleted`/`QuestionCorrect` também (Fase 10,
+ * `simulations/submit-and-finalize.ts`). Os demais (flashcard/Pomodoro/metas/streak) estão
+ * prontos — TIPO E LÓGICA DE PREMIAÇÃO — mas aguardam o emissor da fase dona (ver `./events.ts`
+ * para o TODO específico de cada um); registrá-los aqui não tem efeito hoje porque nada ainda
+ * invoca `eventBus.emit` para esses tipos.
  */
 
 export async function handleLessonCompleted(event: DomainEvent<LessonCompletedPayload>): Promise<void> {
@@ -101,7 +102,7 @@ export async function handlePomodoroCompleted(event: DomainEvent<PomodoroComplet
   await syncAchievementsForUser(userId, event.occurredAt);
 }
 
-/** TODO(Fase 10 — simulados): sem emissor ainda; pronto para ser ligado. */
+/** Emissor real: `src/server/services/simulations/submit-and-finalize.ts` (Fase 10). */
 export async function handleMockExamCompleted(event: DomainEvent<MockExamCompletedPayload>): Promise<void> {
   const { userId, mockExamAttemptId, mockExamId } = event.payload;
   await awardGamificationEvent({
@@ -117,7 +118,7 @@ export async function handleMockExamCompleted(event: DomainEvent<MockExamComplet
   await syncAchievementsForUser(userId, event.occurredAt);
 }
 
-/** TODO(Fase 10 — simulados): sem emissor ainda; pronto para ser ligado. */
+/** Emissor real: `src/server/services/simulations/submit-and-finalize.ts` (Fase 10). */
 export async function handleQuestionCorrect(event: DomainEvent<QuestionCorrectPayload>): Promise<void> {
   const { userId, questionAttemptId, questionId } = event.payload;
   await awardGamificationEvent({
