@@ -37,3 +37,4 @@ export {
 } from "./data/mock-exam-attempts";
 export { mockStudyPlans, mockStudyPlanItems, mockPlanSubjectWeights } from "./data/study-plan";
 export { mockBrainstormBoards, mockBrainstormColumns, mockBrainstormCards } from "./data/brainstorm";
+export { mockFlashcardDecks, mockFlashcards, mockFlashcardReviews } from "./data/flashcards";

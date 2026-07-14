@@ -1,0 +1,517 @@
+import type { FlashcardDeckEntity } from "@/server/repositories/contracts/flashcard-deck-repository";
+import type { FlashcardEntity } from "@/server/repositories/contracts/flashcard-repository";
+import type { FlashcardReviewEntity } from "@/server/repositories/contracts/flashcard-review-repository";
+import { SUBJECT_IDS } from "./subjects";
+import { TOPIC_IDS } from "./topics";
+
+/**
+ * Mocks centralizados e tipados (ADR-0011, CLAUDE.md §23) — Flashcards (Fase 14 — agente
+ * `backend`). 20 cartões no total, mesma escala do seed Prisma (`prisma/seed.ts`,
+ * `seedFlashcards`), mas no espaço de ids próprio de `src/mocks` (`SUBJECT_IDS`/`TOPIC_IDS`,
+ * independente do seed do banco real — ADR-0002/0011, os dois nunca precisam coincidir):
+ *
+ * - 8 baralhos de MATÉRIA (`kind: "SUBJECT"`, públicos — `userId: null`), 2 cartões cada = 16,
+ *   um por assunto coberto pelo banco de questões mock (`./questions.ts`/`./topics.ts`).
+ * - 1 baralho PESSOAL de `user-1` (Ana Recruta) com 2 cartões.
+ * - 1 baralho "Criados do caderno de erros" (`kind: "ERRORS"`) de `user-1` com 1 cartão — a
+ *   pergunta espelha a questão `question-portugues-02`, que `user-1` errou de fato no simulado
+ *   seed (`./mock-exam-attempts.ts`, `qattempt-seed-02`, `isCorrect: false`) — mesma coerência
+ *   entre domínios já praticada em `./study-plan.ts`.
+ * - 1 baralho "Criados de anotações" (`kind: "NOTES"`) de `user-1` com 1 cartão.
+ *
+ * Revisões (`mockFlashcardReviews`) só para `user-1`, variadas de propósito para exercitar
+ * "devido"/"não devido" (`isDue`) num cenário de demonstração com "hoje" = 2026-07-14 (mesma
+ * data de referência usada em `./study-plan.ts`): cartões nunca revisados por `user-1` (incluindo
+ * TODOS os das outras matérias, e os de erros/anotações) contam como devidos imediatamente.
+ */
+
+const DECK_IDS = {
+  linguaPortuguesa: "deck-subject-lingua-portuguesa",
+  matematica: "deck-subject-matematica",
+  raciocinioLogico: "deck-subject-raciocinio-logico",
+  informatica: "deck-subject-informatica",
+  direitoConstitucional: "deck-subject-direito-constitucional",
+  direitoAdministrativo: "deck-subject-direito-administrativo",
+  direitoPenal: "deck-subject-direito-penal",
+  direitosHumanos: "deck-subject-direitos-humanos",
+  personalUser1: "deck-personal-user-1",
+  errorsUser1: "deck-errors-user-1",
+  notesUser1: "deck-notes-user-1",
+} as const;
+
+const SEED_CREATED_AT = "2026-06-01T09:00:00.000Z";
+const PERSONAL_CREATED_AT = "2026-07-08T18:00:00.000Z";
+
+export const mockFlashcardDecks: FlashcardDeckEntity[] = [
+  {
+    id: DECK_IDS.linguaPortuguesa,
+    userId: null,
+    subjectId: SUBJECT_IDS.linguaPortuguesa,
+    title: "Flashcards — Língua Portuguesa",
+    isPublic: true,
+    kind: "SUBJECT",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+  },
+  {
+    id: DECK_IDS.matematica,
+    userId: null,
+    subjectId: SUBJECT_IDS.matematica,
+    title: "Flashcards — Matemática",
+    isPublic: true,
+    kind: "SUBJECT",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+  },
+  {
+    id: DECK_IDS.raciocinioLogico,
+    userId: null,
+    subjectId: SUBJECT_IDS.raciocinioLogico,
+    title: "Flashcards — Raciocínio Lógico",
+    isPublic: true,
+    kind: "SUBJECT",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+  },
+  {
+    id: DECK_IDS.informatica,
+    userId: null,
+    subjectId: SUBJECT_IDS.informatica,
+    title: "Flashcards — Informática",
+    isPublic: true,
+    kind: "SUBJECT",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+  },
+  {
+    id: DECK_IDS.direitoConstitucional,
+    userId: null,
+    subjectId: SUBJECT_IDS.direitoConstitucional,
+    title: "Flashcards — Direito Constitucional",
+    isPublic: true,
+    kind: "SUBJECT",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+  },
+  {
+    id: DECK_IDS.direitoAdministrativo,
+    userId: null,
+    subjectId: SUBJECT_IDS.direitoAdministrativo,
+    title: "Flashcards — Direito Administrativo",
+    isPublic: true,
+    kind: "SUBJECT",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+  },
+  {
+    id: DECK_IDS.direitoPenal,
+    userId: null,
+    subjectId: SUBJECT_IDS.direitoPenal,
+    title: "Flashcards — Direito Penal",
+    isPublic: true,
+    kind: "SUBJECT",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+  },
+  {
+    id: DECK_IDS.direitosHumanos,
+    userId: null,
+    subjectId: SUBJECT_IDS.direitosHumanos,
+    title: "Flashcards — Direitos Humanos",
+    isPublic: true,
+    kind: "SUBJECT",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+  },
+  {
+    id: DECK_IDS.personalUser1,
+    userId: "user-1",
+    subjectId: SUBJECT_IDS.linguaPortuguesa,
+    title: "Meus flashcards — Revisão rápida",
+    isPublic: false,
+    kind: "PERSONAL",
+    createdAt: PERSONAL_CREATED_AT,
+    updatedAt: PERSONAL_CREATED_AT,
+  },
+  {
+    id: DECK_IDS.errorsUser1,
+    userId: "user-1",
+    subjectId: null,
+    title: "Criados do caderno de erros",
+    isPublic: false,
+    kind: "ERRORS",
+    createdAt: PERSONAL_CREATED_AT,
+    updatedAt: PERSONAL_CREATED_AT,
+  },
+  {
+    id: DECK_IDS.notesUser1,
+    userId: "user-1",
+    subjectId: null,
+    title: "Criados de anotações",
+    isPublic: false,
+    kind: "NOTES",
+    createdAt: PERSONAL_CREATED_AT,
+    updatedAt: PERSONAL_CREATED_AT,
+  },
+];
+
+export const mockFlashcards: FlashcardEntity[] = [
+  // Língua Portuguesa
+  {
+    id: "flashcard-lingua-portuguesa-01",
+    deckId: DECK_IDS.linguaPortuguesa,
+    subjectId: SUBJECT_IDS.linguaPortuguesa,
+    topicId: TOPIC_IDS.interpretacaoTexto,
+    question: "Na interpretação de texto, o que diferencia informação explícita de implícita?",
+    answer:
+      "Explícita é a que está dita literalmente no texto; implícita depende de inferência do leitor a partir do contexto.",
+    difficulty: "EASY",
+    tags: ["interpretacao", "revisao"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  {
+    id: "flashcard-lingua-portuguesa-02",
+    deckId: DECK_IDS.linguaPortuguesa,
+    subjectId: SUBJECT_IDS.linguaPortuguesa,
+    topicId: TOPIC_IDS.gramaticaNormativa,
+    question: "Quando o acento grave indicador de crase é obrigatório?",
+    answer:
+      "Na fusão da preposição \"a\" com o artigo feminino \"a(s)\" diante de palavra feminina que admite artigo (ex.: \"Fui à escola\").",
+    difficulty: "MEDIUM",
+    tags: ["crase", "gramatica"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  // Matemática
+  {
+    id: "flashcard-matematica-01",
+    deckId: DECK_IDS.matematica,
+    subjectId: SUBJECT_IDS.matematica,
+    topicId: TOPIC_IDS.operacoesPorcentagem,
+    question: "Como calcular 20% de um valor V?",
+    answer: "Multiplicar V por 0,20 (ou dividir V por 5).",
+    difficulty: "EASY",
+    tags: ["porcentagem"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  {
+    id: "flashcard-matematica-02",
+    deckId: DECK_IDS.matematica,
+    subjectId: SUBJECT_IDS.matematica,
+    topicId: TOPIC_IDS.resolucaoProblemas,
+    question: "Num problema de regra de três simples e direta, o que caracteriza a proporcionalidade direta?",
+    answer: "Quando as duas grandezas crescem ou decrescem na mesma proporção (uma aumenta, a outra também aumenta).",
+    difficulty: "MEDIUM",
+    tags: ["regra-de-tres"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  // Raciocínio Lógico
+  {
+    id: "flashcard-raciocinio-logico-01",
+    deckId: DECK_IDS.raciocinioLogico,
+    subjectId: SUBJECT_IDS.raciocinioLogico,
+    topicId: TOPIC_IDS.logicaProposicional,
+    question: "Quando uma proposição condicional \"Se P então Q\" é falsa?",
+    answer: "Somente quando P é verdadeiro e Q é falso — em todos os outros casos é verdadeira.",
+    difficulty: "MEDIUM",
+    tags: ["logica-proposicional"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  {
+    id: "flashcard-raciocinio-logico-02",
+    deckId: DECK_IDS.raciocinioLogico,
+    subjectId: SUBJECT_IDS.raciocinioLogico,
+    topicId: TOPIC_IDS.sequenciasPadroes,
+    question: "Numa sequência 2, 6, 18, 54, ..., qual o próximo termo e a regra?",
+    answer: "162 — cada termo é o anterior multiplicado por 3.",
+    difficulty: "HARD",
+    tags: ["sequencias"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  // Informática
+  {
+    id: "flashcard-informatica-01",
+    deckId: DECK_IDS.informatica,
+    subjectId: SUBJECT_IDS.informatica,
+    topicId: TOPIC_IDS.conceitosBasicosInformatica,
+    question: "Qual a diferença entre memória RAM e armazenamento (disco/SSD)?",
+    answer: "RAM é volátil e usada para processamento em execução; armazenamento é persistente e guarda dados/arquivos.",
+    difficulty: "EASY",
+    tags: ["hardware"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  {
+    id: "flashcard-informatica-02",
+    deckId: DECK_IDS.informatica,
+    subjectId: SUBJECT_IDS.informatica,
+    topicId: TOPIC_IDS.segurancaInformacao,
+    question: "O que é phishing?",
+    answer:
+      "Técnica de engenharia social que tenta enganar a vítima para obter dados sensíveis (senhas, dados bancários) se passando por uma fonte confiável.",
+    difficulty: "MEDIUM",
+    tags: ["seguranca"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  // Direito Constitucional
+  {
+    id: "flashcard-direito-constitucional-01",
+    deckId: DECK_IDS.direitoConstitucional,
+    subjectId: SUBJECT_IDS.direitoConstitucional,
+    topicId: TOPIC_IDS.direitosFundamentais,
+    question: "Os direitos fundamentais previstos no art. 5º da CF/88 são exclusivos de brasileiros?",
+    answer:
+      "Não — o caput do art. 5º os garante a brasileiros e estrangeiros residentes no País, e a jurisprudência estende a proteção também a estrangeiros não residentes em território nacional.",
+    difficulty: "MEDIUM",
+    tags: ["direitos-fundamentais"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  {
+    id: "flashcard-direito-constitucional-02",
+    deckId: DECK_IDS.direitoConstitucional,
+    subjectId: SUBJECT_IDS.direitoConstitucional,
+    topicId: TOPIC_IDS.organizacaoEstado,
+    question: "Quais são os entes federativos do Brasil segundo a CF/88?",
+    answer: "União, Estados, Distrito Federal e Municípios (art. 18, CF/88).",
+    difficulty: "EASY",
+    tags: ["organizacao-do-estado"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  // Direito Administrativo
+  {
+    id: "flashcard-direito-administrativo-01",
+    deckId: DECK_IDS.direitoAdministrativo,
+    subjectId: SUBJECT_IDS.direitoAdministrativo,
+    topicId: TOPIC_IDS.atosAdministrativos,
+    question: "Quais são os atributos clássicos do ato administrativo?",
+    answer: "Presunção de legitimidade, autoexecutoriedade e imperatividade (coercibilidade).",
+    difficulty: "MEDIUM",
+    tags: ["atos-administrativos"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  {
+    id: "flashcard-direito-administrativo-02",
+    deckId: DECK_IDS.direitoAdministrativo,
+    subjectId: SUBJECT_IDS.direitoAdministrativo,
+    topicId: TOPIC_IDS.poderesAdministrativos,
+    question: "O que é o poder de polícia da Administração?",
+    answer:
+      "A faculdade de a Administração restringir/condicionar o exercício de direitos individuais em favor do interesse público (segurança, saúde, ordem etc.).",
+    difficulty: "MEDIUM",
+    tags: ["poderes-administrativos"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  // Direito Penal
+  {
+    id: "flashcard-direito-penal-01",
+    deckId: DECK_IDS.direitoPenal,
+    subjectId: SUBJECT_IDS.direitoPenal,
+    topicId: TOPIC_IDS.teoriaDoCrime,
+    question: "Quais são os elementos do fato típico?",
+    answer: "Conduta, resultado, nexo causal e tipicidade.",
+    difficulty: "HARD",
+    tags: ["teoria-do-crime"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  {
+    id: "flashcard-direito-penal-02",
+    deckId: DECK_IDS.direitoPenal,
+    subjectId: SUBJECT_IDS.direitoPenal,
+    topicId: TOPIC_IDS.crimesEmEspecie,
+    question: "Qual a diferença entre furto e roubo?",
+    answer: "Roubo emprega violência/grave ameaça (ou outro meio que reduza a capacidade de resistência); furto não.",
+    difficulty: "EASY",
+    tags: ["crimes-em-especie"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  // Direitos Humanos
+  {
+    id: "flashcard-direitos-humanos-01",
+    deckId: DECK_IDS.direitosHumanos,
+    subjectId: SUBJECT_IDS.direitosHumanos,
+    topicId: TOPIC_IDS.fundamentosDireitosHumanos,
+    question: "O que caracteriza a universalidade dos direitos humanos?",
+    answer: "A ideia de que são atribuídos a todo ser humano, sem distinção de nacionalidade, raça, gênero ou credo.",
+    difficulty: "MEDIUM",
+    tags: ["fundamentos"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  {
+    id: "flashcard-direitos-humanos-02",
+    deckId: DECK_IDS.direitosHumanos,
+    subjectId: SUBJECT_IDS.direitosHumanos,
+    topicId: TOPIC_IDS.atuacaoPolicialDireitosHumanos,
+    question: "O que é o uso progressivo/escalonado da força na atuação policial?",
+    answer:
+      "O princípio de que a força empregada deve ser proporcional e escalonada conforme a resistência/ameaça, do nível mínimo necessário até o extremo, quando estritamente indispensável.",
+    difficulty: "MEDIUM",
+    tags: ["uso-da-forca"],
+    status: "PUBLISHED",
+    createdAt: SEED_CREATED_AT,
+    updatedAt: SEED_CREATED_AT,
+    deletedAt: null,
+  },
+  // Pessoal — user-1
+  {
+    id: "flashcard-personal-01",
+    deckId: DECK_IDS.personalUser1,
+    subjectId: SUBJECT_IDS.linguaPortuguesa,
+    topicId: TOPIC_IDS.interpretacaoTexto,
+    question: "Anotação pessoal: como identificar a tese de um texto dissertativo rapidamente?",
+    answer: "Geralmente no primeiro ou último parágrafo — procurar a ideia central que os demais parágrafos sustentam.",
+    difficulty: "MEDIUM",
+    tags: ["anotacao-pessoal"],
+    status: "PUBLISHED",
+    createdAt: PERSONAL_CREATED_AT,
+    updatedAt: PERSONAL_CREATED_AT,
+    deletedAt: null,
+  },
+  {
+    id: "flashcard-personal-02",
+    deckId: DECK_IDS.personalUser1,
+    subjectId: SUBJECT_IDS.linguaPortuguesa,
+    topicId: null,
+    question: "Anotação pessoal: truque para não confundir \"mau\" e \"mal\"?",
+    answer: "\"Mau\" é adjetivo (opõe-se a \"bom\"); \"mal\" é advérbio/substantivo (opõe-se a \"bem\").",
+    difficulty: "EASY",
+    tags: ["anotacao-pessoal", "ortografia"],
+    status: "PUBLISHED",
+    createdAt: PERSONAL_CREATED_AT,
+    updatedAt: PERSONAL_CREATED_AT,
+    deletedAt: null,
+  },
+  // Criados do caderno de erros — user-1 (espelha a questão errada real do seed de simulados,
+  // `question-portugues-02` / `qattempt-seed-02`, `./mock-exam-attempts.ts`).
+  {
+    id: "flashcard-from-error-01",
+    deckId: DECK_IDS.errorsUser1,
+    subjectId: SUBJECT_IDS.linguaPortuguesa,
+    topicId: TOPIC_IDS.gramaticaNormativa,
+    question: "[Do caderno de erros] Revisar: questão de concordância que errei no simulado de Polícia Militar.",
+    answer: "Ver explicação da questão question-portugues-02 no caderno de erros.",
+    difficulty: "MEDIUM",
+    // "src:error:*" é a marcação reservada de proveniência (dedup de `createFromErrors`,
+    // `@/server/services/flashcards/shared.ts`) — filtrada de `FlashcardDTO.tags`.
+    tags: ["src:error:question-portugues-02"],
+    status: "PUBLISHED",
+    createdAt: "2026-07-09T20:00:00.000Z",
+    updatedAt: "2026-07-09T20:00:00.000Z",
+    deletedAt: null,
+  },
+  // Criados de anotações (Brainstorm) — user-1.
+  {
+    id: "flashcard-from-note-01",
+    deckId: DECK_IDS.notesUser1,
+    subjectId: null,
+    topicId: null,
+    question: "[Da anotação] Dúvida do brainstorm: revisar prazos processuais.",
+    answer: "Anotação convertida — detalhar prazos ao revisar.",
+    difficulty: "MEDIUM",
+    // "src:note:*" é a marcação reservada de proveniência (dedup de `createFromNotes`).
+    tags: ["src:note:seed-demo-draft"],
+    status: "PUBLISHED",
+    createdAt: "2026-07-10T20:00:00.000Z",
+    updatedAt: "2026-07-10T20:00:00.000Z",
+    deletedAt: null,
+  },
+];
+
+/**
+ * Revisões de exemplo — só `user-1`, para exercitar "devido"/"não devido" num cenário de
+ * demonstração ("hoje" ~ 2026-07-14, mesma data de referência de `./study-plan.ts`). Os demais
+ * 16 cartões (outras matérias + os 2 últimos pessoais/erros/anotações não listados aqui) nunca
+ * foram revisados por `user-1` — contam como devidos imediatamente (`isDue: true`).
+ */
+export const mockFlashcardReviews: FlashcardReviewEntity[] = [
+  {
+    id: "flashcard-review-user-1-lingua-01-a",
+    userId: "user-1",
+    flashcardId: "flashcard-lingua-portuguesa-01",
+    rating: "GOOD",
+    intervalDays: 3,
+    easeFactor: 2.5,
+    repetition: 1,
+    reviewedAt: "2026-07-10T09:00:00.000Z",
+    // 2026-07-10 + 3 dias = 2026-07-13 -> já passou (atrasado) em relação a "hoje" 2026-07-14.
+    nextReviewAt: "2026-07-13T09:00:00.000Z",
+  },
+  {
+    id: "flashcard-review-user-1-lingua-02-a",
+    userId: "user-1",
+    flashcardId: "flashcard-lingua-portuguesa-02",
+    rating: "EASY",
+    intervalDays: 4,
+    easeFactor: 2.65,
+    repetition: 1,
+    reviewedAt: "2026-07-13T09:00:00.000Z",
+    // 2026-07-13 + 4 dias = 2026-07-17 -> ainda não devido em "hoje" 2026-07-14.
+    nextReviewAt: "2026-07-17T09:00:00.000Z",
+  },
+  {
+    id: "flashcard-review-user-1-matematica-01-a",
+    userId: "user-1",
+    flashcardId: "flashcard-matematica-01",
+    rating: "AGAIN",
+    intervalDays: 1,
+    easeFactor: 2.3,
+    repetition: 0,
+    reviewedAt: "2026-07-13T08:00:00.000Z",
+    // Reinício por "Errei" -> devido no dia seguinte.
+    nextReviewAt: "2026-07-14T08:00:00.000Z",
+  },
+  {
+    id: "flashcard-review-user-1-personal-01-a",
+    userId: "user-1",
+    flashcardId: "flashcard-personal-01",
+    rating: "HARD",
+    intervalDays: 2,
+    easeFactor: 2.35,
+    repetition: 1,
+    reviewedAt: "2026-07-09T09:00:00.000Z",
+    // 2026-07-09 + 2 dias = 2026-07-11 -> bem atrasado em relação a "hoje" 2026-07-14.
+    nextReviewAt: "2026-07-11T09:00:00.000Z",
+  },
+];

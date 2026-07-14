@@ -6,6 +6,9 @@ import type {
   CourseRepository,
   DailyGoalRepository,
   EnrollmentRepository,
+  FlashcardDeckRepository,
+  FlashcardRepository,
+  FlashcardReviewRepository,
   GamificationEventRepository,
   LessonProgressRepository,
   LessonRepository,
@@ -35,6 +38,9 @@ import { MockBrainstormColumnRepository } from "./mock/brainstorm-column-reposit
 import { MockCourseRepository } from "./mock/course-repository";
 import { MockDailyGoalRepository } from "./mock/daily-goal-repository";
 import { MockEnrollmentRepository } from "./mock/enrollment-repository";
+import { MockFlashcardDeckRepository } from "./mock/flashcard-deck-repository";
+import { MockFlashcardRepository } from "./mock/flashcard-repository";
+import { MockFlashcardReviewRepository } from "./mock/flashcard-review-repository";
 import { MockGamificationEventRepository } from "./mock/gamification-event-repository";
 import { MockLessonProgressRepository } from "./mock/lesson-progress-repository";
 import { MockLessonRepository } from "./mock/lesson-repository";
@@ -63,6 +69,9 @@ import { PrismaBrainstormColumnRepository } from "./prisma/brainstorm-column-rep
 import { PrismaCourseRepository } from "./prisma/course-repository";
 import { PrismaDailyGoalRepository } from "./prisma/daily-goal-repository";
 import { PrismaEnrollmentRepository } from "./prisma/enrollment-repository";
+import { PrismaFlashcardDeckRepository } from "./prisma/flashcard-deck-repository";
+import { PrismaFlashcardRepository } from "./prisma/flashcard-repository";
+import { PrismaFlashcardReviewRepository } from "./prisma/flashcard-review-repository";
 import { PrismaGamificationEventRepository } from "./prisma/gamification-event-repository";
 import { PrismaLessonProgressRepository } from "./prisma/lesson-progress-repository";
 import { PrismaLessonRepository } from "./prisma/lesson-repository";
@@ -120,6 +129,10 @@ export interface Repositories {
   brainstormBoards: BrainstormBoardRepository;
   brainstormColumns: BrainstormColumnRepository;
   brainstormCards: BrainstormCardRepository;
+  /** Fase 14 — agente `backend` (Flashcards: repetição espaçada). */
+  flashcardDecks: FlashcardDeckRepository;
+  flashcards: FlashcardRepository;
+  flashcardReviews: FlashcardReviewRepository;
 }
 
 let cached: Repositories | null = null;
@@ -155,6 +168,9 @@ function buildRepositories(): Repositories {
       brainstormBoards: new PrismaBrainstormBoardRepository(),
       brainstormColumns: new PrismaBrainstormColumnRepository(),
       brainstormCards: new PrismaBrainstormCardRepository(),
+      flashcardDecks: new PrismaFlashcardDeckRepository(),
+      flashcards: new PrismaFlashcardRepository(),
+      flashcardReviews: new PrismaFlashcardReviewRepository(),
     };
   }
   return {
@@ -186,6 +202,9 @@ function buildRepositories(): Repositories {
     brainstormBoards: new MockBrainstormBoardRepository(),
     brainstormColumns: new MockBrainstormColumnRepository(),
     brainstormCards: new MockBrainstormCardRepository(),
+    flashcardDecks: new MockFlashcardDeckRepository(),
+    flashcards: new MockFlashcardRepository(),
+    flashcardReviews: new MockFlashcardReviewRepository(),
   };
 }
 

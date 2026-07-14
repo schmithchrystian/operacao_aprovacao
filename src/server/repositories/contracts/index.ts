@@ -28,3 +28,7 @@ export * from "./weekly-goal-repository";
 export * from "./brainstorm-board-repository";
 export * from "./brainstorm-column-repository";
 export * from "./brainstorm-card-repository";
+// Fase 14 — agente `backend` (Flashcards: repetição espaçada).
+export * from "./flashcard-deck-repository";
+export * from "./flashcard-repository";
+export * from "./flashcard-review-repository";

@@ -328,3 +328,42 @@ export const BRAINSTORM_LIMITS = {
   tagMaxLength: 40,
   maxTags: 20,
 } as const;
+
+/**
+ * Flashcards / repetição espaçada (Fase 14 — agente `backend`, CLAUDE.md §19/§25). Algoritmo
+ * "SM-2 simplificado" — fórmula completa, limiares e exemplos documentados no cabeçalho de
+ * `@/server/services/flashcards/spaced-repetition.ts` e em `docs/FLASHCARDS.md`. Só os NÚMEROS
+ * configuráveis vivem aqui (mesmo padrão de `GAMIFICATION_REWARDS`/`STUDY_TRACKING` acima) — a
+ * lógica de cálculo em si nunca vive em `config/`.
+ */
+export const SPACED_REPETITION = {
+  defaultEaseFactor: 2.5,
+  minEaseFactor: 1.3,
+  maxEaseFactor: 3.0,
+  /** Delta aplicado ao ease factor por classificação (CLAUDE.md §19: Errei/Difícil/Médio/Fácil). */
+  easeDelta: { AGAIN: -0.2, HARD: -0.15, GOOD: 0, EASY: 0.15 } as const,
+  /** Intervalo (dias) quando a classificação leva a `repetition` a 1 (primeiro acerto — ou o
+   *  primeiro acerto após um "Errei" ter zerado `repetition`). */
+  firstIntervalDays: { HARD: 2, GOOD: 3, EASY: 4 } as const,
+  /** Intervalo (dias) quando `repetition` chega a 2. */
+  secondIntervalDays: { HARD: 4, GOOD: 6, EASY: 9 } as const,
+  /** Multiplicador aplicado a `intervaloAnterior * easeFactor` a partir de `repetition >= 3`. */
+  growthFactor: { HARD: 0.85, GOOD: 1.0, EASY: 1.3 } as const,
+  /** "Errei" SEMPRE reinicia para este intervalo (dias), independente do estado anterior. */
+  againResetIntervalDays: 1,
+  /** Tamanho máximo (nº de cartões) de uma sessão de revisão (`getReviewSession`) — evita um
+   *  payload gigante quando há muitos cartões devidos de uma vez; `ReviewSessionDTO.totalDue`
+   *  sempre reporta a contagem REAL (não limitada), para a UI poder comunicar "mostrando X de Y". */
+  sessionMaxCards: 30,
+} as const;
+
+/**
+ * Rate limit LEVE das ações de flashcards (CLAUDE.md §24; DEFESA EM PROFUNDIDADE do achado de
+ * segurança A1 — a barreira PRINCIPAL contra farm por corrida é o mutex + gate "devido" em
+ * `@/server/services/flashcards/review-card.ts`). Por `(userId, flashcardId)` — nunca limita uma
+ * sessão de revisão legítima (cartões DIFERENTES em sequência), só freia o martelar do MESMO
+ * cartão. Mesmo padrão de `SIMULATIONS.submitAttemptMinIntervalMs`.
+ */
+export const FLASHCARDS = {
+  reviewCardMinIntervalMs: 500,
+} as const;
