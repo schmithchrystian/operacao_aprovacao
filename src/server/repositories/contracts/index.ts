@@ -6,3 +6,6 @@ export * from "./subject-repository";
 export * from "./enrollment-repository";
 export * from "./lesson-progress-repository";
 export * from "./study-session-repository";
+export * from "./gamification-event-repository";
+export * from "./point-transaction-repository";
+export * from "./user-achievement-repository";

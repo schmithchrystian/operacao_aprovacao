@@ -21,3 +21,8 @@ export { mockSelectedContests, type SelectedContestEntity } from "./data/dashboa
 export { mockRankings, type RankingEntity } from "./data/dashboard-ranking";
 export { mockRecentAchievements, type AchievementEntity } from "./data/dashboard-achievements";
 export { mockNextLessons, type NextLessonEntity } from "./data/dashboard-next-lesson";
+export {
+  mockGamificationEventSeed,
+  mockPointTransactionSeed,
+  mockUserAchievementSeed,
+} from "./data/gamification-ledger-seed";

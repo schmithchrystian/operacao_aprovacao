@@ -18,10 +18,21 @@ const { __resetMockLessonProgressStore } = await import(
 const { __resetMockStudySessionStore } = await import(
   "@/server/repositories/mock/study-session-repository"
 );
-const { __resetGamificationMockStore, listPointTransactionsByUserId } = await import(
-  "@/server/services/gamification"
+const { __resetMockGamificationEventStore } = await import(
+  "@/server/repositories/mock/gamification-event-repository"
+);
+const { __resetMockPointTransactionStore } = await import(
+  "@/server/repositories/mock/point-transaction-repository"
+);
+const { __resetMockUserAchievementStore } = await import(
+  "@/server/repositories/mock/user-achievement-repository"
 );
 const { getRepositories } = await import("@/server/repositories");
+
+/** Atalho de teste — lista as transações de pontos do usuário (ledger real, Fase 8). */
+async function listPointTransactionsByUserId(userId: string) {
+  return getRepositories().pointTransactions.listByUserId(userId);
+}
 
 /**
  * Testes de serviço da Fase 7 (`study-tracking`) — CLAUDE.md §13/§14/§25. Cobrem os cenários
@@ -119,7 +130,9 @@ describe("services/study-tracking — recordHeartbeat (Fase 7)", () => {
     authMock.mockReset();
     __resetMockLessonProgressStore();
     __resetMockStudySessionStore();
-    __resetGamificationMockStore();
+    __resetMockGamificationEventStore();
+    __resetMockPointTransactionStore();
+    __resetMockUserAchievementStore();
     __resetHeartbeatRateLimitStore();
     vi.useFakeTimers();
     vi.setSystemTime(BASE_TIME);
@@ -139,7 +152,7 @@ describe("services/study-tracking — recordHeartbeat (Fase 7)", () => {
     expect(result?.justCompleted).toBe(false);
     expect(result?.status).not.toBe("completed");
     expect(result?.watchedPercent).toBeCloseTo(50, 0);
-    expect(listPointTransactionsByUserId(userId)).toHaveLength(0);
+    expect(await listPointTransactionsByUserId(userId)).toHaveLength(0);
   });
 
   it("aula com >=80% assistido conclui e credita pontos via evento LessonCompleted", async () => {
@@ -158,7 +171,7 @@ describe("services/study-tracking — recordHeartbeat (Fase 7)", () => {
 
     const progress = await getRepositories().lessonProgress.findByUserAndLesson(userId, LESSON_ID);
     expect(progress?.status).toBe("completed");
-    expect(listPointTransactionsByUserId(userId)).toHaveLength(1);
+    expect(await listPointTransactionsByUserId(userId)).toHaveLength(1);
   });
 
   it("mesma aula não pontua/conclui duas vezes (idempotência)", async () => {
@@ -166,7 +179,7 @@ describe("services/study-tracking — recordHeartbeat (Fase 7)", () => {
     authMock.mockResolvedValue(fakeSession(userId));
 
     await driveWatchTicks(userId, 29);
-    expect(listPointTransactionsByUserId(userId)).toHaveLength(1);
+    expect(await listPointTransactionsByUserId(userId)).toHaveLength(1);
 
     // Mais um heartbeat após já concluída — não deve pontuar/"concluir" de novo.
     vi.setSystemTime(BASE_TIME + 30 * TICK_SECONDS * 1_000);
@@ -177,7 +190,7 @@ describe("services/study-tracking — recordHeartbeat (Fase 7)", () => {
 
     expect(result.justCompleted).toBe(false);
     expect(result.completion).toBeNull();
-    expect(listPointTransactionsByUserId(userId)).toHaveLength(1);
+    expect(await listPointTransactionsByUserId(userId)).toHaveLength(1);
   });
 
   it("tempo com aba oculta é descartado — não soma progresso", async () => {
@@ -272,7 +285,7 @@ describe("services/study-tracking — recordHeartbeat (Fase 7)", () => {
     // Nada foi gravado: nem progresso, nem pontos, nem sessão de estudo.
     const progress = await getRepositories().lessonProgress.findByUserAndLesson(userId, LESSON_ID);
     expect(progress).toBeNull();
-    expect(listPointTransactionsByUserId(userId)).toHaveLength(0);
+    expect(await listPointTransactionsByUserId(userId)).toHaveLength(0);
     const sessions = await getRepositories().studySessions.listSessionsByUserAndLesson(userId, LESSON_ID);
     expect(sessions).toHaveLength(0);
   });

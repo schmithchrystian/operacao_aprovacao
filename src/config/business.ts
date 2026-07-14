@@ -34,13 +34,47 @@ export const STUDY_TRACKING = {
 } as const;
 
 /**
- * Pontuação mínima do consumidor de gamificação criado nesta fase (CLAUDE.md §15 — "aula
- * concluída: 100 pontos"). A fórmula completa (módulo/curso/flashcard/streak/níveis) é do
- * agente `gamification` na Fase 8 — este valor cobre só o evento `LessonCompleted`.
+ * Regras de recompensa da gamificação (Fase 8 — agente `gamification`, CLAUDE.md §15).
+ * Chaves alinhadas 1:1 com o enum `GamificationEventType` do Prisma (`prisma/schema.prisma`).
+ *
+ * Política de XP: por ora, XP é igual a pontos para todo evento (`xp = points`). Decisão
+ * deliberada e documentada (não um placeholder esquecido): mantém a curva de níveis
+ * diretamente proporcional aos pontos conquistados, mais simples de auditar e comunicar ao
+ * aluno. Uma fórmula que divirja (multiplicadores, decaimento por tempo, XP sem pontos ou
+ * vice-versa) é uma mudança de regra de negócio — deve incrementar `GAMIFICATION_RULE_VERSION`
+ * e nunca reescrever o histórico já gravado em `PointTransaction`/`GamificationEvent`.
  */
-export const LESSON_COMPLETION_POINTS = 100;
-/** TODO(Fase 8 — gamification): XP pode divergir de pontos numa fórmula própria; por ora, igual. */
-export const LESSON_COMPLETION_XP = 100;
+export const GAMIFICATION_REWARDS = {
+  LESSON_COMPLETED: { points: 100, xp: 100 },
+  MODULE_COMPLETED: { points: 500, xp: 500 },
+  COURSE_COMPLETED: { points: 2000, xp: 2000 },
+  FLASHCARD_CORRECT: { points: 5, xp: 5 },
+  POMODORO_COMPLETED: { points: 50, xp: 50 },
+  MOCK_EXAM_COMPLETED: { points: 300, xp: 300 },
+  QUESTION_CORRECT: { points: 20, xp: 20 },
+  DAILY_GOAL_COMPLETED: { points: 150, xp: 150 },
+  WEEKLY_GOAL_COMPLETED: { points: 500, xp: 500 },
+  STREAK_7: { points: 700, xp: 700 },
+  STREAK_30: { points: 3000, xp: 3000 },
+  /** Ajuste manual (correção/estorno) — nunca atribuído automaticamente por um handler. */
+  MANUAL_ADJUSTMENT: { points: 0, xp: 0 },
+} as const;
+
+export type GamificationRewardEventType = keyof typeof GAMIFICATION_REWARDS;
+
+/**
+ * Versão vigente da tabela de regras acima. Gravada em todo `GamificationEvent` — permite
+ * auditar/recalcular sem reescrever eventos antigos quando os valores mudarem (CLAUDE.md §15/§25).
+ */
+export const GAMIFICATION_RULE_VERSION = 1;
+
+/**
+ * Pontuação/XP de "aula concluída" (CLAUDE.md §15) — mantidos como aliases estáveis do valor
+ * central acima porque `src/contracts/progress.ts`/`study-tracking` já os referenciam
+ * nominalmente. Nunca duplicar o número: sempre derivar de `GAMIFICATION_REWARDS`.
+ */
+export const LESSON_COMPLETION_POINTS = GAMIFICATION_REWARDS.LESSON_COMPLETED.points;
+export const LESSON_COMPLETION_XP = GAMIFICATION_REWARDS.LESSON_COMPLETED.xp;
 
 /**
  * Rate limiting / lockout do login (CLAUDE.md §24 — "limitar requisições críticas").

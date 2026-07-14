@@ -1,13 +1,13 @@
 import { assertOwnership, requireUser } from "@/server/authorization";
 import { NotFoundError } from "@/server/errors";
 import { getRepositories } from "@/server/repositories";
+import { getUserGamification } from "@/server/services/gamification";
 import {
   mockGamificationStates,
   mockGoals,
   mockNextLessons,
   mockPerformanceSummaries,
   mockRankings,
-  mockRecentAchievements,
   mockSelectedContests,
   mockStudyStats,
 } from "@/mocks";
@@ -21,9 +21,12 @@ import type { DashboardDTO } from "@/contracts/dashboard";
  * `src/mocks/data/dashboard-*`, devolvendo o `DashboardDTO` já pronto para a UI.
  *
  * Nenhuma regra de pontos/XP/nível/tempo válido/sequência é calculada aqui:
- * - TODO(Fase 8 — agente `gamification`): pontos, XP, nível, streak, ranking e conquistas
- *   devem passar a vir de `PointTransaction`/`UserStreak`/`RankingScore`/`UserAchievement`
- *   calculados no backend, de forma idempotente e auditável (CLAUDE.md §15-§17).
+ * - Pontos, XP, nível e conquistas vêm do motor de gamificação real (Fase 8,
+ *   `@/server/services/gamification`), lido a partir de `PointTransaction`/`UserAchievement`
+ *   (ledger auditável) — não são mais literais fixos. `streakDays` continua vindo do mock
+ *   (`mockGamificationStates`) porque sua fonte definitiva é `UserStreak`, de propriedade do
+ *   agente `study-tracking` (Fase 12), fora do escopo de `gamification`.
+ * - TODO(Fase 9 — agente `gamification`): ranking ainda não implementado.
  * - TODO(Fase 12 — agente `study-tracking`): tempo estudado, aulas concluídas, simulados,
  *   percentual de acertos e metas devem passar a vir do tempo válido real (heartbeat,
  *   sinais de atividade — CLAUDE.md §14), não da diferença simples entre início e fim.
@@ -45,16 +48,21 @@ export async function getStudentDashboard(userId: string): Promise<DashboardDTO>
     throw new NotFoundError("Aluno não encontrado.");
   }
 
-  const gamification = mockGamificationStates[userId];
+  const gamificationMock = mockGamificationStates[userId];
   const study = mockStudyStats[userId];
   const performanceSummary = mockPerformanceSummaries[userId];
   const goals = mockGoals[userId];
   const ranking = mockRankings[userId];
   const contest = mockSelectedContests[userId];
 
-  if (!gamification || !study || !performanceSummary || !goals || !ranking || !contest) {
+  if (!gamificationMock || !study || !performanceSummary || !goals || !ranking || !contest) {
     throw new NotFoundError("Dados de dashboard indisponíveis para este aluno.");
   }
+
+  // Fonte real de pontos/XP/nível/conquistas (Fase 8) — `streakDays` permanece do mock (ver
+  // nota acima). `getUserGamification` já reaplica `requireUser`/`assertOwnership`; chamado
+  // depois da checagem já feita no topo desta função (redundante, mas seguro e barato).
+  const gamification = await getUserGamification(userId);
 
   const nextLessonEntity = mockNextLessons[userId];
   let nextLesson: DashboardDTO["nextLesson"] = null;
@@ -71,7 +79,17 @@ export async function getStudentDashboard(userId: string): Promise<DashboardDTO>
     };
   }
 
-  const recentAchievements = mockRecentAchievements[userId] ?? [];
+  // Conquistas desbloqueadas (ledger real), mais recentes primeiro — só as `unlocked`.
+  const recentAchievements = gamification.achievements
+    .filter((achievement) => achievement.unlocked && achievement.unlockedAt !== null)
+    .sort((a, b) => (b.unlockedAt ?? "").localeCompare(a.unlockedAt ?? ""))
+    .slice(0, 5)
+    .map((achievement) => ({
+      id: achievement.key,
+      name: achievement.name,
+      icon: achievement.icon,
+      achievedAt: achievement.unlockedAt as string,
+    }));
 
   return {
     identity: {
@@ -80,12 +98,12 @@ export async function getStudentDashboard(userId: string): Promise<DashboardDTO>
       selectedContestName: contest.contestName,
     },
     gamification: {
-      level: { index: gamification.levelIndex, name: gamification.levelName },
+      level: { index: gamification.level.level.index, name: gamification.level.level.name },
       points: gamification.points,
       xp: gamification.xp,
-      currentLevelXp: gamification.currentLevelXp,
-      nextLevelXp: gamification.nextLevelXp,
-      streakDays: gamification.streakDays,
+      currentLevelXp: gamification.level.currentLevelXp,
+      nextLevelXp: gamification.level.nextLevelXp,
+      streakDays: gamificationMock.streakDays,
     },
     study: {
       weeklyStudyMinutes: study.weeklyStudyMinutes,

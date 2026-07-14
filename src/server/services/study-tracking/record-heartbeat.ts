@@ -8,9 +8,12 @@ import { eventBus } from "@/server/events";
 import { getRepositories } from "@/server/repositories";
 import type { LessonProgressStatus } from "@/server/repositories/contracts/lesson-progress-repository";
 import {
-  findPointTransactionByIdempotencyKey,
+  ACHIEVEMENTS,
+  buildIdempotencyKey,
   registerGamificationEventHandlers,
+  type CourseCompletedPayload,
   type LessonCompletedPayload,
+  type ModuleCompletedPayload,
 } from "@/server/services/gamification";
 import { computeProgressForCourse } from "@/server/services/courses/shared";
 import { assertActiveEnrollment } from "./enrollment";
@@ -18,16 +21,13 @@ import { evaluateHeartbeat, sumIntervalSeconds, type CoveredInterval } from "./h
 import { checkHeartbeatRateLimit, heartbeatRateLimitKey } from "./rate-limit";
 
 /**
- * Registra o consumidor de gamificação assim que este módulo é carregado (Fase 7 — TODO
- * Fase 8: mover para um bootstrap central em vez de um side-effect de import). Idempotente
- * (`registerGamificationEventHandlers` guarda um flag interno) — seguro mesmo com múltiplos
- * imports/hot-reload.
+ * Registra os consumidores de gamificação assim que este módulo é carregado. Ainda um
+ * side-effect de import (TODO — fase de infraestrutura: mover para um bootstrap central de
+ * processo, ex.: `instrumentation.ts`, em vez de acoplado ao primeiro service que importar
+ * gamification). Idempotente (`registerGamificationEventHandlers` guarda um flag interno) —
+ * seguro mesmo com múltiplos imports/hot-reload.
  */
 registerGamificationEventHandlers();
-
-function buildLessonCompletedIdempotencyKey(userId: string, lessonId: string): string {
-  return `lesson-completed:${userId}:${lessonId}`;
-}
 
 type ComputedCourseProgress = Awaited<ReturnType<typeof computeProgressForCourse>>;
 
@@ -187,19 +187,71 @@ export async function recordHeartbeat(userId: string, input: HeartbeatInput): Pr
     // deve ocorrer numa ÚNICA transação, apoiada nas constraints únicas reais
     // (`LessonProgress @@unique([userId, lessonId])`, `*.idempotencyKey @unique`), para eliminar
     // a janela de corrida entre dois heartbeats concorrentes que cruzem o limiar ao mesmo tempo.
-    const idempotencyKey = buildLessonCompletedIdempotencyKey(userId, input.lessonId);
+    const lessonIdempotencyKey = buildIdempotencyKey("LESSON_COMPLETED", userId, input.lessonId);
+
+    // Conquistas ANTES de qualquer evento desta chamada — usado só para detectar o que é
+    // NOVO ao final (diff), nunca para decidir se algo já foi concedido (isso é
+    // responsabilidade exclusiva do motor de gamificação/`UserAchievementRepository.unlock`).
+    const achievementsBefore = await repos.userAchievements.listByUserId(userId);
 
     // Emite o evento de domínio — o consumidor de gamificação credita os pontos (idempotente
-    // em duas camadas: EventBus + segunda checagem no handler, ver `services/gamification`).
+    // em duas camadas: EventBus + segunda checagem no motor, ver `services/gamification`).
     await eventBus.emit<LessonCompletedPayload>({
       type: "LessonCompleted",
       payload: { userId, lessonId: input.lessonId, lessonTitle: lesson.title },
-      idempotencyKey,
+      idempotencyKey: lessonIdempotencyKey,
       occurredAt: new Date(receivedAt),
     });
 
-    const transaction = findPointTransactionByIdempotencyKey(idempotencyKey);
+    const transaction = await repos.pointTransactions.findByIdempotencyKey(lessonIdempotencyKey);
+    const moduleBefore = computedBefore.modules.find((m) => m.module.id === courseModule.id);
     const moduleAfter = computedAfter.modules.find((m) => m.module.id === courseModule.id);
+
+    // Módulo/curso concluídos (Fase 8 — gamification): disparo no PONTO real de conclusão,
+    // coordenado com o progresso agregado já recomputado acima (`computeProgressForCourse`).
+    // Só dispara quando o progresso cruza de <100% para 100% NESTA chamada — nunca reemite em
+    // chamadas seguintes (já estaria em 100% "antes" também).
+    const moduleJustCompleted =
+      (moduleBefore?.progressPercent ?? 0) < 100 && (moduleAfter?.progressPercent ?? 0) === 100;
+    if (moduleJustCompleted) {
+      await eventBus.emit<ModuleCompletedPayload>({
+        type: "ModuleCompleted",
+        payload: {
+          userId,
+          moduleId: courseModule.id,
+          moduleTitle: courseModule.title,
+          courseId: courseModule.courseId,
+        },
+        idempotencyKey: buildIdempotencyKey("MODULE_COMPLETED", userId, courseModule.id),
+        occurredAt: new Date(receivedAt),
+      });
+    }
+
+    const courseJustCompleted =
+      computedBefore.courseProgressPercent < 100 && computedAfter.courseProgressPercent === 100;
+    if (courseJustCompleted) {
+      const course = await repos.courses.findById(courseModule.courseId);
+      await eventBus.emit<CourseCompletedPayload>({
+        type: "CourseCompleted",
+        payload: {
+          userId,
+          courseId: courseModule.courseId,
+          courseTitle: course?.title ?? courseModule.courseId,
+        },
+        idempotencyKey: buildIdempotencyKey("COURSE_COMPLETED", userId, courseModule.courseId),
+        occurredAt: new Date(receivedAt),
+      });
+    }
+
+    // Primeira conquista desbloqueada nesta chamada (por aula/módulo/curso), se houver — ver
+    // limitação documentada em `LessonCompletionDTO.achievementUnlocked` (`@/contracts/progress`).
+    const achievementsAfter = await repos.userAchievements.listByUserId(userId);
+    const newlyUnlockedRecord = achievementsAfter.find(
+      (after) => !achievementsBefore.some((before) => before.achievementKey === after.achievementKey),
+    );
+    const unlockedDefinition = newlyUnlockedRecord
+      ? ACHIEVEMENTS.find((achievement) => achievement.key === newlyUnlockedRecord.achievementKey)
+      : undefined;
 
     completion = {
       lessonId: input.lessonId,
@@ -208,7 +260,15 @@ export async function recordHeartbeat(userId: string, input: HeartbeatInput): Pr
       xp: transaction?.xp ?? 0,
       moduleProgressPercent: moduleAfter?.progressPercent ?? 0,
       courseProgressPercent: computedAfter.courseProgressPercent,
-      achievementUnlocked: null,
+      achievementUnlocked:
+        unlockedDefinition && newlyUnlockedRecord
+          ? {
+              id: unlockedDefinition.key,
+              name: unlockedDefinition.name,
+              icon: unlockedDefinition.icon,
+              achievedAt: newlyUnlockedRecord.unlockedAt,
+            }
+          : null,
     };
   }
 

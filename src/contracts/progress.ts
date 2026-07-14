@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { idSchema } from "./common";
 import { lessonStatusSchema } from "./courses";
+import { dashboardAchievementSchema } from "./dashboard";
 
 /**
  * Contratos de progresso de vídeo / tempo válido (Fase 7 — agente `study-tracking`).
@@ -46,10 +47,15 @@ export const heartbeatFlagSchema = z.enum([
 export type HeartbeatFlag = z.infer<typeof heartbeatFlagSchema>;
 
 /**
- * "Vitória conquistada" — conclusão válida de aula. Pontos/XP vêm do consumidor mínimo de
- * gamificação criado nesta fase (`LESSON_COMPLETION_POINTS`/`LESSON_COMPLETION_XP`,
- * `src/config/business.ts`); a fórmula completa e conquistas são do agente `gamification`
- * (Fase 8) — `achievementUnlocked` é sempre `null` por ora.
+ * "Vitória conquistada" — conclusão válida de aula. Pontos/XP vêm do motor de gamificação
+ * (Fase 8, `src/server/services/gamification/engine.ts`). `achievementUnlocked` é preenchido
+ * quando esta conclusão (de aula, módulo ou curso, na mesma chamada) desbloqueia alguma
+ * conquista pela primeira vez; `null` quando nenhuma foi desbloqueada. Reaproveita
+ * `dashboardAchievementSchema` (mesma forma exibida no dashboard) para não duplicar o
+ * contrato. Quando mais de uma conquista é desbloqueada na mesma chamada (raro — ex.: aula
+ * cruza o limiar de "10 aulas" e conclui o módulo simultaneamente), só a primeira é
+ * reportada aqui; todas ficam persistidas em `UserAchievement` e visíveis via
+ * `getUserGamification` (limitação documentada — CLAUDE.md §27).
  */
 export const lessonCompletionDTOSchema = z.object({
   lessonId: idSchema,
@@ -59,8 +65,7 @@ export const lessonCompletionDTOSchema = z.object({
   /** Percentual (0–100) de aulas concluídas no módulo/curso após esta conclusão. */
   moduleProgressPercent: z.number().min(0).max(100),
   courseProgressPercent: z.number().min(0).max(100),
-  /** TODO(Fase 8 — gamification): conquistas ainda não implementadas. */
-  achievementUnlocked: z.null(),
+  achievementUnlocked: dashboardAchievementSchema.nullable(),
 });
 export type LessonCompletionDTO = z.infer<typeof lessonCompletionDTOSchema>;
 
