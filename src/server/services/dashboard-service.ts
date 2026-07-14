@@ -26,7 +26,13 @@ import type { DashboardDTO } from "@/contracts/dashboard";
  *   (ledger auditável) — não são mais literais fixos. `streakDays` continua vindo do mock
  *   (`mockGamificationStates`) porque sua fonte definitiva é `UserStreak`, de propriedade do
  *   agente `study-tracking` (Fase 12), fora do escopo de `gamification`.
- * - TODO(Fase 9 — agente `gamification`): ranking ainda não implementado.
+ * - TODO(Fase 9 — agente `gamification`): o motor de ranking real já existe
+ *   (`@/server/services/gamification/ranking`, `getRanking`), mas este widget simples de
+ *   dashboard (posição + total no concurso) ainda lê `mockRankings` em vez de chamar
+ *   `getRanking({ periodType: "ALL_TIME", scopeType: "CONTEST", scopeKeyRaw: contestId })` —
+ *   os valores do mock foram ajustados para não divergir do resultado real (ver
+ *   `dashboard-ranking.ts`), mas a troca de fonte fica como pendência (fora do escopo desta
+ *   fase, que focou no motor/backend do ranking).
  * - TODO(Fase 12 — agente `study-tracking`): tempo estudado, aulas concluídas, simulados,
  *   percentual de acertos e metas devem passar a vir do tempo válido real (heartbeat,
  *   sinais de atividade — CLAUDE.md §14), não da diferença simples entre início e fim.

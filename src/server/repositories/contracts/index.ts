@@ -9,3 +9,4 @@ export * from "./study-session-repository";
 export * from "./gamification-event-repository";
 export * from "./point-transaction-repository";
 export * from "./user-achievement-repository";
+export * from "./ranking-score-repository";

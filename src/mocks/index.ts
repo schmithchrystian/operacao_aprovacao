@@ -26,3 +26,4 @@ export {
   mockPointTransactionSeed,
   mockUserAchievementSeed,
 } from "./data/gamification-ledger-seed";
+export { mockRankingParticipants, type RankingParticipantEntity } from "./data/ranking-participants";

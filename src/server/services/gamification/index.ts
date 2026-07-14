@@ -56,3 +56,6 @@ export {
   type UserGamificationView,
   type UserAchievementView,
 } from "./read";
+
+// Ranking (Fase 9 — fórmula normalizada, escopos, materialização e leitura, CLAUDE.md §17).
+export * from "./ranking";

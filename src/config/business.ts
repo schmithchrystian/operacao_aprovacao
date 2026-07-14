@@ -103,3 +103,25 @@ export const RANKING_WEIGHTS = {
 } as const;
 
 export type RankingWeightKey = keyof typeof RANKING_WEIGHTS;
+
+/**
+ * Versão vigente do cálculo de ranking (Fase 9 — agente `gamification`, CLAUDE.md §17,
+ * ADR-0009). Gravada em toda `RankingScore` — incrementar sempre que a fórmula, os pesos ou
+ * as fontes de métrica mudarem. NUNCA sobrescreve versões antigas (auditoria/rollback); o
+ * cron de recálculo (`/api/cron/ranking-recalc`) grava a versão vigente a cada execução.
+ */
+export const RANKING_CALCULATION_VERSION = 1;
+
+/** Tamanho de página da listagem de ranking (leitura — `ranking/read.ts`). */
+export const RANKING_PAGE_SIZE = 20;
+
+/** Quantidade de posições em destaque ("pódio") no topo do ranking. */
+export const RANKING_TOP_HIGHLIGHT_COUNT = 3;
+
+/**
+ * Períodos e tarefas recalculadas pelo cron de ranking por padrão (sem escopo explícito na
+ * requisição — ver `src/app/api/cron/ranking-recalc/route.ts`). `DAILY` fica de fora do
+ * default (custo de recálculo maior, sem consumidor de UI ainda) — pode ser disparado à
+ * parte informando `periodType` no corpo da requisição.
+ */
+export const RANKING_DEFAULT_RECALC_PERIOD_TYPES = ["WEEKLY", "MONTHLY", "ALL_TIME"] as const;

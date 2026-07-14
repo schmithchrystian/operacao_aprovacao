@@ -7,6 +7,7 @@ import type {
   LessonRepository,
   ModuleRepository,
   PointTransactionRepository,
+  RankingScoreRepository,
   StudySessionRepository,
   SubjectRepository,
   UserAchievementRepository,
@@ -19,6 +20,7 @@ import { MockLessonProgressRepository } from "./mock/lesson-progress-repository"
 import { MockLessonRepository } from "./mock/lesson-repository";
 import { MockModuleRepository } from "./mock/module-repository";
 import { MockPointTransactionRepository } from "./mock/point-transaction-repository";
+import { MockRankingScoreRepository } from "./mock/ranking-score-repository";
 import { MockStudySessionRepository } from "./mock/study-session-repository";
 import { MockSubjectRepository } from "./mock/subject-repository";
 import { MockUserAchievementRepository } from "./mock/user-achievement-repository";
@@ -30,6 +32,7 @@ import { PrismaLessonProgressRepository } from "./prisma/lesson-progress-reposit
 import { PrismaLessonRepository } from "./prisma/lesson-repository";
 import { PrismaModuleRepository } from "./prisma/module-repository";
 import { PrismaPointTransactionRepository } from "./prisma/point-transaction-repository";
+import { PrismaRankingScoreRepository } from "./prisma/ranking-score-repository";
 import { PrismaStudySessionRepository } from "./prisma/study-session-repository";
 import { PrismaSubjectRepository } from "./prisma/subject-repository";
 import { PrismaUserAchievementRepository } from "./prisma/user-achievement-repository";
@@ -48,6 +51,7 @@ export interface Repositories {
   gamificationEvents: GamificationEventRepository;
   pointTransactions: PointTransactionRepository;
   userAchievements: UserAchievementRepository;
+  rankingScores: RankingScoreRepository;
 }
 
 let cached: Repositories | null = null;
@@ -66,6 +70,7 @@ function buildRepositories(): Repositories {
       gamificationEvents: new PrismaGamificationEventRepository(),
       pointTransactions: new PrismaPointTransactionRepository(),
       userAchievements: new PrismaUserAchievementRepository(),
+      rankingScores: new PrismaRankingScoreRepository(),
     };
   }
   return {
@@ -80,6 +85,7 @@ function buildRepositories(): Repositories {
     gamificationEvents: new MockGamificationEventRepository(),
     pointTransactions: new MockPointTransactionRepository(),
     userAchievements: new MockUserAchievementRepository(),
+    rankingScores: new MockRankingScoreRepository(),
   };
 }
 
