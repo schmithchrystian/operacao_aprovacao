@@ -4,11 +4,13 @@ import type {
   FlashcardReviewEntity,
   FlashcardReviewRepository,
 } from "../contracts/flashcard-review-repository";
+import { mockStore } from "./mock-store";
 
 /** Implementação mock — seed inicial de `src/mocks/data/flashcards.ts` (ADR-0011). APPEND-ONLY:
- *  nunca há update/delete (mesma garantia da entidade real, docs/DATA-MODEL.md). */
-let store: FlashcardReviewEntity[] = [...mockFlashcardReviews];
-let sequence = store.length;
+ *  nunca há update/delete (mesma garantia da entidade real, docs/DATA-MODEL.md). Estado via
+ *  `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo. */
+const store = mockStore<FlashcardReviewEntity[]>("flashcard-review", () => [...mockFlashcardReviews]);
+const sequence = mockStore<{ value: number }>("flashcard-review:sequence", () => ({ value: store.length }));
 
 /** Reduz uma lista de revisões à mais recente (maior `reviewedAt`) por `flashcardId`. */
 function latestByFlashcard(reviews: FlashcardReviewEntity[]): Map<string, FlashcardReviewEntity> {
@@ -43,9 +45,9 @@ export class MockFlashcardReviewRepository implements FlashcardReviewRepository 
   }
 
   async create(input: FlashcardReviewCreateInput): Promise<FlashcardReviewEntity> {
-    sequence += 1;
+    sequence.value += 1;
     const review: FlashcardReviewEntity = {
-      id: `flashcard-review-mock-${sequence}`,
+      id: `flashcard-review-mock-${sequence.value}`,
       userId: input.userId,
       flashcardId: input.flashcardId,
       rating: input.rating,
@@ -62,6 +64,6 @@ export class MockFlashcardReviewRepository implements FlashcardReviewRepository 
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockFlashcardReviewStore(): void {
-  store = [...mockFlashcardReviews];
-  sequence = store.length;
+  store.splice(0, store.length, ...mockFlashcardReviews);
+  sequence.value = store.length;
 }

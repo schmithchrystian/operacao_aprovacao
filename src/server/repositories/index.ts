@@ -9,6 +9,7 @@ import type {
   FlashcardDeckRepository,
   FlashcardRepository,
   FlashcardReviewRepository,
+  FocusSessionRepository,
   GamificationEventRepository,
   LessonProgressRepository,
   LessonRepository,
@@ -41,6 +42,7 @@ import { MockEnrollmentRepository } from "./mock/enrollment-repository";
 import { MockFlashcardDeckRepository } from "./mock/flashcard-deck-repository";
 import { MockFlashcardRepository } from "./mock/flashcard-repository";
 import { MockFlashcardReviewRepository } from "./mock/flashcard-review-repository";
+import { MockFocusSessionRepository } from "./mock/focus-session-repository";
 import { MockGamificationEventRepository } from "./mock/gamification-event-repository";
 import { MockLessonProgressRepository } from "./mock/lesson-progress-repository";
 import { MockLessonRepository } from "./mock/lesson-repository";
@@ -72,6 +74,7 @@ import { PrismaEnrollmentRepository } from "./prisma/enrollment-repository";
 import { PrismaFlashcardDeckRepository } from "./prisma/flashcard-deck-repository";
 import { PrismaFlashcardRepository } from "./prisma/flashcard-repository";
 import { PrismaFlashcardReviewRepository } from "./prisma/flashcard-review-repository";
+import { PrismaFocusSessionRepository } from "./prisma/focus-session-repository";
 import { PrismaGamificationEventRepository } from "./prisma/gamification-event-repository";
 import { PrismaLessonProgressRepository } from "./prisma/lesson-progress-repository";
 import { PrismaLessonRepository } from "./prisma/lesson-repository";
@@ -133,6 +136,8 @@ export interface Repositories {
   flashcardDecks: FlashcardDeckRepository;
   flashcards: FlashcardRepository;
   flashcardReviews: FlashcardReviewRepository;
+  /** Fase 15 — agente `study-tracking` (Modo foco / Pomodoro). */
+  focusSessions: FocusSessionRepository;
 }
 
 let cached: Repositories | null = null;
@@ -171,6 +176,7 @@ function buildRepositories(): Repositories {
       flashcardDecks: new PrismaFlashcardDeckRepository(),
       flashcards: new PrismaFlashcardRepository(),
       flashcardReviews: new PrismaFlashcardReviewRepository(),
+      focusSessions: new PrismaFocusSessionRepository(),
     };
   }
   return {
@@ -205,6 +211,7 @@ function buildRepositories(): Repositories {
     flashcardDecks: new MockFlashcardDeckRepository(),
     flashcards: new MockFlashcardRepository(),
     flashcardReviews: new MockFlashcardReviewRepository(),
+    focusSessions: new MockFocusSessionRepository(),
   };
 }
 

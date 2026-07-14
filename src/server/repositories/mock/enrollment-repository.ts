@@ -1,5 +1,6 @@
 import { mockEnrollments } from "@/mocks";
 import type { EnrollmentEntity, EnrollmentRepository } from "../contracts/enrollment-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock — lê de `src/mocks/data/enrollments.ts` (ADR-0011).
@@ -8,21 +9,22 @@ import type { EnrollmentEntity, EnrollmentRepository } from "../contracts/enroll
  * de forma idempotente nesta fase (matricular 2x não duplica) sem exigir banco — a
  * persistência real caberá ao `PrismaEnrollmentRepository`. Não sobrevive a reinícios do
  * processo nem é compartilhada entre processos (limitação aceitável para mocks).
+ *
+ * Estado via `mockStore` (`./mock-store.ts`), não mais campos `static` da classe: campos
+ * `static` também são reinicializados por instância de módulo no Next.js 16 (Turbopack dev e
+ * runtime serverless) — sofriam o MESMO isolamento entre Route Handlers/Server Actions/Server
+ * Components que os demais mocks deste projeto.
  */
-export class MockEnrollmentRepository implements EnrollmentRepository {
-  private static store: EnrollmentEntity[] = [...mockEnrollments];
-  private static sequence = MockEnrollmentRepository.store.length;
+const store = mockStore<EnrollmentEntity[]>("enrollment", () => [...mockEnrollments]);
+const sequence = mockStore<{ value: number }>("enrollment:sequence", () => ({ value: store.length }));
 
+export class MockEnrollmentRepository implements EnrollmentRepository {
   async findByUserAndCourse(userId: string, courseId: string): Promise<EnrollmentEntity | null> {
-    return (
-      MockEnrollmentRepository.store.find(
-        (enrollment) => enrollment.userId === userId && enrollment.courseId === courseId,
-      ) ?? null
-    );
+    return store.find((enrollment) => enrollment.userId === userId && enrollment.courseId === courseId) ?? null;
   }
 
   async listByUserId(userId: string): Promise<EnrollmentEntity[]> {
-    return MockEnrollmentRepository.store.filter((enrollment) => enrollment.userId === userId);
+    return store.filter((enrollment) => enrollment.userId === userId);
   }
 
   async create(input: { userId: string; courseId: string }): Promise<EnrollmentEntity> {
@@ -31,15 +33,21 @@ export class MockEnrollmentRepository implements EnrollmentRepository {
       return existing;
     }
 
-    MockEnrollmentRepository.sequence += 1;
+    sequence.value += 1;
     const enrollment: EnrollmentEntity = {
-      id: `enr-mock-${MockEnrollmentRepository.sequence}`,
+      id: `enr-mock-${sequence.value}`,
       userId: input.userId,
       courseId: input.courseId,
       status: "active",
       enrolledAt: new Date().toISOString(),
     };
-    MockEnrollmentRepository.store.push(enrollment);
+    store.push(enrollment);
     return enrollment;
   }
+}
+
+/** Uso exclusivo de testes — restaura o store mock ao seed original. */
+export function __resetMockEnrollmentStore(): void {
+  store.splice(0, store.length, ...mockEnrollments);
+  sequence.value = store.length;
 }

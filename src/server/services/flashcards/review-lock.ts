@@ -1,3 +1,5 @@
+import { mockStore } from "@/server/repositories/mock/mock-store";
+
 /**
  * Serialização em memória por chave `(userId, flashcardId)` para a seção crítica de `reviewCard`
  * (Fase 14 — correção do achado de segurança ALTO A1). Em memória, por processo — MESMA
@@ -20,10 +22,16 @@
  * sobre a última revisão do par). Uma constraint `@unique` SÓ na `idempotencyKey` NÃO resolve,
  * porque as chaves diferem por `reviewId`. Este mutex em memória some quando houver múltiplas
  * instâncias — só a barreira no banco fecha a corrida entre processos distintos.
+ *
+ * Estado via `mockStore` (`@/server/repositories/mock/mock-store`): no Next.js 16 (Turbopack
+ * dev/serverless), Route Handlers/Server Actions podem cair em instâncias de módulo SEPARADAS
+ * — um `const tails = new Map()` de topo de módulo criaria uma fila POR INSTÂNCIA e não
+ * serializaria nada entre chamadas concorrentes que caíssem em instâncias diferentes.
+ * `mockStore` garante o MESMO `Map` para todas as instâncias dentro do processo.
  */
 
 /** Cauda da fila de execução por chave — cada nova chamada encadeia após a anterior. */
-const tails = new Map<string, Promise<void>>();
+const tails = mockStore<Map<string, Promise<void>>>("flashcard-review-lock", () => new Map());
 
 export function reviewLockKey(userId: string, flashcardId: string): string {
   return `${userId}:${flashcardId}`;

@@ -1,4 +1,5 @@
 import { LOGIN_RATE_LIMIT } from "@/config/business";
+import { mockStore } from "@/server/repositories/mock/mock-store";
 
 /**
  * Rate limiting / lockout de login em MEMÓRIA (CLAUDE.md §24, achado de segurança Fase 4).
@@ -21,7 +22,9 @@ interface AttemptRecord {
   lockedUntil?: number;
 }
 
-const store = new Map<string, AttemptRecord>();
+// Estado via `mockStore` (`@/server/repositories/mock/mock-store`) — compartilhado entre
+// instâncias de módulo (Next.js 16/Turbopack), não só entre hot-reloads em dev.
+const store = mockStore<Map<string, AttemptRecord>>("auth-login-rate-limit", () => new Map());
 
 export interface RateLimitStatus {
   blocked: boolean;

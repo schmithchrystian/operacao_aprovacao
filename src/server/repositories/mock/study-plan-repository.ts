@@ -5,15 +5,17 @@ import type {
   StudyPlanRepository,
   StudyPlanUpdateInput,
 } from "../contracts/study-plan-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock — seed inicial de `src/mocks/data/study-plan.ts` (ADR-0011). Mesmo
  * padrão de `MockMockExamAttemptRepository` (array mutável em memória + contador de sequência
  * para ids novos, nunca `Math.random()`/`crypto.randomUUID()` — mantém a criação determinística
- * e fácil de testar).
+ * e fácil de testar). Estado via `mockStore` (`./mock-store.ts`) — compartilhado entre
+ * instâncias de módulo.
  */
-let store: StudyPlanEntity[] = [...mockStudyPlans];
-let sequence = store.length;
+const store = mockStore<StudyPlanEntity[]>("study-plan", () => [...mockStudyPlans]);
+const sequence = mockStore<{ value: number }>("study-plan:sequence", () => ({ value: store.length }));
 
 export class MockStudyPlanRepository implements StudyPlanRepository {
   async findById(id: string): Promise<StudyPlanEntity | null> {
@@ -32,10 +34,10 @@ export class MockStudyPlanRepository implements StudyPlanRepository {
   }
 
   async create(input: StudyPlanCreateInput): Promise<StudyPlanEntity> {
-    sequence += 1;
+    sequence.value += 1;
     const nowIso = input.now.toISOString();
     const plan: StudyPlanEntity = {
-      id: `study-plan-mock-${sequence}`,
+      id: `study-plan-mock-${sequence.value}`,
       userId: input.userId,
       title: input.title,
       startDate: input.startDate,
@@ -69,6 +71,6 @@ export class MockStudyPlanRepository implements StudyPlanRepository {
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockStudyPlanStore(): void {
-  store = [...mockStudyPlans];
-  sequence = store.length;
+  store.splice(0, store.length, ...mockStudyPlans);
+  sequence.value = store.length;
 }

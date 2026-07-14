@@ -1,4 +1,5 @@
 import { RateLimitError } from "@/server/errors";
+import { mockStore } from "@/server/repositories/mock/mock-store";
 
 /**
  * Rate limit LEVE das ações de simulado (CLAUDE.md §24, "limitar requisições críticas") — em
@@ -9,8 +10,11 @@ import { RateLimitError } from "@/server/errors";
  * Impede um cliente de martelar `createAttemptAction` (que grava um registro — e, no modo
  * personalizado, um `MockExam` ad-hoc — por chamada) ou `submitAttemptAction`. NÃO substitui
  * nenhuma outra defesa (autorização/idempotência/anti-dupla-finalização continuam no service).
+ *
+ * Estado via `mockStore` (`@/server/repositories/mock/mock-store`) — compartilhado entre
+ * instâncias de módulo (Next.js 16/Turbopack).
  */
-const lastAcceptedAt = new Map<string, number>();
+const lastAcceptedAt = mockStore<Map<string, number>>("simulations-rate-limit", () => new Map());
 
 export type SimulationsRateLimitedAction = "create-attempt" | "submit-attempt";
 

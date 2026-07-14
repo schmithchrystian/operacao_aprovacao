@@ -6,6 +6,7 @@ import type {
   MockExamAttemptFinalizeInput,
   MockExamAttemptRepository,
 } from "../contracts/mock-exam-attempt-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock — seed inicial de `src/mocks/data/mock-exam-attempts.ts` (ADR-0011).
@@ -16,9 +17,10 @@ import type {
  * `expectedVersion`; caso contrário devolvem `null` (0 linhas afetadas), nunca lançando exceção
  * — quem decide o que fazer com "nada mudou" é o service (`submitAndFinalize`), que trata como
  * rejeição (CLAUDE.md §18/§25: "tentativa finalizada não pode ser finalizada novamente").
+ * Estado via `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo.
  */
-let store: MockExamAttemptEntity[] = [...mockMockExamAttempts];
-let sequence = store.length;
+const store = mockStore<MockExamAttemptEntity[]>("mock-exam-attempt", () => [...mockMockExamAttempts]);
+const sequence = mockStore<{ value: number }>("mock-exam-attempt:sequence", () => ({ value: store.length }));
 
 export class MockMockExamAttemptRepository implements MockExamAttemptRepository {
   async findById(id: string): Promise<MockExamAttemptEntity | null> {
@@ -30,10 +32,10 @@ export class MockMockExamAttemptRepository implements MockExamAttemptRepository 
   }
 
   async create(input: MockExamAttemptCreateInput): Promise<MockExamAttemptEntity> {
-    sequence += 1;
+    sequence.value += 1;
     const nowIso = input.now.toISOString();
     const attempt: MockExamAttemptEntity = {
-      id: `attempt-mock-${sequence}`,
+      id: `attempt-mock-${sequence.value}`,
       userId: input.userId,
       mockExamId: input.mockExamId,
       status: "IN_PROGRESS",
@@ -101,6 +103,6 @@ export class MockMockExamAttemptRepository implements MockExamAttemptRepository 
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockMockExamAttemptStore(): void {
-  store = [...mockMockExamAttempts];
-  sequence = store.length;
+  store.splice(0, store.length, ...mockMockExamAttempts);
+  sequence.value = store.length;
 }

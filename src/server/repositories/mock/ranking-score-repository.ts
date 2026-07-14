@@ -5,6 +5,7 @@ import type {
   RankingScoreRepository,
   RankingScoreUpsertInput,
 } from "../contracts/ranking-score-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock do ranking materializado (ADR-0011, Fase 9). Nenhum seed inicial — a
@@ -12,10 +13,13 @@ import type {
  *
  * `upsert` sobrescreve a linha em vigor da MESMA versão (ver nota de idempotência no
  * contrato) — diferente dos ledgers imutáveis (`PointTransaction`/`GamificationEvent`), que
- * nunca atualizam uma linha existente.
+ * nunca atualizam uma linha existente. Estado via `mockStore` (`./mock-store.ts`) —
+ * compartilhado entre instâncias de módulo: sem isso, o recálculo de ranking via cron
+ * (`/api/cron/ranking-recalc`, Fase 9) podia gravar numa instância e a leitura do ranking
+ * (Server Component) não enxergar o resultado, por rodarem em instâncias de módulo separadas.
  */
-let store: RankingScoreEntity[] = [];
-let sequence = 0;
+const store = mockStore<RankingScoreEntity[]>("ranking-score", () => []);
+const sequence = mockStore<{ value: number }>("ranking-score:sequence", () => ({ value: 0 }));
 
 function matchesScope(
   entry: RankingScoreEntity,
@@ -42,7 +46,7 @@ export class MockRankingScoreRepository implements RankingScoreRepository {
     );
 
     const entity: RankingScoreEntity = {
-      id: index >= 0 ? store[index]!.id : `ranking-score-mock-${(sequence += 1)}`,
+      id: index >= 0 ? store[index]!.id : `ranking-score-mock-${(sequence.value += 1)}`,
       userId: input.userId,
       periodType: input.periodType,
       periodKey: input.periodKey,
@@ -122,6 +126,6 @@ export class MockRankingScoreRepository implements RankingScoreRepository {
 
 /** Uso exclusivo de testes — esvazia o store mock (não há seed inicial). */
 export function __resetMockRankingScoreStore(): void {
-  store = [];
-  sequence = 0;
+  store.splice(0, store.length);
+  sequence.value = 0;
 }

@@ -4,13 +4,15 @@ import type {
   PointTransactionEntity,
   PointTransactionRepository,
 } from "../contracts/point-transaction-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock do ledger IMUTÁVEL de pontos (ADR-0011, Fase 8). Ver
  * `./gamification-event-repository.ts` para as mesmas notas de idempotência/estado em memória.
+ * Estado via `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo.
  */
-let store: PointTransactionEntity[] = [...mockPointTransactionSeed];
-let sequence = store.length;
+const store = mockStore<PointTransactionEntity[]>("point-transaction", () => [...mockPointTransactionSeed]);
+const sequence = mockStore<{ value: number }>("point-transaction:sequence", () => ({ value: store.length }));
 
 export class MockPointTransactionRepository implements PointTransactionRepository {
   async findByIdempotencyKey(key: string): Promise<PointTransactionEntity | null> {
@@ -23,9 +25,9 @@ export class MockPointTransactionRepository implements PointTransactionRepositor
       return existing;
     }
 
-    sequence += 1;
+    sequence.value += 1;
     const transaction: PointTransactionEntity = {
-      id: `pt-mock-${sequence}`,
+      id: `pt-mock-${sequence.value}`,
       userId: input.userId,
       gamificationEventId: input.gamificationEventId,
       idempotencyKey: input.idempotencyKey,
@@ -59,6 +61,6 @@ export class MockPointTransactionRepository implements PointTransactionRepositor
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockPointTransactionStore(): void {
-  store = [...mockPointTransactionSeed];
-  sequence = store.length;
+  store.splice(0, store.length, ...mockPointTransactionSeed);
+  sequence.value = store.length;
 }

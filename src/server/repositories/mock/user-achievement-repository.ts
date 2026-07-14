@@ -3,14 +3,17 @@ import type {
   UserAchievementEntity,
   UserAchievementRepository,
 } from "../contracts/user-achievement-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock de conquistas desbloqueadas (ADR-0011, Fase 8). `unlock()` é
  * IDEMPOTENTE: repetir `(userId, achievementKey)` nunca cria uma segunda linha nem altera o
  * `unlockedAt` já gravado (mesma garantia de `UserAchievement @@id([userId, achievementId])`
- * no schema real).
+ * no schema real). Estado via `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias
+ * de módulo, condição necessária para a idempotência valer entre Route Handlers/Server
+ * Actions/Server Components distintos.
  */
-let store: UserAchievementEntity[] = [...mockUserAchievementSeed];
+const store = mockStore<UserAchievementEntity[]>("user-achievement", () => [...mockUserAchievementSeed]);
 
 export class MockUserAchievementRepository implements UserAchievementRepository {
   async listByUserId(userId: string): Promise<UserAchievementEntity[]> {
@@ -37,5 +40,5 @@ export class MockUserAchievementRepository implements UserAchievementRepository 
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockUserAchievementStore(): void {
-  store = [...mockUserAchievementSeed];
+  store.splice(0, store.length, ...mockUserAchievementSeed);
 }

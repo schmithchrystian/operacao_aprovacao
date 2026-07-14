@@ -1,8 +1,10 @@
 import { mockQuestionFavorites } from "@/mocks";
 import type { QuestionFavoriteEntity, QuestionFavoriteRepository } from "../contracts/question-favorite-repository";
+import { mockStore } from "./mock-store";
 
-/** Implementação mock — seed inicial de `src/mocks/data/mock-exam-attempts.ts` (ADR-0011). */
-let store: QuestionFavoriteEntity[] = [...mockQuestionFavorites];
+/** Implementação mock — seed inicial de `src/mocks/data/mock-exam-attempts.ts` (ADR-0011).
+ *  Estado via `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo. */
+const store = mockStore<QuestionFavoriteEntity[]>("question-favorite", () => [...mockQuestionFavorites]);
 
 export class MockQuestionFavoriteRepository implements QuestionFavoriteRepository {
   async listByUserId(userId: string): Promise<QuestionFavoriteEntity[]> {
@@ -26,5 +28,5 @@ export class MockQuestionFavoriteRepository implements QuestionFavoriteRepositor
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockQuestionFavoriteStore(): void {
-  store = [...mockQuestionFavorites];
+  store.splice(0, store.length, ...mockQuestionFavorites);
 }

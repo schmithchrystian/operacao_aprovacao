@@ -4,16 +4,18 @@ import type {
   QuestionAttemptEntity,
   QuestionAttemptRepository,
 } from "../contracts/question-attempt-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock — seed inicial de `src/mocks/data/mock-exam-attempts.ts` (ADR-0011).
  *
  * `upsertForMockExamAttempt` espelha a constraint `@@unique([mockExamAttemptId, questionId])`
  * do schema (docs/DATA-MODEL.md) apenas quando `mockExamAttemptId` não é nulo — chamar de novo
- * para a mesma questão da mesma tentativa atualiza o registro em vez de duplicar.
+ * para a mesma questão da mesma tentativa atualiza o registro em vez de duplicar. Estado via
+ * `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo.
  */
-let store: QuestionAttemptEntity[] = [...mockQuestionAttempts];
-let sequence = store.length;
+const store = mockStore<QuestionAttemptEntity[]>("question-attempt", () => [...mockQuestionAttempts]);
+const sequence = mockStore<{ value: number }>("question-attempt:sequence", () => ({ value: store.length }));
 
 export class MockQuestionAttemptRepository implements QuestionAttemptRepository {
   async listByMockExamAttemptId(mockExamAttemptId: string): Promise<QuestionAttemptEntity[]> {
@@ -35,7 +37,7 @@ export class MockQuestionAttemptRepository implements QuestionAttemptRepository 
         : -1;
 
     const entity: QuestionAttemptEntity = {
-      id: index >= 0 ? store[index]!.id : `qattempt-mock-${(sequence += 1)}`,
+      id: index >= 0 ? store[index]!.id : `qattempt-mock-${(sequence.value += 1)}`,
       userId: input.userId,
       questionId: input.questionId,
       mockExamAttemptId: input.mockExamAttemptId,
@@ -56,6 +58,6 @@ export class MockQuestionAttemptRepository implements QuestionAttemptRepository 
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockQuestionAttemptStore(): void {
-  store = [...mockQuestionAttempts];
-  sequence = store.length;
+  store.splice(0, store.length, ...mockQuestionAttempts);
+  sequence.value = store.length;
 }

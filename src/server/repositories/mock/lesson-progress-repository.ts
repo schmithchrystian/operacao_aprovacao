@@ -4,6 +4,7 @@ import type {
   LessonProgressRepository,
   LessonProgressUpsertInput,
 } from "../contracts/lesson-progress-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock — seed inicial de `src/mocks/data/lesson-progress.ts` (ADR-0011).
@@ -12,9 +13,12 @@ import type {
  * `MockEnrollmentRepository`) para suportar `upsert()` — escrita exclusiva do agente
  * `study-tracking` (Fase 7) a partir do tempo/posição reconstruídos no servidor. Não sobrevive
  * a reinícios do processo nem é compartilhada entre processos (limitação aceitável para mocks;
- * a persistência real caberá ao `PrismaLessonProgressRepository`).
+ * a persistência real caberá ao `PrismaLessonProgressRepository`). Estado via `mockStore`
+ * (`./mock-store.ts`) — compartilhado entre instâncias de módulo (Next.js 16/Turbopack): sem
+ * isso, o heartbeat de vídeo (`/api/progress/heartbeat`) gravado numa instância podia não ser
+ * visto por uma leitura seguinte noutra instância.
  */
-let store: LessonProgressEntity[] = [...mockLessonProgress];
+const store = mockStore<LessonProgressEntity[]>("lesson-progress", () => [...mockLessonProgress]);
 
 export class MockLessonProgressRepository implements LessonProgressRepository {
   async findByUserAndLesson(userId: string, lessonId: string): Promise<LessonProgressEntity | null> {
@@ -53,5 +57,5 @@ export class MockLessonProgressRepository implements LessonProgressRepository {
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockLessonProgressStore(): void {
-  store = [...mockLessonProgress];
+  store.splice(0, store.length, ...mockLessonProgress);
 }

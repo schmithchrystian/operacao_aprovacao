@@ -3,6 +3,7 @@ import type {
   UserStreakRepository,
   UserStreakUpsertInput,
 } from "../contracts/user-streak-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock da sequência de estudo (ADR-0011, Fase 12). Sem seed inicial — mesma
@@ -12,8 +13,9 @@ import type {
  * processo mock "frio" (sem heartbeats registrados ainda para os usuários de demonstração), o
  * streak exibido no dashboard/conquistas é honestamente `0` em vez de um número fixo
  * divorciado da atividade real — ver nota em `@/server/services/study-tracking/streak.ts`.
+ * Estado via `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo.
  */
-let store = new Map<string, UserStreakEntity>();
+const store = mockStore<Map<string, UserStreakEntity>>("user-streak", () => new Map());
 
 export class MockUserStreakRepository implements UserStreakRepository {
   async findByUserId(userId: string): Promise<UserStreakEntity | null> {
@@ -36,5 +38,5 @@ export class MockUserStreakRepository implements UserStreakRepository {
 
 /** Uso exclusivo de testes — esvazia o store mock (não há seed inicial). */
 export function __resetMockUserStreakStore(): void {
-  store = new Map();
+  store.clear();
 }

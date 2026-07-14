@@ -9,3 +9,4 @@ export * from "./study-session";
 export * from "./study-plan";
 export * from "./brainstorm";
 export * from "./flashcards";
+export * from "./focus";

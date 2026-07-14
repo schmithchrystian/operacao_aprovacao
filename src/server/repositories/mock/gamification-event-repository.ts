@@ -4,6 +4,7 @@ import type {
   GamificationEventEntity,
   GamificationEventRepository,
 } from "../contracts/gamification-event-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock do ledger de eventos de gamificação (ADR-0011, Fase 8).
@@ -12,10 +13,12 @@ import type {
  * processos — limitação aceitável para mock; documentada também nos testes de "falha
  * transacional" da Fase 8). `create()` é a segunda barreira de idempotência (a primeira é o
  * `InMemoryEventBus`, `src/server/events`): mesmo chamado fora do bus, nunca duplica uma
- * `idempotencyKey` já processada.
+ * `idempotencyKey` já processada. Estado via `mockStore` (`./mock-store.ts`) — compartilhado
+ * entre instâncias de módulo (Next.js 16/Turbopack), condição necessária para a idempotência
+ * valer entre Route Handlers/Server Actions/Server Components distintos.
  */
-let store: GamificationEventEntity[] = [...mockGamificationEventSeed];
-let sequence = store.length;
+const store = mockStore<GamificationEventEntity[]>("gamification-event", () => [...mockGamificationEventSeed]);
+const sequence = mockStore<{ value: number }>("gamification-event:sequence", () => ({ value: store.length }));
 
 export class MockGamificationEventRepository implements GamificationEventRepository {
   async findByIdempotencyKey(key: string): Promise<GamificationEventEntity | null> {
@@ -28,9 +31,9 @@ export class MockGamificationEventRepository implements GamificationEventReposit
       return existing;
     }
 
-    sequence += 1;
+    sequence.value += 1;
     const event: GamificationEventEntity = {
-      id: `gam-evt-mock-${sequence}`,
+      id: `gam-evt-mock-${sequence.value}`,
       userId: input.userId,
       type: input.type,
       idempotencyKey: input.idempotencyKey,
@@ -54,6 +57,6 @@ export class MockGamificationEventRepository implements GamificationEventReposit
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockGamificationEventStore(): void {
-  store = [...mockGamificationEventSeed];
-  sequence = store.length;
+  store.splice(0, store.length, ...mockGamificationEventSeed);
+  sequence.value = store.length;
 }

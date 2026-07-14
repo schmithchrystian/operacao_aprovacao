@@ -3,14 +3,16 @@ import type {
   WeeklyGoalRepository,
   WeeklyGoalUpsertInput,
 } from "../contracts/weekly-goal-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock da meta semanal (ADR-0011, Fase 12). Sem seed inicial — mesmo racional de
  * `./daily-goal-repository.ts`: a linha nasce no primeiro recálculo (`recalculateWeeklyGoal`,
- * `@/server/services/study-tracking/goals.ts`) para o par `(userId, weekStart)`.
+ * `@/server/services/study-tracking/goals.ts`) para o par `(userId, weekStart)`. Estado via
+ * `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo.
  */
-let store: WeeklyGoalEntity[] = [];
-let sequence = 0;
+const store = mockStore<WeeklyGoalEntity[]>("weekly-goal", () => []);
+const sequence = mockStore<{ value: number }>("weekly-goal:sequence", () => ({ value: 0 }));
 
 export class MockWeeklyGoalRepository implements WeeklyGoalRepository {
   async findByUserIdAndWeekStart(userId: string, weekStart: string): Promise<WeeklyGoalEntity | null> {
@@ -28,7 +30,7 @@ export class MockWeeklyGoalRepository implements WeeklyGoalRepository {
     const nowIso = input.now.toISOString();
 
     const entity: WeeklyGoalEntity = {
-      id: index >= 0 ? store[index]!.id : `weekly-goal-mock-${(sequence += 1)}`,
+      id: index >= 0 ? store[index]!.id : `weekly-goal-mock-${(sequence.value += 1)}`,
       userId: input.userId,
       weekStart: input.weekStart,
       targetMinutes: input.targetMinutes,
@@ -50,6 +52,6 @@ export class MockWeeklyGoalRepository implements WeeklyGoalRepository {
 
 /** Uso exclusivo de testes — esvazia o store mock (não há seed inicial). */
 export function __resetMockWeeklyGoalStore(): void {
-  store = [];
-  sequence = 0;
+  store.splice(0, store.length);
+  sequence.value = 0;
 }

@@ -1,3 +1,5 @@
+import { mockStore } from "@/server/repositories/mock/mock-store";
+
 /**
  * Rascunho de flashcard gerado por `convertToFlashcard` (Fase 13 — Brainstorm).
  *
@@ -13,6 +15,8 @@
  * (não existe `BrainstormFlashcardDraft` em `prisma/schema.prisma`). Mesmo estilo simples de
  * `@/server/audit/log.ts` (array em memória + funções) — nunca `Math.random()`/
  * `crypto.randomUUID()`, mesmo motivo de determinismo/teste dos demais mocks deste projeto.
+ * Estado via `mockStore` (`@/server/repositories/mock/mock-store`) — compartilhado entre
+ * instâncias de módulo (Next.js 16/Turbopack).
  */
 export interface BrainstormFlashcardDraft {
   id: string;
@@ -26,8 +30,8 @@ export interface BrainstormFlashcardDraft {
   createdAt: string;
 }
 
-let drafts: BrainstormFlashcardDraft[] = [];
-let sequence = 0;
+const drafts = mockStore<BrainstormFlashcardDraft[]>("flashcard-draft", () => []);
+const sequence = mockStore<{ value: number }>("flashcard-draft:sequence", () => ({ value: 0 }));
 
 /** Cria e armazena um novo rascunho. Não deduplica por `sourceCardId` — o CHAMADOR
  *  (`convertToFlashcard`, `@/server/services/brainstorm/convert-to-flashcard.ts`) é responsável
@@ -39,9 +43,9 @@ export function createFlashcardDraft(
   answer: string,
   now: Date,
 ): BrainstormFlashcardDraft {
-  sequence += 1;
+  sequence.value += 1;
   const draft: BrainstormFlashcardDraft = {
-    id: `brainstorm-flashcard-draft-${sequence}`,
+    id: `brainstorm-flashcard-draft-${sequence.value}`,
     userId,
     sourceCardId,
     question,
@@ -62,6 +66,6 @@ export function listFlashcardDraftsByUserId(userId: string): BrainstormFlashcard
 
 /** Uso exclusivo de testes — restaura o store ao estado inicial (vazio). */
 export function __resetFlashcardDraftStore(): void {
-  drafts = [];
-  sequence = 0;
+  drafts.splice(0, drafts.length);
+  sequence.value = 0;
 }

@@ -5,10 +5,12 @@ import type {
   StudyPlanItemRepository,
   StudyPlanItemUpdateInput,
 } from "../contracts/study-plan-item-repository";
+import { mockStore } from "./mock-store";
 
-/** Implementação mock — seed inicial de `src/mocks/data/study-plan.ts` (ADR-0011). */
-let store: StudyPlanItemEntity[] = [...mockStudyPlanItems];
-let sequence = store.length;
+/** Implementação mock — seed inicial de `src/mocks/data/study-plan.ts` (ADR-0011). Estado via
+ *  `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo. */
+const store = mockStore<StudyPlanItemEntity[]>("study-plan-item", () => [...mockStudyPlanItems]);
+const sequence = mockStore<{ value: number }>("study-plan-item:sequence", () => ({ value: store.length }));
 
 export class MockStudyPlanItemRepository implements StudyPlanItemRepository {
   async findById(id: string): Promise<StudyPlanItemEntity | null> {
@@ -21,10 +23,10 @@ export class MockStudyPlanItemRepository implements StudyPlanItemRepository {
 
   async createMany(inputs: StudyPlanItemCreateInput[]): Promise<StudyPlanItemEntity[]> {
     const created = inputs.map((input): StudyPlanItemEntity => {
-      sequence += 1;
+      sequence.value += 1;
       const nowIso = input.now.toISOString();
       return {
-        id: `study-plan-item-mock-${sequence}`,
+        id: `study-plan-item-mock-${sequence.value}`,
         studyPlanId: input.studyPlanId,
         kind: input.kind,
         subjectId: input.subjectId,
@@ -74,7 +76,9 @@ export class MockStudyPlanItemRepository implements StudyPlanItemRepository {
   async reorder(planId: string, orderedItemIds: string[], now: Date): Promise<StudyPlanItemEntity[]> {
     const nowIso = now.toISOString();
     const positionById = new Map(orderedItemIds.map((id, index) => [id, index]));
-    store = store.map((item) => {
+    // Identidade do array precisa ficar estável (`mockStore`, ver `./mock-store.ts`) — muta em
+    // vez de reatribuir `store`.
+    const reordered = store.map((item) => {
       if (item.studyPlanId !== planId) return item;
       const newOrder = positionById.get(item.id);
       // Item não incluído em `orderedItemIds` (não deveria ocorrer — o serviço valida o
@@ -82,16 +86,18 @@ export class MockStudyPlanItemRepository implements StudyPlanItemRepository {
       if (newOrder === undefined || newOrder === item.order) return item;
       return { ...item, order: newOrder, updatedAt: nowIso };
     });
+    store.splice(0, store.length, ...reordered);
     return this.listByPlanId(planId);
   }
 
   async deleteByPlanId(planId: string): Promise<void> {
-    store = store.filter((item) => item.studyPlanId !== planId);
+    const remaining = store.filter((item) => item.studyPlanId !== planId);
+    store.splice(0, store.length, ...remaining);
   }
 }
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockStudyPlanItemStore(): void {
-  store = [...mockStudyPlanItems];
-  sequence = store.length;
+  store.splice(0, store.length, ...mockStudyPlanItems);
+  sequence.value = store.length;
 }

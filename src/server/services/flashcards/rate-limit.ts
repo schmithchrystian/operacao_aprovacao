@@ -1,4 +1,5 @@
 import { RateLimitError } from "@/server/errors";
+import { mockStore } from "@/server/repositories/mock/mock-store";
 
 /**
  * Rate limit LEVE de `reviewCardAction` (CLAUDE.md §24, "limitar requisições críticas") — em
@@ -14,8 +15,11 @@ import { RateLimitError } from "@/server/errors";
  * Chave por `(userId, flashcardId)` (não por usuário) DE PROPÓSITO: uma sessão de revisão
  * legítima percorre cartões DIFERENTES em sequência e nunca deve ser limitada — só o martelar do
  * MESMO cartão é freado (que o gate "devido" já rejeitaria de qualquer forma).
+ *
+ * Estado via `mockStore` (`@/server/repositories/mock/mock-store`) — compartilhado entre
+ * instâncias de módulo (Next.js 16/Turbopack).
  */
-const lastAcceptedAt = new Map<string, number>();
+const lastAcceptedAt = mockStore<Map<string, number>>("flashcards-review-rate-limit", () => new Map());
 
 export function reviewCardRateLimitKey(userId: string, flashcardId: string): string {
   return `review-card:${userId}:${flashcardId}`;

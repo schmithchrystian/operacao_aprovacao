@@ -5,10 +5,12 @@ import type {
   BrainstormCardRepository,
   BrainstormCardUpdateInput,
 } from "../contracts/brainstorm-card-repository";
+import { mockStore } from "./mock-store";
 
-/** Implementação mock — seed inicial de `src/mocks/data/brainstorm.ts` (ADR-0011). */
-let store: BrainstormCardEntity[] = [...mockBrainstormCards];
-let sequence = store.length;
+/** Implementação mock — seed inicial de `src/mocks/data/brainstorm.ts` (ADR-0011). Estado via
+ *  `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo. */
+const store = mockStore<BrainstormCardEntity[]>("brainstorm-card", () => [...mockBrainstormCards]);
+const sequence = mockStore<{ value: number }>("brainstorm-card:sequence", () => ({ value: store.length }));
 
 export class MockBrainstormCardRepository implements BrainstormCardRepository {
   async findById(id: string): Promise<BrainstormCardEntity | null> {
@@ -29,10 +31,10 @@ export class MockBrainstormCardRepository implements BrainstormCardRepository {
   }
 
   async create(input: BrainstormCardCreateInput): Promise<BrainstormCardEntity> {
-    sequence += 1;
+    sequence.value += 1;
     const nowIso = input.now.toISOString();
     const card: BrainstormCardEntity = {
-      id: `brainstorm-card-mock-${sequence}`,
+      id: `brainstorm-card-mock-${sequence.value}`,
       columnId: input.columnId,
       type: input.type,
       title: input.title,
@@ -84,7 +86,9 @@ export class MockBrainstormCardRepository implements BrainstormCardRepository {
   async reorderColumn(columnId: string, orderedCardIds: string[], now: Date): Promise<BrainstormCardEntity[]> {
     const nowIso = now.toISOString();
     const positionById = new Map(orderedCardIds.map((id, index) => [id, index]));
-    store = store.map((card) => {
+    // Identidade do array precisa ficar estável (`mockStore`, ver `./mock-store.ts`) — muta em
+    // vez de reatribuir `store`.
+    const reordered = store.map((card) => {
       if (card.columnId !== columnId) return card;
       const newOrder = positionById.get(card.id);
       // Cartão não incluído em `orderedCardIds` (não deveria ocorrer — o serviço sempre passa o
@@ -92,6 +96,7 @@ export class MockBrainstormCardRepository implements BrainstormCardRepository {
       if (newOrder === undefined || newOrder === card.order) return card;
       return { ...card, order: newOrder, updatedAt: nowIso };
     });
+    store.splice(0, store.length, ...reordered);
     return store.filter((card) => card.columnId === columnId).sort((a, b) => a.order - b.order);
   }
 
@@ -110,12 +115,13 @@ export class MockBrainstormCardRepository implements BrainstormCardRepository {
   }
 
   async delete(id: string): Promise<void> {
-    store = store.filter((card) => card.id !== id);
+    const remaining = store.filter((card) => card.id !== id);
+    store.splice(0, store.length, ...remaining);
   }
 }
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockBrainstormCardStore(): void {
-  store = [...mockBrainstormCards];
-  sequence = store.length;
+  store.splice(0, store.length, ...mockBrainstormCards);
+  sequence.value = store.length;
 }

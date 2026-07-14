@@ -32,3 +32,5 @@ export * from "./brainstorm-card-repository";
 export * from "./flashcard-deck-repository";
 export * from "./flashcard-repository";
 export * from "./flashcard-review-repository";
+// Fase 15 — agente `study-tracking` (Modo foco / Pomodoro).
+export * from "./focus-session-repository";

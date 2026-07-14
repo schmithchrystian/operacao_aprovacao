@@ -1,3 +1,5 @@
+import { mockStore } from "@/server/repositories/mock/mock-store";
+
 /**
  * Favoritos de flashcard, por `(userId, flashcardId)` (Fase 14 — agente `backend`, CLAUDE.md §19).
  *
@@ -18,6 +20,9 @@
  * flashcardId, createdAt } @@id([userId, flashcardId])` (espelhando `QuestionFavorite`) numa
  * migration futura e substituir este módulo por um `FlashcardFavoriteRepository` real (contracts
  * + mock + prisma + container), sem mudar a assinatura das funções abaixo.
+ *
+ * Estado via `mockStore` (`@/server/repositories/mock/mock-store`) — compartilhado entre
+ * instâncias de módulo (Next.js 16/Turbopack).
  */
 export interface FlashcardFavoriteEntry {
   userId: string;
@@ -25,7 +30,7 @@ export interface FlashcardFavoriteEntry {
   createdAt: string;
 }
 
-let favorites: FlashcardFavoriteEntry[] = [];
+const favorites = mockStore<FlashcardFavoriteEntry[]>("flashcard-favorite", () => []);
 
 export function isFavorite(userId: string, flashcardId: string): boolean {
   return favorites.some((entry) => entry.userId === userId && entry.flashcardId === flashcardId);
@@ -50,5 +55,5 @@ export function toggleFavorite(userId: string, flashcardId: string, now: Date): 
 
 /** Uso exclusivo de testes — restaura o store ao estado inicial (vazio). */
 export function __resetFlashcardFavoriteStore(): void {
-  favorites = [];
+  favorites.splice(0, favorites.length);
 }

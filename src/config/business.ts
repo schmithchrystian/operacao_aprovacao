@@ -367,3 +367,65 @@ export const SPACED_REPETITION = {
 export const FLASHCARDS = {
   reviewCardMinIntervalMs: 500,
 } as const;
+
+/**
+ * Modo foco / Pomodoro (Fase 15 — agente `study-tracking`, CLAUDE.md §14/§15/§25).
+ *
+ * Reaproveita os MESMOS princípios de tempo válido da Fase 7 (heartbeat avaliado com o relógio
+ * do SERVIDOR, nunca o contador do cliente) — ver
+ * `@/server/services/focus/focus-heartbeat-evaluator.ts` (equivalente a
+ * `@/server/services/study-tracking/heartbeat-evaluator.ts`, sem a lógica de posição/cobertura
+ * de vídeo, que não se aplica a um timer de foco sem "posição").
+ *
+ * REGRA DURA desta fase (CLAUDE.md §15, "Pomodoro concluído: 50 pontos"): o contador chegar a
+ * zero no NAVEGADOR nunca é suficiente para pontuar — `finishFocusSession`
+ * (`@/server/services/focus`) só credita quando `activeSeconds` (acumulado no servidor a partir
+ * de heartbeats válidos) atinge o mínimo E há heartbeats válidos suficientes (atividade real,
+ * não só decurso de tempo).
+ */
+export const FOCUS_MODE_DURATIONS: Record<
+  "25_5" | "50_10" | "quick_15" | "intense_90",
+  { focusMinutes: number; breakMinutes: number }
+> = {
+  "25_5": { focusMinutes: 25, breakMinutes: 5 },
+  "50_10": { focusMinutes: 50, breakMinutes: 10 },
+  quick_15: { focusMinutes: 15, breakMinutes: 3 },
+  intense_90: { focusMinutes: 90, breakMinutes: 15 },
+};
+
+export type FocusPresetMode = keyof typeof FOCUS_MODE_DURATIONS;
+
+export const FOCUS = {
+  // Limites do modo `custom` (minutos) — validados também no contrato Zod (`@/contracts/focus`).
+  customMinFocusMinutes: 5,
+  customMaxFocusMinutes: 180,
+  customMinBreakMinutes: 0,
+  customMaxBreakMinutes: 60,
+
+  /** Fração do alvo (`targetSeconds`) exigida como tempo ATIVO válido para pontuar em modos com
+   *  alvo fixo — mesma ordem de grandeza de `LESSON_COMPLETION_MIN_PERCENT` (0.8), decisão desta
+   *  fase (documentada aqui; nenhuma fórmula "mágica" além desta fração simples). */
+  minDurationFraction: 0.8,
+  /** Minutos mínimos de atividade válida para pontuar no modo `free` (sem alvo fixo — não há
+   *  como tirar uma fração de um alvo que não existe). */
+  freeModeMinScoringMinutes: 15,
+  /** Nº mínimo de heartbeats que efetivamente somaram tempo (não descartados por aba
+   *  oculta/ociosidade/duplicidade) para considerar "atividade real" — defesa em profundidade
+   *  ALÉM do limiar de duração: cada heartbeat já é limitado a `heartbeatMaxGapSeconds`, mas
+   *  exigir uma contagem mínima reforça a atividade real de forma independente do relógio. */
+  minValidHeartbeatsToScore: 3,
+
+  /** Mesmo papel de `STUDY_TRACKING.heartbeatMaxGapSeconds`, cadência própria do timer de foco
+   *  (heartbeats mais espaçados que o player de vídeo). Acima disso, o intervalo real é limitado
+   *  (não descartado por completo) — cobre pausas longas, aba minimizada, dispositivo suspenso. */
+  heartbeatMaxGapSeconds: 30,
+  /** Cadência real esperada do timer entre heartbeats, em segundos (referência p/ o cliente). */
+  heartbeatIntervalSeconds: 15,
+  /** Intervalo mínimo aceito entre heartbeats da MESMA sessão (rate limit leve) — mesmo espírito
+   *  de `STUDY_TRACKING.heartbeatMinClientIntervalMs`. */
+  heartbeatMinClientIntervalMs: 5_000,
+
+  objectiveMaxLength: 200,
+  contentStudiedMaxLength: 2_000,
+  doubtNoteMaxLength: 1_000,
+} as const;

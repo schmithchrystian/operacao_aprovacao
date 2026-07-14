@@ -3,13 +3,15 @@ import type {
   StudyMissionEntity,
   StudyMissionRepository,
 } from "../contracts/study-mission-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock — em memória de processo, sem seed inicial (uma missão só nasce quando o
  * aluno clica em "Iniciar missão de estudo"; mesma decisão de `MockStudySessionRepository`).
+ * Estado via `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo.
  */
-let store: StudyMissionEntity[] = [];
-let sequence = 0;
+const store = mockStore<StudyMissionEntity[]>("study-mission", () => []);
+const sequence = mockStore<{ value: number }>("study-mission:sequence", () => ({ value: 0 }));
 
 export class MockStudyMissionRepository implements StudyMissionRepository {
   async findById(userId: string, id: string): Promise<StudyMissionEntity | null> {
@@ -17,10 +19,10 @@ export class MockStudyMissionRepository implements StudyMissionRepository {
   }
 
   async create(input: StudyMissionCreateInput): Promise<StudyMissionEntity> {
-    sequence += 1;
+    sequence.value += 1;
     const nowIso = input.now.toISOString();
     const mission: StudyMissionEntity = {
-      id: `study-mission-mock-${sequence}`,
+      id: `study-mission-mock-${sequence.value}`,
       userId: input.userId,
       status: "ACTIVE",
       blocks: input.blocks,
@@ -36,6 +38,6 @@ export class MockStudyMissionRepository implements StudyMissionRepository {
 
 /** Uso exclusivo de testes — limpa todo o store em memória. */
 export function __resetMockStudyMissionStore(): void {
-  store = [];
-  sequence = 0;
+  store.splice(0, store.length);
+  sequence.value = 0;
 }

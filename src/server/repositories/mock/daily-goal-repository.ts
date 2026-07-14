@@ -3,14 +3,16 @@ import type {
   DailyGoalRepository,
   DailyGoalUpsertInput,
 } from "../contracts/daily-goal-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock da meta diária (ADR-0011, Fase 12). Sem seed inicial — mesmo racional de
  * `./user-streak-repository.ts`: a linha nasce no primeiro recálculo (`recalculateDailyGoal`,
- * `@/server/services/study-tracking/goals.ts`) para o par `(userId, date)`.
+ * `@/server/services/study-tracking/goals.ts`) para o par `(userId, date)`. Estado via
+ * `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo.
  */
-let store: DailyGoalEntity[] = [];
-let sequence = 0;
+const store = mockStore<DailyGoalEntity[]>("daily-goal", () => []);
+const sequence = mockStore<{ value: number }>("daily-goal:sequence", () => ({ value: 0 }));
 
 export class MockDailyGoalRepository implements DailyGoalRepository {
   async findByUserIdAndDate(userId: string, date: string): Promise<DailyGoalEntity | null> {
@@ -26,7 +28,7 @@ export class MockDailyGoalRepository implements DailyGoalRepository {
     const nowIso = input.now.toISOString();
 
     const entity: DailyGoalEntity = {
-      id: index >= 0 ? store[index]!.id : `daily-goal-mock-${(sequence += 1)}`,
+      id: index >= 0 ? store[index]!.id : `daily-goal-mock-${(sequence.value += 1)}`,
       userId: input.userId,
       date: input.date,
       targetMinutes: input.targetMinutes,
@@ -48,6 +50,6 @@ export class MockDailyGoalRepository implements DailyGoalRepository {
 
 /** Uso exclusivo de testes — esvazia o store mock (não há seed inicial). */
 export function __resetMockDailyGoalStore(): void {
-  store = [];
-  sequence = 0;
+  store.splice(0, store.length);
+  sequence.value = 0;
 }

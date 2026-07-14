@@ -5,10 +5,12 @@ import type {
   FlashcardDeckKind,
   FlashcardDeckRepository,
 } from "../contracts/flashcard-deck-repository";
+import { mockStore } from "./mock-store";
 
-/** Implementação mock — seed inicial de `src/mocks/data/flashcards.ts` (ADR-0011). */
-let store: FlashcardDeckEntity[] = [...mockFlashcardDecks];
-let sequence = store.length;
+/** Implementação mock — seed inicial de `src/mocks/data/flashcards.ts` (ADR-0011). Estado via
+ *  `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo. */
+const store = mockStore<FlashcardDeckEntity[]>("flashcard-deck", () => [...mockFlashcardDecks]);
+const sequence = mockStore<{ value: number }>("flashcard-deck:sequence", () => ({ value: store.length }));
 
 export class MockFlashcardDeckRepository implements FlashcardDeckRepository {
   async findById(id: string): Promise<FlashcardDeckEntity | null> {
@@ -28,10 +30,10 @@ export class MockFlashcardDeckRepository implements FlashcardDeckRepository {
   }
 
   async create(input: FlashcardDeckCreateInput): Promise<FlashcardDeckEntity> {
-    sequence += 1;
+    sequence.value += 1;
     const nowIso = input.now.toISOString();
     const deck: FlashcardDeckEntity = {
-      id: `flashcard-deck-mock-${sequence}`,
+      id: `flashcard-deck-mock-${sequence.value}`,
       userId: input.userId,
       subjectId: input.subjectId,
       title: input.title,
@@ -47,6 +49,6 @@ export class MockFlashcardDeckRepository implements FlashcardDeckRepository {
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockFlashcardDeckStore(): void {
-  store = [...mockFlashcardDecks];
-  sequence = store.length;
+  store.splice(0, store.length, ...mockFlashcardDecks);
+  sequence.value = store.length;
 }

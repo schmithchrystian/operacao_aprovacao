@@ -4,6 +4,7 @@ import type {
   MockExamEntity,
   MockExamRepository,
 } from "../contracts/mock-exam-repository";
+import { mockStore } from "./mock-store";
 
 /**
  * Implementação mock — seed inicial de `src/mocks/data/mock-exams.ts` (ADR-0011).
@@ -11,9 +12,10 @@ import type {
  * Mantém uma cópia mutável em memória de processo (mesmo padrão de
  * `MockLessonProgressRepository`) para suportar `create()` — simulados personalizados
  * montados dinamicamente a partir de filtros (`src/server/services/simulations/question-pool.ts`).
+ * Estado via `mockStore` (`./mock-store.ts`) — compartilhado entre instâncias de módulo.
  */
-let store: MockExamEntity[] = [...mockMockExams];
-let sequence = store.length;
+const store = mockStore<MockExamEntity[]>("mock-exam", () => [...mockMockExams]);
+const sequence = mockStore<{ value: number }>("mock-exam:sequence", () => ({ value: store.length }));
 
 export class MockMockExamRepository implements MockExamRepository {
   async findById(id: string): Promise<MockExamEntity | null> {
@@ -27,12 +29,12 @@ export class MockMockExamRepository implements MockExamRepository {
   }
 
   async create(input: MockExamCreateInput): Promise<MockExamEntity> {
-    sequence += 1;
+    sequence.value += 1;
     // `create()` só é usado para simulados PESSOAIS ad-hoc (ver `MockExamCreateInput`): marca
     // como pessoal e DRAFT para que nunca apareça no catálogo (`list()`) nem seja iniciável por
     // `mockExamId` por outro usuário (guarda em `question-pool.ts`).
     const exam: MockExamEntity = {
-      id: `mock-exam-custom-${sequence}`,
+      id: `mock-exam-custom-${sequence.value}`,
       title: input.title,
       description: input.description,
       durationMinutes: input.durationMinutes,
@@ -49,6 +51,6 @@ export class MockMockExamRepository implements MockExamRepository {
 
 /** Uso exclusivo de testes — restaura o store mock ao seed original. */
 export function __resetMockMockExamStore(): void {
-  store = [...mockMockExams];
-  sequence = store.length;
+  store.splice(0, store.length, ...mockMockExams);
+  sequence.value = store.length;
 }
