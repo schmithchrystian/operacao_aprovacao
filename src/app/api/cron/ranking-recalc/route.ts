@@ -1,14 +1,11 @@
 import { timingSafeEqual } from "node:crypto";
+import { z } from "zod";
 import { NextResponse, type NextRequest } from "next/server";
 import { env } from "@/config/env";
 import { fail, ok } from "@/contracts/common";
+import { rankingPeriodTypeSchema, rankingScopeTypeSchema } from "@/contracts/ranking";
 import { auditLog } from "@/server/audit";
-import {
-  recalculateAllRankingScopes,
-  recalculateRankingForScope,
-  type RankingPeriodType,
-  type RankingScopeType,
-} from "@/server/services/gamification";
+import { recalculateAllRankingScopes, recalculateRankingForScope } from "@/server/services/gamification";
 
 /**
  * Route Handler protegido de cron (ADR-0009, docs/ARCHITECTURE.md §6) — recalcula/materializa
@@ -47,11 +44,20 @@ function isAuthorized(request: NextRequest): boolean {
   return provided !== null && secretsMatch(provided, env.CRON_SECRET);
 }
 
-interface TargetedRecalcBody {
-  periodType?: RankingPeriodType;
-  scopeType?: RankingScopeType;
-  scopeKey?: string;
-}
+/**
+ * Corpo opcional do disparo (revisão de segurança — hardening). Todos os campos são
+ * opcionais (corpo ausente/vazio = recálculo total); quando presentes, cada um é validado
+ * pelos MESMOS enums Zod usados na leitura do ranking (`@/contracts/ranking`) — nunca um
+ * cast `as` do JSON bruto. Campos desconhecidos são descartados pelo Zod (não usamos
+ * `.strict()`: um scheduler externo pode enviar metadados extras sem quebrar o disparo).
+ */
+const targetedRecalcBodySchema = z.object({
+  periodType: rankingPeriodTypeSchema.optional(),
+  scopeType: rankingScopeTypeSchema.optional(),
+  scopeKey: z.string().min(1).optional(),
+});
+
+type TargetedRecalcBody = z.infer<typeof targetedRecalcBodySchema>;
 
 async function handleRecalc(request: NextRequest): Promise<NextResponse> {
   if (!isAuthorized(request)) {
@@ -66,10 +72,33 @@ async function handleRecalc(request: NextRequest): Promise<NextResponse> {
     });
   }
 
-  try {
-    const rawBody: unknown = await request.json().catch(() => null);
-    const body = (rawBody ?? {}) as TargetedRecalcBody;
+  // `request.json()` lança para corpo ausente/vazio — tratado como `null` (equivalente a
+  // "sem corpo", que preserva o recálculo total). Corpo presente porém malformado (JSON
+  // inválido) cai no mesmo `null` e é validado como objeto vazio: não bloqueia o disparo
+  // sem-corpo do scheduler.
+  const rawBody: unknown = await request.json().catch(() => null);
+  const parsedBody = targetedRecalcBodySchema.safeParse(rawBody ?? {});
 
+  if (!parsedBody.success) {
+    auditLog({
+      operation: "gamification.ranking.recalculate.invalid_body",
+      entity: "RankingScore",
+      result: "failure",
+      correlationId: "cron:ranking-recalc",
+    });
+    return NextResponse.json(
+      fail(
+        "VALIDATION_ERROR",
+        "Corpo da requisição inválido para recálculo direcionado.",
+        parsedBody.error.flatten().fieldErrors,
+      ),
+      { status: 400 },
+    );
+  }
+
+  const body: TargetedRecalcBody = parsedBody.data;
+
+  try {
     if (body.periodType && body.scopeType && body.scopeKey) {
       const result = await recalculateRankingForScope({
         periodType: body.periodType,
