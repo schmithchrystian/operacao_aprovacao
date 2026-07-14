@@ -1,4 +1,10 @@
-import type { MockExamCreateInput, MockExamEntity, MockExamRepository } from "../contracts/mock-exam-repository";
+import type {
+  MockExamCatalogCreateInput,
+  MockExamCreateInput,
+  MockExamEntity,
+  MockExamRepository,
+  MockExamUpdateInput,
+} from "../contracts/mock-exam-repository";
 
 /**
  * Stub Prisma — implementação real cabe ao agente `database` a partir da Fase de banco.
@@ -16,8 +22,27 @@ export class PrismaMockExamRepository implements MockExamRepository {
     throw new Error("not implemented: PrismaMockExamRepository.list");
   }
 
+  async listForAdmin(): Promise<MockExamEntity[]> {
+    throw new Error("not implemented: PrismaMockExamRepository.listForAdmin");
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
   async create(_input: MockExamCreateInput): Promise<MockExamEntity> {
     throw new Error("not implemented: PrismaMockExamRepository.create");
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
+  async createCatalog(_input: MockExamCatalogCreateInput): Promise<MockExamEntity> {
+    throw new Error("not implemented: PrismaMockExamRepository.createCatalog");
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
+  async update(_input: MockExamUpdateInput): Promise<MockExamEntity> {
+    throw new Error("not implemented: PrismaMockExamRepository.update");
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
+  async softDelete(_id: string, _now: Date): Promise<MockExamEntity> {
+    throw new Error("not implemented: PrismaMockExamRepository.softDelete");
   }
 }

@@ -39,6 +39,7 @@ export const mockMockExams: MockExamEntity[] = [
       "question-direitos-humanos-03",
     ],
     createdAt: "2026-02-01T00:00:00.000Z",
+    deletedAt: null,
   },
   {
     id: MOCK_EXAM_IDS.guardaCivilMunicipal,
@@ -61,6 +62,7 @@ export const mockMockExams: MockExamEntity[] = [
       "question-constitucional-04",
     ],
     createdAt: "2026-02-01T00:00:00.000Z",
+    deletedAt: null,
   },
   {
     id: MOCK_EXAM_IDS.policiaPenal,
@@ -86,6 +88,7 @@ export const mockMockExams: MockExamEntity[] = [
       "question-raciocinio-04",
     ],
     createdAt: "2026-02-01T00:00:00.000Z",
+    deletedAt: null,
   },
   {
     id: MOCK_EXAM_IDS.direitoPenal,
@@ -103,5 +106,6 @@ export const mockMockExams: MockExamEntity[] = [
       "question-penal-05",
     ],
     createdAt: "2026-02-05T00:00:00.000Z",
+    deletedAt: null,
   },
 ];

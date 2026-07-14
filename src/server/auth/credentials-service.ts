@@ -37,6 +37,13 @@ export async function verifyCredentials(email: string, password: string): Promis
     return null;
   }
 
+  // Fase 17 (admin — "ativar/desativar usuário"): conta desativada nunca autentica. Mesma
+  // resposta de credenciais inválidas (nunca revela ao cliente se a conta existe mas está
+  // desativada) — CLAUDE.md §24.
+  if (!user.isActive) {
+    return null;
+  }
+
   return {
     userId: user.id,
     role: user.role,

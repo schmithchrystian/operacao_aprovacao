@@ -11,11 +11,33 @@ import type { LessonProgressEntity } from "@/server/repositories/contracts/lesso
  */
 
 function lesson(id: string, moduleId: string, order: number, requiresLessonId: string | null = null): LessonEntity {
-  return { id, moduleId, order, title: id, durationMinutes: 30, requiresLessonId };
+  return {
+    id,
+    moduleId,
+    order,
+    title: id,
+    durationMinutes: 30,
+    requiresLessonId,
+    videoUrl: null,
+    teacherId: null,
+    status: "PUBLISHED",
+    deletedAt: null,
+  };
 }
 
 function courseModule(id: string, courseId: string, order: number): ModuleEntity {
-  return { id, courseId, order, slug: id, title: id, subjectId: "subject-x" };
+  return {
+    id,
+    courseId,
+    order,
+    slug: id,
+    title: id,
+    subjectId: "subject-x",
+    description: null,
+    teacherId: null,
+    status: "PUBLISHED",
+    deletedAt: null,
+  };
 }
 
 function progress(userId: string, lessonId: string, status: LessonProgressEntity["status"]): LessonProgressEntity {

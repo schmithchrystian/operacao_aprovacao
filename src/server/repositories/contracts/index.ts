@@ -36,3 +36,9 @@ export * from "./flashcard-review-repository";
 export * from "./focus-session-repository";
 // Fase 16 — agente `backend` (Perfil + privacidade).
 export * from "./profile-repository";
+// Fase 17 — agente `backend` (Administração: conteúdo/usuários/config/avisos/auditoria).
+export * from "./shared";
+export * from "./contest-repository";
+export * from "./teacher-repository";
+export * from "./achievement-repository";
+export * from "./notification-repository";

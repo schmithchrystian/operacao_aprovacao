@@ -1,4 +1,8 @@
-import type { QuestionOptionEntity, QuestionOptionRepository } from "../contracts/question-option-repository";
+import type {
+  QuestionOptionDraft,
+  QuestionOptionEntity,
+  QuestionOptionRepository,
+} from "../contracts/question-option-repository";
 
 /**
  * Stub Prisma — implementação real cabe ao agente `database` a partir da Fase de banco.
@@ -18,5 +22,10 @@ export class PrismaQuestionOptionRepository implements QuestionOptionRepository 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
   async listByQuestionIds(_questionIds: string[]): Promise<QuestionOptionEntity[]> {
     throw new Error("not implemented: PrismaQuestionOptionRepository.listByQuestionIds");
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
+  async replaceForQuestion(_questionId: string, _drafts: QuestionOptionDraft[]): Promise<QuestionOptionEntity[]> {
+    throw new Error("not implemented: PrismaQuestionOptionRepository.replaceForQuestion");
   }
 }

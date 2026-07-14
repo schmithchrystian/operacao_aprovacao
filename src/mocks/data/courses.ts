@@ -19,6 +19,8 @@ export const mockCourses: CourseEntity[] = [
     workloadHours: 180,
     coverColor: "#1F2937",
     difficulty: "intermediario",
+    status: "PUBLISHED",
+    deletedAt: null,
   },
   {
     id: "course-2",
@@ -31,6 +33,8 @@ export const mockCourses: CourseEntity[] = [
     workloadHours: 150,
     coverColor: "#374151",
     difficulty: "iniciante",
+    status: "PUBLISHED",
+    deletedAt: null,
   },
   {
     id: "course-3",
@@ -43,5 +47,7 @@ export const mockCourses: CourseEntity[] = [
     workloadHours: 200,
     coverColor: "#111827",
     difficulty: "avancado",
+    status: "PUBLISHED",
+    deletedAt: null,
   },
 ];

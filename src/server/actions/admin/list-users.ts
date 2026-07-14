@@ -3,7 +3,7 @@
 import { listUsersForAdmin } from "@/server/services/admin/list-users-service";
 import { fail, ok, type ActionResult } from "@/contracts/common";
 import { isDomainError } from "@/server/errors";
-import type { UserEntity } from "@/server/repositories/contracts/user-repository";
+import type { AdminUserDTO } from "@/contracts/admin-users";
 
 /**
  * Server Action fina (docs/ARCHITECTURE.md §6): repassa para o serviço, que já envolve
@@ -12,7 +12,7 @@ import type { UserEntity } from "@/server/repositories/contracts/user-repository
  * `ForbiddenError`/`AuthError` propagarem crus — nunca vaza stack trace ao cliente.
  * Ver `@/server/services/admin/list-users-service.ts`.
  */
-export async function listUsersForAdminAction(): Promise<ActionResult<UserEntity[]>> {
+export async function listUsersForAdminAction(): Promise<ActionResult<AdminUserDTO[]>> {
   try {
     const users = await listUsersForAdmin();
     return ok(users);

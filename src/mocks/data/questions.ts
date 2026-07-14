@@ -546,6 +546,7 @@ function buildQuestions(): { questions: QuestionEntity[]; options: QuestionOptio
       explanation: seed.explanation,
       status: "PUBLISHED",
       createdAt: "2026-01-10T00:00:00.000Z",
+      deletedAt: null,
     });
 
     seed.options.forEach((text, optionIndex) => {

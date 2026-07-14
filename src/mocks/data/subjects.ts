@@ -25,7 +25,8 @@ export const SUBJECT_IDS = {
   redacao: "subject-redacao",
 } as const;
 
-export const mockSubjects: SubjectEntity[] = [
+/** Seed compacto (id/name) — `deletedAt` (Fase 17) é aplicado uniformemente abaixo. */
+const SUBJECT_SEEDS: ReadonlyArray<Pick<SubjectEntity, "id" | "name">> = [
   { id: SUBJECT_IDS.linguaPortuguesa, name: "Língua Portuguesa" },
   { id: SUBJECT_IDS.matematica, name: "Matemática" },
   { id: SUBJECT_IDS.raciocinioLogico, name: "Raciocínio Lógico" },
@@ -43,3 +44,5 @@ export const mockSubjects: SubjectEntity[] = [
   { id: SUBJECT_IDS.atualidades, name: "Atualidades" },
   { id: SUBJECT_IDS.redacao, name: "Redação" },
 ];
+
+export const mockSubjects: SubjectEntity[] = SUBJECT_SEEDS.map((seed) => ({ ...seed, deletedAt: null }));

@@ -1,6 +1,7 @@
 /**
  * Entidade de domínio de questão (`Question`, docs/DATA-MODEL.md). Fase 10 — agente
- * `simulations`. Espelha `Difficulty`/`ContentStatus` do Prisma (mantidos sincronizados).
+ * `simulations`; Fase 17 — agente `backend` (CRUD administrativo). Espelha
+ * `Difficulty`/`ContentStatus` do Prisma (mantidos sincronizados).
  *
  * NUNCA inclui a resposta correta — isso vive só em `QuestionOptionEntity.isCorrect`
  * (`./question-option-repository.ts`), lido apenas pelo backend na correção
@@ -20,6 +21,8 @@ export interface QuestionEntity {
   explanation: string | null;
   status: QuestionStatus;
   createdAt: string;
+  /** Fase 17 (admin) — soft-delete (`Question.deletedAt`). ISO 8601, ou `null` quando ativa. */
+  deletedAt: string | null;
 }
 
 /**
@@ -39,9 +42,47 @@ export interface QuestionFilter {
   status?: QuestionStatus;
 }
 
-/** Abstração de persistência para questões (ADR-0002). Métodos mínimos de leitura. */
+/**
+ * Entrada de criação administrativa (Fase 17 — agente `backend`). Cuida SÓ da linha `Question`
+ * — as alternativas (`QuestionOption`) são responsabilidade de `QuestionOptionRepository`
+ * (`./question-option-repository.ts`); o service (`server/services/admin/question-service.ts`)
+ * orquestra os dois repositórios na mesma operação (mesmo espírito de `Course`/`Module`/`Lesson`
+ * não conhecerem uns aos outros diretamente).
+ */
+export interface QuestionCreateInput {
+  statement: string;
+  subjectId: string;
+  topicId: string | null;
+  board: string | null;
+  difficulty: QuestionDifficulty;
+  explanation: string | null;
+  now: Date;
+}
+
+export interface QuestionUpdateInput {
+  id: string;
+  statement?: string;
+  subjectId?: string;
+  topicId?: string | null;
+  board?: string | null;
+  difficulty?: QuestionDifficulty;
+  explanation?: string | null;
+  status?: QuestionStatus;
+  now: Date;
+}
+
+/** Abstração de persistência para questões (ADR-0002). */
 export interface QuestionRepository {
+  /** Busca "crua" (ignora `status`/`deletedAt`) — uso administrativo. */
   findById(id: string): Promise<QuestionEntity | null>;
   findByIds(ids: string[]): Promise<QuestionEntity[]>;
+  /** Nunca devolve uma questão soft-deleted, mesmo que `filter.status` seja informado
+   *  explicitamente — deletar é sempre mais forte que qualquer filtro de status. */
   list(filter?: QuestionFilter): Promise<QuestionEntity[]>;
+  /** Fase 17 (admin) — TODAS as questões (qualquer `status`, incluindo soft-deleted). */
+  listForAdmin(): Promise<QuestionEntity[]>;
+  create(input: QuestionCreateInput): Promise<QuestionEntity>;
+  update(input: QuestionUpdateInput): Promise<QuestionEntity>;
+  /** Soft-delete — operação destrutiva; o service exige `confirm: true`. */
+  softDelete(id: string, now: Date): Promise<QuestionEntity>;
 }

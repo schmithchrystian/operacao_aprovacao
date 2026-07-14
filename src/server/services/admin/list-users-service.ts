@@ -1,16 +1,16 @@
+import type { AdminUserDTO } from "@/contracts/admin-users";
 import { withAdminAudit } from "@/server/audit/with-admin-audit";
 import { getRepositories } from "@/server/repositories";
-import type { UserEntity } from "@/server/repositories/contracts/user-repository";
+import { toAdminUserDTO } from "./mappers";
 
 /**
- * Exemplo mínimo de uso de `withAdminAudit` (Fase 4, item 7): lista os usuários
- * cadastrados para o painel administrativo. `requireRole` roda antes do handler (só
- * `admin`/`moderador` passam) e cada chamada gera um `auditLog` de sucesso ou falha.
+ * Lista os usuários cadastrados para o painel administrativo (Fase 4, primeiro uso de
+ * `withAdminAudit`). `requireRole` roda antes do handler (só `admin`/`moderador` passam) e
+ * cada chamada gera um `auditLog` de sucesso ou falha.
  *
- * Ainda não há telas administrativas de escrita (usuários, cursos, etc.) — quando
- * chegarem (ex.: alterar papel de um usuário, arquivar curso), envolvê-las com
- * `withAdminAudit` da mesma forma neste diretório (`server/services/admin`), em vez de
- * chamar `requireRole`/`auditLog` à mão em cada serviço.
+ * Retorna `AdminUserDTO` (via mapeamento EXPLÍCITO `toAdminUserDTO`), nunca a `UserEntity` crua
+ * — achado da revisão de segurança da Fase 17: quando o Prisma trouxer `passwordHash` etc. no
+ * modelo persistido, projetar a entidade direto vazaria esses campos ao cliente.
  *
  * Fica em `server/services` (não em `server/actions`) porque uma Server Action com
  * `"use server"` no topo do arquivo só pode exportar funções `async` declaradas
@@ -19,7 +19,8 @@ import type { UserEntity } from "@/server/repositories/contracts/user-repository
  */
 export const listUsersForAdmin = withAdminAudit(
   { operation: "admin.users.list", entity: "User", roles: ["admin", "moderador"] },
-  async (): Promise<UserEntity[]> => {
-    return getRepositories().users.list();
+  async (): Promise<AdminUserDTO[]> => {
+    const users = await getRepositories().users.list();
+    return users.map(toAdminUserDTO);
   },
 );

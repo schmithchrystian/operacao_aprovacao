@@ -1,37 +1,136 @@
 import type { Metadata } from "next";
-import { Settings } from "lucide-react";
-import { EmptyState } from "@/components/shared/empty-state";
-import { listUsersForAdminAction } from "@/server/actions/admin/list-users";
+import { LayoutDashboard, Users, UserCheck, UserPlus, Clock, CheckCircle2, Target, TrendingUp, Gauge, CreditCard } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ErrorState } from "@/components/shared/error-state";
+import { StatCard } from "@/components/shared/stat-card";
+import { AdminRankingBarChart } from "@/components/admin/charts/admin-ranking-bar-chart";
+import { getAdminDashboardAction } from "@/server/actions/admin/dashboard";
+import { formatMinutesAsDuration } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Administração",
+  title: "Dashboard administrativo",
 };
 
 /**
- * A contagem de usuários abaixo é só um exemplo mínimo, funcional, de
- * `withAdminAudit` em uso (Fase 4, item 7) — não uma tela de gestão de usuários.
- * `admin/layout.tsx` já garante `requireRole('admin','moderador')` antes de chegar
- * aqui; `listUsersForAdminAction` reforça a mesma checagem e registra auditoria.
+ * Dashboard administrativo (Fase 17 — item 2 da tarefa). Server Component: busca
+ * `getAdminDashboardAction` no servidor e só repassa os dados prontos para os gráficos
+ * (Client Components) — nenhum cálculo de métrica acontece aqui.
  */
-export default async function AdminHomePage() {
-  const result = await listUsersForAdminAction();
+export default async function AdminDashboardPage() {
+  const result = await getAdminDashboardAction();
+
+  if (!result.ok) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+        <ErrorState title="Não foi possível carregar o dashboard" description={result.error.message} />
+      </div>
+    );
+  }
+
+  const dashboard = result.data;
+  const generatedAt = new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "short",
+    timeStyle: "short",
+    timeZone: "UTC",
+  }).format(new Date(dashboard.generatedAt));
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Administração</h1>
-      {result.ok ? (
-        <p className="text-muted-foreground text-sm">
-          Usuários cadastrados (mock):{" "}
-          <span className="text-foreground font-medium">{result.data.length}</span>
-        </p>
-      ) : (
-        <p className="text-destructive text-sm">{result.error.message}</p>
-      )}
-      <EmptyState
-        icon={Settings}
-        title="Em construção"
-        description="O painel administrativo de conteúdo será implementado em uma etapa dedicada."
-      />
+    <div className="space-y-8">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <LayoutDashboard className="text-primary h-6 w-6" aria-hidden="true" />
+          <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+        </div>
+        <p className="text-muted-foreground text-xs">Calculado em {generatedAt} (UTC)</p>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard title="Total de alunos" value={dashboard.totalStudents.toLocaleString("pt-BR")} icon={Users} />
+        <StatCard title="Alunos ativos" value={dashboard.activeUsers.toLocaleString("pt-BR")} icon={UserCheck} />
+        <StatCard
+          title="Novos usuários (30 dias)"
+          value={dashboard.newUsersLast30Days.toLocaleString("pt-BR")}
+          icon={UserPlus}
+        />
+        <StatCard
+          title="Tempo médio de estudo"
+          value={formatMinutesAsDuration(dashboard.averageStudyMinutesPerStudent)}
+          icon={Clock}
+          hint="Por aluno"
+        />
+        <StatCard
+          title="Taxa de conclusão"
+          value={`${Math.round(dashboard.completionRatePercent)}%`}
+          icon={CheckCircle2}
+          valueClassName="text-success"
+        />
+        <StatCard
+          title="Aproveitamento médio"
+          value={`${Math.round(dashboard.averagePerformancePercent)}%`}
+          icon={Target}
+        />
+        <StatCard title="Retenção" value={`${Math.round(dashboard.retentionRatePercent)}%`} icon={TrendingUp} />
+        <StatCard
+          title="Engajamento"
+          value={`${Math.round(dashboard.engagementScore)}%`}
+          icon={Gauge}
+          hint="Heurística — ver pendência abaixo"
+        />
+      </div>
+
+      <Card>
+        <CardHeader className="flex-row items-center gap-2 space-y-0">
+          <CreditCard className="text-muted-foreground h-4 w-4" aria-hidden="true" />
+          <CardTitle>Assinaturas ativas</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-1">
+          <p className="text-2xl font-semibold tracking-tight">{dashboard.activeSubscriptions}</p>
+          <p className="text-muted-foreground text-xs">
+            Pendência do backend: não existe repositório de assinaturas ainda neste projeto — valor fixo em 0 até
+            esse domínio existir.
+          </p>
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Cursos mais acessados</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AdminRankingBarChart
+              data={dashboard.topCourses.map((c) => ({ label: c.title, value: c.accessCount }))}
+              valueLabel="Matrículas"
+              color="var(--chart-1)"
+            />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Aulas mais assistidas</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AdminRankingBarChart
+              data={dashboard.topLessons.map((l) => ({ label: l.title, value: l.viewCount }))}
+              valueLabel="Visualizações"
+              color="var(--chart-2)"
+            />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Simulados mais realizados</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AdminRankingBarChart
+              data={dashboard.topMockExams.map((m) => ({ label: m.title, value: m.attemptCount }))}
+              valueLabel="Tentativas"
+              color="var(--chart-3)"
+            />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

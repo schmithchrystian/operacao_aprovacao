@@ -37,6 +37,10 @@ function buildModule(courseId: string, order: number, seed: ModuleSeed): BuiltMo
     order,
     slug: seed.slug,
     title: seed.title,
+    description: null,
+    teacherId: null,
+    status: "PUBLISHED",
+    deletedAt: null,
   };
   const lessons: LessonEntity[] = seed.lessons.map((lessonSeed, index) => ({
     id: `${moduleId}-l${index + 1}`,
@@ -45,6 +49,10 @@ function buildModule(courseId: string, order: number, seed: ModuleSeed): BuiltMo
     title: lessonSeed.title,
     durationMinutes: lessonSeed.durationMinutes,
     requiresLessonId: null,
+    videoUrl: null,
+    teacherId: null,
+    status: "PUBLISHED",
+    deletedAt: null,
   }));
   return { module: moduleEntity, lessons };
 }

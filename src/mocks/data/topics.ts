@@ -27,7 +27,8 @@ export const TOPIC_IDS = {
   atuacaoPolicialDireitosHumanos: "topic-atuacao-policial-direitos-humanos",
 } as const;
 
-export const mockTopics: TopicEntity[] = [
+/** Seed compacto (id/subjectId/name) — `deletedAt` (Fase 17) é aplicado uniformemente abaixo. */
+const TOPIC_SEEDS: ReadonlyArray<Pick<TopicEntity, "id" | "subjectId" | "name">> = [
   { id: TOPIC_IDS.interpretacaoTexto, subjectId: SUBJECT_IDS.linguaPortuguesa, name: "Interpretação de Texto" },
   { id: TOPIC_IDS.gramaticaNormativa, subjectId: SUBJECT_IDS.linguaPortuguesa, name: "Gramática Normativa" },
   { id: TOPIC_IDS.operacoesPorcentagem, subjectId: SUBJECT_IDS.matematica, name: "Operações e Porcentagem" },
@@ -73,3 +74,5 @@ export const mockTopics: TopicEntity[] = [
     name: "Atuação Policial e Direitos Humanos",
   },
 ];
+
+export const mockTopics: TopicEntity[] = TOPIC_SEEDS.map((seed) => ({ ...seed, deletedAt: null }));

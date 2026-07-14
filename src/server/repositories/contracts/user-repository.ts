@@ -9,11 +9,24 @@ export interface UserEntity {
   name: string;
   email: string;
   role: Role;
+  /** Fase 17 (admin) — conta ativa/desativada (`User.isActive`, Prisma). Uma conta desativada
+   *  não autentica (`@/server/auth/credentials-service.ts`). */
+  isActive: boolean;
+  /** Fase 17 (admin — dashboard "novos usuários"). ISO 8601. */
+  createdAt: string;
 }
 
-/** Abstração de persistência para usuários (ADR-0002). Métodos mínimos de leitura. */
+/** Abstração de persistência para usuários (ADR-0002). */
 export interface UserRepository {
   findById(id: string): Promise<UserEntity | null>;
   findByEmail(email: string): Promise<UserEntity | null>;
   list(): Promise<UserEntity[]>;
+  /**
+   * Fase 17 (admin) — altera o papel do usuário. Operação SENSÍVEL: só o service de admin
+   * (`server/services/admin/users-service.ts`, `roles: ["admin"]`) deve chamar isto — nunca
+   * exposto a `moderador` (CLAUDE.md §11/§24).
+   */
+  updateRole(userId: string, role: Role): Promise<UserEntity>;
+  /** Fase 17 (admin) — ativa/desativa a conta. */
+  setActive(userId: string, isActive: boolean): Promise<UserEntity>;
 }

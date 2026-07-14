@@ -39,3 +39,6 @@ export { mockStudyPlans, mockStudyPlanItems, mockPlanSubjectWeights } from "./da
 export { mockBrainstormBoards, mockBrainstormColumns, mockBrainstormCards } from "./data/brainstorm";
 export { mockFlashcardDecks, mockFlashcards, mockFlashcardReviews } from "./data/flashcards";
 export { mockProfiles } from "./data/profiles";
+export { mockContests } from "./data/contests";
+export { mockTeachers } from "./data/teachers";
+export { mockAchievements } from "./data/achievements";

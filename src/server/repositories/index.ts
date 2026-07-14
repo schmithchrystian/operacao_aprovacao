@@ -1,8 +1,10 @@
 import { env } from "@/config/env";
 import type {
+  AchievementRepository,
   BrainstormBoardRepository,
   BrainstormCardRepository,
   BrainstormColumnRepository,
+  ContestRepository,
   CourseRepository,
   DailyGoalRepository,
   EnrollmentRepository,
@@ -16,6 +18,7 @@ import type {
   MockExamAttemptRepository,
   MockExamRepository,
   ModuleRepository,
+  NotificationRepository,
   PointTransactionRepository,
   ProfileRepository,
   QuestionAttemptRepository,
@@ -28,15 +31,18 @@ import type {
   StudyPlanRepository,
   StudySessionRepository,
   SubjectRepository,
+  TeacherRepository,
   TopicRepository,
   UserAchievementRepository,
   UserRepository,
   UserStreakRepository,
   WeeklyGoalRepository,
 } from "./contracts";
+import { MockAchievementRepository } from "./mock/achievement-repository";
 import { MockBrainstormBoardRepository } from "./mock/brainstorm-board-repository";
 import { MockBrainstormCardRepository } from "./mock/brainstorm-card-repository";
 import { MockBrainstormColumnRepository } from "./mock/brainstorm-column-repository";
+import { MockContestRepository } from "./mock/contest-repository";
 import { MockCourseRepository } from "./mock/course-repository";
 import { MockDailyGoalRepository } from "./mock/daily-goal-repository";
 import { MockEnrollmentRepository } from "./mock/enrollment-repository";
@@ -50,6 +56,7 @@ import { MockLessonRepository } from "./mock/lesson-repository";
 import { MockMockExamAttemptRepository } from "./mock/mock-exam-attempt-repository";
 import { MockMockExamRepository } from "./mock/mock-exam-repository";
 import { MockModuleRepository } from "./mock/module-repository";
+import { MockNotificationRepository } from "./mock/notification-repository";
 import { MockPointTransactionRepository } from "./mock/point-transaction-repository";
 import { MockProfileRepository } from "./mock/profile-repository";
 import { MockQuestionAttemptRepository } from "./mock/question-attempt-repository";
@@ -62,14 +69,17 @@ import { MockStudyPlanItemRepository } from "./mock/study-plan-item-repository";
 import { MockStudyPlanRepository } from "./mock/study-plan-repository";
 import { MockStudySessionRepository } from "./mock/study-session-repository";
 import { MockSubjectRepository } from "./mock/subject-repository";
+import { MockTeacherRepository } from "./mock/teacher-repository";
 import { MockTopicRepository } from "./mock/topic-repository";
 import { MockUserAchievementRepository } from "./mock/user-achievement-repository";
 import { MockUserRepository } from "./mock/user-repository";
 import { MockUserStreakRepository } from "./mock/user-streak-repository";
 import { MockWeeklyGoalRepository } from "./mock/weekly-goal-repository";
+import { PrismaAchievementRepository } from "./prisma/achievement-repository";
 import { PrismaBrainstormBoardRepository } from "./prisma/brainstorm-board-repository";
 import { PrismaBrainstormCardRepository } from "./prisma/brainstorm-card-repository";
 import { PrismaBrainstormColumnRepository } from "./prisma/brainstorm-column-repository";
+import { PrismaContestRepository } from "./prisma/contest-repository";
 import { PrismaCourseRepository } from "./prisma/course-repository";
 import { PrismaDailyGoalRepository } from "./prisma/daily-goal-repository";
 import { PrismaEnrollmentRepository } from "./prisma/enrollment-repository";
@@ -83,6 +93,7 @@ import { PrismaLessonRepository } from "./prisma/lesson-repository";
 import { PrismaMockExamAttemptRepository } from "./prisma/mock-exam-attempt-repository";
 import { PrismaMockExamRepository } from "./prisma/mock-exam-repository";
 import { PrismaModuleRepository } from "./prisma/module-repository";
+import { PrismaNotificationRepository } from "./prisma/notification-repository";
 import { PrismaPointTransactionRepository } from "./prisma/point-transaction-repository";
 import { PrismaProfileRepository } from "./prisma/profile-repository";
 import { PrismaQuestionAttemptRepository } from "./prisma/question-attempt-repository";
@@ -95,6 +106,7 @@ import { PrismaStudyPlanItemRepository } from "./prisma/study-plan-item-reposito
 import { PrismaStudyPlanRepository } from "./prisma/study-plan-repository";
 import { PrismaStudySessionRepository } from "./prisma/study-session-repository";
 import { PrismaSubjectRepository } from "./prisma/subject-repository";
+import { PrismaTeacherRepository } from "./prisma/teacher-repository";
 import { PrismaTopicRepository } from "./prisma/topic-repository";
 import { PrismaUserAchievementRepository } from "./prisma/user-achievement-repository";
 import { PrismaUserRepository } from "./prisma/user-repository";
@@ -143,6 +155,11 @@ export interface Repositories {
   focusSessions: FocusSessionRepository;
   /** Fase 16 — agente `backend` (Perfil + privacidade). */
   profiles: ProfileRepository;
+  /** Fase 17 — agente `backend` (Administração: conteúdo/usuários/avisos). */
+  contests: ContestRepository;
+  teachers: TeacherRepository;
+  achievements: AchievementRepository;
+  notifications: NotificationRepository;
 }
 
 let cached: Repositories | null = null;
@@ -183,6 +200,10 @@ function buildRepositories(): Repositories {
       flashcardReviews: new PrismaFlashcardReviewRepository(),
       focusSessions: new PrismaFocusSessionRepository(),
       profiles: new PrismaProfileRepository(),
+      contests: new PrismaContestRepository(),
+      teachers: new PrismaTeacherRepository(),
+      achievements: new PrismaAchievementRepository(),
+      notifications: new PrismaNotificationRepository(),
     };
   }
   return {
@@ -219,6 +240,10 @@ function buildRepositories(): Repositories {
     flashcardReviews: new MockFlashcardReviewRepository(),
     focusSessions: new MockFocusSessionRepository(),
     profiles: new MockProfileRepository(),
+    contests: new MockContestRepository(),
+    teachers: new MockTeacherRepository(),
+    achievements: new MockAchievementRepository(),
+    notifications: new MockNotificationRepository(),
   };
 }
 
