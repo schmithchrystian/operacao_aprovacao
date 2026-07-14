@@ -40,8 +40,8 @@ export function ContinueMissionCard({ nextLesson }: ContinueMissionCardProps) {
                 `nativeButton={false}`, força `role="button"` num link (semântica errada p/ algo
                 que NAVEGA). Aqui o elemento deve ser um link (role "link"), então o caminho
                 correto é estilizar o `<Link>` — sem primitivo de botão, sem warning. Mesmo
-                idioma `<Button render={<Link/>}>` aparece em ~17 outros pontos do projeto — ver
-                nota no relatório. */}
+                idioma já aplicado em todos os outros pontos do projeto que antes usavam
+                `<Button render={<Link/>}>` (varredura de polimento — ver relatório). */}
             <Link href={nextLesson.href} className={cn(buttonVariants())}>
               Continuar estudando
               <ArrowRight className="h-4 w-4" aria-hidden="true" />

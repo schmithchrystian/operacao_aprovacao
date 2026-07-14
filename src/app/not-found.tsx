@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Compass } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { EmptyState } from "@/components/shared/empty-state";
+import { cn } from "@/lib/utils";
 
 export default function NotFound() {
   return (
@@ -13,7 +14,9 @@ export default function NotFound() {
           title="Página não encontrada"
           description="O conteúdo que você procura não existe ou foi movido."
           action={
-            <Button render={<Link href="/dashboard" />}>Voltar para o início</Button>
+            <Link href="/dashboard" className={cn(buttonVariants())}>
+              Voltar para o início
+            </Link>
           }
         />
       </div>

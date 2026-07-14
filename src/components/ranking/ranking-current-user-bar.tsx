@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import type { RankingListEntryDTO } from "@/server/services/gamification";
 import { RankingAvatar } from "./ranking-avatar";
 import { RankingEvolution } from "./ranking-evolution";
@@ -38,13 +39,12 @@ export function RankingCurrentUserBar({ entry, query, currentPage, pageSize }: R
           <RankingEvolution value={entry.evolution} />
         </div>
         {!isOnCurrentPage && ownerPage ? (
-          <Button
-            variant="outline"
-            size="sm"
-            render={<Link href={buildRankingHref("/ranking", query, { page: ownerPage })} />}
+          <Link
+            href={buildRankingHref("/ranking", query, { page: ownerPage })}
+            className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
           >
             Ver minha posição
-          </Button>
+          </Link>
         ) : null}
       </div>
     </div>

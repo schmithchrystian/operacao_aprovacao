@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ATTEMPT_STATUS_BADGE_CLASS, ATTEMPT_STATUS_LABEL } from "@/components/simulations/labels";
-import { formatDatePtBr } from "@/lib/utils";
+import { cn, formatDatePtBr } from "@/lib/utils";
 import type { HistoryItemDTO } from "@/contracts/simulations";
 
 interface HistoryListProps {
@@ -74,9 +74,9 @@ export function HistoryList({ items }: HistoryListProps) {
                   </td>
                   <td className="px-3 py-2 text-right">
                     {action ? (
-                      <Button size="sm" variant="outline" render={<Link href={action.href} />}>
+                      <Link href={action.href} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
                         {action.label}
-                      </Button>
+                      </Link>
                     ) : (
                       <span className="text-muted-foreground">—</span>
                     )}
@@ -115,9 +115,12 @@ export function HistoryList({ items }: HistoryListProps) {
                     </div>
                   </dl>
                   {action ? (
-                    <Button size="sm" variant="outline" className="w-full" render={<Link href={action.href} />}>
+                    <Link
+                      href={action.href}
+                      className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}
+                    >
                       {action.label}
-                    </Button>
+                    </Link>
                   ) : null}
                 </CardContent>
               </Card>

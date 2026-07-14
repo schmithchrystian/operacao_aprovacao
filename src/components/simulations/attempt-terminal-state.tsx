@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Ban, Clock, History, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { formatDatePtBr } from "@/lib/utils";
+import { cn, formatDatePtBr } from "@/lib/utils";
 import type { AttemptStatusDTO } from "@/contracts/simulations";
 
 interface AttemptTerminalStateProps {
@@ -65,14 +65,14 @@ export function AttemptTerminalState({ attempt }: AttemptTerminalStateProps) {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-2">
-          <Button render={<Link href="/simulados" />}>
+          <Link href="/simulados" className={cn(buttonVariants())}>
             <Plus aria-hidden="true" />
             Montar novo simulado
-          </Button>
-          <Button variant="outline" render={<Link href="/simulados/historico" />}>
+          </Link>
+          <Link href="/simulados/historico" className={cn(buttonVariants({ variant: "outline" }))}>
             <History aria-hidden="true" />
             Ver histórico
-          </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>

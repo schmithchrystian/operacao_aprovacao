@@ -4,13 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Archive, BookOpen, Settings2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ContentStatusBadge } from "@/components/admin/content-status-badge";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 import type { AdminContestDTO, AdminCourseDTO } from "@/contracts/admin-content";
 import { archiveCourseForAdminAction } from "@/server/actions/admin/courses";
+import { cn } from "@/lib/utils";
 import { CreateCourseDialog } from "./create-course-dialog";
 import { EditCourseDialog } from "./edit-course-dialog";
 
@@ -82,10 +83,13 @@ export function CoursesManager({ initialCourses, contests, isAdmin }: CoursesMan
                   </TableCell>
                   <TableCell>
                     <div className="flex justify-end gap-2">
-                      <Button type="button" variant="outline" size="sm" render={<Link href={`/admin/cursos/${course.id}`} />}>
+                      <Link
+                        href={`/admin/cursos/${course.id}`}
+                        className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+                      >
                         <Settings2 aria-hidden="true" />
                         Módulos
-                      </Button>
+                      </Link>
                       {!isDeleted ? <EditCourseDialog course={course} contests={contests} onSaved={(updated) => setCourses((prev) => prev.map((c) => (c.id === updated.id ? updated : c)))} /> : null}
                       {isAdmin && !isDeleted ? (
                         <ConfirmDialog

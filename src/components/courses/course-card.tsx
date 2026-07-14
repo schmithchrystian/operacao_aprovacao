@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { BookOpen, Clock, GraduationCap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProgressBar } from "@/components/shared/progress-bar";
+import { cn } from "@/lib/utils";
 import type { CourseDifficulty, CourseStatus, CourseSummaryDTO } from "@/contracts/courses";
 
 const DIFFICULTY_LABEL: Record<CourseDifficulty, string> = {
@@ -91,9 +92,9 @@ export function CourseCard({ course }: CourseCardProps) {
       </CardContent>
 
       <CardFooter>
-        <Button render={<Link href={href} />} className="w-full">
+        <Link href={href} className={cn(buttonVariants(), "w-full")}>
           {ctaLabel}
-        </Button>
+        </Link>
       </CardFooter>
     </Card>
   );

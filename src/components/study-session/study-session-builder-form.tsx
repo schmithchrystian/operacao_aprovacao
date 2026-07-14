@@ -7,14 +7,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { ArrowRight, Rocket, Sparkles } from "lucide-react";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { DIFFICULTY_LABEL } from "@/components/simulations/labels";
-import { formatMinutesAsDuration } from "@/lib/utils";
+import { cn, formatMinutesAsDuration } from "@/lib/utils";
 import {
   contentTypeSchema,
   sessionDifficultySchema,
@@ -468,10 +468,10 @@ export function StudySessionBuilderForm({
                 ({missionResult.startingBlock.minutes} min)
               </p>
               {startingBlockHref ? (
-                <Button render={<Link href={startingBlockHref} />}>
+                <Link href={startingBlockHref} className={cn(buttonVariants())}>
                   Ir para o conteúdo
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Button>
+                </Link>
               ) : (
                 <p className="text-muted-foreground text-xs">
                   Este bloco ainda não tem um link direto — use o menu para encontrar o conteúdo.

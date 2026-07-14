@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BarChart3, BookOpen, CalendarClock, Clock, Flame, ListOrdered, Percent, Timer } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
@@ -18,7 +18,7 @@ import { formatAverageSeconds, formatMonthLabel, formatWeekLabel } from "@/compo
 import { OverdueReviewsCard } from "@/components/tracking/overdue-reviews-card";
 import { PendingContentsCard } from "@/components/tracking/pending-contents-card";
 import { WeakContentsCard } from "@/components/tracking/weak-contents-card";
-import { formatMinutesAsDuration } from "@/lib/utils";
+import { cn, formatMinutesAsDuration } from "@/lib/utils";
 import { getDiagnosisAction, getTrackingOverviewAction } from "@/server/actions/tracking";
 
 export const metadata: Metadata = { title: "Acompanhamento" };
@@ -224,9 +224,9 @@ export default async function AcompanhamentoPage() {
               title="Nenhuma data de prova definida"
               description="Defina a data da prova no plano de estudos para acompanhar o progresso esperado até lá."
               action={
-                <Button variant="outline" render={<Link href="/plano-de-estudos" />}>
+                <Link href="/plano-de-estudos" className={cn(buttonVariants({ variant: "outline" }))}>
                   Ir para o plano de estudos
-                </Button>
+                </Link>
               }
             />
           )}

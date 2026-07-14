@@ -3,12 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Clock, GraduationCap, Trophy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { EnrollButton } from "@/components/courses/enroll-button";
 import { ModuleSection } from "@/components/courses/module-section";
 import { ErrorState } from "@/components/shared/error-state";
 import { ProgressBar } from "@/components/shared/progress-bar";
+import { cn } from "@/lib/utils";
 import type { CourseDifficulty } from "@/contracts/courses";
 import { getCourseDetailAction } from "@/server/actions/courses";
 
@@ -107,10 +108,10 @@ export default async function CoursePage({ params }: CoursePageProps) {
               variant={course.status === "concluido" ? "success" : "default"}
             />
             {nextLesson ? (
-              <Button render={<Link href={nextLesson.href} />}>
+              <Link href={nextLesson.href} className={cn(buttonVariants())}>
                 Continuar de onde parou
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Button>
+              </Link>
             ) : (
               <Badge variant="outline" className="border-success/40 bg-success/10 text-success gap-1">
                 <Trophy className="h-3.5 w-3.5" aria-hidden="true" />

@@ -11,8 +11,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { ProgressBar } from "@/components/shared/progress-bar";
+import { cn } from "@/lib/utils";
 import type { LessonCompletionDTO } from "@/contracts/progress";
 
 interface VictoryDialogProps {
@@ -83,14 +84,14 @@ export function VictoryDialog({
             renderizar o badge de conquista aqui. */}
 
         <DialogFooter>
-          <Button variant="outline" render={<Link href={courseTrackHref} />}>
+          <Link href={courseTrackHref} className={cn(buttonVariants({ variant: "outline" }))}>
             Voltar à trilha
-          </Button>
+          </Link>
           {nextLessonHref ? (
-            <Button render={<Link href={nextLessonHref} />}>
+            <Link href={nextLessonHref} className={cn(buttonVariants())}>
               {nextLessonTitle ? `Próxima aula: ${nextLessonTitle}` : "Próxima aula"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Button>
+            </Link>
           ) : null}
         </DialogFooter>
       </DialogContent>

@@ -1,36 +1,13 @@
-import {
-  Award,
-  BookCheck,
-  ClipboardCheck,
-  Crown,
-  Flame,
-  GraduationCap,
-  type LucideIcon,
-  PlayCircle,
-  Trophy,
-} from "lucide-react";
+import { Award } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/shared/empty-state";
+import { FALLBACK_ICON, ICON_ALLOWLIST } from "@/components/shared/lucide-icon";
 import { formatDatePtBr } from "@/lib/utils";
 import type { DashboardAchievement } from "@/contracts/dashboard";
 
 interface AchievementsListProps {
   achievements: DashboardAchievement[];
 }
-
-/**
- * Mapeamento nome do ícone (lucide-react, definido pelo `gamification`) -> componente.
- * `Award` é o ícone de fallback para nomes ainda não mapeados aqui.
- */
-const ACHIEVEMENT_ICONS: Record<string, LucideIcon> = {
-  PlayCircle,
-  Flame,
-  ClipboardCheck,
-  BookCheck,
-  Trophy,
-  GraduationCap,
-  Crown,
-};
 
 /**
  * Últimas conquistas do aluno. Server Component — a lista definitiva vem de
@@ -52,7 +29,7 @@ export function AchievementsList({ achievements }: AchievementsListProps) {
         ) : (
           <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {achievements.map((achievement) => {
-              const Icon = ACHIEVEMENT_ICONS[achievement.icon] ?? Award;
+              const Icon = ICON_ALLOWLIST[achievement.icon] ?? FALLBACK_ICON;
               return (
                 <li
                   key={achievement.id}

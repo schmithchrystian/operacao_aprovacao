@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { BarChart3, Lightbulb, ListX } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
@@ -11,7 +11,7 @@ import { AttemptPerformanceChart } from "@/components/charts/attempt-performance
 import { AttemptTerminalState } from "@/components/simulations/attempt-terminal-state";
 import { QuestionReviewList } from "@/components/simulations/question-review-list";
 import { ResultSummary } from "@/components/simulations/result-summary";
-import { formatDatePtBr } from "@/lib/utils";
+import { cn, formatDatePtBr } from "@/lib/utils";
 import { getAttemptStatusAction, getResultAction } from "@/server/actions/simulations";
 
 export const metadata: Metadata = { title: "Resultado do simulado" };
@@ -152,9 +152,9 @@ export default async function AttemptResultPage({ params }: ResultPageProps) {
                 As {data.wrongCount} questões erradas desta tentativa já foram adicionadas ao seu caderno de erros.
               </p>
             </div>
-            <Button variant="outline" render={<Link href="/simulados/caderno-de-erros" />}>
+            <Link href="/simulados/caderno-de-erros" className={cn(buttonVariants({ variant: "outline" }))}>
               Ver caderno de erros
-            </Button>
+            </Link>
           </CardContent>
         </Card>
       ) : null}

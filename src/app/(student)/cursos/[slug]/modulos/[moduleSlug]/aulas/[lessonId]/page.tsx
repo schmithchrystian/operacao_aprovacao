@@ -3,13 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Clock, GraduationCap } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { ModuleSection } from "@/components/courses/module-section";
 import { ErrorState } from "@/components/shared/error-state";
 import { ProgressBar } from "@/components/shared/progress-bar";
 import { LessonPlayer } from "@/components/lessons/lesson-player";
 import { LessonNotes } from "@/components/lessons/lesson-notes";
-import { formatMinutesAsDuration } from "@/lib/utils";
+import { cn, formatMinutesAsDuration } from "@/lib/utils";
 import { getCourseDetailAction } from "@/server/actions/courses";
 import { getLessonViewAction } from "@/server/actions/progress";
 
@@ -129,18 +129,18 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             {lesson.previousLesson ? (
-              <Button variant="outline" render={<Link href={lesson.previousLesson.href} />}>
+              <Link href={lesson.previousLesson.href} className={cn(buttonVariants({ variant: "outline" }))}>
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                 Aula anterior
-              </Button>
+              </Link>
             ) : (
               <span />
             )}
             {lesson.nextLesson ? (
-              <Button variant="outline" render={<Link href={lesson.nextLesson.href} />}>
+              <Link href={lesson.nextLesson.href} className={cn(buttonVariants({ variant: "outline" }))}>
                 Próxima aula
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Button>
+              </Link>
             ) : null}
           </div>
 
@@ -148,10 +148,10 @@ export default async function LessonPage({ params }: LessonPageProps) {
         </div>
 
         <aside className="space-y-4">
-          <Button variant="outline" className="w-full" render={<Link href={courseTrackHref} />}>
+          <Link href={courseTrackHref} className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Voltar à trilha
-          </Button>
+          </Link>
 
           <div className="border-border bg-card space-y-3 rounded-lg border p-4">
             <ProgressBar value={lesson.moduleProgressPercent} label="Progresso do módulo" variant="success" />
