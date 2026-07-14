@@ -33,3 +33,18 @@ export function formatDatePtBr(iso: string): string {
     timeZone: "UTC",
   }).format(new Date(iso))
 }
+
+/**
+ * Diferença em dias corridos (calendário UTC) entre "agora" e uma data ISO (meia-noite UTC) —
+ * mesma fórmula de `@/server/services/study-plan/date-utils#diffDaysIso` (trunca "agora" para
+ * meia-noite UTC antes de subtrair, evitando o off-by-one conforme a hora do dia), reimplementada
+ * aqui porque aquele módulo é server-only e este arquivo é importado por Client Components
+ * (`@/components/ui/*`). Puramente apresentacional — quem chama decide `now` (Server Components
+ * usam o relógio do servidor no momento do render; nunca o relógio do navegador como fonte de
+ * verdade, CLAUDE.md §14).
+ */
+export function diffCalendarDaysUtc(targetIso: string, now: Date = new Date()): number {
+  const todayUtcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+  const target = Date.parse(targetIso)
+  return Math.round((target - todayUtcMidnight) / 86_400_000)
+}

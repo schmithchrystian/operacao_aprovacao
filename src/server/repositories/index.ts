@@ -17,6 +17,7 @@ import type {
   MockExamRepository,
   ModuleRepository,
   PointTransactionRepository,
+  ProfileRepository,
   QuestionAttemptRepository,
   QuestionFavoriteRepository,
   QuestionOptionRepository,
@@ -50,6 +51,7 @@ import { MockMockExamAttemptRepository } from "./mock/mock-exam-attempt-reposito
 import { MockMockExamRepository } from "./mock/mock-exam-repository";
 import { MockModuleRepository } from "./mock/module-repository";
 import { MockPointTransactionRepository } from "./mock/point-transaction-repository";
+import { MockProfileRepository } from "./mock/profile-repository";
 import { MockQuestionAttemptRepository } from "./mock/question-attempt-repository";
 import { MockQuestionFavoriteRepository } from "./mock/question-favorite-repository";
 import { MockQuestionOptionRepository } from "./mock/question-option-repository";
@@ -82,6 +84,7 @@ import { PrismaMockExamAttemptRepository } from "./prisma/mock-exam-attempt-repo
 import { PrismaMockExamRepository } from "./prisma/mock-exam-repository";
 import { PrismaModuleRepository } from "./prisma/module-repository";
 import { PrismaPointTransactionRepository } from "./prisma/point-transaction-repository";
+import { PrismaProfileRepository } from "./prisma/profile-repository";
 import { PrismaQuestionAttemptRepository } from "./prisma/question-attempt-repository";
 import { PrismaQuestionFavoriteRepository } from "./prisma/question-favorite-repository";
 import { PrismaQuestionOptionRepository } from "./prisma/question-option-repository";
@@ -138,6 +141,8 @@ export interface Repositories {
   flashcardReviews: FlashcardReviewRepository;
   /** Fase 15 — agente `study-tracking` (Modo foco / Pomodoro). */
   focusSessions: FocusSessionRepository;
+  /** Fase 16 — agente `backend` (Perfil + privacidade). */
+  profiles: ProfileRepository;
 }
 
 let cached: Repositories | null = null;
@@ -177,6 +182,7 @@ function buildRepositories(): Repositories {
       flashcards: new PrismaFlashcardRepository(),
       flashcardReviews: new PrismaFlashcardReviewRepository(),
       focusSessions: new PrismaFocusSessionRepository(),
+      profiles: new PrismaProfileRepository(),
     };
   }
   return {
@@ -212,6 +218,7 @@ function buildRepositories(): Repositories {
     flashcards: new MockFlashcardRepository(),
     flashcardReviews: new MockFlashcardReviewRepository(),
     focusSessions: new MockFocusSessionRepository(),
+    profiles: new MockProfileRepository(),
   };
 }
 

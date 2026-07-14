@@ -35,7 +35,10 @@ export {
 // Leitura (cache-only) — respeita privacidade e devolve a posição do usuário mesmo fora da página.
 export {
   getRanking,
+  getUserRankingPosition,
+  anonymizedRankingName,
   type GetRankingInput,
   type RankingListEntryDTO,
   type RankingReadResult,
+  type RankingPositionSummary,
 } from "./read";

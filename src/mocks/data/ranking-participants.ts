@@ -1,14 +1,20 @@
 /**
  * Participantes do ranking (ADR-0011, CLAUDE.md §17/§23, Fase 9 — agente `gamification`).
  *
- * Este arquivo cobre DUAS necessidades que ainda não têm dono próprio no projeto:
+ * Este arquivo cobre DUAS necessidades:
  *
- * 1. **Identidade/privacidade de perfil** (`Profile` no Prisma: avatar, cidade/estado,
- *    concurso-alvo, flags `isProfilePublic`/`showInRanking`/`showRealName`/`showCityState`).
- *    `Profile` é entidade da Fase 16 (`perfil`) — ainda não tem repositório próprio. Até lá,
- *    o motor de ranking lê esses campos diretamente daqui (mesmo padrão de
- *    `mockGamificationStates`/`mockStudyStats` em `dashboard-service.ts`). TODO(Fase 16):
- *    trocar por leitura via `ProfileRepository` quando existir, preservando os mesmos campos.
+ * 1. **Identidade/privacidade de perfil** — RESOLVIDO PARCIALMENTE na Fase 16 (`backend`):
+ *    `ProfileRepository` agora existe e `src/server/services/gamification/ranking/read.ts`
+ *    consulta a privacidade real de lá (`isProfilePublic`/`showInRanking`/`showRealName`/
+ *    `showCityState` + `avatarUrl`/`city`/`state`) para qualquer usuário que tenha um `Profile`
+ *    — hoje só `user-1..4` (`src/mocks/data/profiles.ts`). Este arquivo (`mockRankingParticipants`)
+ *    continua servindo dois papéis que NÃO migraram para `Profile`: (a) fallback de
+ *    identidade/privacidade para os ~49 participantes FICTÍCIOS de demonstração (sem `User`/
+ *    `Profile` reais — ver `resolveRankingIdentities` em `ranking/read.ts`); (b) dados
+ *    demográficos de ESCOPO (`contestId`/`courseId`/`city`/`state` usados por
+ *    `selectCandidatesForScope`/`discoverScopesFromParticipants`, `ranking/scope.ts`) — Profile
+ *    não modela `courseId` nem é a fonte de agrupamento por escopo, então esta metade do
+ *    arquivo permanece necessária mesmo com `Profile` implementado.
  *
  * 2. **Métricas sem fonte real ainda** (aproveitamento em simulados — Fase 10 `simulations`;
  *    metas concluídas — Fases 11/12/15 `study-tracking`) e um "piso" de atividade para

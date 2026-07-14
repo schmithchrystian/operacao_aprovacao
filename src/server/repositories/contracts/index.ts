@@ -34,3 +34,5 @@ export * from "./flashcard-repository";
 export * from "./flashcard-review-repository";
 // Fase 15 — agente `study-tracking` (Modo foco / Pomodoro).
 export * from "./focus-session-repository";
+// Fase 16 — agente `backend` (Perfil + privacidade).
+export * from "./profile-repository";

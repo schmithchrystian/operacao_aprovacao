@@ -83,14 +83,15 @@ export interface UserGamificationView {
 }
 
 /**
- * Agrega o estado de gamificação do usuário (saldo, nível, progresso e conquistas). Autorização
- * (ADR-0006): só o próprio usuário autenticado pode ler seu estado — `requireUser` +
- * `assertOwnership`, nunca aceitando `userId` de uma fonte não autenticada.
+ * Núcleo NÃO AUTORIZADO (sem `requireUser`/`assertOwnership`) da agregação de gamificação —
+ * extraído nesta forma na Fase 16 (agente `backend`) para ser reaproveitado por
+ * `@/server/services/profile` no cálculo do perfil PÚBLICO de OUTRO usuário (onde
+ * `assertOwnership` sempre rejeitaria, já que o alvo não é quem está autenticado). Quem chama
+ * esta função é responsável pela própria autorização/privacidade na borda — nunca exportar isto
+ * diretamente para uma Server Action/Route Handler. `getUserGamification` (abaixo) continua
+ * sendo o único ponto gated, usado por tudo que lê o PRÓPRIO estado (dashboard, etc.).
  */
-export async function getUserGamification(userId: string): Promise<UserGamificationView> {
-  const session = await requireUser();
-  assertOwnership(userId, session.userId);
-
+export async function computeUserGamificationView(userId: string): Promise<UserGamificationView> {
   const repos = getRepositories();
   const { points, xp } = await repos.pointTransactions.sumByUserId(userId);
   const level = computeLevel(xp);
@@ -108,4 +109,16 @@ export async function getUserGamification(userId: string): Promise<UserGamificat
   }));
 
   return { userId, points, xp, level, achievements };
+}
+
+/**
+ * Agrega o estado de gamificação do usuário (saldo, nível, progresso e conquistas). Autorização
+ * (ADR-0006): só o próprio usuário autenticado pode ler seu estado — `requireUser` +
+ * `assertOwnership`, nunca aceitando `userId` de uma fonte não autenticada.
+ */
+export async function getUserGamification(userId: string): Promise<UserGamificationView> {
+  const session = await requireUser();
+  assertOwnership(userId, session.userId);
+
+  return computeUserGamificationView(userId);
 }

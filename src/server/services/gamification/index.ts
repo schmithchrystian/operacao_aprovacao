@@ -52,6 +52,7 @@ export { registerGamificationEventHandlers, __resetGamificationRegistration } fr
 // Leitura agregada (dashboard/perfil).
 export {
   getUserGamification,
+  computeUserGamificationView,
   computeUserGamificationStats,
   type UserGamificationView,
   type UserAchievementView,

@@ -38,3 +38,4 @@ export {
 export { mockStudyPlans, mockStudyPlanItems, mockPlanSubjectWeights } from "./data/study-plan";
 export { mockBrainstormBoards, mockBrainstormColumns, mockBrainstormCards } from "./data/brainstorm";
 export { mockFlashcardDecks, mockFlashcards, mockFlashcardReviews } from "./data/flashcards";
+export { mockProfiles } from "./data/profiles";
