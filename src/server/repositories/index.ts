@@ -1,5 +1,8 @@
 import { env } from "@/config/env";
 import type {
+  BrainstormBoardRepository,
+  BrainstormCardRepository,
+  BrainstormColumnRepository,
   CourseRepository,
   DailyGoalRepository,
   EnrollmentRepository,
@@ -26,6 +29,9 @@ import type {
   UserStreakRepository,
   WeeklyGoalRepository,
 } from "./contracts";
+import { MockBrainstormBoardRepository } from "./mock/brainstorm-board-repository";
+import { MockBrainstormCardRepository } from "./mock/brainstorm-card-repository";
+import { MockBrainstormColumnRepository } from "./mock/brainstorm-column-repository";
 import { MockCourseRepository } from "./mock/course-repository";
 import { MockDailyGoalRepository } from "./mock/daily-goal-repository";
 import { MockEnrollmentRepository } from "./mock/enrollment-repository";
@@ -51,6 +57,9 @@ import { MockUserAchievementRepository } from "./mock/user-achievement-repositor
 import { MockUserRepository } from "./mock/user-repository";
 import { MockUserStreakRepository } from "./mock/user-streak-repository";
 import { MockWeeklyGoalRepository } from "./mock/weekly-goal-repository";
+import { PrismaBrainstormBoardRepository } from "./prisma/brainstorm-board-repository";
+import { PrismaBrainstormCardRepository } from "./prisma/brainstorm-card-repository";
+import { PrismaBrainstormColumnRepository } from "./prisma/brainstorm-column-repository";
 import { PrismaCourseRepository } from "./prisma/course-repository";
 import { PrismaDailyGoalRepository } from "./prisma/daily-goal-repository";
 import { PrismaEnrollmentRepository } from "./prisma/enrollment-repository";
@@ -107,6 +116,10 @@ export interface Repositories {
   userStreaks: UserStreakRepository;
   dailyGoals: DailyGoalRepository;
   weeklyGoals: WeeklyGoalRepository;
+  /** Fase 13 — agente `backend` (Brainstorm: quadros Kanban). */
+  brainstormBoards: BrainstormBoardRepository;
+  brainstormColumns: BrainstormColumnRepository;
+  brainstormCards: BrainstormCardRepository;
 }
 
 let cached: Repositories | null = null;
@@ -139,6 +152,9 @@ function buildRepositories(): Repositories {
       userStreaks: new PrismaUserStreakRepository(),
       dailyGoals: new PrismaDailyGoalRepository(),
       weeklyGoals: new PrismaWeeklyGoalRepository(),
+      brainstormBoards: new PrismaBrainstormBoardRepository(),
+      brainstormColumns: new PrismaBrainstormColumnRepository(),
+      brainstormCards: new PrismaBrainstormCardRepository(),
     };
   }
   return {
@@ -167,6 +183,9 @@ function buildRepositories(): Repositories {
     userStreaks: new MockUserStreakRepository(),
     dailyGoals: new MockDailyGoalRepository(),
     weeklyGoals: new MockWeeklyGoalRepository(),
+    brainstormBoards: new MockBrainstormBoardRepository(),
+    brainstormColumns: new MockBrainstormColumnRepository(),
+    brainstormCards: new MockBrainstormCardRepository(),
   };
 }
 

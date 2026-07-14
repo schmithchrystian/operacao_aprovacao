@@ -293,3 +293,38 @@ export const STUDY_PLAN = {
   /** Título default do plano quando o aluno não informa um título próprio. */
   defaultPlanTitle: "Plano de estudos",
 } as const;
+
+/**
+ * Brainstorm (Fase 13 — agente `backend`, CLAUDE.md §20). Colunas padrão de um quadro novo, na
+ * ordem de criação — dado de aplicação/seed, não um enum fechado no schema (`BrainstormColumn`,
+ * docs/DATA-MODEL.md, não modela "tipo de coluna": "o quadro é livre para o aluno reorganizar
+ * colunas").
+ *
+ * `BRAINSTORM_RESOLVED_COLUMN_TITLE` é usado por `markResolved`
+ * (`@/server/services/brainstorm/mark-resolved.ts`) para localizar a coluna de destino e por
+ * `toBrainstormCardDTO` (`@/server/services/brainstorm/mappers.ts`) para derivar
+ * `BrainstormCardDTO.resolvido` — casamento por NOME, seguro nesta fase porque nenhuma action
+ * permite renomear/excluir coluna ainda. Uma fase futura que adicione essa operação deve trocar
+ * isto por um discriminador estável na entidade (mesmo padrão já usado em
+ * `StudyPlanItemEntity.kind`) em vez de continuar comparando por nome.
+ */
+export const BRAINSTORM_DEFAULT_COLUMNS: readonly string[] = [
+  "Ideias",
+  "Estudar",
+  "Revisar",
+  "Dúvidas",
+  "Resolvido",
+] as const;
+
+/** Deve ser sempre o último título de `BRAINSTORM_DEFAULT_COLUMNS`. */
+export const BRAINSTORM_RESOLVED_COLUMN_TITLE = "Resolvido";
+
+/** Limites de validação de quadro/cartão (Zod, `@/contracts/brainstorm`) — generosos o
+ *  suficiente para anotações de estudo, com teto para evitar payloads abusivos. */
+export const BRAINSTORM_LIMITS = {
+  boardTitleMaxLength: 120,
+  cardTitleMaxLength: 160,
+  cardContentMaxLength: 5_000,
+  tagMaxLength: 40,
+  maxTags: 20,
+} as const;

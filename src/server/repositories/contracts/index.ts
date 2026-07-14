@@ -24,3 +24,7 @@ export * from "./study-mission-repository";
 export * from "./user-streak-repository";
 export * from "./daily-goal-repository";
 export * from "./weekly-goal-repository";
+// Fase 13 — agente `backend` (Brainstorm: quadros Kanban).
+export * from "./brainstorm-board-repository";
+export * from "./brainstorm-column-repository";
+export * from "./brainstorm-card-repository";
