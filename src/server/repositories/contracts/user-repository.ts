@@ -16,10 +16,16 @@ export interface UserEntity {
   createdAt: string;
 }
 
+/** Projeção mínima e exclusiva para verificação de credenciais no servidor. */
+export interface UserCredentials extends Pick<UserEntity, "id" | "name" | "email" | "role" | "isActive"> {
+  passwordHash: string;
+}
+
 /** Abstração de persistência para usuários (ADR-0002). */
 export interface UserRepository {
   findById(id: string): Promise<UserEntity | null>;
   findByEmail(email: string): Promise<UserEntity | null>;
+  findCredentialsByEmail(email: string): Promise<UserCredentials | null>;
   list(): Promise<UserEntity[]>;
   /**
    * Fase 17 (admin) — altera o papel do usuário. Operação SENSÍVEL: só o service de admin

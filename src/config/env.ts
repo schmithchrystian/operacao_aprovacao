@@ -17,6 +17,11 @@ const envSchema = z
     /** Seleciona a implementação de repositório (ADR-0002). Default: mock. */
     DATA_SOURCE: z.enum(["mock", "prisma"]).default("mock"),
     /**
+     * Conexao pooled usada pelo Prisma Client em runtime. A URL direta e exclusiva das
+     * migrations/seed no CLI e, por isso, nao e lida pela aplicacao web.
+     */
+    DATABASE_URL: z.string().url().optional(),
+    /**
      * Segredo do Auth.js (NextAuth v5) para assinar/criptografar o JWT de sessão (ADR-0005).
      * Cai para um valor de dev quando ausente para não travar ambiente local — nunca aceito
      * em produção (ver `.superRefine` abaixo).
@@ -45,6 +50,13 @@ const envSchema = z
         message: "CRON_SECRET é obrigatório em produção (não usar o valor default de dev).",
       });
     }
+    if (value.DATA_SOURCE === "prisma" && !value.DATABASE_URL) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["DATABASE_URL"],
+        message: "DATABASE_URL e obrigatoria quando DATA_SOURCE=prisma.",
+      });
+    }
   });
 
 export type Env = z.infer<typeof envSchema>;
@@ -53,6 +65,7 @@ function loadEnv(): Env {
   const parsed = envSchema.safeParse({
     NODE_ENV: process.env.NODE_ENV,
     DATA_SOURCE: process.env.DATA_SOURCE,
+    DATABASE_URL: process.env.DATABASE_URL,
     AUTH_SECRET: process.env.AUTH_SECRET,
     CRON_SECRET: process.env.CRON_SECRET,
   });

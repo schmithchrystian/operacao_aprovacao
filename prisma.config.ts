@@ -11,6 +11,7 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // O CLI usa a conexao direta para migrations/seed; DATABASE_URL e fallback local.
+    url: process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"],
   },
 });

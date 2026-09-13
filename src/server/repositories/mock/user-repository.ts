@@ -1,5 +1,5 @@
-import { mockUsers } from "@/mocks";
-import type { UserEntity, UserRepository } from "../contracts/user-repository";
+import { mockCredentials, mockUsers } from "@/mocks";
+import type { UserCredentials, UserEntity, UserRepository } from "../contracts/user-repository";
 import type { Role } from "@/types";
 import { mockStore } from "./mock-store";
 
@@ -15,6 +15,24 @@ export class MockUserRepository implements UserRepository {
 
   async findByEmail(email: string): Promise<UserEntity | null> {
     return store.find((user) => user.email === email) ?? null;
+  }
+
+  async findCredentialsByEmail(email: string): Promise<UserCredentials | null> {
+    const user = store.find((candidate) => candidate.email === email);
+    const passwordHash = mockCredentials[email];
+
+    if (!user || !passwordHash) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      isActive: user.isActive,
+      passwordHash,
+    };
   }
 
   async list(): Promise<UserEntity[]> {

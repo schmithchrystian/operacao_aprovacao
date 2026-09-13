@@ -1,5 +1,13 @@
-import type { UserEntity, UserRepository } from "../contracts/user-repository";
+import type { SystemRole } from "@/generated/prisma/enums";
 import type { Role } from "@/types";
+import type { UserCredentials, UserEntity, UserRepository } from "../contracts/user-repository";
+
+const domainRoleBySystemRole: Record<SystemRole, Role> = {
+  STUDENT: "aluno",
+  TEACHER: "professor",
+  MODERATOR: "moderador",
+  ADMIN: "admin",
+};
 
 /**
  * Stub Prisma — implementação real cabe ao agente `database` a partir da Fase de banco.
@@ -16,6 +24,28 @@ export class PrismaUserRepository implements UserRepository {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
   async findByEmail(_email: string): Promise<UserEntity | null> {
     throw new Error("not implemented: PrismaUserRepository.findByEmail");
+  }
+
+  async findCredentialsByEmail(email: string): Promise<UserCredentials | null> {
+    // O import tardio mantém os repositórios Prisma stubs seguros no modo mock, sem inicializar o client.
+    const { prisma } = await import("@/server/db/prisma");
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        passwordHash: true,
+        role: true,
+        isActive: true,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    return { ...user, role: domainRoleBySystemRole[user.role] };
   }
 
   async list(): Promise<UserEntity[]> {

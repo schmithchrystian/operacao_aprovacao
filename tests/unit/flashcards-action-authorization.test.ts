@@ -120,11 +120,20 @@ describe("actions/flashcards — autorização e validação na fronteira (Actio
 
     it("retorna fail CONFLICT ao revisar um cartão ainda não devido", async () => {
       authMock.mockResolvedValue(fakeSession("user-1"));
-      // flashcard-lingua-portuguesa-02 (seed) só vence em 2026-07-17 — "agora" do processo é
-      // sempre >= a data real do teste, então nunca deveria estar devido nesta suíte.
-      const result = await reviewCardAction({ flashcardId: "flashcard-lingua-portuguesa-02", rating: "GOOD" });
-      expect(result.ok).toBe(false);
-      if (!result.ok) expect(result.error.code).toBe("CONFLICT");
+      // O seed define o vencimento em 2026-07-17; fixar o relogio evita que este teste expire.
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2026-07-16T12:00:00.000Z"));
+
+      try {
+        const result = await reviewCardAction({
+          flashcardId: "flashcard-lingua-portuguesa-02",
+          rating: "GOOD",
+        });
+        expect(result.ok).toBe(false);
+        if (!result.ok) expect(result.error.code).toBe("CONFLICT");
+      } finally {
+        vi.useRealTimers();
+      }
     });
 
     it("retorna ok e credita pontos ao revisar um cartão devido com classificação positiva", async () => {

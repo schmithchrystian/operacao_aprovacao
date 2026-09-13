@@ -1,10 +1,12 @@
 import bcrypt from "bcryptjs";
-import { mockCredentials, DEV_PASSWORD_HASH } from "@/mocks";
 import { getRepositories } from "@/server/repositories";
 import type { Session } from "@/types";
 
+// Hash bcrypt sem vínculo com uma credencial válida, usado quando o e-mail não é encontrado.
+const DUMMY_PASSWORD_HASH = "$2b$10$Qc9D9Vp/CzKcgm2jUxlJk.G58txKRJBF/VGDZJqEyYJTvG3zF83Xa";
+
 /**
- * Verifica e-mail/senha contra os mocks e retorna a sessão correspondente, ou `null`
+ * Verifica e-mail/senha pelo repositório de usuários e retorna a sessão correspondente, ou `null`
  * quando as credenciais são inválidas.
  *
  * Função pura de infraestrutura de auth — não depende de cookies/request — usada tanto
@@ -17,23 +19,18 @@ import type { Session } from "@/types";
  */
 export async function verifyCredentials(email: string, password: string): Promise<Session | null> {
   const normalizedEmail = email.trim().toLowerCase();
-  const passwordHash = mockCredentials[normalizedEmail];
+  const user = await getRepositories().users.findCredentialsByEmail(normalizedEmail);
 
-  if (!passwordHash) {
+  if (!user) {
     // Ainda assim executa um bcrypt.compare (contra um hash "dummy") para manter o
     // custo de CPU/tempo de resposta equivalente ao de um e-mail existente — evita
     // vazar por timing se o e-mail está cadastrado.
-    await bcrypt.compare(password, DEV_PASSWORD_HASH);
+    await bcrypt.compare(password, DUMMY_PASSWORD_HASH);
     return null;
   }
 
-  const passwordMatches = await bcrypt.compare(password, passwordHash);
+  const passwordMatches = await bcrypt.compare(password, user.passwordHash);
   if (!passwordMatches) {
-    return null;
-  }
-
-  const user = await getRepositories().users.findByEmail(normalizedEmail);
-  if (!user) {
     return null;
   }
 
