@@ -72,6 +72,8 @@ jobs:
           DATA_SOURCE: prisma
           APP_ENV: test
           APP_URL: http://localhost:3100
+          ADMIN_MFA_REQUIRED: "true"
+          MFA_ENCRYPTION_KEY: "0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
         run: |
           npm run start -- --port 3100 > /tmp/study-http-server.log 2>&1 &
           study_server_pid=$!

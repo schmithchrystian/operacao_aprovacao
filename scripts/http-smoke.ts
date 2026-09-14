@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { randomBytes, createHash } from "node:crypto";
 import bcrypt from "bcryptjs";
+import { newSecret, encryptSecret, totp } from "../src/server/auth/mfa/crypto";
 import { prisma } from "../src/server/db/prisma";
 import { env } from "../src/config/env";
 const origin = "http://localhost:3100";
@@ -18,7 +19,7 @@ async function request(path: string, options: RequestInit = {}) {
   }
   return response;
 }
-async function login(email: string, password: string) {
+async function login(email: string, password: string, otp = "") {
   const csrf = await request("/api/auth/csrf");
   const { csrfToken } = await csrf.json();
   return request("/api/auth/callback/credentials", {
@@ -28,7 +29,13 @@ async function login(email: string, password: string) {
       Origin: origin,
       "X-Auth-Return-Redirect": "1",
     },
-    body: new URLSearchParams({ csrfToken, email, password, callbackUrl: origin + "/dashboard" }),
+    body: new URLSearchParams({
+      csrfToken,
+      email,
+      password,
+      otp,
+      callbackUrl: origin + "/dashboard",
+    }),
   });
 }
 async function main() {
@@ -69,6 +76,47 @@ async function main() {
     const key = createHash("sha256").update(unknown).digest("hex");
     assert.equal((await prisma.securityRateLimit.findUnique({ where: { key } }))?.count, 5);
     await prisma.securityRateLimit.deleteMany({ where: { key } });
+    if (env.MFA_ENCRYPTION_KEY) {
+      await prisma.user.update({ where: { id: user.id }, data: { isActive: true, role: "ADMIN" } });
+      jar.clear();
+      await login(email, password);
+      if (env.ADMIN_MFA_REQUIRED) {
+        const admin = await request("/admin");
+        const body = await admin.text();
+        assert.ok(
+          admin.headers.get("location")?.includes("/seguranca") ||
+            /http-equiv="refresh"[^>]*url=\/seguranca/.test(body),
+        );
+      }
+      const secret = newSecret();
+      await prisma.userMfa.create({
+        data: {
+          userId: user.id,
+          encryptedSecret: encryptSecret(secret, env.MFA_ENCRYPTION_KEY, user.id),
+          enabledAt: new Date(),
+          expiresAt: new Date(Date.now() + 600000),
+          lastStep: -1,
+          recoveryHashes: [],
+        },
+      });
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { sessionVersion: { increment: 1 } },
+      });
+      jar.clear();
+      await login(email, password);
+      assert.ok(!(await (await request("/api/auth/session")).json())?.user);
+      const otp = totp(secret, Math.floor(Date.now() / 30000));
+      jar.clear();
+      await login(email, password, otp);
+      assert.equal((await (await request("/api/auth/session")).json()).user.id, user.id);
+      jar.clear();
+      await login(email, password, otp);
+      assert.ok(!(await (await request("/api/auth/session")).json())?.user);
+      console.log(
+        "HTTP MFA PASS: mandatory admin setup, password-only denial, valid OTP login and replay denial.",
+      );
+    }
     console.log(
       "HTTP smoke PASS: readiness, protected metrics, public account routes, CSP nonce, direct Credentials login, revoked session redirect, shared callback rate limit.",
     );

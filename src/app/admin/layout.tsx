@@ -1,3 +1,4 @@
+import { env } from "@/config/env";
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { AdminShell } from "@/components/layout/admin-shell";
@@ -12,5 +13,13 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   if (!session) redirect("/login");
   if (session.role !== "admin" && session.role !== "moderador") redirect("/dashboard");
 
+  if (env.ADMIN_MFA_REQUIRED) {
+    const { prisma } = await import("@/server/db/prisma");
+    const factor = await prisma.userMfa.findUnique({
+      where: { userId: session.userId },
+      select: { enabledAt: true },
+    });
+    if (!factor?.enabledAt) redirect("/seguranca");
+  }
   return <AdminShell>{children}</AdminShell>;
 }

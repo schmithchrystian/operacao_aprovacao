@@ -23,7 +23,7 @@ npm test
 npm run db:validate
 ```
 
-A integração exige `TEST_DATABASE_URL` apontando para banco descartável cujo nome contém `test`; aplique migrations nesse banco antes de `npm run test:integration`. Os testes incluem concorrência, rollback, autorização, contas, notas e cobrança com transportes externos simulados. O CI também define ensaio de backup/restauração em PostgreSQL isolado.
+A integração exige `TEST_DATABASE_URL` apontando para banco descartável cujo nome contém `test`; aplique migrations nesse banco antes de `npm run test:integration`. Os testes incluem concorrência, rollback, autorização, contas, notas e cobrança com transportes externos simulados. O CI também define ensaio de backup/restauração em PostgreSQL isolado. `npm run db:verify-backup` executa um ensaio local com snapshot consistente e compara todas as tabelas restauradas; exige `TEST_DATABASE_URL` local e pg_dump/pg_restore 18 (`PG_BIN_DIR` opcional).
 
 `npm run build` em produção exige Prisma, `APP_URL` HTTPS e segredos independentes de pelo menos 32 caracteres. Para uma demonstração explícita com mocks, use `APP_ENV=demo` e segredos próprios.
 
@@ -31,6 +31,7 @@ A integração exige `TEST_DATABASE_URL` apontando para banco descartável cujo 
 
 Comece pelo [roteiro de entrega controlada](docs/entrega-usuarios/README.md) e pelo [estado da implementação](docs/implementation/STATUS.md). A existência de código e testes locais não substitui a configuração dos provedores e o aceite em nuvem.
 
+- Segurança: [MFA administrativo](docs/security/MFA.md) obrigatório em produção, com chave própria e códigos de recuperação.
 - Contas: Resend, remetente verificado e `ACCOUNT_EMAIL_ENCRYPTION_KEY` Base64 de 32 bytes; scheduler autenticado processa `/api/cron/account-emails`.
 - Materiais: bucket privado Supabase, credencial somente no servidor; PDF de até 4 MB. [Operação e mídia](docs/implementation/OPERACAO.md).
 - Vídeo: HTTPS cadastrado ou objeto MP4 privado `storage:videos/chave.mp4`, disponibilizado após autorização por URL temporária. Nenhum vídeo fictício é usado pelo ambiente Prisma.

@@ -19,6 +19,7 @@ export const authConfig: NextAuthConfig = {
     Credentials({
       credentials: {
         email: { label: "E-mail", type: "email" },
+        otp: { label: "Código autenticador ou recuperação", type: "text" },
         password: { label: "Senha", type: "password" },
       },
       async authorize(rawCredentials) {
@@ -27,7 +28,11 @@ export const authConfig: NextAuthConfig = {
           return null;
         }
 
-        const session = await verifyCredentials(parsed.data.email, parsed.data.password);
+        const session = await verifyCredentials(
+          parsed.data.email,
+          parsed.data.password,
+          parsed.data.otp,
+        );
         if (!session) {
           return null;
         }

@@ -227,6 +227,7 @@ model User {
   updatedAt                 DateTime            @updatedAt
   deletedAt                 DateTime?
 
+  mfa       UserMfa?
   profile   Profile?
   userRoles UserRole[]
   teacher   Teacher?
@@ -1129,21 +1130,24 @@ model Notification {
 }
 
 model Subscription {
-  id                 String             @id @default(cuid())
-  userId             String
-  plan               SubscriptionPlan   @default(FREE)
-  status             SubscriptionStatus @default(ACTIVE)
-  provider           String?
-  externalId         String?
-  currentPeriodStart DateTime?
-  currentPeriodEnd   DateTime?
-  cancelAtPeriodEnd  Boolean            @default(false)
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
+  accessBlockedReason String?
+  reconciledAt        DateTime?
+  id                  String             @id @default(cuid())
+  userId              String
+  plan                SubscriptionPlan   @default(FREE)
+  status              SubscriptionStatus @default(ACTIVE)
+  provider            String?
+  externalId          String?
+  currentPeriodStart  DateTime?
+  currentPeriodEnd    DateTime?
+  cancelAtPeriodEnd   Boolean            @default(false)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, externalId])
+  @@index([provider, reconciledAt])
   @@index([userId, status])
   @@index([externalId])
 }
@@ -1353,13 +1357,16 @@ model BillingWebhookReceipt {
 }
 
 model BillingCheckout {
-  userId     String    @id
-  sessionId  String?
-  url        String?
-  expiresAt  DateTime?
-  requestKey String
-  createdAt  DateTime  @default(now())
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String    @id
+  sessionId    String?
+  url          String?
+  expiresAt    DateTime?
+  reconciledAt DateTime?
+  requestKey   String
+  createdAt    DateTime  @default(now())
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([reconciledAt])
 }
 
 model AccountEmailOutbox {
@@ -1390,4 +1397,16 @@ model RankingSnapshot {
   calculatedAt       DateTime
 
   @@id([periodType, periodKey, scopeType, scopeKey, calculationVersion])
+}
+
+/// MFA enrollment. Secrets are AES-GCM encrypted; recovery codes only exist as hashes.
+model UserMfa {
+  userId          String    @id
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  encryptedSecret String
+  enabledAt       DateTime?
+  expiresAt       DateTime
+  lastStep        Int       @default(-1)
+  recoveryHashes  String[]  @default([])
+  createdAt       DateTime  @default(now())
 }

@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from "node:async_hooks";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import { env } from "@/config/env";
@@ -9,16 +10,22 @@ export function isBillingConfigured(): boolean {
     !!(env.STRIPE_SECRET_KEY && env.STRIPE_WEBHOOK_SECRET && env.STRIPE_PRICE_ID)
   );
 }
+const deadlines = new AsyncLocalStorage<number>();
+export function withStripeDeadline<T>(milliseconds: number, work: () => Promise<T>): Promise<T> {
+  return deadlines.run(Math.min(deadlines.getStore() ?? Infinity, Date.now() + milliseconds), work);
+}
 export async function stripeRequest(
   path: string,
   body?: URLSearchParams,
   idempotencyKey?: string,
 ): Promise<unknown> {
   if (!isBillingConfigured()) throw new Error("Cobrança não configurada.");
+  const remaining = Math.min(8000, (deadlines.getStore() ?? Infinity) - Date.now());
+  if (remaining <= 0) throw new Error("Prazo de conciliação excedido.");
   const response = await fetch(`https://api.stripe.com/v1/${path}`, {
     method: body ? "POST" : "GET",
     cache: "no-store",
-    signal: AbortSignal.timeout(8000),
+    signal: AbortSignal.timeout(Math.ceil(remaining)),
     headers: {
       Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`,
       "Stripe-Version": "2025-03-31.basil",
@@ -59,6 +66,7 @@ export async function getConfiguredPrice() {
 }
 export const subscriptionSchema = z.object({
   id: z.string().startsWith("sub_"),
+  latest_invoice: z.union([z.string(), z.object({ id: z.string() }), z.null()]),
   customer: z.union([z.string(), z.object({ id: z.string() })]),
   status: z.enum([
     "active",

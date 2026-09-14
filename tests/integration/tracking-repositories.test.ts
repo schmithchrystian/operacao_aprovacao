@@ -148,8 +148,8 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)("PostgreSQL tracking persistence
   });
   it("keeps one active plan and rolls back item replacement atomically", async () => {
     const input = { userId, title: prefix, startDate: now.toISOString(), endDate: null, now };
-    const rows = await Promise.all([plans.create(input), plans.create(input)]);
-    expect(rows[0]!.id).toBe(rows[1]!.id);
+    const rows = await Promise.all(Array.from({ length: 8 }, () => plans.create(input)));
+    expect(new Set(rows.map((row) => row.id)).size).toBe(1);
     const studyPlanId = rows[0]!.id;
     const created = await items.createMany(
       [0, 1].map((order) => ({

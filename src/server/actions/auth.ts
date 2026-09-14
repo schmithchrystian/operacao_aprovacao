@@ -40,7 +40,7 @@ export async function loginAction(
     if (error instanceof Error && "type" in error && error.type === "CredentialsSignin") {
       return fail(
         "INVALID_CREDENTIALS",
-        "E-mail ou senha inválidos ou limite de tentativas atingido.",
+        "E-mail, senha ou código inválidos, ou limite de tentativas atingido.",
       );
     }
     return fail("INTERNAL_ERROR", "Não foi possível autenticar. Tente novamente.");

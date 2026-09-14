@@ -97,6 +97,9 @@ export async function Topbar() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem render={<Link href="/perfil" />}>Perfil</DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/seguranca" />}>
+            Segurança da conta
+          </DropdownMenuItem>
           <DropdownMenuItem disabled>Configurações</DropdownMenuItem>
           <DropdownMenuSeparator />
           <form action={logoutAction}>

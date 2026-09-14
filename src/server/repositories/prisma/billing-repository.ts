@@ -9,6 +9,7 @@ export async function hasSubscriptionAccess(userId: string): Promise<boolean> {
     where: {
       userId,
       provider: "stripe",
+      accessBlockedReason: null,
       plan: { not: "FREE" },
       status: { in: ["ACTIVE", "TRIALING"] },
       currentPeriodEnd: { gt: new Date() },
@@ -19,7 +20,11 @@ export async function reserveCheckout(userId: string) {
   return inRepositoryTransaction(async () => {
     const { prisma } = await import("@/server/db/prisma");
     await prisma.$queryRaw`SELECT "id" FROM "User" WHERE "id" = ${userId} FOR UPDATE`;
-    if (await hasSubscriptionAccess(userId))
+    if (
+      await prisma.subscription.findFirst({
+        where: { userId, provider: "stripe", status: { in: ["ACTIVE", "TRIALING", "PAST_DUE"] } },
+      })
+    )
       throw new ConflictError("Você já possui uma assinatura ativa.");
     const existing = await prisma.billingCheckout.findUnique({ where: { userId } });
     if (
@@ -31,6 +36,7 @@ export async function reserveCheckout(userId: string) {
       return existing;
     const data = {
       requestKey: randomUUID(),
+      reconciledAt: null,
       sessionId: null,
       url: null,
       expiresAt: null,
@@ -66,6 +72,8 @@ export async function persistSubscription(
     currentPeriodStart: Date | null;
     currentPeriodEnd: Date | null;
     cancelAtPeriodEnd: boolean;
+    accessBlockedReason?: string | null;
+    reconciledAt?: Date;
   },
 ) {
   const { prisma } = await import("@/server/db/prisma");
@@ -107,6 +115,7 @@ export async function countActiveSubscriptions(now: Date): Promise<number> {
   return prisma.subscription.count({
     where: {
       provider: "stripe",
+      accessBlockedReason: null,
       plan: { not: "FREE" },
       status: { in: ["ACTIVE", "TRIALING"] },
       currentPeriodEnd: { gt: now },

@@ -24,6 +24,12 @@ Backup PostgreSQL não inclui bytes dos buckets. Mantenha cópia independente de
 
 `src/instrumentation.ts` emite evento JSON `request.error` com rota de código e identificador de correlação, sem mensagem bruta da exceção, query, cookies ou corpo. Configure coleta/alerta no host e um monitor de disponibilidade independente. A instrumentação segue a [API oficial do Next.js](https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation).
 
-O CI define dump, restauração em outro banco e integração sobre o destino restaurado. Esse ensaio precisa passar no runner; não é comprovação de backup gerenciado, PITR ou recuperação de objetos em nuvem. O bundle PostgreSQL nativo disponível localmente não inclui pg_dump/pg_restore, portanto o ensaio de backup completo não foi executado aqui.
+O CI define dump, restauração em outro banco e integração sobre o destino restaurado. Esse ensaio precisa passar no runner; não é comprovação de backup gerenciado, PITR ou recuperação de objetos em nuvem. O ensaio local passou a usar pg_dump/pg_restore 18 obtidos da distribuição oficial [Postgres.app](https://github.com/PostgresApp/PostgresApp/releases/tag/v2.9.6). `scripts/verify-backup.mjs` exporta snapshot consistente, restaura em banco novo, compara contagens e hashes canônicos de todas as tabelas públicas e apaga o destino por padrão. `KEEP_RESTORED_TEST_DATABASE=true` preserva apenas o destino de teste para validação adicional. Os resultados atuais estão no relatório de revalidação; isso não comprova PITR nem restauração de objetos na nuvem.
 
 Antes de liberar dados reais: exercite indisponibilidade do banco, restauração isolada, revogação de sessão, fila atrasada e rollback de release compatível com migrations. Registre duração e perda observadas. O [plano de recuperação](../production/BACKUP_AND_RECOVERY.md) é referência operacional histórica; condições comerciais do provedor precisam ser conferidas no ambiente contratado.
+
+## MFA e pagamentos
+
+Produção exige `ADMIN_MFA_REQUIRED=true` e `MFA_ENCRYPTION_KEY` própria (64 caracteres hexadecimais, 32 bytes). O administrador de bootstrap pode entrar para configurar `/seguranca`; operações administrativas ficam bloqueadas até ativação. Guarde a chave fora do banco, junto ao processo seguro de recuperação. Confira [o procedimento MFA](../security/MFA.md).
+
+O cron `/api/cron/billing` consulta assinaturas e checkouts a cada 15 minutos, limitado por lote e tempo. Webhook e conciliação preservam o status Stripe e mantêm separadamente o bloqueio de acesso por reembolso integral, disputa ou evidência incompleta. Não há cobrança, cancelamento ou estorno externo automático. Política, capacidade e homologação estão em [BILLING.md](../production/BILLING.md).

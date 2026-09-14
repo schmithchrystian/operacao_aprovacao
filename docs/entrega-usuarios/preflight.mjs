@@ -10,6 +10,21 @@ export function checkEnvironment(env, target) {
     "Destino deve ser staging ou production.",
   );
   check("app-env", env.APP_ENV === target, "APP_ENV deve coincidir com o destino.");
+  check(
+    "mfa-policy",
+    ["true", "false"].includes(env.ADMIN_MFA_REQUIRED) &&
+      (target !== "production" || env.ADMIN_MFA_REQUIRED === "true"),
+    "Declare a política MFA; produção exige MFA administrativo.",
+  );
+  if (env.ADMIN_MFA_REQUIRED === "true") {
+    check(
+      "mfa-key",
+      /^[a-fA-F0-9]{64}$/.test(env.MFA_ENCRYPTION_KEY ?? "") &&
+        env.MFA_ENCRYPTION_KEY !== env.AUTH_SECRET &&
+        env.MFA_ENCRYPTION_KEY !== env.CRON_SECRET,
+      "MFA exige chave de criptografia própria de 32 bytes em hexadecimal.",
+    );
+  }
   check("data-source", env.DATA_SOURCE === "prisma", "Persistência Prisma obrigatória.");
   check(
     "demo-seed",

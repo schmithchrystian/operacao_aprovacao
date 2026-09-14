@@ -34,6 +34,14 @@ const envSchema = z
       .string()
       .regex(/^[a-z0-9-]+$/)
       .default("lesson-materials"),
+    MFA_ENCRYPTION_KEY: z
+      .string()
+      .regex(/^[a-fA-F0-9]{64}$/)
+      .optional(),
+    ADMIN_MFA_REQUIRED: z
+      .enum(["true", "false"])
+      .default("false")
+      .transform((value) => value === "true"),
     STRIPE_SECRET_KEY: z.string().min(1).optional(),
     STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),
     STRIPE_PRICE_ID: z.string().min(1).optional(),
@@ -67,6 +75,20 @@ const envSchema = z
       value.APP_ENV === "production" ||
       value.APP_ENV === "staging" ||
       (value.NODE_ENV === "production" && value.APP_ENV !== "demo" && value.APP_ENV !== "test");
+    if (deployed && value.APP_ENV !== "staging" && !value.ADMIN_MFA_REQUIRED) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["ADMIN_MFA_REQUIRED"],
+        message: "Produção exige MFA administrativo habilitado.",
+      });
+    }
+    if (value.ADMIN_MFA_REQUIRED && (value.DATA_SOURCE !== "prisma" || !value.MFA_ENCRYPTION_KEY)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["ADMIN_MFA_REQUIRED"],
+        message: "MFA administrativo exige Prisma e chave de criptografia própria.",
+      });
+    }
     if (deployed && value.DATA_SOURCE !== "prisma") {
       ctx.addIssue({
         code: "custom",
@@ -144,6 +166,8 @@ function loadEnv(): Env {
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
     SUPABASE_VIDEO_BUCKET: process.env.SUPABASE_VIDEO_BUCKET,
     SUPABASE_STORAGE_BUCKET: process.env.SUPABASE_STORAGE_BUCKET,
+    MFA_ENCRYPTION_KEY: process.env.MFA_ENCRYPTION_KEY,
+    ADMIN_MFA_REQUIRED: process.env.ADMIN_MFA_REQUIRED,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
     STRIPE_PRICE_ID: process.env.STRIPE_PRICE_ID,

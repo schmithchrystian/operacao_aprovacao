@@ -23,6 +23,7 @@ const DUMMY_PASSWORD_HASH = "$2b$10$Qc9D9Vp/CzKcgm2jUxlJk.G58txKRJBF/VGDZJqEyYJT
 export async function verifyCredentials(
   email: string,
   password: string,
+  otp = "",
 ): Promise<(Session & { sessionVersion: number }) | null> {
   const correlationId = randomUUID();
   const log = (result: "success" | "failure", userId?: string, blocked = false) =>
@@ -63,6 +64,21 @@ export async function verifyCredentials(
     return null;
   }
 
+  const { env } = await import("@/config/env");
+  if (env.DATA_SOURCE === "prisma") {
+    const { prisma } = await import("@/server/db/prisma");
+    const mfa = await prisma.userMfa.findUnique({
+      where: { userId: user.id },
+      select: { enabledAt: true },
+    });
+    if (mfa?.enabledAt) {
+      const { consumeMfa } = await import("./mfa/service");
+      if (!(await consumeMfa(user.id, otp))) {
+        await log("failure");
+        return null;
+      }
+    }
+  }
   await log("success", user.id);
   return {
     userId: user.id,

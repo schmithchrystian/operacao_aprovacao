@@ -15,6 +15,7 @@ const fixture = () => ({
   EMAIL_FROM: "study@provider.com",
   ACCOUNT_EMAIL_ENCRYPTION_KEY: Buffer.alloc(32, 3).toString("base64"),
   BILLING_REQUIRED: "false",
+  ADMIN_MFA_REQUIRED: "false",
 });
 const passed = (env) => checkEnvironment(env, "staging").every((check) => check.passed);
 
@@ -79,4 +80,15 @@ test("fails closed on unavailable service and unexpected admin access", async ()
   assert.equal(checks.find((check) => check.id === "health").passed, false);
   assert.equal(checks.find((check) => check.id === "admin-anonymous").passed, false);
   assert.equal(JSON.stringify(checks).includes("private"), false);
+});
+
+test("production requires administrative MFA and its own encryption key", () => {
+  const production = { ...fixture(), APP_ENV: "production" };
+  const valid = (env) => checkEnvironment(env, "production").every((check) => check.passed);
+  assert.equal(valid(production), false);
+  assert.equal(valid({ ...production, ADMIN_MFA_REQUIRED: "true" }), false);
+  assert.equal(
+    valid({ ...production, ADMIN_MFA_REQUIRED: "true", MFA_ENCRYPTION_KEY: "d".repeat(64) }),
+    true,
+  );
 });

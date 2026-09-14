@@ -1,7 +1,17 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "crons": [
-    { "path": "/api/cron/account-emails", "schedule": "* * * * *" },
-    { "path": "/api/cron/ranking-recalc", "schedule": "0 */6 * * *" }
+    {
+      "path": "/api/cron/account-emails",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/ranking-recalc",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/billing",
+      "schedule": "*/15 * * * *"
+    }
   ]
 }

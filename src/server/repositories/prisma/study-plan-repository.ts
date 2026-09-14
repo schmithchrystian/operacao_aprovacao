@@ -41,7 +41,7 @@ export class PrismaStudyPlanRepository implements StudyPlanRepository {
     ).map(map);
   }
   async create(input: StudyPlanCreateInput) {
-    const { prisma } = await import("@/server/db/prisma");
+    const { prisma, RetryableTransactionConflict } = await import("@/server/db/prisma");
     const { inRepositoryTransaction } = await import("@/server/repositories/transaction");
     return inRepositoryTransaction(async () => {
       await prisma.$queryRaw`SELECT "id" FROM "User" WHERE "id"=${input.userId} FOR UPDATE`;
@@ -50,17 +50,28 @@ export class PrismaStudyPlanRepository implements StudyPlanRepository {
       });
       if (existing) return map(existing);
       const { now, startDate, endDate, ...data } = input;
-      return map(
-        await prisma.studyPlan.create({
-          data: {
-            ...data,
-            startDate: new Date(startDate),
-            endDate: endDate ? new Date(endDate) : null,
-            createdAt: now,
-            updatedAt: now,
-          },
-        }),
-      );
+      try {
+        return map(
+          await prisma.studyPlan.create({
+            data: {
+              ...data,
+              startDate: new Date(startDate),
+              endDate: endDate ? new Date(endDate) : null,
+              createdAt: now,
+              updatedAt: now,
+            },
+          }),
+        );
+      } catch (error) {
+        // PostgreSQL may report the partial unique index as P2002 instead of 40001.
+        // Retry the entire unit of work, including callers, with a fresh snapshot.
+        if (error && typeof error === "object" && "code" in error && error.code === "P2002") {
+          throw new RetryableTransactionConflict("Concurrent active study plan creation", {
+            cause: error,
+          });
+        }
+        throw error;
+      }
     });
   }
   async update({ id, now, startDate, endDate, ...data }: StudyPlanUpdateInput) {

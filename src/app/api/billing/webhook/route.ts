@@ -2,6 +2,7 @@ import { z } from "zod";
 import { processWebhook } from "@/server/billing/service";
 import { ValidationError } from "@/server/errors";
 export const runtime = "nodejs";
+export const maxDuration = 60;
 export async function POST(request: Request): Promise<Response> {
   try {
     const reader = request.body?.getReader();

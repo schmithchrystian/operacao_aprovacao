@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "at": "2026-09-14T21:46:45.474Z",
+  "elapsedMs": 539,
+  "tables": 60,
+  "rows": 273,
+  "comparison": "row counts and canonical JSON digests for every public table",
+  "scope": "local PostgreSQL only; excludes storage objects and cloud PITR"
+}

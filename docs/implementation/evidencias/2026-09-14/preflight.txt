@@ -1,0 +1,16 @@
+✔ requires an email queue key and explicit billing configuration (1.25575ms)
+✔ accepts a declared hosted environment; does not claim live validation (0.706917ms)
+✔ rejects missing configuration, mocks and demo seeding (0.185209ms)
+✔ rejects reused/demo secrets without printing their values (0.16625ms)
+✔ rejects development databases and noncanonical application URLs (0.1395ms)
+✔ checks anonymous redirects without following them or sending credentials (15.280333ms)
+✔ fails closed on unavailable service and unexpected admin access (0.311ms)
+✔ production requires administrative MFA and its own encryption key (0.227542ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 74.124791

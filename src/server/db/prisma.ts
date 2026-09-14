@@ -31,6 +31,9 @@ export const prisma = new Proxy({} as PrismaClient, {
   },
 });
 
+/** A repository detected a uniqueness race that requires a fresh transaction snapshot. */
+export class RetryableTransactionConflict extends Error {}
+
 export async function inDatabaseTransaction<T>(fn: () => Promise<T>): Promise<T> {
   if (context.getStore()) return fn();
   for (let attempt = 0; ; attempt++) {
@@ -43,7 +46,8 @@ export async function inDatabaseTransaction<T>(fn: () => Promise<T>): Promise<T>
     } catch (error) {
       const code =
         typeof error === "object" && error !== null && "code" in error ? error.code : null;
-      if (code !== "P2034" || attempt >= 3) throw error;
+      if ((code !== "P2034" && !(error instanceof RetryableTransactionConflict)) || attempt >= 3)
+        throw error;
       await new Promise((resolve) => setTimeout(resolve, 20 * 2 ** attempt));
     }
   }

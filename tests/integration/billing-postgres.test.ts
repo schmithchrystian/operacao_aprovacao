@@ -16,6 +16,7 @@ const fetchMock = vi.fn();
 function canonical(status = "active", owner = userId, priceId = "price_synthetic") {
   return {
     id: subscriptionId,
+    latest_invoice: "in_synthetic",
     customer: "cus_synthetic",
     status,
     metadata: { userId: owner },
@@ -68,17 +69,34 @@ describe.skipIf(!testUrl)("billing contracts — real PostgreSQL, synthetic Stri
       },
     });
     authMock.mockResolvedValue({ user: { id: userId, role: "aluno", sessionVersion: 0 } });
-    vi.stubGlobal("fetch", fetchMock);
   });
   beforeEach(() => {
     fetchMock.mockReset();
+    vi.stubGlobal("fetch", async (url: string, options: RequestInit) =>
+      url.includes("/invoices/")
+        ? Response.json({
+            id: "in_synthetic",
+            status: "paid",
+            amount_paid: 0,
+            parent: { subscription_details: { subscription: subscriptionId } },
+          })
+        : fetchMock(url, options),
+    );
     fetchMock.mockImplementation(async () => Response.json(canonical()));
   });
   afterAll(async () => {
     vi.unstubAllGlobals();
     if (!prisma) return;
     await prisma.billingWebhookReceipt.deleteMany({ where: { subscriptionId } });
-    await prisma.securityRateLimit.deleteMany({ where: { key: { in: ["checkout", "portal", "billing-reconcile"].map(operation => createHash("sha256").update(`${operation}:${userId}`).digest("hex")) } } });
+    await prisma.securityRateLimit.deleteMany({
+      where: {
+        key: {
+          in: ["checkout", "portal", "billing-reconcile"].map((operation) =>
+            createHash("sha256").update(`${operation}:${userId}`).digest("hex"),
+          ),
+        },
+      },
+    });
     await prisma.user.deleteMany({ where: { id: userId } });
     await prisma.$disconnect();
   });
@@ -176,4 +194,116 @@ describe.skipIf(!testUrl)("billing contracts — real PostgreSQL, synthetic Stri
     await reconcileOwnSubscription();
     await expect(assertSubscriptionAccess(userId)).resolves.toBeUndefined();
   });
+  it("persists risk separately from Stripe status and only restores access on canonical recovery", async () => {
+    let amountRefunded = 1000;
+    let dispute: string | null = null;
+    vi.stubGlobal("fetch", async (url: string) => {
+      if (url.includes("/subscriptions/")) return Response.json(canonical());
+      if (url.includes("/invoices/"))
+        return Response.json({
+          id: "in_synthetic",
+          status: "paid",
+          amount_paid: 1000,
+          parent: { subscription_details: { subscription: subscriptionId } },
+        });
+      if (url.includes("/invoice_payments?"))
+        return Response.json({
+          has_more: false,
+          data: [
+            {
+              invoice: "in_synthetic",
+              amount_paid: 1000,
+              payment: { type: "payment_intent", payment_intent: "pi_synthetic" },
+            },
+          ],
+        });
+      if (url.includes("/payment_intents/"))
+        return Response.json({ latest_charge: "ch_synthetic" });
+      if (url.includes("/charges/"))
+        return Response.json({
+          id: "ch_synthetic",
+          amount: 1000,
+          amount_refunded: amountRefunded,
+          disputed: !!dispute,
+        });
+      if (url.includes("/refunds?"))
+        return Response.json({
+          has_more: false,
+          data: [{ amount: amountRefunded, status: "succeeded" }],
+        });
+      if (url.includes("/disputes?"))
+        return Response.json({ has_more: false, data: [{ status: dispute }] });
+      throw new Error("Unexpected URL");
+    });
+    let event = signed("full-refund");
+    await processWebhook(event.raw, event.signature);
+    const row = await prisma.subscription.findFirstOrThrow({
+      where: { externalId: subscriptionId },
+    });
+    expect(row.status).toBe("ACTIVE");
+    expect(row.accessBlockedReason).toBe("FULL_REFUND");
+    await expect(assertSubscriptionAccess(userId)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    amountRefunded = 0;
+    dispute = "under_review";
+    event = signed("dispute");
+    await processWebhook(event.raw, event.signature);
+    await expect(assertSubscriptionAccess(userId)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    dispute = "won";
+    event = signed("dispute-won");
+    await processWebhook(event.raw, event.signature);
+    await expect(assertSubscriptionAccess(userId)).resolves.toBeUndefined();
+    expect(
+      (await prisma.subscription.findFirstOrThrow({ where: { externalId: subscriptionId } }))
+        .accessBlockedReason,
+    ).toBeNull();
+  });
+
+  it("scheduled reconciliation claims a PostgreSQL row once under concurrent runs", async () => {
+    const { reconcileBillingBatch } = await import("@/server/billing/reconciliation");
+    await prisma.subscription.updateMany({
+      where: { externalId: subscriptionId },
+      data: { reconciledAt: new Date(0) },
+    });
+    const before = await prisma.billingWebhookReceipt.count({ where: { subscriptionId } });
+    await Promise.all([reconcileBillingBatch(), reconcileBillingBatch()]);
+    expect(await prisma.billingWebhookReceipt.count({ where: { subscriptionId } })).toBe(
+      before + 1,
+    );
+    expect(
+      (
+        await prisma.subscription.findFirstOrThrow({ where: { externalId: subscriptionId } })
+      ).reconciledAt!.getTime(),
+    ).toBeGreaterThan(Date.now() - 60_000);
+  });
+  it.each([
+    ["invoice.paid", "active", "ACTIVE"],
+    ["invoice.payment_failed", "past_due", "PAST_DUE"],
+  ])(
+    "%s synchronizes canonical subscription state immediately",
+    async (type, canonicalStatus, expectedStatus) => {
+      fetchMock.mockImplementation(async () => Response.json(canonical(canonicalStatus)));
+      const eventId = `evt_${prefix}-${type}`;
+      const raw = JSON.stringify({
+        id: eventId,
+        type,
+        data: { object: { id: "in_synthetic", subscription: "sub_forged_payload_ignored" } },
+      });
+      const timestamp = Math.floor(Date.now() / 1000);
+      const signature = `t=${timestamp},v1=${createHmac("sha256", secret).update(`${timestamp}.${raw}`).digest("hex")}`;
+      await processWebhook(raw, signature);
+      const subscription = await prisma.subscription.findFirstOrThrow({
+        where: { externalId: subscriptionId },
+      });
+      expect(subscription.status).toBe(expectedStatus);
+      expect(
+        await prisma.billingWebhookReceipt.findUnique({
+          where: { id: `${eventId}:${subscriptionId}` },
+        }),
+      ).not.toBeNull();
+      if (canonicalStatus === "active")
+        await expect(assertSubscriptionAccess(userId)).resolves.toBeUndefined();
+      else
+        await expect(assertSubscriptionAccess(userId)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    },
+  );
 });

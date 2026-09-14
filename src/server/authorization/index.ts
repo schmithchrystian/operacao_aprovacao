@@ -46,6 +46,16 @@ export async function requireRole(...roles: Role[]): Promise<Session> {
   if (!roles.includes(session.role)) {
     throw new ForbiddenError();
   }
+  const { env } = await import("@/config/env");
+  if (env.ADMIN_MFA_REQUIRED && ["admin", "moderador"].includes(session.role)) {
+    const { prisma } = await import("@/server/db/prisma");
+    const mfa = await prisma.userMfa.findUnique({
+      where: { userId: session.userId },
+      select: { enabledAt: true },
+    });
+    if (!mfa?.enabledAt)
+      throw new ForbiddenError("Configure a autenticação adicional em /seguranca.");
+  }
   return session;
 }
 

@@ -23,7 +23,8 @@
     "db:bootstrap-admin": "tsx scripts/bootstrap-admin.ts",
     "professor:agent": "tsx scripts/professor-rs/run.ts",
     "professor:publish": "tsx scripts/professor-rs/publish.ts",
-    "professor:import": "tsx scripts/professor-rs/import.ts"
+    "professor:import": "tsx scripts/professor-rs/import.ts",
+    "db:verify-backup": "node scripts/verify-backup.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

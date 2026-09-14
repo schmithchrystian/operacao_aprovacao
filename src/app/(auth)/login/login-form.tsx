@@ -81,6 +81,10 @@ export function LoginForm() {
       </div>
 
       <div className="space-y-1.5">
+        <Label htmlFor="otp">Código autenticador ou recuperação (se ativado)</Label>
+        <Input id="otp" autoComplete="one-time-code" disabled={isPending} {...register("otp")} />
+      </div>
+      <div className="space-y-1.5">
         <Label htmlFor="password">Senha</Label>
         <Input
           id="password"
