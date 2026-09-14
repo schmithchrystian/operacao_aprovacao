@@ -1,0 +1,71 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "id": "target",
+      "passed": true,
+      "message": "Destino deve ser staging ou production."
+    },
+    {
+      "id": "app-env",
+      "passed": false,
+      "message": "APP_ENV deve coincidir com o destino."
+    },
+    {
+      "id": "data-source",
+      "passed": false,
+      "message": "Persistência Prisma obrigatória."
+    },
+    {
+      "id": "demo-seed",
+      "passed": false,
+      "message": "Seed de demonstração deve estar explicitamente desativado."
+    },
+    {
+      "id": "auth_secret",
+      "passed": false,
+      "message": "AUTH_SECRET: segredo próprio, sem valor demonstrativo e com pelo menos 32 caracteres."
+    },
+    {
+      "id": "cron_secret",
+      "passed": false,
+      "message": "CRON_SECRET: segredo próprio, sem valor demonstrativo e com pelo menos 32 caracteres."
+    },
+    {
+      "id": "separate-secrets",
+      "passed": false,
+      "message": "Autenticação e cron devem usar segredos diferentes."
+    },
+    {
+      "id": "database_url",
+      "passed": false,
+      "message": "DATABASE_URL: conexão PostgreSQL do ambiente hospedado obrigatória; validar TLS e permissões no provedor."
+    },
+    {
+      "id": "direct_url",
+      "passed": false,
+      "message": "DIRECT_URL: conexão PostgreSQL do ambiente hospedado obrigatória; validar TLS e permissões no provedor."
+    },
+    {
+      "id": "app-url",
+      "passed": false,
+      "message": "APP_URL deve ser a origem HTTPS canônica, sem credenciais, caminho ou parâmetros."
+    },
+    {
+      "id": "email-provider",
+      "passed": false,
+      "message": "Configurar envio de e-mail para o ciclo de contas; entrega real ainda precisa de teste."
+    },
+    {
+      "id": "email-encryption",
+      "passed": false,
+      "message": "Fila de e-mail exige chave própria de 32 bytes em Base64; guardar no cofre e incluir na recuperação operacional."
+    },
+    {
+      "id": "billing-mode",
+      "passed": false,
+      "message": "Definir explicitamente se o acesso exige assinatura."
+    }
+  ],
+  "scope": "Configuração declarada e, quando solicitado, três leituras HTTP. Não certifica release, banco, e-mail, pagamentos, backups ou segurança completa."
+}

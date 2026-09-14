@@ -1,0 +1,52 @@
+{
+  "notes": {
+    "command": "node node_modules/vitest/vitest.mjs run --config docs/entrega-usuarios/notas.config.ts",
+    "exitCode": 0,
+    "testsPassed": 9,
+    "scope": "UI with mocked actions"
+  },
+  "preflight": {
+    "command": "node --test docs/entrega-usuarios/preflight.test.mjs",
+    "exitCode": 0,
+    "testsPassed": 7
+  },
+  "lint": {
+    "scope": "four code files in docs/entrega-usuarios",
+    "exitCode": 0
+  },
+  "release": {
+    "approved": false,
+    "reason": "Hosted environment and complete release not validated"
+  },
+  "candidateCommit": "4766b17",
+  "consolidatedChecks": {
+    "source": "docs/implementation/STATUS.md",
+    "unitTestsPassed": 823,
+    "postgresTestsPassed": 63,
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "prismaDrift": "none",
+    "npmAuditKnownVulnerabilities": 0
+  },
+  "browser": {
+    "environment": "http://localhost:3100",
+    "database": "isolated PostgreSQL with synthetic fixtures",
+    "passed": [
+      "student login",
+      "real dashboard",
+      "catalog and lesson",
+      "notes recovered in new tab after immediate navigation",
+      "mobile 390x844 without horizontal overflow",
+      "create deck and card, complete review",
+      "admin login and course list"
+    ],
+    "notValidated": ["real video/PDF", "hosted email", "real Stripe", "hosted restore"],
+    "finalConsoleErrors": 0
+  },
+  "postCandidateChange": {
+    "scope": "admin dashboard labels only",
+    "eslint": "passed",
+    "browserBuildContainsChange": false
+  }
+}

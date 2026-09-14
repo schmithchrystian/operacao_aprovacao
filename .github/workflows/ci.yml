@@ -42,6 +42,10 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test
+      - name: Independent notes navigation regression
+        run: npx vitest run --config docs/entrega-usuarios/notas.config.ts
+      - name: Deployment preflight regression
+        run: node --test docs/entrega-usuarios/preflight.test.mjs
       - run: npm run test:integration
       - name: Create synthetic recovery fixture
         run: npx tsx scripts/qa-fixture.ts

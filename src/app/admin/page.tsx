@@ -1,5 +1,16 @@
 import type { Metadata } from "next";
-import { LayoutDashboard, Users, UserCheck, UserPlus, Clock, CheckCircle2, Target, TrendingUp, Gauge, CreditCard } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  UserCheck,
+  UserPlus,
+  Clock,
+  CheckCircle2,
+  Target,
+  TrendingUp,
+  Gauge,
+  CreditCard,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ErrorState } from "@/components/shared/error-state";
 import { StatCard } from "@/components/shared/stat-card";
@@ -23,7 +34,10 @@ export default async function AdminDashboardPage() {
     return (
       <div className="space-y-6">
         <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-        <ErrorState title="Não foi possível carregar o dashboard" description={result.error.message} />
+        <ErrorState
+          title="Não foi possível carregar o dashboard"
+          description={result.error.message}
+        />
       </div>
     );
   }
@@ -46,8 +60,17 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Total de alunos" value={dashboard.totalStudents.toLocaleString("pt-BR")} icon={Users} />
-        <StatCard title="Alunos ativos" value={dashboard.activeUsers.toLocaleString("pt-BR")} icon={UserCheck} />
+        <StatCard
+          title="Total de alunos"
+          value={dashboard.totalStudents.toLocaleString("pt-BR")}
+          icon={Users}
+        />
+        <StatCard
+          title="Usuários ativos"
+          value={dashboard.activeUsers.toLocaleString("pt-BR")}
+          icon={UserCheck}
+          hint="Contas habilitadas de todos os perfis"
+        />
         <StatCard
           title="Novos usuários (30 dias)"
           value={dashboard.newUsersLast30Days.toLocaleString("pt-BR")}
@@ -70,12 +93,16 @@ export default async function AdminDashboardPage() {
           value={`${Math.round(dashboard.averagePerformancePercent)}%`}
           icon={Target}
         />
-        <StatCard title="Retenção" value={`${Math.round(dashboard.retentionRatePercent)}%`} icon={TrendingUp} />
+        <StatCard
+          title="Retenção"
+          value={`${Math.round(dashboard.retentionRatePercent)}%`}
+          icon={TrendingUp}
+        />
         <StatCard
           title="Engajamento"
           value={`${Math.round(dashboard.engagementScore)}%`}
           icon={Gauge}
-          hint="Heurística — ver pendência abaixo"
+          hint="Média das taxas de conclusão e retenção"
         />
       </div>
 
@@ -86,17 +113,14 @@ export default async function AdminDashboardPage() {
         </CardHeader>
         <CardContent className="space-y-1">
           <p className="text-2xl font-semibold tracking-tight">{dashboard.activeSubscriptions}</p>
-          <p className="text-muted-foreground text-xs">
-            Pendência do backend: não existe repositório de assinaturas ainda neste projeto — valor fixo em 0 até
-            esse domínio existir.
-          </p>
+          <p className="text-muted-foreground text-xs">Assinaturas pagas com acesso vigente.</p>
         </CardContent>
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>Cursos mais acessados</CardTitle>
+            <CardTitle>Cursos com mais matrículas</CardTitle>
           </CardHeader>
           <CardContent>
             <AdminRankingBarChart
@@ -108,12 +132,12 @@ export default async function AdminDashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Aulas mais assistidas</CardTitle>
+            <CardTitle>Aulas com mais registros de progresso</CardTitle>
           </CardHeader>
           <CardContent>
             <AdminRankingBarChart
               data={dashboard.topLessons.map((l) => ({ label: l.title, value: l.viewCount }))}
-              valueLabel="Visualizações"
+              valueLabel="Registros de progresso"
               color="var(--chart-2)"
             />
           </CardContent>

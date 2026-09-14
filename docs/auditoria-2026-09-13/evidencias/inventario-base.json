@@ -1,0 +1,5252 @@
+[
+  {
+    "path": ".claude/agents/architect.md",
+    "lines": 130,
+    "bytes": 3126,
+    "todos": 0,
+    "sha256": "466ad26eae16ce6eedb2b5a9db17d7036fbb9e1154b1df187c9937aaa91bd22a"
+  },
+  {
+    "path": ".claude/agents/backend.md",
+    "lines": 183,
+    "bytes": 3348,
+    "todos": 0,
+    "sha256": "8bf11053748d31db0c0093f8cb85eaa65ff4df2f9f6649451e1e481c33b978f2"
+  },
+  {
+    "path": ".claude/agents/database.md",
+    "lines": 187,
+    "bytes": 3213,
+    "todos": 0,
+    "sha256": "24899b226c969efb1d45fa48776a0a86516d8ef3afd3ad77e6697bd9bb7f5e47"
+  },
+  {
+    "path": ".claude/agents/frontend.md",
+    "lines": 177,
+    "bytes": 3399,
+    "todos": 0,
+    "sha256": "6fed53ae5bc1095aadc9761945847552acceb15da5727df3aa5980ef6984a720"
+  },
+  {
+    "path": ".claude/agents/gamification.md",
+    "lines": 189,
+    "bytes": 3343,
+    "todos": 0,
+    "sha256": "d345ea418d4f0fb05f5bb7c9e3d1be28242188706faecc5390895edc9d284c17"
+  },
+  {
+    "path": ".claude/agents/reviewer.md",
+    "lines": 131,
+    "bytes": 3208,
+    "todos": 0,
+    "sha256": "dd3080c36ae3e9b2db3e38abd251ab3dd4a96c940a8984869d85507d12f6e684"
+  },
+  {
+    "path": ".claude/agents/security.md",
+    "lines": 145,
+    "bytes": 2593,
+    "todos": 0,
+    "sha256": "455c28e3957b723c97df12917f1884596029563c643ea2d47e11e6927ac48d86"
+  },
+  {
+    "path": ".claude/agents/simulations.md",
+    "lines": 147,
+    "bytes": 2973,
+    "todos": 0,
+    "sha256": "edfde23bd0d402c2daaeb61605dc37b201b63d39ce8bd6a86d371d9dcc35043e"
+  },
+  {
+    "path": ".claude/agents/study-tracking.md",
+    "lines": 192,
+    "bytes": 3326,
+    "todos": 0,
+    "sha256": "c40efb4c548e1e958d4c88c091d5d81f79487e3bf8976f50ce0c505213d67de3"
+  },
+  {
+    "path": ".claude/agents/tester.md",
+    "lines": 131,
+    "bytes": 2716,
+    "todos": 0,
+    "sha256": "7b2be781d516cd78a7b75d025a8baa227090006662ab5c9cadaa2f75c000eeff"
+  },
+  {
+    "path": ".claude/launch.json",
+    "lines": 11,
+    "bytes": 352,
+    "todos": 0,
+    "sha256": "be065d2ef517444bb1d03baacdf21e2ab7243cc8639e78a96adf0231449bfdb5"
+  },
+  {
+    "path": ".gitignore",
+    "lines": 43,
+    "bytes": 503,
+    "todos": 0,
+    "sha256": "657f0106a59031b3dd7af060eafb4bb4d855ca4b6fe31c79ca7e3a10048c23b5"
+  },
+  {
+    "path": ".prettierignore",
+    "lines": 4,
+    "bytes": 46,
+    "todos": 0,
+    "sha256": "46210146c77f751db32a5ee1292befe0884e04d9a042bf5effe618842cc9260b"
+  },
+  {
+    "path": ".prettierrc",
+    "lines": 7,
+    "bytes": 136,
+    "todos": 0,
+    "sha256": "ceb0884ac5d5199600e73fa80fe88fdc690dd39e919ce35dd59fe4d9bae4dc51"
+  },
+  {
+    "path": "CLAUDE.md",
+    "lines": 1201,
+    "bytes": 21377,
+    "todos": 0,
+    "sha256": "be4374ea5850c61e5cc588dcaee020d95f5f3723e3692dd542c1433b248b80ef"
+  },
+  {
+    "path": "components.json",
+    "lines": 25,
+    "bytes": 520,
+    "todos": 0,
+    "sha256": "7f89b1e9e3995be8620be3162df8e08b7dd512f894fb0accb559193138fdc390"
+  },
+  {
+    "path": "docs/ARCHITECTURE.md",
+    "lines": 153,
+    "bytes": 10851,
+    "todos": 0,
+    "sha256": "31cab51f508610d0a7747376207cdc40c77525c4dafb946bda8a661923926a56"
+  },
+  {
+    "path": "docs/DATA-MODEL.md",
+    "lines": 301,
+    "bytes": 17258,
+    "todos": 0,
+    "sha256": "647b0f477bf0619d751ee1610b46ba9da20de10ba347e2290c6a55e901818b6c"
+  },
+  {
+    "path": "docs/FLASHCARDS.md",
+    "lines": 277,
+    "bytes": 15958,
+    "todos": 1,
+    "sha256": "3befa9ee7fb0d51e9cd99bb0ea3fb60be4e50c4cb9d5ecac0ba1718b000f7d9d"
+  },
+  {
+    "path": "docs/SECURITY.md",
+    "lines": 190,
+    "bytes": 15281,
+    "todos": 2,
+    "sha256": "0bdaa056ef72a6c239cb9c9331502215c5a758a793ae9870553a92340734921c"
+  },
+  {
+    "path": "docs/production/AUTHENTICATION_PLAN.md",
+    "lines": 412,
+    "bytes": 22987,
+    "todos": 0,
+    "sha256": "8e53eceb0d4775484c55e6325aba48c7a05d95f136c1924b56ff32918cc0ce9c"
+  },
+  {
+    "path": "docs/production/BACKUP_AND_RECOVERY.md",
+    "lines": 182,
+    "bytes": 13238,
+    "todos": 0,
+    "sha256": "c5dd2b674d6e7ba8ff732ef61f55e8156ab42a57db6f31d6f9ad67ddb89bd7cf"
+  },
+  {
+    "path": "docs/production/CI_CD.md",
+    "lines": 196,
+    "bytes": 11480,
+    "todos": 0,
+    "sha256": "2cea05c5c916ca1cf0a7b34175c8f0e4dd794f808318f1a8ece098308bfdba8a"
+  },
+  {
+    "path": "docs/production/CLOUDFLARE_PLAN.md",
+    "lines": 110,
+    "bytes": 8580,
+    "todos": 0,
+    "sha256": "c969baf2205648e1ca23c00a76622a743d96edbc1a119f72415fe6e0a21ba5a3"
+  },
+  {
+    "path": "docs/production/COST_MODEL.md",
+    "lines": 133,
+    "bytes": 11499,
+    "todos": 0,
+    "sha256": "bc89dea45e77eb9bd5ce9ea465e7cf60883bf99917f145e140eff9fe589accb4"
+  },
+  {
+    "path": "docs/production/CURRENT_STATE.md",
+    "lines": 152,
+    "bytes": 17810,
+    "todos": 3,
+    "sha256": "9a28a5f6fbc53288680a2f0d6d682b43b7afb0bb4d3992a372455888f7c4eda5"
+  },
+  {
+    "path": "docs/production/DOMAIN_AND_DNS.md",
+    "lines": 130,
+    "bytes": 9219,
+    "todos": 0,
+    "sha256": "0abb326f56df12651925a4d3dd1657a15e58fc0c98c84bce473405601bbe3d90"
+  },
+  {
+    "path": "docs/production/EMAIL_PLAN.md",
+    "lines": 93,
+    "bytes": 12649,
+    "todos": 0,
+    "sha256": "4dcbdffdbe84a317c0a0218cd3733b26059f613fd63f6cedd8d00f06c8a172c7"
+  },
+  {
+    "path": "docs/production/ENVIRONMENTS.md",
+    "lines": 55,
+    "bytes": 5111,
+    "todos": 0,
+    "sha256": "0228910f423f609ddd9eba0884a05848d1224afa46f2fdca6f981ac2ee7a655e"
+  },
+  {
+    "path": "docs/production/FINALIZATION_TASKS.md",
+    "lines": 199,
+    "bytes": 14039,
+    "todos": 1,
+    "sha256": "7f20902de99f1428c577b4a53d24ccddc0e12e73b9497ce27559a7ca3c598415"
+  },
+  {
+    "path": "docs/production/GO_LIVE_CHECKLIST.md",
+    "lines": 267,
+    "bytes": 29458,
+    "todos": 1,
+    "sha256": "75a1efe8b8b0f7d672d45afa0ed2529ca5e8e445dffe62028be4a669f5bf9e67"
+  },
+  {
+    "path": "docs/production/MOCK_MIGRATION_PLAN.md",
+    "lines": 259,
+    "bytes": 19324,
+    "todos": 2,
+    "sha256": "55af5c4940e2006a5b281ef833b065f0a9bd91ed9ab98afc30b90164ae7df9b5"
+  },
+  {
+    "path": "docs/production/MONITORING_PLAN.md",
+    "lines": 79,
+    "bytes": 6544,
+    "todos": 0,
+    "sha256": "2a6b7b000f3239f435e7ffbf87ef41f43540bbfe5c8e88d17c6f931c9fc6b942"
+  },
+  {
+    "path": "docs/production/PRODUCTION_ROADMAP.md",
+    "lines": 195,
+    "bytes": 28173,
+    "todos": 1,
+    "sha256": "614d2b5d1392ae4ed974f43770ac01db01aa6275880c096caf3c4ad97e72e954"
+  },
+  {
+    "path": "docs/production/RISK_MATRIX.md",
+    "lines": 55,
+    "bytes": 9441,
+    "todos": 1,
+    "sha256": "78dc809813116e593417a37956cfba182641c93499e02f62229575f59653fb18"
+  },
+  {
+    "path": "docs/production/ROADMAP_SKELETON.md",
+    "lines": 30,
+    "bytes": 2926,
+    "todos": 0,
+    "sha256": "153e0b35ccf071a1e388ebca9c35b86f29ca3535a1eeb323f4a66c5ba3ad2840"
+  },
+  {
+    "path": "docs/production/SECURITY_CHECKLIST.md",
+    "lines": 136,
+    "bytes": 16122,
+    "todos": 1,
+    "sha256": "c80d0667c487960928298d4e38c0f7863b5abd5b918614ab4d47f088f4524a82"
+  },
+  {
+    "path": "docs/production/STORAGE_PLAN.md",
+    "lines": 80,
+    "bytes": 10851,
+    "todos": 1,
+    "sha256": "6a8ca917c4bb7b07987da1840fedba36bc8b5fe1e4e7fb5e2e2a687da48caea3"
+  },
+  {
+    "path": "docs/production/SUPABASE_DECISION.md",
+    "lines": 110,
+    "bytes": 11613,
+    "todos": 0,
+    "sha256": "4619a4cc5cee870c548d8c8fd3003304e55d8f84109187a55f22406352c222f4"
+  },
+  {
+    "path": "docs/production/TARGET_ARCHITECTURE.md",
+    "lines": 134,
+    "bytes": 8537,
+    "todos": 0,
+    "sha256": "7d221494f05c04e6670ad7b6c764852c542388fe9ba9a49dd4c26e7569946c10"
+  },
+  {
+    "path": "docs/production/VERCEL_DEPLOYMENT.md",
+    "lines": 266,
+    "bytes": 19809,
+    "todos": 1,
+    "sha256": "6029b48641a7ffa86513ea4b6e968886053902d31b3a767872a7d8ac6e2d64ff"
+  },
+  {
+    "path": "docs/production/VIDEO_HOSTING_DECISION.md",
+    "lines": 113,
+    "bytes": 14513,
+    "todos": 0,
+    "sha256": "fc474556c5ce3dada5acb104320a05702fcd891180ee9ddea7b574e776686e4e"
+  },
+  {
+    "path": "eslint.config.mjs",
+    "lines": 18,
+    "bytes": 465,
+    "todos": 0,
+    "sha256": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493"
+  },
+  {
+    "path": "next.config.ts",
+    "lines": 100,
+    "bytes": 4639,
+    "todos": 1,
+    "sha256": "f44c40283022a860505d28900c88aec7c00811010ff9f02135def09557978713"
+  },
+  {
+    "path": "package-lock.json",
+    "lines": 13542,
+    "bytes": 475261,
+    "todos": 0,
+    "sha256": "11229be16c8bf978393007a5c7a9e8ecb369653e69e3bfd3fd2005b10c78545a"
+  },
+  {
+    "path": "package.json",
+    "lines": 63,
+    "bytes": 1729,
+    "todos": 0,
+    "sha256": "8c0b44d2328f861ee48b6fdc2b637211e5ebc9eff199a099403d2f47afbaeee8"
+  },
+  {
+    "path": "postcss.config.mjs",
+    "lines": 7,
+    "bytes": 94,
+    "todos": 0,
+    "sha256": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde"
+  },
+  {
+    "path": "prisma.config.ts",
+    "lines": 17,
+    "bytes": 602,
+    "todos": 0,
+    "sha256": "06b3101cda58aacd85a032dd3279d7c71cd868e6c658b429d32ded36d7cd839e"
+  },
+  {
+    "path": "prisma/migrations/0000_init/migration.sql",
+    "lines": 1201,
+    "bytes": 42536,
+    "todos": 0,
+    "sha256": "e576e0648736fbe954c0fe0ca78497beb2427d1faff7946c6d54ee64fda67d16"
+  },
+  {
+    "path": "prisma/schema.prisma",
+    "lines": 1129,
+    "bytes": 34884,
+    "todos": 0,
+    "sha256": "92871b305c7a91798c66fc08480eb6d3589288311774a13874c7cbc23fa93fad"
+  },
+  {
+    "path": "prisma/seed.ts",
+    "lines": 1232,
+    "bytes": 46199,
+    "todos": 0,
+    "sha256": "be3f4afaf6370d38de522695b43a0c7690daf48737848058687d4573606e9b32"
+  },
+  {
+    "path": "public/file.svg",
+    "lines": 1,
+    "bytes": 391,
+    "todos": 0,
+    "sha256": "2b67812c325c199a02536cdbeea0c593a72f707d323b72ee3e08dbab06753bd4"
+  },
+  {
+    "path": "public/globe.svg",
+    "lines": 1,
+    "bytes": 1035,
+    "todos": 0,
+    "sha256": "b614b9bf183925957661ac851498fe1d8029fd43a62fbfed86f9e2624a57e7cf"
+  },
+  {
+    "path": "public/next.svg",
+    "lines": 1,
+    "bytes": 1375,
+    "todos": 0,
+    "sha256": "55995dfad6ecb4945a1e856ddca03c5e16aa5bf13fd21b4df6a74ae79357bcfc"
+  },
+  {
+    "path": "public/vercel.svg",
+    "lines": 1,
+    "bytes": 128,
+    "todos": 0,
+    "sha256": "f081337b2fee635b455b63275406a3e7f39d6a014e25ad90dab5a67e62a12ac4"
+  },
+  {
+    "path": "public/window.svg",
+    "lines": 1,
+    "bytes": 385,
+    "todos": 0,
+    "sha256": "644768c4aaeb4767bce293344eeb0c125fb804a94d801440424072202d85e3a1"
+  },
+  {
+    "path": "src/app/(auth)/layout.tsx",
+    "lines": 18,
+    "bytes": 708,
+    "todos": 0,
+    "sha256": "fd910a1d094135151bcb3b012568319db67a7aa446b7e7cf5f39be4425f042f1"
+  },
+  {
+    "path": "src/app/(auth)/login/login-form.tsx",
+    "lines": 105,
+    "bytes": 3242,
+    "todos": 0,
+    "sha256": "8b5b106aba202a8e9673e2e7a4cd43575e4bca4fc9618c5ef1cac22563186842"
+  },
+  {
+    "path": "src/app/(auth)/login/page.tsx",
+    "lines": 26,
+    "bytes": 780,
+    "todos": 0,
+    "sha256": "47da55124cc6d6fe29da6b35c73e540fa8990b49eb1a3aa6bf611dff36866fe7"
+  },
+  {
+    "path": "src/app/(student)/acompanhamento/loading.tsx",
+    "lines": 42,
+    "bytes": 1707,
+    "todos": 0,
+    "sha256": "fbda45525e8622f2e55a70acab717d87937e2325dea9d80b0a0bfaa8e8db5179"
+  },
+  {
+    "path": "src/app/(student)/acompanhamento/page.tsx",
+    "lines": 252,
+    "bytes": 10306,
+    "todos": 0,
+    "sha256": "bba2bf1f1739aee6ea25fe847a2d387d1331a0f1791c206b66993b8e363baa18"
+  },
+  {
+    "path": "src/app/(student)/brainstorm/loading.tsx",
+    "lines": 24,
+    "bytes": 910,
+    "todos": 0,
+    "sha256": "2c932182b9a90d56b53fcfce37d8f7809e0477a8f7c5d86d4b93f346d33750d8"
+  },
+  {
+    "path": "src/app/(student)/brainstorm/page.tsx",
+    "lines": 72,
+    "bytes": 3022,
+    "todos": 0,
+    "sha256": "585268f07c0d7bfb1271a4ec0f6a276e769dace1fb1018705513d6c153057d3b"
+  },
+  {
+    "path": "src/app/(student)/conquistas/loading.tsx",
+    "lines": 25,
+    "bytes": 942,
+    "todos": 0,
+    "sha256": "4cdb2e7c35540246b0f87d35ed1bab447b7a1c7b47c2a9a980279316be82154b"
+  },
+  {
+    "path": "src/app/(student)/conquistas/page.tsx",
+    "lines": 48,
+    "bytes": 2335,
+    "todos": 0,
+    "sha256": "c94f84bf83bbfbffc7806abbf19210039333ecb855f334154bc34ba0daba3955"
+  },
+  {
+    "path": "src/app/(student)/cursos/[slug]/loading.tsx",
+    "lines": 26,
+    "bytes": 887,
+    "todos": 0,
+    "sha256": "7f0bbee29f751eb92b7da3917beaea6960f087bb46afd2f9daf9b9d2ed3a732f"
+  },
+  {
+    "path": "src/app/(student)/cursos/[slug]/modulos/[moduleSlug]/aulas/[lessonId]/page.tsx",
+    "lines": 180,
+    "bytes": 7284,
+    "todos": 0,
+    "sha256": "22f4368db6aff167b0df08310a8c02268ca57fb6b2b27a18a4a97622b14453cb"
+  },
+  {
+    "path": "src/app/(student)/cursos/[slug]/page.tsx",
+    "lines": 140,
+    "bytes": 5033,
+    "todos": 0,
+    "sha256": "b7e87fcc4af7a17341db34fc582b11ebaceab63d8cdbafe47401ee145fe74547"
+  },
+  {
+    "path": "src/app/(student)/cursos/loading.tsx",
+    "lines": 24,
+    "bytes": 839,
+    "todos": 0,
+    "sha256": "9ad0cea405d74115c596a43f4e743c09e0328a79dd6e178b5568677d62cbf914"
+  },
+  {
+    "path": "src/app/(student)/cursos/page.tsx",
+    "lines": 40,
+    "bytes": 1487,
+    "todos": 0,
+    "sha256": "36d4807be2520706a3888d46f7c87142a56a7e4f39913c1d8c73ed1f81d6e625"
+  },
+  {
+    "path": "src/app/(student)/dashboard/loading.tsx",
+    "lines": 33,
+    "bytes": 1262,
+    "todos": 0,
+    "sha256": "fb1cb2b3a75535fcc3b6aa1d182d374c58b2f3e7459c0fa28a92f8c85fb4b0c2"
+  },
+  {
+    "path": "src/app/(student)/dashboard/page.tsx",
+    "lines": 132,
+    "bytes": 5105,
+    "todos": 0,
+    "sha256": "3aa984809dbedf8cc8ce40d179a602f277583be6519c52c2ab5971f67b21cf01"
+  },
+  {
+    "path": "src/app/(student)/flashcards/loading.tsx",
+    "lines": 29,
+    "bytes": 1054,
+    "todos": 0,
+    "sha256": "1bb0d02830f61cab744f06b7e0de4a1fd5d5f57b7183ecc3d81fae294804d58b"
+  },
+  {
+    "path": "src/app/(student)/flashcards/page.tsx",
+    "lines": 66,
+    "bytes": 2907,
+    "todos": 0,
+    "sha256": "70bc73658bfdf404f7dd85a60c41b19ecc37405c8b796a7f84a994655c7bcdbc"
+  },
+  {
+    "path": "src/app/(student)/flashcards/revisar/loading.tsx",
+    "lines": 14,
+    "bytes": 536,
+    "todos": 0,
+    "sha256": "9a5acc5d6ccbf9d6ec41d42f4bb2c720f99593ebc4788b0cf5c331e02774b138"
+  },
+  {
+    "path": "src/app/(student)/flashcards/revisar/page.tsx",
+    "lines": 63,
+    "bytes": 2827,
+    "todos": 0,
+    "sha256": "04e1dce7fac49d4464165e26740af04205b854e0ac63760abab7fbba6ecce37c"
+  },
+  {
+    "path": "src/app/(student)/layout.tsx",
+    "lines": 14,
+    "bytes": 586,
+    "todos": 0,
+    "sha256": "9f0a511382c813c9489d66e6d6fe4db3af98058daa82a64387207d682393734c"
+  },
+  {
+    "path": "src/app/(student)/modo-foco/loading.tsx",
+    "lines": 18,
+    "bytes": 596,
+    "todos": 0,
+    "sha256": "49d0d2aeeb4f5d3009d117941e16e40d9a80e9efc06a26683a6335c0b0c8e367"
+  },
+  {
+    "path": "src/app/(student)/modo-foco/page.tsx",
+    "lines": 38,
+    "bytes": 1697,
+    "todos": 0,
+    "sha256": "70120e7c2d325e6e5e8e942a6a97521d23cc4353ef71a275f5a18f69ad038a6e"
+  },
+  {
+    "path": "src/app/(student)/montar-estudo/loading.tsx",
+    "lines": 22,
+    "bytes": 754,
+    "todos": 0,
+    "sha256": "1fd7f5583dbe4eccef6fa082c74713167ab4fbe80a63d22bb22acdf891728d4d"
+  },
+  {
+    "path": "src/app/(student)/montar-estudo/page.tsx",
+    "lines": 45,
+    "bytes": 2311,
+    "todos": 0,
+    "sha256": "9456245922f5dfe0aa5f929f4e7b6d47fabc3199744f110db33f19df02daaf8a"
+  },
+  {
+    "path": "src/app/(student)/perfil/loading.tsx",
+    "lines": 28,
+    "bytes": 1040,
+    "todos": 0,
+    "sha256": "bf6d7b89092759d6d4fe853fbaba99ed18cb762112bd701a5d0b6fcbaf62b8d1"
+  },
+  {
+    "path": "src/app/(student)/perfil/page.tsx",
+    "lines": 106,
+    "bytes": 4774,
+    "todos": 0,
+    "sha256": "7f9de4a7b9819d7ca2c03488fd7630bd5e512871d7999e1e7613e4a574fa56d6"
+  },
+  {
+    "path": "src/app/(student)/plano-de-estudos/loading.tsx",
+    "lines": 25,
+    "bytes": 875,
+    "todos": 0,
+    "sha256": "c3836258ac532c7a2ae51f86494c07d711ec6cb973e9e8b30297129a7e868ff5"
+  },
+  {
+    "path": "src/app/(student)/plano-de-estudos/page.tsx",
+    "lines": 50,
+    "bytes": 2220,
+    "todos": 0,
+    "sha256": "01e22fd51516d9a4baa8d1091aec5c2e8524d7f6d8f391420d35a9a2f3ae6886"
+  },
+  {
+    "path": "src/app/(student)/ranking/loading.tsx",
+    "lines": 22,
+    "bytes": 846,
+    "todos": 0,
+    "sha256": "4d7f7902a7da259e597e1ee15761182e780cd2e119182a4c0e25a4d1ccaacd34"
+  },
+  {
+    "path": "src/app/(student)/ranking/page.tsx",
+    "lines": 133,
+    "bytes": 4763,
+    "todos": 0,
+    "sha256": "164fb7a639cf88c8ccfaf81de09717225b2289ab92c45191d5c31cff64d7c35e"
+  },
+  {
+    "path": "src/app/(student)/simulados/[attemptId]/loading.tsx",
+    "lines": 18,
+    "bytes": 665,
+    "todos": 0,
+    "sha256": "1e7d4087d256eb6feda10f22b4c42b8a291a4585f4e2ea238404cf8779ee842e"
+  },
+  {
+    "path": "src/app/(student)/simulados/[attemptId]/page.tsx",
+    "lines": 83,
+    "bytes": 3317,
+    "todos": 0,
+    "sha256": "8ddfb0de1312c19be72c0fe57c95367e3657d744789d7ef05153e9bbadb52b0e"
+  },
+  {
+    "path": "src/app/(student)/simulados/[attemptId]/resultado/loading.tsx",
+    "lines": 28,
+    "bytes": 1040,
+    "todos": 0,
+    "sha256": "a61f6fff0f115762a901a2c9c2588742f96675b0d0f797e13cc1c5148beabd7d"
+  },
+  {
+    "path": "src/app/(student)/simulados/[attemptId]/resultado/page.tsx",
+    "lines": 168,
+    "bytes": 6617,
+    "todos": 0,
+    "sha256": "f4f561d575a5a770408a0fd0f9e3c22be1e7d962b014d2e9a393d137aea83be3"
+  },
+  {
+    "path": "src/app/(student)/simulados/caderno-de-erros/loading.tsx",
+    "lines": 20,
+    "bytes": 693,
+    "todos": 0,
+    "sha256": "b7b02950b044235b6cfaa27e15db5995e3ffc1253b853af448c489d4dce372dc"
+  },
+  {
+    "path": "src/app/(student)/simulados/caderno-de-erros/page.tsx",
+    "lines": 49,
+    "bytes": 1941,
+    "todos": 0,
+    "sha256": "bf3b7565a18cbc67aa865eb1c667a7a25aed6654c1fc2c2a89f075a59db16b77"
+  },
+  {
+    "path": "src/app/(student)/simulados/favoritos/loading.tsx",
+    "lines": 19,
+    "bytes": 640,
+    "todos": 0,
+    "sha256": "588f20e92f2870156890031f605d109d7d6c377e0a261ddc06bdc21709e8ae09"
+  },
+  {
+    "path": "src/app/(student)/simulados/favoritos/page.tsx",
+    "lines": 39,
+    "bytes": 1400,
+    "todos": 0,
+    "sha256": "612ac744be5be350489d220ee47bc5d2582554492f29f46371e00823f0698ab1"
+  },
+  {
+    "path": "src/app/(student)/simulados/historico/loading.tsx",
+    "lines": 16,
+    "bytes": 551,
+    "todos": 0,
+    "sha256": "3f66276b4c008277250caa7c8995481dfae5fe13063d159277258bfa318d63b5"
+  },
+  {
+    "path": "src/app/(student)/simulados/historico/page.tsx",
+    "lines": 43,
+    "bytes": 1607,
+    "todos": 0,
+    "sha256": "276ea14054eb70a1fd95308e2ffea1b805b1e25edcb1e4a96d34a270babd1ac3"
+  },
+  {
+    "path": "src/app/(student)/simulados/loading.tsx",
+    "lines": 34,
+    "bytes": 1158,
+    "todos": 0,
+    "sha256": "88e795e7ebf5bab3f3d92df1e3bc36f701489342b2a6d83e92d858dde18098e3"
+  },
+  {
+    "path": "src/app/(student)/simulados/page.tsx",
+    "lines": 135,
+    "bytes": 5628,
+    "todos": 0,
+    "sha256": "dc7c8a782a8713d04c6aff5590fec135565bb1b34f52acca31756e0373ef696a"
+  },
+  {
+    "path": "src/app/(student)/trilha/page.tsx",
+    "lines": 16,
+    "bytes": 557,
+    "todos": 0,
+    "sha256": "47ea5cf9b50517e7d22b56932a82de48c594861e11790303deda4a2803a366fb"
+  },
+  {
+    "path": "src/app/admin/assuntos/page.tsx",
+    "lines": 29,
+    "bytes": 1107,
+    "todos": 0,
+    "sha256": "511d19cc4b1749ba613b8b571d5b27e6bf403013cde008a7fe8afdf6a5c887e3"
+  },
+  {
+    "path": "src/app/admin/auditoria/page.tsx",
+    "lines": 33,
+    "bytes": 1189,
+    "todos": 0,
+    "sha256": "e9ad3ed26e1389c43d0c69523de7960d2f4986b66cbd25f217613536f1a1ddbc"
+  },
+  {
+    "path": "src/app/admin/avisos/page.tsx",
+    "lines": 37,
+    "bytes": 1575,
+    "todos": 0,
+    "sha256": "7abd047f50c06690c3726e993905070ebc5d464319efbad071111abdbb8729f4"
+  },
+  {
+    "path": "src/app/admin/concursos/page.tsx",
+    "lines": 19,
+    "bytes": 769,
+    "todos": 0,
+    "sha256": "3c11750815166c44dbc6ffb67bf7a311b2cd0668446832f1eff8af91b71e2617"
+  },
+  {
+    "path": "src/app/admin/configuracao/page.tsx",
+    "lines": 38,
+    "bytes": 1443,
+    "todos": 0,
+    "sha256": "b0da341c7967676c84c4aa7600ba17aa01c8feeeeb10c9e0eff0dd7c50065c53"
+  },
+  {
+    "path": "src/app/admin/conquistas/page.tsx",
+    "lines": 19,
+    "bytes": 804,
+    "todos": 0,
+    "sha256": "ef21763ee9baa0304fbe72ef69cec53c57cf7025e73516fee9b01989f5ffaa1a"
+  },
+  {
+    "path": "src/app/admin/cursos/[id]/page.tsx",
+    "lines": 73,
+    "bytes": 2855,
+    "todos": 0,
+    "sha256": "b588055015a8086970e909193cd5151e18691c1a8cba0876785d7641e984cb3a"
+  },
+  {
+    "path": "src/app/admin/cursos/page.tsx",
+    "lines": 35,
+    "bytes": 1324,
+    "todos": 0,
+    "sha256": "11b5d6f6809e606831bb9e677e57e51f1d47505c6ebb6435a00ee469a09d63e5"
+  },
+  {
+    "path": "src/app/admin/layout.tsx",
+    "lines": 14,
+    "bytes": 613,
+    "todos": 0,
+    "sha256": "c1c7430b8f54826c0104cf759f45920a2b9d794de7fbd05fabf07c2cff56d8e4"
+  },
+  {
+    "path": "src/app/admin/materias/page.tsx",
+    "lines": 19,
+    "bytes": 768,
+    "todos": 0,
+    "sha256": "803ea4dd162181a2aae5bfff6f4eb631748053facf554e14d5c7ff8e1bd0dcfd"
+  },
+  {
+    "path": "src/app/admin/page.tsx",
+    "lines": 136,
+    "bytes": 5279,
+    "todos": 0,
+    "sha256": "25bf4b91e8f604feb7d11bc808b2b21628d4138d1501b2641b4e973911d1f4c0"
+  },
+  {
+    "path": "src/app/admin/professores/page.tsx",
+    "lines": 19,
+    "bytes": 775,
+    "todos": 0,
+    "sha256": "34d86c4a07386551f57a4720d5b5a74f729adcc133d92571dc66f73e37194502"
+  },
+  {
+    "path": "src/app/admin/questoes/page.tsx",
+    "lines": 39,
+    "bytes": 1466,
+    "todos": 0,
+    "sha256": "879fe1a853e69e593d972a6e3753dde4b6290d4da7a099f38e8ea3d49c93f40c"
+  },
+  {
+    "path": "src/app/admin/simulados/page.tsx",
+    "lines": 33,
+    "bytes": 1178,
+    "todos": 0,
+    "sha256": "1b6fa359599db923d7a8156ec44ffd14b8c8ecbab9b12348290f62fa99fbcb44"
+  },
+  {
+    "path": "src/app/admin/usuarios/page.tsx",
+    "lines": 19,
+    "bytes": 749,
+    "todos": 0,
+    "sha256": "5034188848ca201d01559f77a3cd99da0d7fc3c63e7141c4701cdd7349c87523"
+  },
+  {
+    "path": "src/app/api/auth/[...nextauth]/route.ts",
+    "lines": 8,
+    "bytes": 288,
+    "todos": 0,
+    "sha256": "8d5fc1e1d0c229d327e6bfb8af768d228ad86a3286afdb0a8e055c1344975093"
+  },
+  {
+    "path": "src/app/api/cron/ranking-recalc/route.ts",
+    "lines": 132,
+    "bytes": 5658,
+    "todos": 1,
+    "sha256": "0d000de8c3c4f35d9b2149e57c319f53b19958b6ba3ec7ea052e7285347392df"
+  },
+  {
+    "path": "src/app/api/focus/heartbeat/route.ts",
+    "lines": 34,
+    "bytes": 1773,
+    "todos": 0,
+    "sha256": "6b48465ff9dd358e6fe121bade6ba5f1de7ac6163b1002336edd0de6db1b945f"
+  },
+  {
+    "path": "src/app/api/progress/heartbeat/route.ts",
+    "lines": 34,
+    "bytes": 1707,
+    "todos": 0,
+    "sha256": "033fcd29d9de7c1c20de89ec1bf2d829aab6ba9eb1c9c1067266aa4d04abb11b"
+  },
+  {
+    "path": "src/app/error.tsx",
+    "lines": 29,
+    "bytes": 901,
+    "todos": 0,
+    "sha256": "f2fa51c465d53542bfbe2f2a69569fc65941ba127c1fe8b559fbbd212b616cb2"
+  },
+  {
+    "path": "src/app/favicon.ico",
+    "lines": 275,
+    "bytes": 25931,
+    "todos": 0,
+    "sha256": "2b8ad2d33455a8f736fc3a8ebf8f0bdea8848ad4c0db48a2833bd0f9cd775932"
+  },
+  {
+    "path": "src/app/global-error.tsx",
+    "lines": 61,
+    "bytes": 1798,
+    "todos": 0,
+    "sha256": "6d332415724d3b42b11a4acb738f50c4cd72466177cecc4787be94e03b95e932"
+  },
+  {
+    "path": "src/app/globals.css",
+    "lines": 147,
+    "bytes": 4751,
+    "todos": 0,
+    "sha256": "cec80de6dfd3f8d69efb064f10a0c3c0fc8bf7d2f95262091ef096c99bae2623"
+  },
+  {
+    "path": "src/app/layout.tsx",
+    "lines": 41,
+    "bytes": 1066,
+    "todos": 0,
+    "sha256": "0e2f2a5c43e1048ce99accddb099ba47e75bd2b024563b8a54699d7accab1ab5"
+  },
+  {
+    "path": "src/app/loading.tsx",
+    "lines": 9,
+    "bytes": 203,
+    "todos": 0,
+    "sha256": "c2d26aab886f3e76e996d2242dd8ccc99b23c6d2aacf302f30c1eeae92d67bea"
+  },
+  {
+    "path": "src/app/not-found.tsx",
+    "lines": 25,
+    "bytes": 877,
+    "todos": 0,
+    "sha256": "539430d6b987e99ef981dc962a48494e333cd8e0dafcddfee19a51b8a7549edf"
+  },
+  {
+    "path": "src/app/page.tsx",
+    "lines": 10,
+    "bytes": 345,
+    "todos": 0,
+    "sha256": "16bd1a0e945b08be016f7ea22ab65243538975344bda71b7ed3b0e4761bbf925"
+  },
+  {
+    "path": "src/app/providers.tsx",
+    "lines": 22,
+    "bytes": 842,
+    "todos": 0,
+    "sha256": "4df0981f712692cde319dba688dae56254f46ef98be82c7d3db12db05a03178e"
+  },
+  {
+    "path": "src/components/achievements/achievement-card.tsx",
+    "lines": 53,
+    "bytes": 2202,
+    "todos": 0,
+    "sha256": "05d73c39d6030cb9f0bfe4e1fbb47f753d7ad5794bc12d04b533e4fd0aae48d4"
+  },
+  {
+    "path": "src/components/achievements/achievement-grid.tsx",
+    "lines": 81,
+    "bytes": 3026,
+    "todos": 0,
+    "sha256": "9935849fc3aab24fe763b70df39fd64734cafaf19e6bd13c44d6e85ab969e360"
+  },
+  {
+    "path": "src/components/achievements/level-header.tsx",
+    "lines": 63,
+    "bytes": 2521,
+    "todos": 0,
+    "sha256": "ecd1e674438b9d6cf17c70eb65983b9df5369dbb1fa91381881f70b7b29dd485"
+  },
+  {
+    "path": "src/components/achievements/level-track.tsx",
+    "lines": 89,
+    "bytes": 3730,
+    "todos": 0,
+    "sha256": "52f42d9cf8e650b71f48ecee1477d3030a420b7d6a9d66b0ea0b07c56fba5e84"
+  },
+  {
+    "path": "src/components/admin/assuntos/topic-form-dialog.tsx",
+    "lines": 158,
+    "bytes": 5559,
+    "todos": 0,
+    "sha256": "c2be13412807a78fcc7c720d383a0a48ddbd7134de826c744095c90cac001c0b"
+  },
+  {
+    "path": "src/components/admin/assuntos/topics-manager.tsx",
+    "lines": 99,
+    "bytes": 4166,
+    "todos": 0,
+    "sha256": "a49411904309ff68731f3793cb70ebf819ad78c95ba071bee40e1566f3899c97"
+  },
+  {
+    "path": "src/components/admin/auditoria/audit-log-table.tsx",
+    "lines": 204,
+    "bytes": 7653,
+    "todos": 0,
+    "sha256": "82b9beae8f1053121367cca4db3af45499447825c793ad33d9ad1422830c203c"
+  },
+  {
+    "path": "src/components/admin/avisos/broadcast-form.tsx",
+    "lines": 162,
+    "bytes": 6122,
+    "todos": 0,
+    "sha256": "bdf18b036b5c70a323e6c2bc852bdfbfe7199a8133aef54cd8f5961524b1810f"
+  },
+  {
+    "path": "src/components/admin/avisos/moderation-panel.tsx",
+    "lines": 129,
+    "bytes": 5545,
+    "todos": 0,
+    "sha256": "23166c96c443ef5cefaa6b07e04d35612cb5ba8e81b4ab0d712693f7145b535b"
+  },
+  {
+    "path": "src/components/admin/charts/admin-ranking-bar-chart.tsx",
+    "lines": 68,
+    "bytes": 2812,
+    "todos": 0,
+    "sha256": "c8e70b5ce48358aa7b40dad591c2b91c900e75cf0448d0f8e48ffeff4aeace9d"
+  },
+  {
+    "path": "src/components/admin/concursos/contests-manager.tsx",
+    "lines": 98,
+    "bytes": 4185,
+    "todos": 0,
+    "sha256": "4fe5c21c943eb7385ed69bb59ed15eb754a7d0f1d4f807e92f1082618693648e"
+  },
+  {
+    "path": "src/components/admin/concursos/create-contest-dialog.tsx",
+    "lines": 145,
+    "bytes": 4927,
+    "todos": 0,
+    "sha256": "81ee484dd9c10910b5ce33b59d91c54b6d9d43998c8fd71aee3fa658a69f8b37"
+  },
+  {
+    "path": "src/components/admin/concursos/edit-contest-dialog.tsx",
+    "lines": 136,
+    "bytes": 4609,
+    "todos": 0,
+    "sha256": "a1fb60ff5046c7869d62362d359bb797187bad0d94eda098b6781912228119b4"
+  },
+  {
+    "path": "src/components/admin/configuracao/config-form.tsx",
+    "lines": 256,
+    "bytes": 10244,
+    "todos": 0,
+    "sha256": "57244e808a2237842808bd7d5c4394d7f428f3c1cca736c81f9eb039bf05ddf0"
+  },
+  {
+    "path": "src/components/admin/confirm-dialog.tsx",
+    "lines": 94,
+    "bytes": 3310,
+    "todos": 0,
+    "sha256": "3d4dfe29bfa986cea83e1e4e40dbaa3d7bbb7df73caf16d2a0a0604c56cca6e2"
+  },
+  {
+    "path": "src/components/admin/conquistas/achievements-manager.tsx",
+    "lines": 113,
+    "bytes": 5229,
+    "todos": 0,
+    "sha256": "61bed2291a723c20b628e77acee3374d9e22243ea4fd3f47e290236fa2daccbe"
+  },
+  {
+    "path": "src/components/admin/conquistas/create-achievement-dialog.tsx",
+    "lines": 171,
+    "bytes": 6247,
+    "todos": 0,
+    "sha256": "004786762cc068ba634a10f91155e5792dce5fc91d6651839a2c132309167079"
+  },
+  {
+    "path": "src/components/admin/conquistas/edit-achievement-dialog.tsx",
+    "lines": 153,
+    "bytes": 5536,
+    "todos": 0,
+    "sha256": "2409084637095d179dcc3e5d4cbc41509322c41acb510c8b6514c28b6742269a"
+  },
+  {
+    "path": "src/components/admin/content-status-badge.tsx",
+    "lines": 32,
+    "bytes": 1215,
+    "todos": 0,
+    "sha256": "c370f280e54ba0b01aa1a99bd935b886b713f00cf770e7f85cce3a580d1869e1"
+  },
+  {
+    "path": "src/components/admin/cursos/courses-manager.tsx",
+    "lines": 117,
+    "bytes": 5464,
+    "todos": 0,
+    "sha256": "3603c1719cbfe562c702886ae75e0d864da6571f549a7e812f5d8e6f96a9c93d"
+  },
+  {
+    "path": "src/components/admin/cursos/create-course-dialog.tsx",
+    "lines": 222,
+    "bytes": 8116,
+    "todos": 0,
+    "sha256": "4ee289cecee04e6e73df0b901f51f5c8d95ffc4f20e53a81f8e03c49ab504aad"
+  },
+  {
+    "path": "src/components/admin/cursos/create-lesson-dialog.tsx",
+    "lines": 190,
+    "bytes": 6613,
+    "todos": 0,
+    "sha256": "6c5241c59e7ee16a57459a9bc1c7b2c0bb43f44ac5b14aa7d7e686843b1d9d41"
+  },
+  {
+    "path": "src/components/admin/cursos/create-module-dialog.tsx",
+    "lines": 173,
+    "bytes": 6236,
+    "todos": 0,
+    "sha256": "6b59803f0fbb1d72b720296803a2857df20ff13dc732d182a72aece3fc05aa83"
+  },
+  {
+    "path": "src/components/admin/cursos/edit-course-dialog.tsx",
+    "lines": 200,
+    "bytes": 7317,
+    "todos": 0,
+    "sha256": "14b9ab5848ca90208b5c0389f80aa47b71a84efce1fec6a3d6d200b172c36eec"
+  },
+  {
+    "path": "src/components/admin/cursos/edit-lesson-dialog.tsx",
+    "lines": 183,
+    "bytes": 6596,
+    "todos": 0,
+    "sha256": "37ad11e712253d6d3458ffa0de3b8ecd8d035b4a77575f7aebc4d4e711e26f82"
+  },
+  {
+    "path": "src/components/admin/cursos/edit-module-dialog.tsx",
+    "lines": 169,
+    "bytes": 6115,
+    "todos": 0,
+    "sha256": "8199988fa13b0d435be98b146fe9088108b69c439b36ecd4a25c813fe03f70c3"
+  },
+  {
+    "path": "src/components/admin/cursos/lessons-manager.tsx",
+    "lines": 222,
+    "bytes": 8738,
+    "todos": 0,
+    "sha256": "d1dfe62654a576f1d39e9924b6e2857de948ba2a8027d60b55f3680748438f8d"
+  },
+  {
+    "path": "src/components/admin/cursos/link-video-dialog.tsx",
+    "lines": 136,
+    "bytes": 4485,
+    "todos": 0,
+    "sha256": "c59e22349dbba45e6f1c31940c11bd75f0b6a60197d5730e1779657d10651cc1"
+  },
+  {
+    "path": "src/components/admin/cursos/modules-manager.tsx",
+    "lines": 184,
+    "bytes": 7974,
+    "todos": 0,
+    "sha256": "ef08ff7a7a111b29b13e95e458b0632976710cba1dc86a76f6ca90c6c8877f38"
+  },
+  {
+    "path": "src/components/admin/materias/subject-form-dialog.tsx",
+    "lines": 148,
+    "bytes": 4985,
+    "todos": 0,
+    "sha256": "b617b99c2c6c311910f261add59a835b97050f48b9d821a5aaa9b27ad8f196a1"
+  },
+  {
+    "path": "src/components/admin/materias/subjects-manager.tsx",
+    "lines": 94,
+    "bytes": 3870,
+    "todos": 0,
+    "sha256": "4da03bd6e243850cb08a24d9c30f4132e4674091b63d865ec0027fff59e8f657"
+  },
+  {
+    "path": "src/components/admin/professores/teacher-form-dialog.tsx",
+    "lines": 170,
+    "bytes": 5984,
+    "todos": 0,
+    "sha256": "d6f8f39d98620c8d86cd45b7dd5b33b89a7c88b3ac38aafa4ad27f6a36e498d5"
+  },
+  {
+    "path": "src/components/admin/professores/teachers-manager.tsx",
+    "lines": 114,
+    "bytes": 4687,
+    "todos": 0,
+    "sha256": "c299639001611c739a72078e7801cd12c019479124bb9a240418d8cf5a3dda72"
+  },
+  {
+    "path": "src/components/admin/questoes/create-question-dialog.tsx",
+    "lines": 231,
+    "bytes": 8244,
+    "todos": 0,
+    "sha256": "783706e4813b59a85a55ba6c5b9d4df99bedaf1ada08221fef3c6eceefe18e22"
+  },
+  {
+    "path": "src/components/admin/questoes/edit-question-dialog.tsx",
+    "lines": 227,
+    "bytes": 8511,
+    "todos": 0,
+    "sha256": "6352eddd4ae7aceb29c14a24fbf07bf044444e345883254f4fecbb6ad68fb0d4"
+  },
+  {
+    "path": "src/components/admin/questoes/question-options-editor.tsx",
+    "lines": 100,
+    "bytes": 3788,
+    "todos": 0,
+    "sha256": "51d3e58bc1fc99416102c31d7f3de8ee90774b72b2c6a743a1f7c7d7f49f50d5"
+  },
+  {
+    "path": "src/components/admin/questoes/questions-manager.tsx",
+    "lines": 123,
+    "bytes": 5294,
+    "todos": 0,
+    "sha256": "e2cb501bfcb972699d628d6693c8fdd4cc730c1fa03ea8aa101ad372dad5a51e"
+  },
+  {
+    "path": "src/components/admin/simulados/create-mock-exam-dialog.tsx",
+    "lines": 170,
+    "bytes": 5974,
+    "todos": 0,
+    "sha256": "ffca7bf18b787388a7cffef6d860ba17947273cb1adc0dc529327b20083e41a2"
+  },
+  {
+    "path": "src/components/admin/simulados/mock-exams-manager.tsx",
+    "lines": 103,
+    "bytes": 4550,
+    "todos": 0,
+    "sha256": "7c5dc6189c4f412f1cfa26778d5b158f8b05b74d59e46919075fdd7604f15173"
+  },
+  {
+    "path": "src/components/admin/usuarios/change-role-dialog.tsx",
+    "lines": 103,
+    "bytes": 3766,
+    "todos": 0,
+    "sha256": "11a72c196a38d566250a8b56b648c4a5d451216323cf06db9f07df9330d0d8ea"
+  },
+  {
+    "path": "src/components/admin/usuarios/users-manager.tsx",
+    "lines": 118,
+    "bytes": 5102,
+    "todos": 0,
+    "sha256": "46f7c64007954daa1a8681587429fb87ab27b30d1c42a47810279d2541e8d556"
+  },
+  {
+    "path": "src/components/brainstorm/brainstorm-map.tsx",
+    "lines": 110,
+    "bytes": 4419,
+    "todos": 1,
+    "sha256": "9c57438280d529151282931a3df0075fd6c8af25adda64b4fa3abab008286363"
+  },
+  {
+    "path": "src/components/brainstorm/brainstorm-workspace.tsx",
+    "lines": 164,
+    "bytes": 5979,
+    "todos": 0,
+    "sha256": "7399259a1f7dd9ac1bcfd59b706e601d310a87569a8777591a1db97c44a5d952"
+  },
+  {
+    "path": "src/components/brainstorm/card-form-dialog.tsx",
+    "lines": 403,
+    "bytes": 14676,
+    "todos": 0,
+    "sha256": "289d5665748b33dc6687999d3c490cfa43376ed5e6b9c7a19815b6bf165c6fbc"
+  },
+  {
+    "path": "src/components/brainstorm/create-board-dialog.tsx",
+    "lines": 125,
+    "bytes": 4321,
+    "todos": 0,
+    "sha256": "2c720742bddcbebc5244a141ce8eda0147f9852e505b47ae4416b035adbdc42e"
+  },
+  {
+    "path": "src/components/brainstorm/kanban-board.tsx",
+    "lines": 305,
+    "bytes": 10778,
+    "todos": 0,
+    "sha256": "9612252bddb5ddac89a62962c7eb187e680ace61da11db0dbb777f234d027476"
+  },
+  {
+    "path": "src/components/brainstorm/kanban-card.tsx",
+    "lines": 283,
+    "bytes": 9416,
+    "todos": 0,
+    "sha256": "346b757957f00a30823f3d4a6af30ea10413fc3c9f0463d73fbb91a253157664"
+  },
+  {
+    "path": "src/components/brainstorm/kanban-column.tsx",
+    "lines": 175,
+    "bytes": 6104,
+    "todos": 0,
+    "sha256": "19993d2e8dfcbe8a7ef1090bacf58b38ae95d919c0b087a28d5f0ebfda5a5f65"
+  },
+  {
+    "path": "src/components/brainstorm/labels.ts",
+    "lines": 70,
+    "bytes": 2666,
+    "todos": 0,
+    "sha256": "abe312b49eccb934358255915c9152c6cdb553749a88cfcf53e1d762825bc67d"
+  },
+  {
+    "path": "src/components/brainstorm/optimistic-move.ts",
+    "lines": 63,
+    "bytes": 3020,
+    "todos": 0,
+    "sha256": "60ea9b8b80155c2ab94858e6552364524b4b2f57ee1ecf384b2d00208cd1e283"
+  },
+  {
+    "path": "src/components/charts/accuracy-breakdown-chart.tsx",
+    "lines": 57,
+    "bytes": 2530,
+    "todos": 1,
+    "sha256": "7f32301ad2724d7c133b25b07bb6d7ea0bcca882ad9198c64225dfb875b27264"
+  },
+  {
+    "path": "src/components/charts/attempt-performance-chart.tsx",
+    "lines": 74,
+    "bytes": 2957,
+    "todos": 0,
+    "sha256": "e86e7cc6ec585b0e7a6d0d06c27f06b07e9af9077dca9be91260cc5d68690abc"
+  },
+  {
+    "path": "src/components/charts/consistency-chart.tsx",
+    "lines": 63,
+    "bytes": 2770,
+    "todos": 0,
+    "sha256": "b0bd4274c80bb3b70b270875900de0dbc39765e36699ab1217081daa0bead2ad"
+  },
+  {
+    "path": "src/components/charts/evolution-chart.tsx",
+    "lines": 82,
+    "bytes": 3266,
+    "todos": 0,
+    "sha256": "d5289051aaebb0f588d4d3f7412f17e8903e76e2ee62576f97dca90d6b4367ba"
+  },
+  {
+    "path": "src/components/charts/exam-progress-chart.tsx",
+    "lines": 85,
+    "bytes": 3771,
+    "todos": 0,
+    "sha256": "620962d3efe5d85e9fe15457e34b3162d73f3ed83badebef32eaf4654bd8f760"
+  },
+  {
+    "path": "src/components/charts/flashcard-retention-chart.tsx",
+    "lines": 57,
+    "bytes": 2564,
+    "todos": 1,
+    "sha256": "7c5e50a4e60e171915ad38c2aa7fc55c2d5353e95e66b0373b8d70a04af26b02"
+  },
+  {
+    "path": "src/components/charts/study-hours-chart.tsx",
+    "lines": 81,
+    "bytes": 2886,
+    "todos": 0,
+    "sha256": "fe957b5be5ec0fef6bb3f2c65da587de416c15bd4c2906c4eeb21f1aa475f773"
+  },
+  {
+    "path": "src/components/charts/subject-performance-chart.tsx",
+    "lines": 77,
+    "bytes": 2810,
+    "todos": 0,
+    "sha256": "bf50d82b47b7812d1cfe20830b08bb30c60cc4ab0f7e953f431bf51f4c86f904"
+  },
+  {
+    "path": "src/components/charts/time-distribution-chart.tsx",
+    "lines": 83,
+    "bytes": 3401,
+    "todos": 0,
+    "sha256": "b929881cea93d9d39e0548b8927b58af2205b59cc9614da70d7a1dcd7ef18a73"
+  },
+  {
+    "path": "src/components/courses/course-card.tsx",
+    "lines": 101,
+    "bytes": 3704,
+    "todos": 0,
+    "sha256": "807a9cff6b3d82efda40269bc22b5ae8863455133a6db35354901d34b88df5da"
+  },
+  {
+    "path": "src/components/courses/course-catalog.tsx",
+    "lines": 81,
+    "bytes": 2804,
+    "todos": 0,
+    "sha256": "27ce2f631de0ca3a87cf2b594f53c01751a8514c98b265df7f63345b6b022fde"
+  },
+  {
+    "path": "src/components/courses/enroll-button.tsx",
+    "lines": 42,
+    "bytes": 1238,
+    "todos": 0,
+    "sha256": "5e03db95c75ee12bfab84e02e1700bdafd5a24e1ba258bb0f9de880459e78f28"
+  },
+  {
+    "path": "src/components/courses/lesson-row.tsx",
+    "lines": 70,
+    "bytes": 2419,
+    "todos": 0,
+    "sha256": "7911c8c3d30cd2c771fe7c1589498226d41230e6cfaf79cf792fa81aced9e323"
+  },
+  {
+    "path": "src/components/courses/lesson-status.tsx",
+    "lines": 59,
+    "bytes": 2008,
+    "todos": 0,
+    "sha256": "0ef343a3e8216fceed47d89dc57f8b13666e06d88ef4c52b657790a87d077bf0"
+  },
+  {
+    "path": "src/components/courses/module-section.tsx",
+    "lines": 58,
+    "bytes": 2348,
+    "todos": 0,
+    "sha256": "4f8e4a6cc5dda6753f24a7de5b46e21cadd528c37d4d9a4020d13757d843f5b7"
+  },
+  {
+    "path": "src/components/dashboard/achievements-list.tsx",
+    "lines": 53,
+    "bytes": 2090,
+    "todos": 0,
+    "sha256": "fe3c6e4f12c5ee6ee7cc08287c13b33e5b721fa58bcb9f0080b062d8792bdaa9"
+  },
+  {
+    "path": "src/components/dashboard/continue-mission-card.tsx",
+    "lines": 60,
+    "bytes": 2943,
+    "todos": 0,
+    "sha256": "1a60c81bb60e8d1743d700424ba2139dc0c83c7dbdefd77a3573b3b8b9d92e99"
+  },
+  {
+    "path": "src/components/dashboard/gamification-panel.tsx",
+    "lines": 74,
+    "bytes": 2761,
+    "todos": 0,
+    "sha256": "1b26dbc961152765dbf31c9040103ae40614bd06388b22d7cdda9ba479f3ad81"
+  },
+  {
+    "path": "src/components/dashboard/goals-panel.tsx",
+    "lines": 60,
+    "bytes": 2097,
+    "todos": 0,
+    "sha256": "aa158a37cbab1d6db0a65ed9b25873ef62a744cbbf6fdfd573759783f5da35ce"
+  },
+  {
+    "path": "src/components/dashboard/performance-summary-card.tsx",
+    "lines": 41,
+    "bytes": 1631,
+    "todos": 0,
+    "sha256": "629b817461f2d1afd5c5ee94f764a4c2722c729b8423c1ea0c222cd94db472a6"
+  },
+  {
+    "path": "src/components/flashcards/card-form-dialog.tsx",
+    "lines": 322,
+    "bytes": 12324,
+    "todos": 0,
+    "sha256": "b8995551dbf21585497da9ec1e7a4690ebd144f0c26fa0ff08b0d1ea529b61f7"
+  },
+  {
+    "path": "src/components/flashcards/create-deck-dialog.tsx",
+    "lines": 166,
+    "bytes": 5847,
+    "todos": 0,
+    "sha256": "d2c48b733e2c7a271ccbb549932f3a95be24084352561ee969924899792dd4f8"
+  },
+  {
+    "path": "src/components/flashcards/deck-card.tsx",
+    "lines": 82,
+    "bytes": 3740,
+    "todos": 0,
+    "sha256": "23a8d60601ea19c6163bd5f7068420756b6cb1496a41e090a941afeca1373683"
+  },
+  {
+    "path": "src/components/flashcards/deck-list.tsx",
+    "lines": 48,
+    "bytes": 1937,
+    "todos": 0,
+    "sha256": "bad00a1661586d8c520705c4d680d2bc8f06d800b26c3ebe4241461a92768334"
+  },
+  {
+    "path": "src/components/flashcards/favorite-toggle-button.tsx",
+    "lines": 65,
+    "bytes": 2128,
+    "todos": 0,
+    "sha256": "7d21691a6a02cef15b8e6a49fea0895ce887d779d59b7bfd7e6172703853e2db"
+  },
+  {
+    "path": "src/components/flashcards/flashcard-face.tsx",
+    "lines": 118,
+    "bytes": 5515,
+    "todos": 0,
+    "sha256": "6d0a9931b593f1997b90f332eb94825e878e6b8a08b95ae061528025d7598418"
+  },
+  {
+    "path": "src/components/flashcards/flashcards-workspace.tsx",
+    "lines": 133,
+    "bytes": 5516,
+    "todos": 0,
+    "sha256": "2d0727ba65108812715d604bdb92339c29eaeb97335ab25f2e8b8ac3e8d150cf"
+  },
+  {
+    "path": "src/components/flashcards/generate-from-source-button.tsx",
+    "lines": 62,
+    "bytes": 2278,
+    "todos": 0,
+    "sha256": "50b20fd1c611b8d9d3e7701a7c3267e1a565e9833cefa18efe461288106bf3b5"
+  },
+  {
+    "path": "src/components/flashcards/labels.ts",
+    "lines": 90,
+    "bytes": 4526,
+    "todos": 0,
+    "sha256": "47dee94fea61dbda49690b49df3e9346b7bd5dc1649b60755c447e0624993525"
+  },
+  {
+    "path": "src/components/flashcards/retention-panel.tsx",
+    "lines": 66,
+    "bytes": 2764,
+    "todos": 0,
+    "sha256": "80783a457131e6021d66e9001c02267e7fe698ad24fe0e645771c1d0026da1f0"
+  },
+  {
+    "path": "src/components/flashcards/review-session.tsx",
+    "lines": 184,
+    "bytes": 7788,
+    "todos": 0,
+    "sha256": "227dbd575ff44a8c6cd835c8f06abbaedcbde95596f4dce58c2c8665a85557ac"
+  },
+  {
+    "path": "src/components/focus/focus-finish-dialog.tsx",
+    "lines": 265,
+    "bytes": 10235,
+    "todos": 1,
+    "sha256": "654843a5d59ee10c928091df109baabd9b4c3ba1f7331498d00186f5b0965462"
+  },
+  {
+    "path": "src/components/focus/focus-mode-form.tsx",
+    "lines": 302,
+    "bytes": 12137,
+    "todos": 0,
+    "sha256": "b346dc74ed417ea1cb619fc49bef8bc881cb9018c4ac9fd79953bc2dfafdb529"
+  },
+  {
+    "path": "src/components/focus/focus-session-result.tsx",
+    "lines": 111,
+    "bytes": 4923,
+    "todos": 1,
+    "sha256": "6a88ced05334ad901ee938596b4c0580977d4d6295b8c4f97a71b6e6da8fd83d"
+  },
+  {
+    "path": "src/components/focus/focus-timer.tsx",
+    "lines": 429,
+    "bytes": 18374,
+    "todos": 0,
+    "sha256": "39fb91b08fe7788730806b112f841d9293392795c313971fbb21461c8259057e"
+  },
+  {
+    "path": "src/components/focus/focus-workspace.tsx",
+    "lines": 86,
+    "bytes": 2846,
+    "todos": 0,
+    "sha256": "67bb19e1f7a97cae6d4d755882432fb0f2f544b0aa5bcd45d2658ea434908b9d"
+  },
+  {
+    "path": "src/components/focus/labels.ts",
+    "lines": 73,
+    "bytes": 3120,
+    "todos": 0,
+    "sha256": "10fd28492709d3dc03df3556ec6b17ecfd489040e03328103776f09c63a40bfb"
+  },
+  {
+    "path": "src/components/layout/admin-mobile-nav.tsx",
+    "lines": 37,
+    "bytes": 1549,
+    "todos": 0,
+    "sha256": "e1d74d0655eb354d2ae5656f28a97f3b57155572b041ba40cf4ebee9173841a0"
+  },
+  {
+    "path": "src/components/layout/admin-nav-items.ts",
+    "lines": 67,
+    "bytes": 2343,
+    "todos": 0,
+    "sha256": "e1c5c67ccc73a5b9c5cb4cd8730b99f43085195666812f6e607adfb7447cd747"
+  },
+  {
+    "path": "src/components/layout/admin-shell.tsx",
+    "lines": 67,
+    "bytes": 3101,
+    "todos": 0,
+    "sha256": "64ec28e99942d789866ea2e653601b40e8edb77c02e773faf8454e8e1d756097"
+  },
+  {
+    "path": "src/components/layout/admin-sidebar-nav.tsx",
+    "lines": 67,
+    "bytes": 2739,
+    "todos": 0,
+    "sha256": "55d83be59a0e3ffa6f8c73bc148da3a4c53cc370aabc62cc4097c4727b33ea5a"
+  },
+  {
+    "path": "src/components/layout/breadcrumbs.tsx",
+    "lines": 46,
+    "bytes": 1383,
+    "todos": 0,
+    "sha256": "b6f1503d18fa93439828bd834523d3319aab656c4e63b8b39a39fe46b88e1da7"
+  },
+  {
+    "path": "src/components/layout/mobile-nav.tsx",
+    "lines": 34,
+    "bytes": 1398,
+    "todos": 0,
+    "sha256": "36085372aed9d1af069d7e201e4189a20abfbf17f27c94c4955cc05848544287"
+  },
+  {
+    "path": "src/components/layout/nav-items.ts",
+    "lines": 43,
+    "bytes": 1444,
+    "todos": 0,
+    "sha256": "ea2a4eaa30fe553793d492c95f525cde12615e9517282f1c841f895656d714b0"
+  },
+  {
+    "path": "src/components/layout/sidebar-nav.tsx",
+    "lines": 52,
+    "bytes": 1913,
+    "todos": 0,
+    "sha256": "9bc77153df0448457c477cbb076e1f6a66de9ad8760beca18a25640f012bb135"
+  },
+  {
+    "path": "src/components/layout/sidebar.tsx",
+    "lines": 22,
+    "bytes": 827,
+    "todos": 0,
+    "sha256": "8693f871e1c7c80d4411371359a7652cf8a848a794f009975504cec2c9e78531"
+  },
+  {
+    "path": "src/components/layout/student-shell.tsx",
+    "lines": 23,
+    "bytes": 685,
+    "todos": 0,
+    "sha256": "7a41d3b5f4fb47d2ecb2475f257d562cc71892ac414ccaf526f7814f4c0d0286"
+  },
+  {
+    "path": "src/components/layout/theme-toggle.tsx",
+    "lines": 28,
+    "bytes": 852,
+    "todos": 0,
+    "sha256": "5abef69ad1caac71b69af37b6d51ae4477ed72247927fe66b7b75565ba245590"
+  },
+  {
+    "path": "src/components/layout/topbar.tsx",
+    "lines": 125,
+    "bytes": 4517,
+    "todos": 0,
+    "sha256": "5107da8e409dcf6ad0f12e66f9c03855ad49f62aa8bc947c3777e93b30561aeb"
+  },
+  {
+    "path": "src/components/lessons/lesson-notes.tsx",
+    "lines": 48,
+    "bytes": 1965,
+    "todos": 1,
+    "sha256": "89b0d052bf5243a4129590dc12d43389c0074032759bd01161bfebcc112c4094"
+  },
+  {
+    "path": "src/components/lessons/lesson-player.tsx",
+    "lines": 331,
+    "bytes": 12375,
+    "todos": 0,
+    "sha256": "2b75066d46764b644a91cd787cbfe5750a9671494f937134fd65e81f660c76b0"
+  },
+  {
+    "path": "src/components/lessons/victory-dialog.tsx",
+    "lines": 100,
+    "bytes": 4034,
+    "todos": 1,
+    "sha256": "d7dc1e2adda409cb0a03259d2142a4b6d79f4b3a39ad43a7197e55bb4792c67c"
+  },
+  {
+    "path": "src/components/profile/br-states.ts",
+    "lines": 40,
+    "bytes": 1781,
+    "todos": 0,
+    "sha256": "583c1de4cbeee2f6ac35bedf62bfd1d533c712c370a1c4c6c5e5ebdac08fd1c8"
+  },
+  {
+    "path": "src/components/profile/edit-profile-dialog.tsx",
+    "lines": 283,
+    "bytes": 10950,
+    "todos": 1,
+    "sha256": "4f726fe8b39815fa0c0084fd09d6040ebb7db339393e63fdd47de2723e8691ee"
+  },
+  {
+    "path": "src/components/profile/privacy-settings-card.tsx",
+    "lines": 172,
+    "bytes": 6944,
+    "todos": 0,
+    "sha256": "946feeffdeb34dd725f51c6d0d66c023deb13c4a2b3a17ec3d74a0dd1ce0c9a2"
+  },
+  {
+    "path": "src/components/profile/profile-achievements.tsx",
+    "lines": 59,
+    "bytes": 2572,
+    "todos": 0,
+    "sha256": "d8ab44949609d071c3f83ba505b734e3c82f50e4556a2410c24fe8bea12403e6"
+  },
+  {
+    "path": "src/components/profile/profile-contests.tsx",
+    "lines": 52,
+    "bytes": 2035,
+    "todos": 0,
+    "sha256": "c5ef339f3303888455490cfb2dd58f9a05e20f1f2f426fb66dc914dd900dc028"
+  },
+  {
+    "path": "src/components/profile/profile-header.tsx",
+    "lines": 141,
+    "bytes": 6841,
+    "todos": 0,
+    "sha256": "e02a48aad99850bc0097ae60cd2541adbde7726d44ac127bce72191225bd001d"
+  },
+  {
+    "path": "src/components/profile/profile-preview-dialog.tsx",
+    "lines": 182,
+    "bytes": 7611,
+    "todos": 0,
+    "sha256": "f9fdce13935893550f44c39846a8d0ce6ca199978222f97789eb8d310e12c3a6"
+  },
+  {
+    "path": "src/components/profile/profile-stats.tsx",
+    "lines": 77,
+    "bytes": 3502,
+    "todos": 0,
+    "sha256": "57b67d412ed8e2de52ba1c7b51329d1e2a12256562cab8cc52e3048caac55193"
+  },
+  {
+    "path": "src/components/profile/profile-workspace.tsx",
+    "lines": 59,
+    "bytes": 2422,
+    "todos": 0,
+    "sha256": "06a68fce611d6d296493ce774a73f1e072c6031508a4675bebb9c16417189a83"
+  },
+  {
+    "path": "src/components/profile/types.ts",
+    "lines": 20,
+    "bytes": 1129,
+    "todos": 0,
+    "sha256": "173e68a39e2e29037b600ea0bb29450c3bd7ec8c5484e88c68915e6846ab3bbc"
+  },
+  {
+    "path": "src/components/ranking/ranking-avatar.tsx",
+    "lines": 30,
+    "bytes": 1070,
+    "todos": 0,
+    "sha256": "e73a871fe2eaaa7950243afb8af7714e9d0f3bed576307757290979a47119958"
+  },
+  {
+    "path": "src/components/ranking/ranking-current-user-bar.tsx",
+    "lines": 52,
+    "bytes": 2383,
+    "todos": 0,
+    "sha256": "aa1b45e159801bcaece401c9904e8b1aaeb11ae1d61c4f73a13a3714917fe6a0"
+  },
+  {
+    "path": "src/components/ranking/ranking-evolution.tsx",
+    "lines": 36,
+    "bytes": 1447,
+    "todos": 0,
+    "sha256": "8aef925d06330b626f310cdcc6dc66bc7e569de38a43bda6bf3c8130f585defc"
+  },
+  {
+    "path": "src/components/ranking/ranking-filters.tsx",
+    "lines": 169,
+    "bytes": 6472,
+    "todos": 0,
+    "sha256": "3bdaeb5c4f9b7dc5e6e02188f1677f1942bf90168bcb885038beef69cb18b635"
+  },
+  {
+    "path": "src/components/ranking/ranking-pagination.tsx",
+    "lines": 49,
+    "bytes": 1772,
+    "todos": 0,
+    "sha256": "38faa10e79d637d2f140d5e7ee0049ba281c10ae873036d1f8e521707a7f48ce"
+  },
+  {
+    "path": "src/components/ranking/ranking-podium.tsx",
+    "lines": 102,
+    "bytes": 3836,
+    "todos": 0,
+    "sha256": "88857520761d1ad5e349a65e82d51a38d1a09f5b90936f83695b4823eccf7502"
+  },
+  {
+    "path": "src/components/ranking/ranking-query.ts",
+    "lines": 113,
+    "bytes": 4244,
+    "todos": 0,
+    "sha256": "ad871d0bed17ecc186bb6856103e3173d3854c7609a149febe193f141df377f0"
+  },
+  {
+    "path": "src/components/ranking/ranking-results.tsx",
+    "lines": 173,
+    "bytes": 7718,
+    "todos": 0,
+    "sha256": "df318a419b1af4a6286a4321dd6fcd24bd87f921219837a5be926e0599916807"
+  },
+  {
+    "path": "src/components/shared/empty-state.tsx",
+    "lines": 30,
+    "bytes": 1062,
+    "todos": 0,
+    "sha256": "bfae9c409502264540e35a7141682e78d5678540d6d6ea730e744fa64b8adff1"
+  },
+  {
+    "path": "src/components/shared/error-state.tsx",
+    "lines": 40,
+    "bytes": 1318,
+    "todos": 0,
+    "sha256": "6c55f258bb6107dfd10f9032042f3751dc77df0260e334cc27a3f285b6e341f0"
+  },
+  {
+    "path": "src/components/shared/feature-placeholder.tsx",
+    "lines": 25,
+    "bytes": 929,
+    "todos": 0,
+    "sha256": "6d1c02f0cfa16247abf5e2d0af9d0826fc54b55f88ba7ac23731cfcc2d9358ff"
+  },
+  {
+    "path": "src/components/shared/lucide-icon.tsx",
+    "lines": 66,
+    "bytes": 1892,
+    "todos": 0,
+    "sha256": "8616dad006d9edb1fb0d98fa6f389620dd2f6a2d15e339ce4907bfc4a49afad1"
+  },
+  {
+    "path": "src/components/shared/page-skeleton.tsx",
+    "lines": 27,
+    "bytes": 826,
+    "todos": 0,
+    "sha256": "b4e193abbd397aab589b96714540010c561478f94d81d1b8af93425a11d2a892"
+  },
+  {
+    "path": "src/components/shared/progress-bar.tsx",
+    "lines": 44,
+    "bytes": 1639,
+    "todos": 0,
+    "sha256": "cb4bd742230b8c9c6c10389ebba62461a09aa1a8c267d26814590aedf3dada99"
+  },
+  {
+    "path": "src/components/shared/stat-card.tsx",
+    "lines": 32,
+    "bytes": 1309,
+    "todos": 0,
+    "sha256": "e7a7bd8681f4f63e930187c70f675d5c5ea44cdebd65c916e7d150fdaa8695e4"
+  },
+  {
+    "path": "src/components/shared/xp-badge.tsx",
+    "lines": 24,
+    "bytes": 710,
+    "todos": 0,
+    "sha256": "144f79d113e35c4d1b6feba530bfa9fad4858639320b1fa6224c0f062fb512f9"
+  },
+  {
+    "path": "src/components/simulations/attempt-runner.tsx",
+    "lines": 287,
+    "bytes": 12454,
+    "todos": 0,
+    "sha256": "5731b2d285dd6585aaeb54091df2b6c9cc10a9c53f783b73342ebff82b9c6d2e"
+  },
+  {
+    "path": "src/components/simulations/attempt-terminal-state.tsx",
+    "lines": 80,
+    "bytes": 3381,
+    "todos": 0,
+    "sha256": "f8cb76f122b7385bcb42186f3517ffb0a7c2829495097dc1bd4dcd83c8d5d753"
+  },
+  {
+    "path": "src/components/simulations/attempt-timer.tsx",
+    "lines": 71,
+    "bytes": 2922,
+    "todos": 0,
+    "sha256": "72cf67f707703267707f37afb3b7f2d5d18842d214bc3d983955c367cd731165"
+  },
+  {
+    "path": "src/components/simulations/catalog-exam-card.tsx",
+    "lines": 38,
+    "bytes": 1601,
+    "todos": 0,
+    "sha256": "a0a093836235a7182b5b2c26170db4a1ec0c78bf0d984810322cab5c76f6459f"
+  },
+  {
+    "path": "src/components/simulations/error-notebook-list.tsx",
+    "lines": 100,
+    "bytes": 4216,
+    "todos": 0,
+    "sha256": "b5aab3f3171f05657ad3f98d1cd403fb92c29f0177b40a05ccdc012b3459a0be"
+  },
+  {
+    "path": "src/components/simulations/favorite-toggle-button.tsx",
+    "lines": 68,
+    "bytes": 2144,
+    "todos": 0,
+    "sha256": "92afe777cb9f9d89e51748aba607c324665071a9bb7b3386e124bc31fab443a3"
+  },
+  {
+    "path": "src/components/simulations/favorites-list.tsx",
+    "lines": 70,
+    "bytes": 2729,
+    "todos": 0,
+    "sha256": "330d4ad18eb2d268f082074275c53c27b65894d36057a72ff77777bcb40ed6be"
+  },
+  {
+    "path": "src/components/simulations/history-list.tsx",
+    "lines": 133,
+    "bytes": 5639,
+    "todos": 0,
+    "sha256": "17e828c0d1dbdd1ae5bb6b4e2c2ffbc9f267e713c7af6b71c5ff3ac88b6ad26f"
+  },
+  {
+    "path": "src/components/simulations/labels.ts",
+    "lines": 58,
+    "bytes": 2298,
+    "todos": 0,
+    "sha256": "f0a9bb4d422d9be2607b9c12cbb81b73b692f187f83af05c5b7cbcaa3330bbda"
+  },
+  {
+    "path": "src/components/simulations/mock-exam-builder-form.tsx",
+    "lines": 369,
+    "bytes": 14066,
+    "todos": 0,
+    "sha256": "8a38cfd799c29a5413188c98f8e8be1b23cb140c8332a78ded0762739ff99e9d"
+  },
+  {
+    "path": "src/components/simulations/question-navigator.tsx",
+    "lines": 54,
+    "bytes": 1994,
+    "todos": 0,
+    "sha256": "09f1da27bddac889b1560e6d86d728ac70493d94e71699720da0f6e282e8f49a"
+  },
+  {
+    "path": "src/components/simulations/question-review-list.tsx",
+    "lines": 129,
+    "bytes": 5356,
+    "todos": 0,
+    "sha256": "85c5c8e0c0f34d10063512ae8cda255184252c81e2ad01256a9b60f8978f5f7f"
+  },
+  {
+    "path": "src/components/simulations/result-summary.tsx",
+    "lines": 48,
+    "bytes": 2141,
+    "todos": 0,
+    "sha256": "f05a70f9d9f4b2df0fa2e2c449a62bc9df8fe00250155e4c59f02978eeaa7f5c"
+  },
+  {
+    "path": "src/components/simulations/simulados-hub-link-card.tsx",
+    "lines": 49,
+    "bytes": 2058,
+    "todos": 0,
+    "sha256": "5c1483d86199a9fc39c4f284d8cd349457d19f1412b28a5102495c031bee2907"
+  },
+  {
+    "path": "src/components/simulations/start-catalog-exam-button.tsx",
+    "lines": 43,
+    "bytes": 1371,
+    "todos": 0,
+    "sha256": "88d4a3a46fc64f2dad5570ca4cfe3037f111349f70a678807799b42bdd67110e"
+  },
+  {
+    "path": "src/components/study-plan/date-format.ts",
+    "lines": 122,
+    "bytes": 4788,
+    "todos": 0,
+    "sha256": "b5ef52e7f5c526a35e7ad5573722330a91a5a436585b8a2bb254b1873b6ac257"
+  },
+  {
+    "path": "src/components/study-plan/generate-plan-form.tsx",
+    "lines": 307,
+    "bytes": 11848,
+    "todos": 0,
+    "sha256": "0743659c72a9b02933ff047ef9ad896d569e1f02bcb5fadc3d1e549de9c2a1e9"
+  },
+  {
+    "path": "src/components/study-plan/labels.ts",
+    "lines": 66,
+    "bytes": 2043,
+    "todos": 0,
+    "sha256": "b06d13bd8579336342c6eb6c4b6e8b623d76a3d784e9c4569fa6f7668e633b12"
+  },
+  {
+    "path": "src/components/study-plan/plan-item-row.tsx",
+    "lines": 158,
+    "bytes": 5261,
+    "todos": 0,
+    "sha256": "a92818d4cc7cb5dd91aab57ebb1ce4ff8f74d2cc083f109f5f5c8245a7beabc6"
+  },
+  {
+    "path": "src/components/study-plan/reorder-day-items.ts",
+    "lines": 52,
+    "bytes": 1811,
+    "todos": 0,
+    "sha256": "61aa1c12981615ae7874029651619a35f833ba1d528c0ca73976bbc77b4fc532"
+  },
+  {
+    "path": "src/components/study-plan/study-plan-calendar.tsx",
+    "lines": 463,
+    "bytes": 17622,
+    "todos": 0,
+    "sha256": "c64078b8dcae476cd587eaa3670338fa804acfd606c42bb306cf2a825ae7920e"
+  },
+  {
+    "path": "src/components/study-plan/study-plan-workspace.tsx",
+    "lines": 60,
+    "bytes": 2245,
+    "todos": 0,
+    "sha256": "1b0557db1565e7590a96c765f09eb241135c0eb0d7c38252771097640b7e5464"
+  },
+  {
+    "path": "src/components/study-session/content-type-icon.tsx",
+    "lines": 30,
+    "bytes": 949,
+    "todos": 0,
+    "sha256": "0957f541a37e89de876bcaf25d857edacdf1ab88cf46f97d25db79f0d6b25727"
+  },
+  {
+    "path": "src/components/study-session/session-block-list.tsx",
+    "lines": 54,
+    "bytes": 2180,
+    "todos": 0,
+    "sha256": "d26d080b11c9e49fdcd9acad40fd56c577fbff918a504251a17115a2d7840fdd"
+  },
+  {
+    "path": "src/components/study-session/study-session-builder-form.tsx",
+    "lines": 490,
+    "bytes": 18421,
+    "todos": 0,
+    "sha256": "9c666bd0006130f679584887ba72da8bdc84248b283c49b9093b934f3f4eb65f"
+  },
+  {
+    "path": "src/components/tracking/diagnosis-panel.tsx",
+    "lines": 92,
+    "bytes": 3332,
+    "todos": 0,
+    "sha256": "05ff7068430d406bdcc38cbe8067d790b2dca3bf59d094d9bbcee86ad838066e"
+  },
+  {
+    "path": "src/components/tracking/labels.ts",
+    "lines": 64,
+    "bytes": 3050,
+    "todos": 0,
+    "sha256": "78097e2b26d5ba1449f54d699391cb0d88622826660608c422f62990b1860748"
+  },
+  {
+    "path": "src/components/tracking/overdue-reviews-card.tsx",
+    "lines": 50,
+    "bytes": 2046,
+    "todos": 0,
+    "sha256": "012d42cae14d18ee93a961c2d496953e21df44a98a43add99ab0a6629ac62c04"
+  },
+  {
+    "path": "src/components/tracking/pending-contents-card.tsx",
+    "lines": 40,
+    "bytes": 1464,
+    "todos": 0,
+    "sha256": "797fea465322d4f5bed700820dcff27c601049b943bf0c96b7fec6809dd2869a"
+  },
+  {
+    "path": "src/components/tracking/weak-contents-card.tsx",
+    "lines": 53,
+    "bytes": 2118,
+    "todos": 0,
+    "sha256": "dfefcf77e0e8300c09cbe9ecaf76c94f1dfe70ca801d47f6cb8ea7858716bfbb"
+  },
+  {
+    "path": "src/components/ui/avatar.tsx",
+    "lines": 109,
+    "bytes": 3038,
+    "todos": 0,
+    "sha256": "357b2f9aac0192c071cb2ed65cb6e4c8ec01fa02fc15cf50d889b85731b75666"
+  },
+  {
+    "path": "src/components/ui/badge.tsx",
+    "lines": 52,
+    "bytes": 1925,
+    "todos": 0,
+    "sha256": "968b0403af74a785c9408ca69a677235e49d0c80b2c27fb9858ad421a8778c7d"
+  },
+  {
+    "path": "src/components/ui/button.tsx",
+    "lines": 58,
+    "bytes": 3240,
+    "todos": 0,
+    "sha256": "d14549ab3ba7a9d5d1f424c2599233bffa0b317121abf3b6efa2fb902d5e2781"
+  },
+  {
+    "path": "src/components/ui/card.tsx",
+    "lines": 103,
+    "bytes": 2630,
+    "todos": 0,
+    "sha256": "d8113cbf964f8d1aadf2649d2944d8bbc6e3cfd49d36746f76868cbc4dde3cfe"
+  },
+  {
+    "path": "src/components/ui/dialog.tsx",
+    "lines": 124,
+    "bytes": 3528,
+    "todos": 0,
+    "sha256": "007ada1c372cdab87fa5c47838a405973d1a67d3383906abed56a9043baf43c0"
+  },
+  {
+    "path": "src/components/ui/dropdown-menu.tsx",
+    "lines": 272,
+    "bytes": 8986,
+    "todos": 0,
+    "sha256": "ad8cf0d4436387a7325338d75fa0004a4b550724d29e2cc09da57048ab2918ab"
+  },
+  {
+    "path": "src/components/ui/input.tsx",
+    "lines": 20,
+    "bytes": 1040,
+    "todos": 0,
+    "sha256": "f7d6ecff9a4d631feeaf401c02bb87e26ddb38131c55d15a43b9290747390847"
+  },
+  {
+    "path": "src/components/ui/label.tsx",
+    "lines": 20,
+    "bytes": 518,
+    "todos": 0,
+    "sha256": "7f19b8476658d25ff197c84030e58cd7395059d876a54630e025951e474ebdae"
+  },
+  {
+    "path": "src/components/ui/native-select.tsx",
+    "lines": 27,
+    "bytes": 1268,
+    "todos": 0,
+    "sha256": "b5293fc2778857afbcbf9793e60bac230731ddf206f75b32f5dfbed9911cf5d9"
+  },
+  {
+    "path": "src/components/ui/progress.tsx",
+    "lines": 83,
+    "bytes": 1740,
+    "todos": 0,
+    "sha256": "45e33890b5a82744fc27d0928f927c5942c1166e5e27de8f776b29112967d317"
+  },
+  {
+    "path": "src/components/ui/separator.tsx",
+    "lines": 25,
+    "bytes": 545,
+    "todos": 0,
+    "sha256": "75085bd84ff6965e4a356c53a4689799cabf65caa93c0bba064d5a0c6fa78f13"
+  },
+  {
+    "path": "src/components/ui/sheet.tsx",
+    "lines": 138,
+    "bytes": 4433,
+    "todos": 0,
+    "sha256": "a8ff25079c1167230fc3a9ddce881a8fb24f8ebb1eecbc8189c7f1cf242018df"
+  },
+  {
+    "path": "src/components/ui/skeleton.tsx",
+    "lines": 13,
+    "bytes": 275,
+    "todos": 0,
+    "sha256": "8110bba70d0cb9fe968c0b7bd092ad12258caef40b028b4a87f402bdab907faf"
+  },
+  {
+    "path": "src/components/ui/sonner.tsx",
+    "lines": 49,
+    "bytes": 1226,
+    "todos": 0,
+    "sha256": "2dd975ad2170ba2570b00e58713dcbda90f26a7fffdaceb1ef7255f450c2d2a6"
+  },
+  {
+    "path": "src/components/ui/switch.tsx",
+    "lines": 56,
+    "bytes": 2246,
+    "todos": 0,
+    "sha256": "7795e986f1b23fa8c48959c50e68f5cc6f41c13b9dced480f71de1ef2fea82f2"
+  },
+  {
+    "path": "src/components/ui/table.tsx",
+    "lines": 76,
+    "bytes": 2528,
+    "todos": 0,
+    "sha256": "e97b5cec5db42e3f4fc6272293e48923a02081d3950baa8b5cf3f1fd3c8e6ea6"
+  },
+  {
+    "path": "src/components/ui/tooltip.tsx",
+    "lines": 66,
+    "bytes": 2846,
+    "todos": 0,
+    "sha256": "2cea2294d4947b88d815860f64e0b5e0eb47a59bde47cfd194aac2230c923865"
+  },
+  {
+    "path": "src/config/business.ts",
+    "lines": 431,
+    "bytes": 21960,
+    "todos": 1,
+    "sha256": "621ee2d4bf346906c99d00777bfb0782e2d9bbc4cfcd9f21daf71e2bd7c16259"
+  },
+  {
+    "path": "src/config/env.ts",
+    "lines": 90,
+    "bytes": 3474,
+    "todos": 0,
+    "sha256": "67ad8072ddd6a17e710f5e51a9bde32788bc57d777d4b907261df6258d5f4126"
+  },
+  {
+    "path": "src/contracts/admin-audit.ts",
+    "lines": 42,
+    "bytes": 1759,
+    "todos": 1,
+    "sha256": "b815612432987cc57686908c91a19663cf11503730092580096419350e9790f8"
+  },
+  {
+    "path": "src/contracts/admin-config.ts",
+    "lines": 94,
+    "bytes": 5275,
+    "todos": 1,
+    "sha256": "da9ab759d38a52c308dd2d13f0130df56c2f858dfbe10413a947faf04e6645f8"
+  },
+  {
+    "path": "src/contracts/admin-content.ts",
+    "lines": 436,
+    "bytes": 17390,
+    "todos": 0,
+    "sha256": "59df53b88bb611adbefa00598200c051ee489fd35fe61788df3282aaff5569dc"
+  },
+  {
+    "path": "src/contracts/admin-dashboard.ts",
+    "lines": 59,
+    "bytes": 2849,
+    "todos": 4,
+    "sha256": "668e84babcf367eae717c1219fd55cde0663a76da55c00c969779d1664d7af8d"
+  },
+  {
+    "path": "src/contracts/admin-notifications.ts",
+    "lines": 56,
+    "bytes": 2962,
+    "todos": 2,
+    "sha256": "ed781f04176b8fc0b6ac6196e1c6b6ac6b9d8bab85623bd42b569dc38aa6f6ec"
+  },
+  {
+    "path": "src/contracts/admin-users.ts",
+    "lines": 43,
+    "bytes": 1826,
+    "todos": 2,
+    "sha256": "b7f50864c2b61420c6f362dc8fde8f63944de124646b7c283d943829de952d45"
+  },
+  {
+    "path": "src/contracts/auth.ts",
+    "lines": 16,
+    "bytes": 686,
+    "todos": 0,
+    "sha256": "c87f4761864f030d5e99cd9098073e8d67071e37da0d2fb481d03b364d21ae73"
+  },
+  {
+    "path": "src/contracts/brainstorm.ts",
+    "lines": 177,
+    "bytes": 7644,
+    "todos": 1,
+    "sha256": "5f40bc3c92fefb80a28e0c3ba6c0c29e61bddb5fd407f89d75c3e7b33264a1e8"
+  },
+  {
+    "path": "src/contracts/common.ts",
+    "lines": 47,
+    "bytes": 1270,
+    "todos": 0,
+    "sha256": "3664969d1337f35c6be38be8046845b61d024ff4b9b466832732d19095318c2e"
+  },
+  {
+    "path": "src/contracts/courses.ts",
+    "lines": 122,
+    "bytes": 5442,
+    "todos": 0,
+    "sha256": "8aaaed226dfba4e593d79dc50b51ba7e4966cf3ce81dcc058a28f378842f94fe"
+  },
+  {
+    "path": "src/contracts/dashboard.ts",
+    "lines": 148,
+    "bytes": 6165,
+    "todos": 1,
+    "sha256": "99ed26a6f2a57ba37c83f1bd49d9691309125e46330d20c7e88f9f1f2a41f247"
+  },
+  {
+    "path": "src/contracts/flashcards.ts",
+    "lines": 175,
+    "bytes": 9340,
+    "todos": 1,
+    "sha256": "f901dd13d7d531046b0344c0813268460002a1c4057ea126bcd05c142f900072"
+  },
+  {
+    "path": "src/contracts/focus.ts",
+    "lines": 154,
+    "bytes": 8205,
+    "todos": 1,
+    "sha256": "f7d3ccb1321c5dd916a4fea0f69e41c0ef0cc5f76798ac903481583ddd545fc6"
+  },
+  {
+    "path": "src/contracts/index.ts",
+    "lines": 19,
+    "bytes": 568,
+    "todos": 0,
+    "sha256": "4e2cfdbb5b7e8e5e8f4cf4a12473b9530db648bba354acc6ff968fbd9ca2b4fc"
+  },
+  {
+    "path": "src/contracts/profile.ts",
+    "lines": 228,
+    "bytes": 11724,
+    "todos": 0,
+    "sha256": "35540ef826fd17204aa5622489fbca82f541c9b68f8689e2c90040cde01626ed"
+  },
+  {
+    "path": "src/contracts/progress.ts",
+    "lines": 128,
+    "bytes": 6100,
+    "todos": 0,
+    "sha256": "dd3c7065780669d0f39945c67f2499e7dade32ee0e4c5d65dcd1d917d0fede9a"
+  },
+  {
+    "path": "src/contracts/ranking.ts",
+    "lines": 71,
+    "bytes": 2697,
+    "todos": 0,
+    "sha256": "8af7dbbdfa8623bc361a65bd166dbe6b77922d78fb8d9994eb0976fca9751a8c"
+  },
+  {
+    "path": "src/contracts/simulations.ts",
+    "lines": 307,
+    "bytes": 14251,
+    "todos": 0,
+    "sha256": "ef9e1c992df4d053fe8cd9b81cd27a25c9ba8b35edf662904e9cb9e6986614de"
+  },
+  {
+    "path": "src/contracts/study-plan.ts",
+    "lines": 205,
+    "bytes": 9360,
+    "todos": 0,
+    "sha256": "0314f23c685c6afcf6be153cd46bf9dab8c7e0014157fb3835a3235e465b226e"
+  },
+  {
+    "path": "src/contracts/study-session.ts",
+    "lines": 132,
+    "bytes": 5923,
+    "todos": 0,
+    "sha256": "0d176a0a7bc47e36a70936a4e7c925c3a05f6e7e25bb0dbd827500d5b70c3b21"
+  },
+  {
+    "path": "src/contracts/tracking.ts",
+    "lines": 179,
+    "bytes": 8365,
+    "todos": 1,
+    "sha256": "43dd0f19f648ecd58a0377157d36ece28b3ee69d013497de3410128762ee7ce5"
+  },
+  {
+    "path": "src/lib/fetch-action-result.ts",
+    "lines": 56,
+    "bytes": 1769,
+    "todos": 0,
+    "sha256": "72c5c2b2c110d0a56586e602bd7589d8f4b5ca8db0d2bff1442b00707fc233c5"
+  },
+  {
+    "path": "src/lib/routes.ts",
+    "lines": 18,
+    "bytes": 675,
+    "todos": 0,
+    "sha256": "02b6aadcca7fa3ebf7c19e885756c4078dedb8b2cedf51cf3b24540bb6f54c47"
+  },
+  {
+    "path": "src/lib/utils.ts",
+    "lines": 50,
+    "bytes": 2160,
+    "todos": 0,
+    "sha256": "1d404bdd619733ace2c2ff12111ee5fc051ae2863c28b1d671e85b791c62f601"
+  },
+  {
+    "path": "src/middleware.ts",
+    "lines": 52,
+    "bytes": 2041,
+    "todos": 0,
+    "sha256": "226d7fa312c8c5ecd17ef927ccaa816055f0cb5434b85b9675284d72ab2eb03b"
+  },
+  {
+    "path": "src/mocks/data/achievements.ts",
+    "lines": 52,
+    "bytes": 1647,
+    "todos": 1,
+    "sha256": "e61e321028c84bd34a03d2df99eaaf6bce8b206497d30439e23bbc3ae14b56f2"
+  },
+  {
+    "path": "src/mocks/data/brainstorm.ts",
+    "lines": 277,
+    "bytes": 10671,
+    "todos": 1,
+    "sha256": "07c6b6f87ffc6be9a2695b1fabc93cfebc190f2d986a24dc2c60141973e4dbb7"
+  },
+  {
+    "path": "src/mocks/data/contests.ts",
+    "lines": 34,
+    "bytes": 1183,
+    "todos": 0,
+    "sha256": "369fdb1a212f6975d2599f0e61c213e5ea5ac3d658cd1d8b352046a4e9b29a74"
+  },
+  {
+    "path": "src/mocks/data/courses.ts",
+    "lines": 53,
+    "bytes": 1864,
+    "todos": 0,
+    "sha256": "c8796842bddbdc8abaa9d0d7d825adbf5d7f684a33c349132824d1feb46d7ecd"
+  },
+  {
+    "path": "src/mocks/data/credentials.ts",
+    "lines": 25,
+    "bytes": 1368,
+    "todos": 1,
+    "sha256": "2711d41b44260e5dad794fd749fc0d1c97c18858c4ce3276b32aad07420a5806"
+  },
+  {
+    "path": "src/mocks/data/dashboard-achievements.ts",
+    "lines": 37,
+    "bytes": 1890,
+    "todos": 1,
+    "sha256": "28552844ece8e376f44c0c533becd3b35d8f462c525f536bb80dea82dc25b668"
+  },
+  {
+    "path": "src/mocks/data/dashboard-contest.ts",
+    "lines": 32,
+    "bytes": 1619,
+    "todos": 1,
+    "sha256": "587c3128342e07f48f51c0871110f322f55b9ba39e7d2906fd122c0f0651bdec"
+  },
+  {
+    "path": "src/mocks/data/dashboard-gamification.ts",
+    "lines": 78,
+    "bytes": 2269,
+    "todos": 1,
+    "sha256": "84548e87eb236f8b96fe2a8d87ba6c84d3128657b2c6b41aeaa4e8e9719aa53d"
+  },
+  {
+    "path": "src/mocks/data/dashboard-goals.ts",
+    "lines": 89,
+    "bytes": 2140,
+    "todos": 2,
+    "sha256": "87910ecaaaf94c9cc9bf99fcd53439ab56153589f3a09ee71fed5cd6ce226dbf"
+  },
+  {
+    "path": "src/mocks/data/dashboard-next-lesson.ts",
+    "lines": 61,
+    "bytes": 2349,
+    "todos": 0,
+    "sha256": "1513869b32d52eb56f933846b737feb98c732764bebd9d81185eb05471518848"
+  },
+  {
+    "path": "src/mocks/data/dashboard-ranking.ts",
+    "lines": 27,
+    "bytes": 1474,
+    "todos": 1,
+    "sha256": "644e7f5cfdb5247b847335d733be0abcff02758f45a2f8c01ecbef054fb8d6df"
+  },
+  {
+    "path": "src/mocks/data/dashboard-study.ts",
+    "lines": 116,
+    "bytes": 3935,
+    "todos": 1,
+    "sha256": "4e7ce2416661358544cc2c361e6387892c3d350cbb99a1564a2024387d1a45f5"
+  },
+  {
+    "path": "src/mocks/data/enrollments.ts",
+    "lines": 16,
+    "bytes": 1054,
+    "todos": 0,
+    "sha256": "75b4bb153acb76aa69f66eb750c92fe573a6e35dfebf702b4b4bee4655072f01"
+  },
+  {
+    "path": "src/mocks/data/flashcards.ts",
+    "lines": 517,
+    "bytes": 19026,
+    "todos": 1,
+    "sha256": "31f16f9f981f12d337be47d83ddaaf27cee76d5900c39bc47855f2516ccbc00b"
+  },
+  {
+    "path": "src/mocks/data/gamification-ledger-seed.ts",
+    "lines": 120,
+    "bytes": 5989,
+    "todos": 0,
+    "sha256": "27e17831b01576b0114bc8bd64f6f0652835a143cd3f6fd1c40f81d51d52b392"
+  },
+  {
+    "path": "src/mocks/data/lesson-progress.ts",
+    "lines": 125,
+    "bytes": 5202,
+    "todos": 0,
+    "sha256": "c2e1a4bffbe1428f723e7f0cb4432d93e9e52d4ecf4e5498d8b091a5a38ab2b1"
+  },
+  {
+    "path": "src/mocks/data/mock-exam-attempts.ts",
+    "lines": 164,
+    "bytes": 5432,
+    "todos": 0,
+    "sha256": "e605c4774b129d82b9c804027990eaf11c0fa741154edb271d373f18ae033c3f"
+  },
+  {
+    "path": "src/mocks/data/mock-exams.ts",
+    "lines": 111,
+    "bytes": 3748,
+    "todos": 0,
+    "sha256": "98bf0ba62d16fa8e201af2cdd51697f1f3c583f23205612b94a8b394871079e5"
+  },
+  {
+    "path": "src/mocks/data/modules.ts",
+    "lines": 300,
+    "bytes": 10803,
+    "todos": 0,
+    "sha256": "aeb13b5e13033ed6ea89e4dfb06dc0ae1b25774e5ddc94ad0b1c77769416a8a8"
+  },
+  {
+    "path": "src/mocks/data/profiles.ts",
+    "lines": 105,
+    "bytes": 3956,
+    "todos": 1,
+    "sha256": "d25c7228ee48e6c9ffa0bf35f4b073cebabc1a7d728dc48e47088b728d5736b4"
+  },
+  {
+    "path": "src/mocks/data/questions.ts",
+    "lines": 570,
+    "bytes": 24810,
+    "todos": 0,
+    "sha256": "fad49c8958a4cc96fb179c54aedaacd3af5c7f6b20109c0faecedd8783da4284"
+  },
+  {
+    "path": "src/mocks/data/ranking-participants.ts",
+    "lines": 231,
+    "bytes": 9139,
+    "todos": 3,
+    "sha256": "87deca2914a0476542cc592b4a187934d1bfd6a3dab35aff9d02a82155b8e370"
+  },
+  {
+    "path": "src/mocks/data/study-plan.ts",
+    "lines": 262,
+    "bytes": 8337,
+    "todos": 0,
+    "sha256": "4206b4e0e1fd8557faed00f844ea7b910cbbc4210b13738beeb1aa923af3cda4"
+  },
+  {
+    "path": "src/mocks/data/subjects.ts",
+    "lines": 48,
+    "bytes": 2508,
+    "todos": 0,
+    "sha256": "0e73415dc8a3c997f5b945e242cf9d72c137b5d069c731a0adcf67a0341241d5"
+  },
+  {
+    "path": "src/mocks/data/teachers.ts",
+    "lines": 18,
+    "bytes": 724,
+    "todos": 0,
+    "sha256": "d2956b6eda3145448f8fbe5392aee4ba100d97c5f980e97a70be0112bbd3b301"
+  },
+  {
+    "path": "src/mocks/data/topics.ts",
+    "lines": 78,
+    "bytes": 3680,
+    "todos": 0,
+    "sha256": "da63bb3f019ac0bed39be5796d734ae77adab32c301b74b65f2c977181534070"
+  },
+  {
+    "path": "src/mocks/data/users.ts",
+    "lines": 44,
+    "bytes": 1205,
+    "todos": 0,
+    "sha256": "1470e10406461a434b75c19aa39fea91a33b102a339a9c4b22943707f1df7b8a"
+  },
+  {
+    "path": "src/mocks/index.ts",
+    "lines": 44,
+    "bytes": 2175,
+    "todos": 0,
+    "sha256": "b82becccc63aa5b94ed90c23543edbeab4f5e4e79e9534d788d3686a1305d5be"
+  },
+  {
+    "path": "src/server/actions/admin/achievements.ts",
+    "lines": 61,
+    "bytes": 1911,
+    "todos": 0,
+    "sha256": "20f867394043a32a69b587c2577bb08f111134b3d18533f5aba1bf186c8e462c"
+  },
+  {
+    "path": "src/server/actions/admin/audit.ts",
+    "lines": 18,
+    "bytes": 721,
+    "todos": 0,
+    "sha256": "d298b970b1045ee2897372cb22c2592cc3a95eac58309023fdaff9b9db8b5efe"
+  },
+  {
+    "path": "src/server/actions/admin/config.ts",
+    "lines": 28,
+    "bytes": 1039,
+    "todos": 0,
+    "sha256": "2fa2a5c0282c1cd5c2de92da052c9d5ea089f3c2136d9ca5fc06e51cf7af0369"
+  },
+  {
+    "path": "src/server/actions/admin/contests.ts",
+    "lines": 54,
+    "bytes": 1701,
+    "todos": 0,
+    "sha256": "377cb7ee91b185d33867d82e5e547888b89a621dc41d6f5f7e06871fcc65bbcd"
+  },
+  {
+    "path": "src/server/actions/admin/courses.ts",
+    "lines": 59,
+    "bytes": 1897,
+    "todos": 0,
+    "sha256": "0ce0c3c784a6c77747e2740a45246b4d1fc7e54a07e89ec087f9cc82f54de546"
+  },
+  {
+    "path": "src/server/actions/admin/dashboard.ts",
+    "lines": 16,
+    "bytes": 614,
+    "todos": 0,
+    "sha256": "bdfefbadedfb93f9ce56b0581d5aa658ea743803ab2938f87c87b78627e2e6b0"
+  },
+  {
+    "path": "src/server/actions/admin/lessons.ts",
+    "lines": 88,
+    "bytes": 2978,
+    "todos": 0,
+    "sha256": "807f4cf17fbab2a86a5636b120bb6a33d7e505ec03153a377d82469b3a038d44"
+  },
+  {
+    "path": "src/server/actions/admin/list-users.ts",
+    "lines": 25,
+    "bytes": 1037,
+    "todos": 0,
+    "sha256": "c31e559388fe59e367b86209147ff2de758b4c9d8fed3532322c581e580c07b3"
+  },
+  {
+    "path": "src/server/actions/admin/mock-exams.ts",
+    "lines": 54,
+    "bytes": 1719,
+    "todos": 0,
+    "sha256": "6f956e908b557d3a5964550a6b22da34e12fb6cae1171cfb3608c1d6e1f7545e"
+  },
+  {
+    "path": "src/server/actions/admin/moderation.ts",
+    "lines": 18,
+    "bytes": 767,
+    "todos": 0,
+    "sha256": "8ac07039b1ca9aa444db26c604fd8f319f7008afdf26529777de590e73cfd60f"
+  },
+  {
+    "path": "src/server/actions/admin/modules.ts",
+    "lines": 75,
+    "bytes": 2495,
+    "todos": 0,
+    "sha256": "c3f1fd1582b7f0cbe20fb36943dc3bf83bbf655097aae8138ceade974924cd97"
+  },
+  {
+    "path": "src/server/actions/admin/notifications.ts",
+    "lines": 18,
+    "bytes": 782,
+    "todos": 0,
+    "sha256": "53915e7ab11384fec055159f8abd2996aa5028ecee206ce25fcbe8b27aef98d9"
+  },
+  {
+    "path": "src/server/actions/admin/questions.ts",
+    "lines": 55,
+    "bytes": 1829,
+    "todos": 0,
+    "sha256": "d3e53757c5ce64fdbdf213c821b9d9c2e6bb18553f62a7e8873dd21936b8f68e"
+  },
+  {
+    "path": "src/server/actions/admin/shared.ts",
+    "lines": 17,
+    "bytes": 947,
+    "todos": 0,
+    "sha256": "ecdd5b76022b865c0c348d2ffbf672c943d61277fc0d0e8343f63c030f0a787a"
+  },
+  {
+    "path": "src/server/actions/admin/subjects.ts",
+    "lines": 54,
+    "bytes": 1690,
+    "todos": 0,
+    "sha256": "27db5cee3d9113aaf4244e7143955786890d86b7c5f419d73049a7135ddae229"
+  },
+  {
+    "path": "src/server/actions/admin/teachers.ts",
+    "lines": 54,
+    "bytes": 1692,
+    "todos": 0,
+    "sha256": "511e2000d689186e12a8de8ec1c4dc66e569cb335ced5730e5c2a287e923bfad"
+  },
+  {
+    "path": "src/server/actions/admin/topics.ts",
+    "lines": 54,
+    "bytes": 1645,
+    "todos": 0,
+    "sha256": "ad399da09a8fc36021b755541b6de70b36c967e17cb66f5526948fe960b9dea5"
+  },
+  {
+    "path": "src/server/actions/admin/users.ts",
+    "lines": 37,
+    "bytes": 1258,
+    "todos": 0,
+    "sha256": "91227e57dc65eb1dd51dc1269d59c9a032fcad6b152508e5b81b5ed02150bfa5"
+  },
+  {
+    "path": "src/server/actions/auth.ts",
+    "lines": 134,
+    "bytes": 4837,
+    "todos": 0,
+    "sha256": "2166890d218dddac3d2ead4e1c6d85b781ed9fd5cf02f17f917bcb6299fe8d8c"
+  },
+  {
+    "path": "src/server/actions/brainstorm.ts",
+    "lines": 163,
+    "bytes": 5702,
+    "todos": 1,
+    "sha256": "8556b519b9e4a14fb809c3cc94aa213ac9aad952b3ea8b691144eae4ce2e4724"
+  },
+  {
+    "path": "src/server/actions/courses.ts",
+    "lines": 71,
+    "bytes": 2678,
+    "todos": 0,
+    "sha256": "98874a8871a7d662040cbaa0b57c088df98dadffd7364556f007af1fac24edf4"
+  },
+  {
+    "path": "src/server/actions/dashboard.ts",
+    "lines": 27,
+    "bytes": 1146,
+    "todos": 0,
+    "sha256": "18265467b0cc97f570202086e7bf27ba6872e3edcbe3e300454feef913651e0c"
+  },
+  {
+    "path": "src/server/actions/flashcards.ts",
+    "lines": 153,
+    "bytes": 5410,
+    "todos": 0,
+    "sha256": "d981c0aecb117d2b5409366465c6fa52288b437891ed74c86ab4b972b451859c"
+  },
+  {
+    "path": "src/server/actions/focus.ts",
+    "lines": 59,
+    "bytes": 2772,
+    "todos": 0,
+    "sha256": "a08118d20553587726ce91b96b6d45e1795201c748aea5f8fb18a6a60551fccf"
+  },
+  {
+    "path": "src/server/actions/gamification.ts",
+    "lines": 24,
+    "bytes": 1000,
+    "todos": 0,
+    "sha256": "b1342e9fa78c1cd995b918c0d5091da90c94f2420bd3292cb68f021d4f54e616"
+  },
+  {
+    "path": "src/server/actions/profile.ts",
+    "lines": 78,
+    "bytes": 3077,
+    "todos": 0,
+    "sha256": "034df8cd0b89745a53c72bb7966e19c5413923cf3d872af5b8539e8fac5bcf12"
+  },
+  {
+    "path": "src/server/actions/progress.ts",
+    "lines": 33,
+    "bytes": 1519,
+    "todos": 0,
+    "sha256": "452232812b77d04fe56cf1ba9ac6d654e2bf80b6bbb0fe8d156bd0204a0cb53a"
+  },
+  {
+    "path": "src/server/actions/ranking.ts",
+    "lines": 31,
+    "bytes": 1306,
+    "todos": 0,
+    "sha256": "42307dee24512091259ac4a289d54543ec8766c0984ba93d70c0abbde60311fb"
+  },
+  {
+    "path": "src/server/actions/simulations.ts",
+    "lines": 205,
+    "bytes": 7420,
+    "todos": 0,
+    "sha256": "b18c6a4439afd61eff4cd473ab2ec5082b7c89ee1c2f7af4679438e5ca0d2bb5"
+  },
+  {
+    "path": "src/server/actions/study-plan.ts",
+    "lines": 115,
+    "bytes": 4157,
+    "todos": 0,
+    "sha256": "abee48cd724eed298ab5597982c66bec04a0727de0740d1698c5ae1793830bea"
+  },
+  {
+    "path": "src/server/actions/tracking.ts",
+    "lines": 47,
+    "bytes": 2062,
+    "todos": 0,
+    "sha256": "0d2ac1b92940ebd20c1e686432f797a55fcc848f1da0d84fe1b84ebe409a3700"
+  },
+  {
+    "path": "src/server/audit/index.ts",
+    "lines": 2,
+    "bytes": 59,
+    "todos": 0,
+    "sha256": "c75e10a98698bbdc0b55c8ae5d7e46186545088fce4f91a5d3ecc338a3c225ce"
+  },
+  {
+    "path": "src/server/audit/log.ts",
+    "lines": 36,
+    "bytes": 985,
+    "todos": 1,
+    "sha256": "36ab0f8f2bc2e65fc0795f6a4c0ea894fedb60abff67a812616cff19c7d09faa"
+  },
+  {
+    "path": "src/server/audit/with-admin-audit.ts",
+    "lines": 78,
+    "bytes": 3245,
+    "todos": 0,
+    "sha256": "ef9ede7d301fcbba7d99c83dca1d3a3dc0581d87d04138b29d6b83c326b75aef"
+  },
+  {
+    "path": "src/server/auth/config.edge.ts",
+    "lines": 53,
+    "bytes": 2182,
+    "todos": 0,
+    "sha256": "9bd90a31a770287c0108f1ce30911101a0ed54506cc8181fe421ba3afae41e88"
+  },
+  {
+    "path": "src/server/auth/config.ts",
+    "lines": 46,
+    "bytes": 1679,
+    "todos": 0,
+    "sha256": "e6de67f356e9dd91d004e530da841e82cda4a3df1653a332d0757fd3885e4c47"
+  },
+  {
+    "path": "src/server/auth/credentials-service.ts",
+    "lines": 50,
+    "bytes": 1957,
+    "todos": 0,
+    "sha256": "8a08a280f486b03e7196f39be48b48adc43cd7d8ae8e20094dabef034d443666"
+  },
+  {
+    "path": "src/server/auth/index.ts",
+    "lines": 9,
+    "bytes": 368,
+    "todos": 0,
+    "sha256": "bc34dab6d096bdd62df142950f4a524d53b59a7fc6d47a95401db8f0dda3799c"
+  },
+  {
+    "path": "src/server/auth/rate-limit.ts",
+    "lines": 101,
+    "bytes": 3770,
+    "todos": 0,
+    "sha256": "c0a115d19de2db20029afb5a20343dddbb3e96841afde1f5a7183dcc33605ba5"
+  },
+  {
+    "path": "src/server/auth/types.d.ts",
+    "lines": 26,
+    "bytes": 526,
+    "todos": 0,
+    "sha256": "31b3886c33ca5f7913c0a3ff0380b480b2278a2efc2341415dc2dbb099f8321a"
+  },
+  {
+    "path": "src/server/authorization/index.ts",
+    "lines": 51,
+    "bytes": 1800,
+    "todos": 0,
+    "sha256": "50a32fc3201cf6e11a28325db6538e0eb36d7e403ffee4c9a185790216a0bf80"
+  },
+  {
+    "path": "src/server/db/prisma.ts",
+    "lines": 27,
+    "bytes": 842,
+    "todos": 0,
+    "sha256": "90f074a1d283a69cc89587945c0bb362f3e239dbbc629437f902edab2ddfb56d"
+  },
+  {
+    "path": "src/server/errors/index.ts",
+    "lines": 100,
+    "bytes": 2972,
+    "todos": 0,
+    "sha256": "26d9110f784f79b21c84c5516723e4a0a3b78d54cbf493765df9255a01628842"
+  },
+  {
+    "path": "src/server/events/index.ts",
+    "lines": 68,
+    "bytes": 2412,
+    "todos": 1,
+    "sha256": "fa0a1685e8e3ce76699ec98881879635f7e5b7aaad1bf6efbdf0cbd2a52d0f52"
+  },
+  {
+    "path": "src/server/repositories/contracts/achievement-repository.ts",
+    "lines": 66,
+    "bytes": 2945,
+    "todos": 1,
+    "sha256": "4f50678f0845f603916a5d4d06e94023fd412ffe779f307011891f23d00520d2"
+  },
+  {
+    "path": "src/server/repositories/contracts/brainstorm-board-repository.ts",
+    "lines": 30,
+    "bytes": 1100,
+    "todos": 0,
+    "sha256": "c5a935139f57e20a4d944b6730d04083af657f3727dc10d70c0fdc874b737532"
+  },
+  {
+    "path": "src/server/repositories/contracts/brainstorm-card-repository.ts",
+    "lines": 108,
+    "bytes": 4916,
+    "todos": 2,
+    "sha256": "6545d6469a05f6078454573b98dc152f8a606be562b7df046b59b052078d924c"
+  },
+  {
+    "path": "src/server/repositories/contracts/brainstorm-column-repository.ts",
+    "lines": 37,
+    "bytes": 1423,
+    "todos": 0,
+    "sha256": "0814a501a84ca8fa2fab599d1798283938737151a52616e162a190f3d1b7153a"
+  },
+  {
+    "path": "src/server/repositories/contracts/contest-repository.ts",
+    "lines": 49,
+    "bytes": 1844,
+    "todos": 3,
+    "sha256": "4e4ced7fc9e74531c4da5d98597ef26870ceb59754553b0d1e09eec7ebc50925"
+  },
+  {
+    "path": "src/server/repositories/contracts/course-repository.ts",
+    "lines": 91,
+    "bytes": 4093,
+    "todos": 2,
+    "sha256": "4e40a4a3bdaf20e52fd850fb5d1ec0c7cd0a9b0ff61212c54528a1778599c3c4"
+  },
+  {
+    "path": "src/server/repositories/contracts/daily-goal-repository.ts",
+    "lines": 46,
+    "bytes": 2126,
+    "todos": 0,
+    "sha256": "ef0a6f6d4aeef2fed92a7af4501f3e273e53c588b52c650ef6cd59902bb9785a"
+  },
+  {
+    "path": "src/server/repositories/contracts/enrollment-repository.ts",
+    "lines": 25,
+    "bytes": 1038,
+    "todos": 0,
+    "sha256": "64cdb230b746eacfdaf689a85a7e38e5e3a110eeede9e3ed85f7fd4a431dd771"
+  },
+  {
+    "path": "src/server/repositories/contracts/flashcard-deck-repository.ts",
+    "lines": 49,
+    "bytes": 2261,
+    "todos": 0,
+    "sha256": "7b57e32a80f26235fdfeb0479c906c14acd6d3371180c101417128d0b718a2bd"
+  },
+  {
+    "path": "src/server/repositories/contracts/flashcard-repository.ts",
+    "lines": 51,
+    "bytes": 2006,
+    "todos": 0,
+    "sha256": "df334a13e5d9209b49fb60cae3cc3399fa029617be159d5d2b0f3fb1d41028a5"
+  },
+  {
+    "path": "src/server/repositories/contracts/flashcard-review-repository.ts",
+    "lines": 54,
+    "bytes": 2532,
+    "todos": 0,
+    "sha256": "2d4cf06d28b8c776030d7805c984516d50a676daf3c3a3edce25ef9b3c360e05"
+  },
+  {
+    "path": "src/server/repositories/contracts/focus-session-repository.ts",
+    "lines": 82,
+    "bytes": 4189,
+    "todos": 0,
+    "sha256": "fd9b56cecf2e83ad50afb8ceda265b6b9f423a468e92a4bb5f0642e99dddfcf6"
+  },
+  {
+    "path": "src/server/repositories/contracts/gamification-event-repository.ts",
+    "lines": 67,
+    "bytes": 2357,
+    "todos": 0,
+    "sha256": "ad17a98f09976fbb0f9599b65e9362f5b8b222a648835048a854fbb7f44c4787"
+  },
+  {
+    "path": "src/server/repositories/contracts/index.ts",
+    "lines": 44,
+    "bytes": 2028,
+    "todos": 0,
+    "sha256": "8bc4eb9521b2cfdc018ec9e5d39cd36464e5dceb6cb4c42f01ef2f44db329f12"
+  },
+  {
+    "path": "src/server/repositories/contracts/lesson-progress-repository.ts",
+    "lines": 49,
+    "bytes": 2310,
+    "todos": 0,
+    "sha256": "21c2a675384164e30161886537a99b93b199449cb2c2ce57e0fee439117f259d"
+  },
+  {
+    "path": "src/server/repositories/contracts/lesson-repository.ts",
+    "lines": 78,
+    "bytes": 3562,
+    "todos": 0,
+    "sha256": "feb975d2ee1527340c28e53f0fbfba56daa70eac0bfd80944f48109a41b7f645"
+  },
+  {
+    "path": "src/server/repositories/contracts/mock-exam-attempt-repository.ts",
+    "lines": 73,
+    "bytes": 3068,
+    "todos": 0,
+    "sha256": "7fbc9f2ae48e8976b5c8bc67eddd16d815915cafb97d613a906956a1fdbe019e"
+  },
+  {
+    "path": "src/server/repositories/contracts/mock-exam-repository.ts",
+    "lines": 103,
+    "bytes": 4740,
+    "todos": 1,
+    "sha256": "d2cbd0fc2040e4f41adbf66e02a7450f11ef472f15b5da604057ed1a1f06e0dd"
+  },
+  {
+    "path": "src/server/repositories/contracts/module-repository.ts",
+    "lines": 71,
+    "bytes": 2911,
+    "todos": 1,
+    "sha256": "a291b103465ffb2350843d6e31fc18c9bb587723d534c385a4543486b8c01fbd"
+  },
+  {
+    "path": "src/server/repositories/contracts/notification-repository.ts",
+    "lines": 46,
+    "bytes": 1447,
+    "todos": 1,
+    "sha256": "7e0ed122ed2d4ee21b0564013b39b6bcbcfea615d1cd4f3ba40b5d8b14cd28cc"
+  },
+  {
+    "path": "src/server/repositories/contracts/point-transaction-repository.ts",
+    "lines": 48,
+    "bytes": 1949,
+    "todos": 0,
+    "sha256": "930d68d89d50b769f14e627af37c5520c184ecefc8c5c016c1c6a97063f5e91f"
+  },
+  {
+    "path": "src/server/repositories/contracts/profile-repository.ts",
+    "lines": 116,
+    "bytes": 5298,
+    "todos": 0,
+    "sha256": "2dac4f6c6b64117b16058fa0f6c15e7234131505f0dfe56e8ad5612998389c6d"
+  },
+  {
+    "path": "src/server/repositories/contracts/question-attempt-repository.ts",
+    "lines": 44,
+    "bytes": 1916,
+    "todos": 0,
+    "sha256": "8b623c2e14555784ea9cdedf18eb7d3b61fedae2365cbbd1e065cf72f9033ba2"
+  },
+  {
+    "path": "src/server/repositories/contracts/question-favorite-repository.ts",
+    "lines": 15,
+    "bytes": 632,
+    "todos": 0,
+    "sha256": "8d056081e525b8da1a099cfded71b99851b368a592248f370b9d2b128e8c258f"
+  },
+  {
+    "path": "src/server/repositories/contracts/question-option-repository.ts",
+    "lines": 44,
+    "bytes": 2218,
+    "todos": 0,
+    "sha256": "7f47e94e42e5cba46cbc21f21852f4a73dc4948c3137d1e571d4269f4c477a11"
+  },
+  {
+    "path": "src/server/repositories/contracts/question-repository.ts",
+    "lines": 88,
+    "bytes": 3681,
+    "todos": 0,
+    "sha256": "1c3320cd55a6f859ba94d868d40aeb6be994f8f990408b99c80bec9a047b8452"
+  },
+  {
+    "path": "src/server/repositories/contracts/ranking-score-repository.ts",
+    "lines": 125,
+    "bytes": 5042,
+    "todos": 0,
+    "sha256": "8eb04a7763723112292d163b4a2fbb41fda04c157621822247945dca4a0605b3"
+  },
+  {
+    "path": "src/server/repositories/contracts/shared.ts",
+    "lines": 19,
+    "bytes": 1024,
+    "todos": 0,
+    "sha256": "0202f74ca2097742f6f53a35e4414efc79d18db409d2c4bcbcf20d99329c7279"
+  },
+  {
+    "path": "src/server/repositories/contracts/study-mission-repository.ts",
+    "lines": 72,
+    "bytes": 2690,
+    "todos": 0,
+    "sha256": "93fa5a6609dd69e90033d98312d195659540482ea62927195708da9c27d8d60f"
+  },
+  {
+    "path": "src/server/repositories/contracts/study-plan-item-repository.ts",
+    "lines": 79,
+    "bytes": 3380,
+    "todos": 0,
+    "sha256": "ef7306c1ce0d3621bd3a00f5e88f78776653de96703d3d056d523518790f4bd9"
+  },
+  {
+    "path": "src/server/repositories/contracts/study-plan-repository.ts",
+    "lines": 50,
+    "bytes": 1741,
+    "todos": 0,
+    "sha256": "de85351574bccc9d2cc02bff280d25243602c57ce155fc37baf1f76b21618965"
+  },
+  {
+    "path": "src/server/repositories/contracts/study-session-repository.ts",
+    "lines": 61,
+    "bytes": 3341,
+    "todos": 0,
+    "sha256": "e591ea5287ce5f67872ff68a05ff0abcbf4ef533c269c18b117d036f250c06f8"
+  },
+  {
+    "path": "src/server/repositories/contracts/subject-repository.ts",
+    "lines": 35,
+    "bytes": 1429,
+    "todos": 1,
+    "sha256": "70dc73b02f3e7044728912ce99049d7a1ad0b05f4a8f09c293974dd8dc04dea6"
+  },
+  {
+    "path": "src/server/repositories/contracts/teacher-repository.ts",
+    "lines": 48,
+    "bytes": 1723,
+    "todos": 2,
+    "sha256": "59b678ac85f0804a7f85622e19f557dc15004d71d6913942ab95901425a36523"
+  },
+  {
+    "path": "src/server/repositories/contracts/topic-repository.ts",
+    "lines": 42,
+    "bytes": 1525,
+    "todos": 1,
+    "sha256": "e54ebd8fdc9afa579749ba66833454a836b62bd438ac7ada68c93c345d5f914a"
+  },
+  {
+    "path": "src/server/repositories/contracts/user-achievement-repository.ts",
+    "lines": 22,
+    "bytes": 1029,
+    "todos": 0,
+    "sha256": "2635ef1cb92de78eab10db06ee7adb26883471b7240f21ef3540d438784f7a37"
+  },
+  {
+    "path": "src/server/repositories/contracts/user-repository.ts",
+    "lines": 38,
+    "bytes": 1554,
+    "todos": 0,
+    "sha256": "abeecaf8867b542bcec362b1deaa052ff6c3537b09e940336bef3b0b3f13f0fc"
+  },
+  {
+    "path": "src/server/repositories/contracts/user-streak-repository.ts",
+    "lines": 52,
+    "bytes": 2795,
+    "todos": 0,
+    "sha256": "b8f146d7de96222060630a3452a3a5cf7fb3941e5985dbcb82b0adb2698e4bc8"
+  },
+  {
+    "path": "src/server/repositories/contracts/weekly-goal-repository.ts",
+    "lines": 39,
+    "bytes": 1628,
+    "todos": 0,
+    "sha256": "dc42e423461cad8758c9220bd778a7c1ff5a4e8c07cd0d1dbeb64394b2209055"
+  },
+  {
+    "path": "src/server/repositories/index.ts",
+    "lines": 256,
+    "bytes": 13253,
+    "todos": 0,
+    "sha256": "e40336087ca95d4a5138d9d2c828c5d628d9a35c278488fd3758bfaba254f4a3"
+  },
+  {
+    "path": "src/server/repositories/mock/achievement-repository.ts",
+    "lines": 81,
+    "bytes": 3044,
+    "todos": 0,
+    "sha256": "7ca765eac045b43988747c31ec9c30cf4d394cb1cf0db548dac4a85fc0f777ef"
+  },
+  {
+    "path": "src/server/repositories/mock/brainstorm-board-repository.ts",
+    "lines": 47,
+    "bytes": 1912,
+    "todos": 0,
+    "sha256": "087b59ac736642130c0d511713f7beaabe225723d8d4aa75d22d9ce46250ae8e"
+  },
+  {
+    "path": "src/server/repositories/mock/brainstorm-card-repository.ts",
+    "lines": 127,
+    "bytes": 5586,
+    "todos": 0,
+    "sha256": "c05fb5650acbf2d0b65d808a0b52c38597f8ca7363dbf6c43a6b679fdb5d57ae"
+  },
+  {
+    "path": "src/server/repositories/mock/brainstorm-column-repository.ts",
+    "lines": 45,
+    "bytes": 1796,
+    "todos": 0,
+    "sha256": "5cc96b57fabdacfaba99e66d5f430e63c989adc0aaf9dcf350f5800192330369"
+  },
+  {
+    "path": "src/server/repositories/mock/contest-repository.ts",
+    "lines": 77,
+    "bytes": 2753,
+    "todos": 0,
+    "sha256": "3756275e27c058f1cc4f022659bd40efc40a7f7ac3303b1f4a4b86b0011d7576"
+  },
+  {
+    "path": "src/server/repositories/mock/course-repository.ts",
+    "lines": 98,
+    "bytes": 3524,
+    "todos": 0,
+    "sha256": "19066f6ce6a592aff19dcb51b14c04f1be30f280c121235dc557212fb2560885"
+  },
+  {
+    "path": "src/server/repositories/mock/daily-goal-repository.ts",
+    "lines": 55,
+    "bytes": 2053,
+    "todos": 0,
+    "sha256": "cff675ea2a90ae144fcc88778cebb06f7eb05250a0f499a3e93c28445088f312"
+  },
+  {
+    "path": "src/server/repositories/mock/enrollment-repository.ts",
+    "lines": 53,
+    "bytes": 2337,
+    "todos": 0,
+    "sha256": "8fd10ba04ea75077b011244126e8d051cb6bdcc3ff9f0ba25147c0087655675a"
+  },
+  {
+    "path": "src/server/repositories/mock/flashcard-deck-repository.ts",
+    "lines": 54,
+    "bytes": 2019,
+    "todos": 0,
+    "sha256": "f5b026cb8ddb69240baede6cc857160257b5d8ad2d00a44e6e6ed714cf78297e"
+  },
+  {
+    "path": "src/server/repositories/mock/flashcard-repository.ts",
+    "lines": 57,
+    "bytes": 2266,
+    "todos": 0,
+    "sha256": "e50b74160e5c450c08b73e78da22fecea723a183ba902966a316956e90f2fb20"
+  },
+  {
+    "path": "src/server/repositories/mock/flashcard-review-repository.ts",
+    "lines": 69,
+    "bytes": 2899,
+    "todos": 0,
+    "sha256": "005cde0274c7c307d80fedc37d79c8368f3a7aca7cd9bf49e45ae44fe92823a0"
+  },
+  {
+    "path": "src/server/repositories/mock/focus-session-repository.ts",
+    "lines": 76,
+    "bytes": 2744,
+    "todos": 0,
+    "sha256": "5abfe390ea13724b0980d015433dd63fc75cd9da7e31908aca93aa5f84b00159"
+  },
+  {
+    "path": "src/server/repositories/mock/gamification-event-repository.ts",
+    "lines": 62,
+    "bytes": 2572,
+    "todos": 0,
+    "sha256": "80c9e93bac2e1e3306f4d1beee425ce6dc2573e4267b2a8c6c2d0ea30e7f81ae"
+  },
+  {
+    "path": "src/server/repositories/mock/lesson-progress-repository.ts",
+    "lines": 61,
+    "bytes": 2475,
+    "todos": 0,
+    "sha256": "98cbe661f6e7399f253991e1e31b439511e50d0d26257313c7078e6edd1f82f5"
+  },
+  {
+    "path": "src/server/repositories/mock/lesson-repository.ts",
+    "lines": 104,
+    "bytes": 4285,
+    "todos": 0,
+    "sha256": "f702ed2abc57e2cf46090ee64a2713f5549ebad2efa086c953bb343ef5355433"
+  },
+  {
+    "path": "src/server/repositories/mock/mock-exam-attempt-repository.ts",
+    "lines": 108,
+    "bytes": 3927,
+    "todos": 0,
+    "sha256": "13d3417b8b39d9609469aceb0c3a0256971657c49d12b5e639d0a47749749184"
+  },
+  {
+    "path": "src/server/repositories/mock/mock-exam-repository.ts",
+    "lines": 109,
+    "bytes": 4226,
+    "todos": 0,
+    "sha256": "a51b45230af6bdb71c4958ad2b6d5c86d1ee06bc9db961910c38c8936300bf77"
+  },
+  {
+    "path": "src/server/repositories/mock/mock-store.ts",
+    "lines": 66,
+    "bytes": 3924,
+    "todos": 0,
+    "sha256": "5e6c44d61c259bf99e52b61d3448195bdd10424ae8dd634bff682149c6b5a9c9"
+  },
+  {
+    "path": "src/server/repositories/mock/module-repository.ts",
+    "lines": 106,
+    "bytes": 4187,
+    "todos": 0,
+    "sha256": "41e92aa6ba482a837b10e6cb07eb1847d85df10fee005992554848fcd74c9dc1"
+  },
+  {
+    "path": "src/server/repositories/mock/notification-repository.ts",
+    "lines": 43,
+    "bytes": 1560,
+    "todos": 0,
+    "sha256": "3bb8184c93472508be4dc6db86c38b56169fcac5a4559c808f4507ec8778eac2"
+  },
+  {
+    "path": "src/server/repositories/mock/point-transaction-repository.ts",
+    "lines": 66,
+    "bytes": 2465,
+    "todos": 0,
+    "sha256": "957091e06b9ccfa87755dc8315f76f7d3482701b68a38a1e936cf819ca2125ca"
+  },
+  {
+    "path": "src/server/repositories/mock/profile-repository.ts",
+    "lines": 98,
+    "bytes": 3886,
+    "todos": 0,
+    "sha256": "82da3a21eb274148f25e855322ea0c7a4f558fe6258912cd879f17ecd1c337dd"
+  },
+  {
+    "path": "src/server/repositories/mock/question-attempt-repository.ts",
+    "lines": 63,
+    "bytes": 2492,
+    "todos": 0,
+    "sha256": "122d31fad9799ae9e8f6a0ead2995787457e04a5be1d591e74f1193b564b8663"
+  },
+  {
+    "path": "src/server/repositories/mock/question-favorite-repository.ts",
+    "lines": 32,
+    "bytes": 1483,
+    "todos": 0,
+    "sha256": "9abebad557feb49a9ecac84be4a1246feec4bd304d2532da746a6af1cfda6529"
+  },
+  {
+    "path": "src/server/repositories/mock/question-option-repository.ts",
+    "lines": 55,
+    "bytes": 2199,
+    "todos": 0,
+    "sha256": "ca2bd3541ec9b008824979532348d8568b4a0bddac861f2a2c3f0819c13fca70"
+  },
+  {
+    "path": "src/server/repositories/mock/question-repository.ts",
+    "lines": 98,
+    "bytes": 3786,
+    "todos": 0,
+    "sha256": "c248418f12610e60e3526457415987746bb44d0fb9faf44f44b4684cc670fd7c"
+  },
+  {
+    "path": "src/server/repositories/mock/ranking-score-repository.ts",
+    "lines": 131,
+    "bytes": 4305,
+    "todos": 0,
+    "sha256": "28fb92fa649151643ae7de690045d6d88efc05102c69f98261f91f557f4f44df"
+  },
+  {
+    "path": "src/server/repositories/mock/study-mission-repository.ts",
+    "lines": 43,
+    "bytes": 1581,
+    "todos": 0,
+    "sha256": "b703f827bb4a58d6c25f5ab1860f7260dc66ca618c529ec5885af58dcf4f9670"
+  },
+  {
+    "path": "src/server/repositories/mock/study-plan-item-repository.ts",
+    "lines": 103,
+    "bytes": 4418,
+    "todos": 0,
+    "sha256": "b81321616592722e54bdffd5bcef313106447689fea7c7ba279d1d31cc9d9068"
+  },
+  {
+    "path": "src/server/repositories/mock/study-plan-repository.ts",
+    "lines": 76,
+    "bytes": 2801,
+    "todos": 0,
+    "sha256": "dee24c8e1e63698763907fd25fa45435ccd58f1e34cb085c3c0bd35188f16153"
+  },
+  {
+    "path": "src/server/repositories/mock/study-session-repository.ts",
+    "lines": 51,
+    "bytes": 1975,
+    "todos": 0,
+    "sha256": "82431880bdc21b7810dc0a2f64cf5f39e35eedcb74e9a9530abc40233dbbbe96"
+  },
+  {
+    "path": "src/server/repositories/mock/subject-repository.ts",
+    "lines": 66,
+    "bytes": 2298,
+    "todos": 0,
+    "sha256": "42ab2761c7508dc387112ef94631abf690475da3867cec5c6d672c895123ca87"
+  },
+  {
+    "path": "src/server/repositories/mock/teacher-repository.ts",
+    "lines": 73,
+    "bytes": 2545,
+    "todos": 0,
+    "sha256": "a0845068970825e584c2bf640134ac398915cb3554ad8014e8c68ec84c615f02"
+  },
+  {
+    "path": "src/server/repositories/mock/topic-repository.ts",
+    "lines": 75,
+    "bytes": 2497,
+    "todos": 0,
+    "sha256": "43ff2a2543cca190b9b38a04ea8fda228bf06fb9ca6a11ee8a869c90a349d42a"
+  },
+  {
+    "path": "src/server/repositories/mock/user-achievement-repository.ts",
+    "lines": 44,
+    "bytes": 1858,
+    "todos": 0,
+    "sha256": "7d47ca1b93b32f9ce04bf490a035f374a8478280dc03a2760e9e33d0fffef4cb"
+  },
+  {
+    "path": "src/server/repositories/mock/user-repository.ts",
+    "lines": 66,
+    "bytes": 2246,
+    "todos": 0,
+    "sha256": "3ed9eeb06f142fa60aa30c2dbd082266bb11b883c331be95575a65f5d4f30765"
+  },
+  {
+    "path": "src/server/repositories/mock/user-streak-repository.ts",
+    "lines": 42,
+    "bytes": 1786,
+    "todos": 0,
+    "sha256": "24a50cd31bdabd551898c5c28117fca64778e86ed1ab0693da81aaadea9ab553"
+  },
+  {
+    "path": "src/server/repositories/mock/weekly-goal-repository.ts",
+    "lines": 57,
+    "bytes": 2127,
+    "todos": 0,
+    "sha256": "5bf4ea0e5363b2fab1bcd19f96e505d8d7cbedfdd2a5a924fc59f3995fc338b6"
+  },
+  {
+    "path": "src/server/repositories/prisma/achievement-repository.ts",
+    "lines": 45,
+    "bytes": 2063,
+    "todos": 7,
+    "sha256": "31293fedb1a59c3ca7a8167387070d6862ad309d4922deb9bc3cb6d618d60124"
+  },
+  {
+    "path": "src/server/repositories/prisma/brainstorm-board-repository.ts",
+    "lines": 27,
+    "bytes": 1286,
+    "todos": 3,
+    "sha256": "84f0830b8db821b908e02dd16fe8086a454a12236f86fab3e44e17a6676d5ee6"
+  },
+  {
+    "path": "src/server/repositories/prisma/brainstorm-card-repository.ts",
+    "lines": 57,
+    "bytes": 3128,
+    "todos": 9,
+    "sha256": "ca0a0b4ead80b28ce9346c46fcd58293cb27c223e7a51cf3d8bf8003c05ddefd"
+  },
+  {
+    "path": "src/server/repositories/prisma/brainstorm-column-repository.ts",
+    "lines": 27,
+    "bytes": 1315,
+    "todos": 3,
+    "sha256": "87484ddcceeb7ea5e970393a2850c15600651dbf43cd1d1b56d278c7a6a0baf4"
+  },
+  {
+    "path": "src/server/repositories/prisma/contest-repository.ts",
+    "lines": 45,
+    "bytes": 1974,
+    "todos": 7,
+    "sha256": "38610d13caadbfb9e95b8337598db58dd86c763358a36a1bad1518d6305598a1"
+  },
+  {
+    "path": "src/server/repositories/prisma/course-repository.ts",
+    "lines": 50,
+    "bytes": 2225,
+    "todos": 8,
+    "sha256": "9eb6e3a2b7e8f07fab4a8b2d17773cc31b1f0317b16106086e58dc7b6312b5f5"
+  },
+  {
+    "path": "src/server/repositories/prisma/daily-goal-repository.ts",
+    "lines": 28,
+    "bytes": 1428,
+    "todos": 3,
+    "sha256": "0565c93e666d9b7a6b26134692086b1631b5ac14eb805c97981bee3c8c0c3f9a"
+  },
+  {
+    "path": "src/server/repositories/prisma/enrollment-repository.ts",
+    "lines": 22,
+    "bytes": 1237,
+    "todos": 3,
+    "sha256": "493314ff3ffc9d3b08809c0ad7273e9c3fcffe9ca84453e30bcbdb8b75317c44"
+  },
+  {
+    "path": "src/server/repositories/prisma/flashcard-deck-repository.ts",
+    "lines": 40,
+    "bytes": 2050,
+    "todos": 6,
+    "sha256": "e4f450fde9226e6387462bdaee3041d390ea81d5abb7f72964ac346556663416"
+  },
+  {
+    "path": "src/server/repositories/prisma/flashcard-repository.ts",
+    "lines": 27,
+    "bytes": 1473,
+    "todos": 4,
+    "sha256": "1bbf25e14f40d8a6c07f92ab2d2db5ecd8d45145e6f8b9431b81beacff5a0ae9"
+  },
+  {
+    "path": "src/server/repositories/prisma/flashcard-review-repository.ts",
+    "lines": 40,
+    "bytes": 2186,
+    "todos": 5,
+    "sha256": "adefbaf6ea6cc78d89603ab2c354a1f4ae439464cf1e11793ee86ef2a7678e46"
+  },
+  {
+    "path": "src/server/repositories/prisma/focus-session-repository.ts",
+    "lines": 33,
+    "bytes": 1717,
+    "todos": 4,
+    "sha256": "8b07e281856b3b5b66ad22bc791ff044d7ba1c67e65e8b8b51f5fa142e3efaa0"
+  },
+  {
+    "path": "src/server/repositories/prisma/gamification-event-repository.ts",
+    "lines": 27,
+    "bytes": 1401,
+    "todos": 3,
+    "sha256": "90acabdca32bff6546d45cdf80afbf492889dabd5c1c1daf6ca609ef20b95fe0"
+  },
+  {
+    "path": "src/server/repositories/prisma/lesson-progress-repository.ts",
+    "lines": 27,
+    "bytes": 1325,
+    "todos": 3,
+    "sha256": "297b0e3c4068c62093cd9e38bb68328e34471aadfcae0d13fba0182c82a1a341"
+  },
+  {
+    "path": "src/server/repositories/prisma/lesson-repository.ts",
+    "lines": 47,
+    "bytes": 2295,
+    "todos": 7,
+    "sha256": "de75bf4e3201b4d216ef4ec08e8b39180925298b1be3f8adaac4172662228295"
+  },
+  {
+    "path": "src/server/repositories/prisma/mock-exam-attempt-repository.ts",
+    "lines": 43,
+    "bytes": 2241,
+    "todos": 5,
+    "sha256": "b0b7ab25a1282324392a1eed58254caa45cc94a495255e7e964fd7de4537dba0"
+  },
+  {
+    "path": "src/server/repositories/prisma/mock-exam-repository.ts",
+    "lines": 48,
+    "bytes": 2179,
+    "todos": 7,
+    "sha256": "c8253bf2a7f0bcacc14f306c68a21e276c9d7966178f815cc125464c7f5a37f1"
+  },
+  {
+    "path": "src/server/repositories/prisma/module-repository.ts",
+    "lines": 47,
+    "bytes": 2295,
+    "todos": 7,
+    "sha256": "c970c14340964d909fa07a8aa22511db22c44792a90cea4f1e3859a8e8f033e6"
+  },
+  {
+    "path": "src/server/repositories/prisma/notification-repository.ts",
+    "lines": 21,
+    "bytes": 976,
+    "todos": 2,
+    "sha256": "a237042b8617c045f592b1935447114f8c814dfe4cd136e7110f5d795292d44c"
+  },
+  {
+    "path": "src/server/repositories/prisma/point-transaction-repository.ts",
+    "lines": 35,
+    "bytes": 1946,
+    "todos": 5,
+    "sha256": "c0ed63cd6454c7f433d789b717d8a4c2e1c5370f3d60c4374709682503ef6f56"
+  },
+  {
+    "path": "src/server/repositories/prisma/profile-repository.ts",
+    "lines": 49,
+    "bytes": 2776,
+    "todos": 6,
+    "sha256": "e1b3298fa5a7a00b60d5ba153a3ddb9a4fbc9107c7dec05b53f2528d8a4f8550"
+  },
+  {
+    "path": "src/server/repositories/prisma/question-attempt-repository.ts",
+    "lines": 26,
+    "bytes": 1349,
+    "todos": 3,
+    "sha256": "72ef188a4d28f501f0d6c4cd7be4a267d912aa77bf3cf048c40435f537a4c634"
+  },
+  {
+    "path": "src/server/repositories/prisma/question-favorite-repository.ts",
+    "lines": 22,
+    "bytes": 1243,
+    "todos": 3,
+    "sha256": "77afb5ade7a6f9fbe9d94b7a961ad46dabd3f6b6221ddf35db4a456d4c5471b4"
+  },
+  {
+    "path": "src/server/repositories/prisma/question-option-repository.ts",
+    "lines": 31,
+    "bytes": 1608,
+    "todos": 4,
+    "sha256": "315f05fd119ab4e151a9067ef471028dd8e63475f4c819c8cb19c73635cc29db"
+  },
+  {
+    "path": "src/server/repositories/prisma/question-repository.ts",
+    "lines": 47,
+    "bytes": 2151,
+    "todos": 7,
+    "sha256": "68e175eeba5a94fe48b7438c6b34c2fd4d9a4305c1313e442dfed1346cea37c9"
+  },
+  {
+    "path": "src/server/repositories/prisma/ranking-score-repository.ts",
+    "lines": 80,
+    "bytes": 4545,
+    "todos": 5,
+    "sha256": "336a72b0c3f903f9c6f2df6bbf52bd6f77c87ae0379d68d4df72958d8c2ba39c"
+  },
+  {
+    "path": "src/server/repositories/prisma/study-mission-repository.ts",
+    "lines": 24,
+    "bytes": 1153,
+    "todos": 2,
+    "sha256": "db14ba32a26ca977bc3ba93ed5b546a3495497e68f9fb5e3d8c87392f2d762e7"
+  },
+  {
+    "path": "src/server/repositories/prisma/study-plan-item-repository.ts",
+    "lines": 47,
+    "bytes": 2435,
+    "todos": 7,
+    "sha256": "de7f28634504c6d0f02dec5a596c1bdacd16b680968137a1e78b9bef05b02a30"
+  },
+  {
+    "path": "src/server/repositories/prisma/study-plan-repository.ts",
+    "lines": 38,
+    "bytes": 1797,
+    "todos": 5,
+    "sha256": "13754d717913a7e86ce4049e0437ca5e32b261846e33b1b82cda9a65e519aa99"
+  },
+  {
+    "path": "src/server/repositories/prisma/study-session-repository.ts",
+    "lines": 32,
+    "bytes": 1814,
+    "todos": 4,
+    "sha256": "b6e55fd013dd2446c206acf9b60e2da7c99f185fae015a2dcf4da5f5ab9a5cbf"
+  },
+  {
+    "path": "src/server/repositories/prisma/subject-repository.ts",
+    "lines": 40,
+    "bytes": 1708,
+    "todos": 6,
+    "sha256": "8d8c5c5a0f67c9fde884c98c1d4c283620d5849df148a2928d4a352b85f6c0e5"
+  },
+  {
+    "path": "src/server/repositories/prisma/teacher-repository.ts",
+    "lines": 40,
+    "bytes": 1708,
+    "todos": 6,
+    "sha256": "698f7e59bd45370eae50abf657acff492e1b948433bcb69a5787506dc52cee37"
+  },
+  {
+    "path": "src/server/repositories/prisma/topic-repository.ts",
+    "lines": 45,
+    "bytes": 1938,
+    "todos": 7,
+    "sha256": "1e1414cdbd6d7522a1db31fb1ad2c0b4d82fa7ef991796f0b1c17ba77eee78d2"
+  },
+  {
+    "path": "src/server/repositories/prisma/user-achievement-repository.ts",
+    "lines": 28,
+    "bytes": 1555,
+    "todos": 3,
+    "sha256": "b88b3b272bfa3780f068835feb4235f5dae880eae4b483c5d77c6469d590909a"
+  },
+  {
+    "path": "src/server/repositories/prisma/user-repository.ts",
+    "lines": 64,
+    "bytes": 2553,
+    "todos": 6,
+    "sha256": "feee0329d16eea2be5441f486ded4fd6e3e5f71f2acc11e6875e2c13d5b7381d"
+  },
+  {
+    "path": "src/server/repositories/prisma/user-streak-repository.ts",
+    "lines": 23,
+    "bytes": 1147,
+    "todos": 2,
+    "sha256": "70ccf1aad287438d4ab0bdf75cd94339c6f6e80f5480a6186579fdc470ae1bf7"
+  },
+  {
+    "path": "src/server/repositories/prisma/weekly-goal-repository.ts",
+    "lines": 28,
+    "bytes": 1463,
+    "todos": 3,
+    "sha256": "4324c25f6555b6d0a216a697a79b52fa0342f19ebdc6f29b1e2e2c1d2b31b414"
+  },
+  {
+    "path": "src/server/services/admin/achievement-service.ts",
+    "lines": 80,
+    "bytes": 3135,
+    "todos": 1,
+    "sha256": "b4296e3eb586333d77ac905f7f094e15a54e62d22305e6739518a6fae6dc8ed1"
+  },
+  {
+    "path": "src/server/services/admin/audit-service.ts",
+    "lines": 35,
+    "bytes": 1607,
+    "todos": 1,
+    "sha256": "aa43cb9b0844ddcfc0d7a778b72013bc0f9cd7ca03211971f30873e6bef06c8e"
+  },
+  {
+    "path": "src/server/services/admin/config-service.ts",
+    "lines": 80,
+    "bytes": 3297,
+    "todos": 1,
+    "sha256": "4516127f152fd6af5da8a711c93449c6cf0a84a38fa0cddff6cc8addc6eee331"
+  },
+  {
+    "path": "src/server/services/admin/config-store.ts",
+    "lines": 53,
+    "bytes": 2556,
+    "todos": 2,
+    "sha256": "b46235af15357a5ac7d8d7b31629ce6d8a3a57f8704fe61306981dc5a053aaf2"
+  },
+  {
+    "path": "src/server/services/admin/contest-service.ts",
+    "lines": 73,
+    "bytes": 2945,
+    "todos": 1,
+    "sha256": "1c305615115f25b1403b84d3138a8d9083eb438fd3942a941a5d18a03e870ddb"
+  },
+  {
+    "path": "src/server/services/admin/course-service.ts",
+    "lines": 101,
+    "bytes": 3855,
+    "todos": 0,
+    "sha256": "881f5f2d78f5d47b14ba614f7f72e285db6d2296a879d7cf7e90996156293f41"
+  },
+  {
+    "path": "src/server/services/admin/dashboard-service.ts",
+    "lines": 124,
+    "bytes": 5707,
+    "todos": 6,
+    "sha256": "c596e89177435f5b94367e6ca51dc19fe80f2d90e3ffe453f191405154b7ed80"
+  },
+  {
+    "path": "src/server/services/admin/lesson-service.ts",
+    "lines": 148,
+    "bytes": 5883,
+    "todos": 0,
+    "sha256": "e01e23efba8570297baf8899f833d57b1013c44db9ed963eb8b67806455c5f11"
+  },
+  {
+    "path": "src/server/services/admin/list-users-service.ts",
+    "lines": 26,
+    "bytes": 1369,
+    "todos": 0,
+    "sha256": "986271a5d60d6fc37dea008d7636154d81122c17d2419ccab3da73a08a62411a"
+  },
+  {
+    "path": "src/server/services/admin/mappers.ts",
+    "lines": 127,
+    "bytes": 4596,
+    "todos": 0,
+    "sha256": "ef1fa3ced06cb855ceb2e5cf446e8b983036d39d7df2880d0da03f896711d59d"
+  },
+  {
+    "path": "src/server/services/admin/mock-exam-service.ts",
+    "lines": 83,
+    "bytes": 3438,
+    "todos": 0,
+    "sha256": "3dc5fcb25f72c09251cd461a594b581bedf05f65222657e37f6eb80bc4c25176"
+  },
+  {
+    "path": "src/server/services/admin/moderation-service.ts",
+    "lines": 40,
+    "bytes": 1914,
+    "todos": 1,
+    "sha256": "c16168c2693af64b052f1a5c9577b9bd23e8b2472c3efd5067c23c94fbd55f08"
+  },
+  {
+    "path": "src/server/services/admin/module-service.ts",
+    "lines": 125,
+    "bytes": 4759,
+    "todos": 0,
+    "sha256": "e4e51f97e8f71aefb1a658b40c3886cb2556f03ee41f6ca2e623562698d2eaae"
+  },
+  {
+    "path": "src/server/services/admin/notification-service.ts",
+    "lines": 32,
+    "bytes": 1355,
+    "todos": 0,
+    "sha256": "7d72a0dd0fe525cce637f177a2e31c735384bb17014672007b6824eda1af3188"
+  },
+  {
+    "path": "src/server/services/admin/question-service.ts",
+    "lines": 124,
+    "bytes": 5240,
+    "todos": 0,
+    "sha256": "637f54149fd84cf1792aaa4626eb712627ba695e47570388eba45ad3fee7a324"
+  },
+  {
+    "path": "src/server/services/admin/roles.ts",
+    "lines": 20,
+    "bytes": 1194,
+    "todos": 0,
+    "sha256": "96260b93435ba96bc9020a6cdebeca1758b2dc31c402e7fba6707ac01e721870"
+  },
+  {
+    "path": "src/server/services/admin/subject-service.ts",
+    "lines": 52,
+    "bytes": 2262,
+    "todos": 0,
+    "sha256": "9732864c5779348ca09823ef69b6b9f1afc8918bf01df5b2ed6caec9d9a0814b"
+  },
+  {
+    "path": "src/server/services/admin/teacher-service.ts",
+    "lines": 64,
+    "bytes": 2446,
+    "todos": 0,
+    "sha256": "78decc7ab5341f20ae09d2b1cc64e8873bb6eec703332637e53722d873365a6b"
+  },
+  {
+    "path": "src/server/services/admin/topic-service.ts",
+    "lines": 63,
+    "bytes": 2713,
+    "todos": 0,
+    "sha256": "b1fbecbf08c911b40a5da65c791948bdb7b0dbc8f24fa91fb611aa23c43f269c"
+  },
+  {
+    "path": "src/server/services/admin/users-service.ts",
+    "lines": 106,
+    "bytes": 4934,
+    "todos": 1,
+    "sha256": "8429dedf44f21300f42cde95f1b93d4d1cd834bc6d1834ac980054682fd05748"
+  },
+  {
+    "path": "src/server/services/brainstorm/convert-to-flashcard.ts",
+    "lines": 53,
+    "bytes": 1905,
+    "todos": 1,
+    "sha256": "e1ce92a2bcad10007cd3225cd82b1e6d4909e30e8fc41f932af84db7e79bf928"
+  },
+  {
+    "path": "src/server/services/brainstorm/convert-to-study-task.ts",
+    "lines": 84,
+    "bytes": 2983,
+    "todos": 1,
+    "sha256": "58274a762ed5611e8ec0a60cd13ae40a942ae0071767da23e9036bba944a6c3f"
+  },
+  {
+    "path": "src/server/services/brainstorm/create-board.ts",
+    "lines": 44,
+    "bytes": 1497,
+    "todos": 0,
+    "sha256": "036c35ea9f25e694313913cb1a091cd09ac8d071dffd4682ada8930a78b7d91f"
+  },
+  {
+    "path": "src/server/services/brainstorm/create-card.ts",
+    "lines": 73,
+    "bytes": 2650,
+    "todos": 0,
+    "sha256": "bdfe71221f301cd729f567d40eb6790e79f19b4c7d06b27070ac8c7958c178a4"
+  },
+  {
+    "path": "src/server/services/brainstorm/delete-card.ts",
+    "lines": 31,
+    "bytes": 1158,
+    "todos": 0,
+    "sha256": "6b41b295ae2013a8f9e6eaaa9149918ff8a1deba77c7733b1c69b0658519b11a"
+  },
+  {
+    "path": "src/server/services/brainstorm/flashcard-draft-store.ts",
+    "lines": 71,
+    "bytes": 3054,
+    "todos": 1,
+    "sha256": "22c6f33d8e6225d49e7a12ed9e5550b10213975a725aa902715ae19ce292ead2"
+  },
+  {
+    "path": "src/server/services/brainstorm/get-board.ts",
+    "lines": 22,
+    "bytes": 1080,
+    "todos": 0,
+    "sha256": "6120a3185c17edb7e6e0ba1438964c3e8a2e467edac041cd5fcb2d9ac70c9a3f"
+  },
+  {
+    "path": "src/server/services/brainstorm/index.ts",
+    "lines": 17,
+    "bytes": 734,
+    "todos": 0,
+    "sha256": "221761cc7393720d207ad717069b39f1e7afccbc4bf2ef3f4009ea6c71ad1749"
+  },
+  {
+    "path": "src/server/services/brainstorm/list-boards.ts",
+    "lines": 31,
+    "bytes": 1236,
+    "todos": 0,
+    "sha256": "3954a513fd7239f9af8c075f7765daac5162a2c118877f06785f983b33650b46"
+  },
+  {
+    "path": "src/server/services/brainstorm/mappers.ts",
+    "lines": 106,
+    "bytes": 4188,
+    "todos": 0,
+    "sha256": "a1bef1785d32fb388e9684d9e6c6dc4b6a2b09f85cf4c2d9f6324c742ff81cb4"
+  },
+  {
+    "path": "src/server/services/brainstorm/mark-resolved.ts",
+    "lines": 51,
+    "bytes": 2333,
+    "todos": 0,
+    "sha256": "da6245bbf60a9b5016f030cb7f02205287876cfd1ae6612a79c20783095c1160"
+  },
+  {
+    "path": "src/server/services/brainstorm/move-card.ts",
+    "lines": 89,
+    "bytes": 4153,
+    "todos": 0,
+    "sha256": "9648dcb4f5d70da589f3ebf80a791cb2ad4e38d7d39cfbd7b4068bc0155131bf"
+  },
+  {
+    "path": "src/server/services/brainstorm/shared.ts",
+    "lines": 74,
+    "bytes": 3363,
+    "todos": 0,
+    "sha256": "53c03518b309bdf411b35273e1cd78b7f72b72b2b860e6ecf39e130f311959b4"
+  },
+  {
+    "path": "src/server/services/brainstorm/update-card.ts",
+    "lines": 68,
+    "bytes": 2415,
+    "todos": 0,
+    "sha256": "800f52135fe66d9db3fd5ec19ba39704cfda2eca21cc6c0cfce02e021fb734d5"
+  },
+  {
+    "path": "src/server/services/courses/course-detail.ts",
+    "lines": 68,
+    "bytes": 2416,
+    "todos": 0,
+    "sha256": "243ee2cb777a7d4bee0036688c2dacfd1c6235cf0a785fd31acb248eb9c9db00"
+  },
+  {
+    "path": "src/server/services/courses/enroll.ts",
+    "lines": 31,
+    "bytes": 1242,
+    "todos": 0,
+    "sha256": "ab429951f26b267b166dc1c4df183123f76583698337814ce3a57961e715609c"
+  },
+  {
+    "path": "src/server/services/courses/index.ts",
+    "lines": 12,
+    "bytes": 384,
+    "todos": 0,
+    "sha256": "b726df5b903914eafbcd171de54a1441f0da3f9a5b3b8c5d9d8ed94540b6894b"
+  },
+  {
+    "path": "src/server/services/courses/list-courses.ts",
+    "lines": 31,
+    "bytes": 1154,
+    "todos": 0,
+    "sha256": "41ff760dd3bbab9fb9966a252954293ced8b66ba18f2488b4c4bd91c300ecc53"
+  },
+  {
+    "path": "src/server/services/courses/progress.ts",
+    "lines": 148,
+    "bytes": 5929,
+    "todos": 0,
+    "sha256": "c23be06a16daca71f3c5a22783278932730090ede05330f75879cae76b0fe1ea"
+  },
+  {
+    "path": "src/server/services/courses/resume-point.ts",
+    "lines": 51,
+    "bytes": 1710,
+    "todos": 0,
+    "sha256": "16d76e51e763d1404a7f31faecaa42fda012bf6b7bcef4db3f84324feda7482c"
+  },
+  {
+    "path": "src/server/services/courses/shared.ts",
+    "lines": 106,
+    "bytes": 4031,
+    "todos": 0,
+    "sha256": "8f64da84668d79620d0c0015e385e2d1bedf22b97e7d0c546a63b50c0fcc124a"
+  },
+  {
+    "path": "src/server/services/dashboard-service.ts",
+    "lines": 181,
+    "bytes": 8364,
+    "todos": 3,
+    "sha256": "565baf9632e88533c91134f7b8795166b797ac4b01ea1e3bc9908084ca1db255"
+  },
+  {
+    "path": "src/server/services/flashcards/create-card.ts",
+    "lines": 68,
+    "bytes": 2351,
+    "todos": 0,
+    "sha256": "6156d7cda609d5e7e690e93d468c4ed63ffc6ae24bc0d4a34981bf1a34f525a0"
+  },
+  {
+    "path": "src/server/services/flashcards/create-deck.ts",
+    "lines": 47,
+    "bytes": 1619,
+    "todos": 0,
+    "sha256": "a9c80e79110de9d24ff8e0dd4dc8df15843c97ce8f519d6939c9adbe9202072e"
+  },
+  {
+    "path": "src/server/services/flashcards/create-from-errors.ts",
+    "lines": 80,
+    "bytes": 3449,
+    "todos": 0,
+    "sha256": "6b9b128e7ca91ffafad6626700cfa40b283c0b9b5097589590a9f0846528e2e8"
+  },
+  {
+    "path": "src/server/services/flashcards/create-from-notes.ts",
+    "lines": 69,
+    "bytes": 3019,
+    "todos": 0,
+    "sha256": "9a66343e01d66eb43dc41ad0fbd4ba6cd220ab12eefff87be1d5fd9ce15ce5f0"
+  },
+  {
+    "path": "src/server/services/flashcards/favorite-store.ts",
+    "lines": 59,
+    "bytes": 3172,
+    "todos": 3,
+    "sha256": "366fee7ae13cbafd8608a795864f742820d5a9844a98cee3fbdcc45fbc9ee202"
+  },
+  {
+    "path": "src/server/services/flashcards/get-review-session.ts",
+    "lines": 63,
+    "bytes": 2561,
+    "todos": 1,
+    "sha256": "8c44f5520575b27372b9892a10906194c01eb4a2a854b43d15b620a18e80177c"
+  },
+  {
+    "path": "src/server/services/flashcards/index.ts",
+    "lines": 38,
+    "bytes": 1433,
+    "todos": 0,
+    "sha256": "e72fab9ce15086985492858b00b30f7e89d349bb68e9f45610ecc42b198dbccb"
+  },
+  {
+    "path": "src/server/services/flashcards/list-decks.ts",
+    "lines": 77,
+    "bytes": 3182,
+    "todos": 0,
+    "sha256": "3f788569bbb14a53adbea0b6569fefb8e22b1d7a7899cecc1ad9196910afaadb"
+  },
+  {
+    "path": "src/server/services/flashcards/mappers.ts",
+    "lines": 116,
+    "bytes": 4714,
+    "todos": 0,
+    "sha256": "ca8dec3d71d4dd34a5103d928f4e94d51685bccf4ec6c341d17468e42ea5c633"
+  },
+  {
+    "path": "src/server/services/flashcards/rate-limit.ts",
+    "lines": 56,
+    "bytes": 2615,
+    "todos": 0,
+    "sha256": "86dd1e1993a9a5606c3a69c26870f4200c1263b677d935b45f88dd45c22b029a"
+  },
+  {
+    "path": "src/server/services/flashcards/retention-stats.ts",
+    "lines": 52,
+    "bytes": 2288,
+    "todos": 0,
+    "sha256": "7e7088542b3935670c343f1e716bdc7173ef7fe9a83e64092d5025f8abaa2727"
+  },
+  {
+    "path": "src/server/services/flashcards/review-card.ts",
+    "lines": 127,
+    "bytes": 6470,
+    "todos": 2,
+    "sha256": "9c93652f8c10ddc6029b5533db08b0476c1f18c9b70f38344f222b8de9326f0f"
+  },
+  {
+    "path": "src/server/services/flashcards/review-lock.ts",
+    "lines": 79,
+    "bytes": 4279,
+    "todos": 1,
+    "sha256": "15bef47eb4227872dcba97f52d438fc2a9f6b24dbdf64bda04fb43739ebc1f9d"
+  },
+  {
+    "path": "src/server/services/flashcards/shared.ts",
+    "lines": 151,
+    "bytes": 7524,
+    "todos": 0,
+    "sha256": "8dedc0a279b4c75985a21a42b460d88c320855cf4bd9a6f7189ff6237c5dc90b"
+  },
+  {
+    "path": "src/server/services/flashcards/spaced-repetition.ts",
+    "lines": 142,
+    "bytes": 7966,
+    "todos": 0,
+    "sha256": "6beefc4afb4480bf7f539db099dfc048475508ccd9ab8e8e9bc3635b8e3e33ac"
+  },
+  {
+    "path": "src/server/services/flashcards/toggle-favorite.ts",
+    "lines": 38,
+    "bytes": 1435,
+    "todos": 0,
+    "sha256": "274b5f15257a5f96298f728d5a77dc09d4dc0a95fe8abb4933157343a680043e"
+  },
+  {
+    "path": "src/server/services/focus/finish-focus-session.ts",
+    "lines": 163,
+    "bytes": 7828,
+    "todos": 3,
+    "sha256": "dc39785ba94bd18f7f7e1aa7cef9c1b1992394fda54023990f9c1d1396a2d05f"
+  },
+  {
+    "path": "src/server/services/focus/focus-heartbeat-evaluator.ts",
+    "lines": 96,
+    "bytes": 4104,
+    "todos": 0,
+    "sha256": "7baf2b728e862d36afd78a091fa56e76328d936968a9c573c4d3e6b1a1bcdc3c"
+  },
+  {
+    "path": "src/server/services/focus/focus-heartbeat.ts",
+    "lines": 58,
+    "bytes": 2506,
+    "todos": 0,
+    "sha256": "3159813ef95f6b4fcd85f4f61b9ed7dbbd7bc957d266765b56d21f597fa90eb9"
+  },
+  {
+    "path": "src/server/services/focus/focus-lock.ts",
+    "lines": 63,
+    "bytes": 3231,
+    "todos": 0,
+    "sha256": "c71de21a7b66e11478bc1090cc6e307cf92e8aa49efd47aea7baf68d0d162535"
+  },
+  {
+    "path": "src/server/services/focus/focus-rate-limit.ts",
+    "lines": 37,
+    "bytes": 1779,
+    "todos": 0,
+    "sha256": "9b60c7a6c9d167470cd937af6df101240556e25e7b8f860fd8f57d991e3afe89"
+  },
+  {
+    "path": "src/server/services/focus/index.ts",
+    "lines": 22,
+    "bytes": 692,
+    "todos": 0,
+    "sha256": "905662c3b37d10e858273822c47b63e90a34227c3d62231a1ddbdea8034611ac"
+  },
+  {
+    "path": "src/server/services/focus/mappers.ts",
+    "lines": 22,
+    "bytes": 830,
+    "todos": 0,
+    "sha256": "ba82f50724ea9b8c849c96303910d8da255506be311532af42514e2da036c468"
+  },
+  {
+    "path": "src/server/services/focus/resolve-mode.ts",
+    "lines": 37,
+    "bytes": 1705,
+    "todos": 0,
+    "sha256": "7d08489e62d124bae5042ff9021ea8d9def0be0274e76a40a30bd131b8593937"
+  },
+  {
+    "path": "src/server/services/focus/start-focus-session.ts",
+    "lines": 82,
+    "bytes": 3307,
+    "todos": 0,
+    "sha256": "d6bfc6c496e9b6e5232585d2d414b884bb8c00361ce890f31e3d6bd97bf572d6"
+  },
+  {
+    "path": "src/server/services/gamification/achievements.ts",
+    "lines": 203,
+    "bytes": 7645,
+    "todos": 6,
+    "sha256": "edf9183327a45a6905a1aa4cfc24883890c328c044ceddec379b866694f1df4e"
+  },
+  {
+    "path": "src/server/services/gamification/engine.ts",
+    "lines": 155,
+    "bytes": 6347,
+    "todos": 1,
+    "sha256": "48fd5ffb5a8cb07d9245e98297ad8c093cfeab56e5360c2d27afebd9da7d3a1d"
+  },
+  {
+    "path": "src/server/services/gamification/events.ts",
+    "lines": 87,
+    "bytes": 3087,
+    "todos": 3,
+    "sha256": "4606fb8b85bfc71988451de3dc870bee5d1fe1816d78902c42e62609ae5d767e"
+  },
+  {
+    "path": "src/server/services/gamification/handlers.ts",
+    "lines": 180,
+    "bytes": 7154,
+    "todos": 3,
+    "sha256": "fcc9b0dccb6eea9c6b7f4ea0b305ad859c76e05e08c415021b99e11bd7b06707"
+  },
+  {
+    "path": "src/server/services/gamification/index.ts",
+    "lines": 62,
+    "bytes": 1755,
+    "todos": 0,
+    "sha256": "b70707f0220fe1b27f09d256859383f64392c64877655bf6c2aeda07e07b8e65"
+  },
+  {
+    "path": "src/server/services/gamification/levels.ts",
+    "lines": 137,
+    "bytes": 4068,
+    "todos": 0,
+    "sha256": "6b46af856007ed1bdbf311c157fb27ccc8ecdc54d4c13247c01d0853c249d071"
+  },
+  {
+    "path": "src/server/services/gamification/ranking/formula.ts",
+    "lines": 108,
+    "bytes": 4731,
+    "todos": 0,
+    "sha256": "f75e6f7271962cf45ba5798061483bf9ee46eeff1381b8585dbe02a8c4ec845d"
+  },
+  {
+    "path": "src/server/services/gamification/ranking/index.ts",
+    "lines": 44,
+    "bytes": 1331,
+    "todos": 1,
+    "sha256": "8ca63e3231a22c0d52fe52f033fb645df7492ea2c0023d976f9c8fcfa1648b1a"
+  },
+  {
+    "path": "src/server/services/gamification/ranking/metrics.ts",
+    "lines": 172,
+    "bytes": 7735,
+    "todos": 3,
+    "sha256": "894e60b55ae17e975741ade2715f332e9256fbe981d549ec415e9a032ad15953"
+  },
+  {
+    "path": "src/server/services/gamification/ranking/read.ts",
+    "lines": 380,
+    "bytes": 16003,
+    "todos": 4,
+    "sha256": "0169e699e3d30f072fc835f0192ef5e57a60ab4eb1096b57ad51a44db526febd"
+  },
+  {
+    "path": "src/server/services/gamification/ranking/recalculate.ts",
+    "lines": 176,
+    "bytes": 6375,
+    "todos": 1,
+    "sha256": "d28d5cdeaa14d6156dfe8ab427aff80602eba8c2b273c8b00194b0f6c670e4b1"
+  },
+  {
+    "path": "src/server/services/gamification/ranking/scope.ts",
+    "lines": 149,
+    "bytes": 6586,
+    "todos": 0,
+    "sha256": "f1c7385a35ac20fd66bcd75577351fbe7d63c497f64995ae5199f19f20b74137"
+  },
+  {
+    "path": "src/server/services/gamification/ranking/tiebreak.ts",
+    "lines": 39,
+    "bytes": 1533,
+    "todos": 0,
+    "sha256": "57f4325cebf53f3c7dcc042e39e88af78271849cf1b9d4f3835cf8807ace1cb1"
+  },
+  {
+    "path": "src/server/services/gamification/read.ts",
+    "lines": 124,
+    "bytes": 5782,
+    "todos": 2,
+    "sha256": "10ab8d522a63131e8d70fab3aa0d7ea82b69158bd1bb818d695759185551dab7"
+  },
+  {
+    "path": "src/server/services/gamification/register.ts",
+    "lines": 62,
+    "bytes": 2663,
+    "todos": 1,
+    "sha256": "de1d239c25744123ad9c04435fd67516155d9384165efb80feadfea90e6bf68e"
+  },
+  {
+    "path": "src/server/services/profile/index.ts",
+    "lines": 15,
+    "bytes": 540,
+    "todos": 0,
+    "sha256": "84900cc65a36bebf9e0f277383b6d449eeae0abfa8307e63e57b8b20d4e8e533"
+  },
+  {
+    "path": "src/server/services/profile/read.ts",
+    "lines": 177,
+    "bytes": 7148,
+    "todos": 0,
+    "sha256": "e16a1258e6aee4b6bd7cdbb16eb68bda65de9287d8a347b2b73d5a02e37e2eaa"
+  },
+  {
+    "path": "src/server/services/profile/shared.ts",
+    "lines": 152,
+    "bytes": 7909,
+    "todos": 0,
+    "sha256": "a283f567777bc156013ef05ef7164ab9eae2e3ae9f5d78338a92e1628a01a7c3"
+  },
+  {
+    "path": "src/server/services/profile/update.ts",
+    "lines": 109,
+    "bytes": 3768,
+    "todos": 0,
+    "sha256": "02d5500c19f368245fa035abcb80d0263f912c1750358ef5fbcd96bd3142156b"
+  },
+  {
+    "path": "src/server/services/simulations/catalog.ts",
+    "lines": 39,
+    "bytes": 1900,
+    "todos": 0,
+    "sha256": "62ac2be815a598e2afec61c951a8dcafbcb8b13cc42510438a79f518093b5da8"
+  },
+  {
+    "path": "src/server/services/simulations/create-attempt.ts",
+    "lines": 38,
+    "bytes": 1667,
+    "todos": 0,
+    "sha256": "e722296e8bd35b5fbd48c541ae7d4e453089276483957df5f52d19179a5989cf"
+  },
+  {
+    "path": "src/server/services/simulations/error-notebook.ts",
+    "lines": 67,
+    "bytes": 2449,
+    "todos": 0,
+    "sha256": "2b2833d751f806a76d9c796e88d941179c851814ac39d1248608bb04d7b6ac72"
+  },
+  {
+    "path": "src/server/services/simulations/favorites.ts",
+    "lines": 50,
+    "bytes": 1981,
+    "todos": 0,
+    "sha256": "595bbfda416966874b1283c8ffae118d08a1ae3244fe2bacae108891fb793fc9"
+  },
+  {
+    "path": "src/server/services/simulations/get-attempt.ts",
+    "lines": 88,
+    "bytes": 3646,
+    "todos": 0,
+    "sha256": "23cf8f9cc62efc25450b93c147e1667c693e84cdc6bad1eab29577f0c4ee88a5"
+  },
+  {
+    "path": "src/server/services/simulations/history.ts",
+    "lines": 30,
+    "bytes": 1191,
+    "todos": 0,
+    "sha256": "c3d8304fdfa0afb0c66ee0fa78dbc802a016932abf1aeb170437d376622fd3e2"
+  },
+  {
+    "path": "src/server/services/simulations/index.ts",
+    "lines": 22,
+    "bytes": 1085,
+    "todos": 1,
+    "sha256": "ecbd322d0b2730c0325b89a00438da205b7d4de11fb0405eab9027e0dbdb5ea9"
+  },
+  {
+    "path": "src/server/services/simulations/mappers.ts",
+    "lines": 278,
+    "bytes": 10743,
+    "todos": 0,
+    "sha256": "191cdc2fde7cbc2e85cf0d3cbeae150a9db8c1119f9e839f3f34ad08886c446a"
+  },
+  {
+    "path": "src/server/services/simulations/question-pool.ts",
+    "lines": 133,
+    "bytes": 5702,
+    "todos": 0,
+    "sha256": "3d747d2670a11da9f68331ac2b940a3ce6d830e586c8c3de7e084008b2545d9d"
+  },
+  {
+    "path": "src/server/services/simulations/rate-limit.ts",
+    "lines": 57,
+    "bytes": 2392,
+    "todos": 0,
+    "sha256": "5f70451f17a689f8ad989392d8d2a03dd9e7eafc7267d02c5e0217ab52d36873"
+  },
+  {
+    "path": "src/server/services/simulations/shuffle.ts",
+    "lines": 54,
+    "bytes": 2280,
+    "todos": 0,
+    "sha256": "cae93f5f1ff92dfe47e67eae0410a12fc39cf98854c4119c9d45cf35ed65ceaa"
+  },
+  {
+    "path": "src/server/services/simulations/submit-and-finalize.ts",
+    "lines": 201,
+    "bytes": 7847,
+    "todos": 0,
+    "sha256": "9fb12a37ac3596b860b7e4081ae3389311f17bff71d992fecb89565ac1a6e1d8"
+  },
+  {
+    "path": "src/server/services/study-plan/allocation.ts",
+    "lines": 96,
+    "bytes": 3977,
+    "todos": 0,
+    "sha256": "30c55e440717c95344fde71cbf19942c1fa647c09ee76d4221ce465d1c2017aa"
+  },
+  {
+    "path": "src/server/services/study-plan/build-session.ts",
+    "lines": 44,
+    "bytes": 1881,
+    "todos": 0,
+    "sha256": "d023e02c75ee9ed58833301eb33631ed485f98fd56e0526439a94de1b09f35d2"
+  },
+  {
+    "path": "src/server/services/study-plan/content-resolver.ts",
+    "lines": 175,
+    "bytes": 7047,
+    "todos": 0,
+    "sha256": "64481b8d61d16b6eb0a5699842243e95f330b345685fb7825a85a4ae49755e77"
+  },
+  {
+    "path": "src/server/services/study-plan/date-utils.ts",
+    "lines": 50,
+    "bytes": 2567,
+    "todos": 0,
+    "sha256": "507963eb0b831c1e6ce9b8005a7ea3edc3dc09b0e304fec6351b8224c97ff904"
+  },
+  {
+    "path": "src/server/services/study-plan/generate-plan.ts",
+    "lines": 128,
+    "bytes": 5063,
+    "todos": 2,
+    "sha256": "4d123e437b1a00e2c08185dcfc6550fe2f8ce4127d30469de480a17452a74b2f"
+  },
+  {
+    "path": "src/server/services/study-plan/get-plan.ts",
+    "lines": 46,
+    "bytes": 1543,
+    "todos": 0,
+    "sha256": "ade7bafc4ae9b63fee66f7351fcfcdd026b3a913c5710af026037d6ae48d593b"
+  },
+  {
+    "path": "src/server/services/study-plan/index.ts",
+    "lines": 17,
+    "bytes": 829,
+    "todos": 0,
+    "sha256": "c9ee3233f60428a61793a82435525c855a194aaf39345ca529496e8da381f2a2"
+  },
+  {
+    "path": "src/server/services/study-plan/mappers.ts",
+    "lines": 145,
+    "bytes": 5896,
+    "todos": 0,
+    "sha256": "4ae3dc56e2af091eb625ad60beb4d7055c13fd52ddf53975723b295a84175041"
+  },
+  {
+    "path": "src/server/services/study-plan/plan-generator.ts",
+    "lines": 146,
+    "bytes": 5937,
+    "todos": 0,
+    "sha256": "1fc0a5a0099beb256990c227cd32337162fbff7468d9513d61e4002807b7c666"
+  },
+  {
+    "path": "src/server/services/study-plan/reorder-plan-items.ts",
+    "lines": 68,
+    "bytes": 2968,
+    "todos": 0,
+    "sha256": "ffaabf9bff7b594584cd5ab117f88778035a6a05d3692cd51630dd5e1c12d4e1"
+  },
+  {
+    "path": "src/server/services/study-plan/session-generator.ts",
+    "lines": 98,
+    "bytes": 3814,
+    "todos": 0,
+    "sha256": "8d4869246fed45325db6cf94ed61c6f6579164313b02e8c29af5925b2ceeeebc"
+  },
+  {
+    "path": "src/server/services/study-plan/start-mission.ts",
+    "lines": 63,
+    "bytes": 2253,
+    "todos": 0,
+    "sha256": "925b4ddadeec0f1c0fdccf185e3d4d6a633b3f5909c8c3b52f68410ae72092b9"
+  },
+  {
+    "path": "src/server/services/study-plan/update-plan-item.ts",
+    "lines": 58,
+    "bytes": 2132,
+    "todos": 0,
+    "sha256": "3585b365c41a04f672934e1ba30b212bab866d67f6eff31f3f418f215ddb2447"
+  },
+  {
+    "path": "src/server/services/study-tracking/activity-days.ts",
+    "lines": 226,
+    "bytes": 9860,
+    "todos": 2,
+    "sha256": "938d7f166cdc69ed971044e18d60dbb57d7945bf8993e5f38978344a68e6aecd"
+  },
+  {
+    "path": "src/server/services/study-tracking/diagnosis.ts",
+    "lines": 225,
+    "bytes": 9062,
+    "todos": 0,
+    "sha256": "ab6858ee13306a9fc0dd9c4f7bf8365b9f854ec009e6fe70af7cc046060ab355"
+  },
+  {
+    "path": "src/server/services/study-tracking/enrollment.ts",
+    "lines": 21,
+    "bytes": 1200,
+    "todos": 0,
+    "sha256": "db745ff6123b9d9db4b25020586ddf55bdd8580304e4a447ba49e5d4506b9b42"
+  },
+  {
+    "path": "src/server/services/study-tracking/goals.ts",
+    "lines": 210,
+    "bytes": 8304,
+    "todos": 4,
+    "sha256": "a0e73b0f189a5385496ff77dbd699ba298f60efdfc6107abef96c9cee7911cbc"
+  },
+  {
+    "path": "src/server/services/study-tracking/heartbeat-evaluator.ts",
+    "lines": 199,
+    "bytes": 8249,
+    "todos": 0,
+    "sha256": "7abed7b169abc6cf652047368410304b0a6ee27bf923b067d3266e28be84471d"
+  },
+  {
+    "path": "src/server/services/study-tracking/index.ts",
+    "lines": 45,
+    "bytes": 1260,
+    "todos": 0,
+    "sha256": "21e309fa538507e971a612533fa7c53a3fce786bf96629eedf076e1d63555c5a"
+  },
+  {
+    "path": "src/server/services/study-tracking/lesson-view.ts",
+    "lines": 121,
+    "bytes": 4989,
+    "todos": 2,
+    "sha256": "88e50d919e54c9a816e03ff1d2c828852e2ba9a8b58587e8440a1208356cb0c3"
+  },
+  {
+    "path": "src/server/services/study-tracking/rate-limit.ts",
+    "lines": 37,
+    "bytes": 1756,
+    "todos": 0,
+    "sha256": "228133045c41b980ee92a45f0e3595a61cb905701612dba1443704148bd96b90"
+  },
+  {
+    "path": "src/server/services/study-tracking/record-heartbeat.ts",
+    "lines": 298,
+    "bytes": 13882,
+    "todos": 2,
+    "sha256": "fd812a96c8a4ecbb5615d056c01be8eec0011d6c18ba6ea7936a1bc8f588491d"
+  },
+  {
+    "path": "src/server/services/study-tracking/streak.ts",
+    "lines": 138,
+    "bytes": 6690,
+    "todos": 2,
+    "sha256": "8301e2e529712e26b3cab01dddeb5a7aae6216ccf81454471126c28a7065a443"
+  },
+  {
+    "path": "src/server/services/study-tracking/tracking-overview.ts",
+    "lines": 403,
+    "bytes": 16335,
+    "todos": 1,
+    "sha256": "e82c121b19aaecdfa74be47c1ce9b30fef5f210d9a9735216dbcc19bc43b4b87"
+  },
+  {
+    "path": "src/server/validation/index.ts",
+    "lines": 26,
+    "bytes": 976,
+    "todos": 0,
+    "sha256": "90150fe0deb874f3f4d4b0ea30db0727754587edfa22c28c9a400ef32a9f247a"
+  },
+  {
+    "path": "src/types/index.ts",
+    "lines": 19,
+    "bytes": 571,
+    "todos": 0,
+    "sha256": "33f89f10ee310c3ae17af78b13860d54f297e0615eb70408f86d4490df1c1efe"
+  },
+  {
+    "path": "tests/unit/accuracy-breakdown-chart.test.tsx",
+    "lines": 37,
+    "bytes": 1672,
+    "todos": 0,
+    "sha256": "c3420682ef7bd7acedb8b6cf3a191eea8fefa22c6016c0a77417f983e5848997"
+  },
+  {
+    "path": "tests/unit/achievement-grid.test.tsx",
+    "lines": 43,
+    "bytes": 1547,
+    "todos": 0,
+    "sha256": "36b7d9c1936c4ecd920e8e4bfb6708bbffe9a9b3a6ec3719f32c96d837b7fcf8"
+  },
+  {
+    "path": "tests/unit/action-result.test.ts",
+    "lines": 30,
+    "bytes": 1006,
+    "todos": 0,
+    "sha256": "ea643c5b1a957c9e99ecdcbcd417552f688ae4c1e1b7a79b63d6184c745f9545"
+  },
+  {
+    "path": "tests/unit/admin-action-authorization.test.ts",
+    "lines": 58,
+    "bytes": 1827,
+    "todos": 0,
+    "sha256": "188386426914d9a6b6f7b1214a2286258b6f43493ce5b4874c6331bf13bd4c39"
+  },
+  {
+    "path": "tests/unit/admin-audit-service.test.ts",
+    "lines": 56,
+    "bytes": 2575,
+    "todos": 0,
+    "sha256": "bf15f0864453a552ba70658aba4afa1a0c0aa2532b976368ab6d38fc5bee5518"
+  },
+  {
+    "path": "tests/unit/admin-config-service.test.ts",
+    "lines": 89,
+    "bytes": 4191,
+    "todos": 0,
+    "sha256": "86dac277ec60792fc735fd62ab892325a6967b99a68964be5fae4eb009a686dd"
+  },
+  {
+    "path": "tests/unit/admin-content-action-authorization.test.ts",
+    "lines": 93,
+    "bytes": 4266,
+    "todos": 0,
+    "sha256": "1269b3c12db90825c1e4d44829f2374febe7c095e63e960f896b4e8c0c2fb056"
+  },
+  {
+    "path": "tests/unit/admin-content-service.test.ts",
+    "lines": 257,
+    "bytes": 11011,
+    "todos": 0,
+    "sha256": "7116435181c24063b30133e4295fc6fc1fcd92bf88908c3e8c0a68c74a4a828a"
+  },
+  {
+    "path": "tests/unit/admin-dashboard-service.test.ts",
+    "lines": 43,
+    "bytes": 1842,
+    "todos": 0,
+    "sha256": "2fa6f54a98f749e5b639381c629b5a60eada0f9a7b241c77d8bd1cad48cc1928"
+  },
+  {
+    "path": "tests/unit/admin-notification-moderation-service.test.ts",
+    "lines": 94,
+    "bytes": 4257,
+    "todos": 0,
+    "sha256": "c98af02009d20d1b53d1a7e1421f3d84d77b0780c76f306e6b8bdff7f9aefa27"
+  },
+  {
+    "path": "tests/unit/admin-users-service.test.ts",
+    "lines": 163,
+    "bytes": 7183,
+    "todos": 0,
+    "sha256": "764cba179b6ea372bd3f254d09c8a454ce44ead11297be19aba66f41540759eb"
+  },
+  {
+    "path": "tests/unit/attempt-runner.test.tsx",
+    "lines": 244,
+    "bytes": 8738,
+    "todos": 0,
+    "sha256": "432cbcc7b76d5e590962453b5720c4fe76eda0af850a14dd7928e2d1f0c82210"
+  },
+  {
+    "path": "tests/unit/attempt-terminal-state.test.tsx",
+    "lines": 52,
+    "bytes": 2353,
+    "todos": 0,
+    "sha256": "e36303f6604d91dacbe30252dc0f5bb834df558cec900b17115b934bdc9f345d"
+  },
+  {
+    "path": "tests/unit/authorization.test.ts",
+    "lines": 81,
+    "bytes": 2715,
+    "todos": 0,
+    "sha256": "9237cc79ac96b08606aff79bad68186cc7d353598f31b0fae016a04da495a0f8"
+  },
+  {
+    "path": "tests/unit/brainstorm-action-authorization.test.ts",
+    "lines": 271,
+    "bytes": 12366,
+    "todos": 0,
+    "sha256": "eb18fa99a4cea7f9ec54f096d34dc3343e991cbac034d7e363481902d4ca5302"
+  },
+  {
+    "path": "tests/unit/brainstorm-optimistic-move.test.ts",
+    "lines": 123,
+    "bytes": 4276,
+    "todos": 0,
+    "sha256": "d29214bd63d8ad653155aabd0540d12b3cf18dad137c1ac28bf3511135f2bdad"
+  },
+  {
+    "path": "tests/unit/brainstorm-service.test.ts",
+    "lines": 483,
+    "bytes": 20546,
+    "todos": 0,
+    "sha256": "b4d38971cf1612b63778bf72e79b379ecae9120ec231536ab047c1f11fee3b60"
+  },
+  {
+    "path": "tests/unit/brainstorm-workspace.test.tsx",
+    "lines": 182,
+    "bytes": 6510,
+    "todos": 0,
+    "sha256": "5d24ab30e97ddfb2ae765f85b53aa174dc808ffd1415f6e4a3bfb2f995bdd901"
+  },
+  {
+    "path": "tests/unit/card-form-dialog.test.tsx",
+    "lines": 273,
+    "bytes": 9241,
+    "todos": 0,
+    "sha256": "00083773e8c9b282eca273bb4d83fca759a9008d24f2e6fb2609f6369e04d68f"
+  },
+  {
+    "path": "tests/unit/consistency-chart.test.tsx",
+    "lines": 16,
+    "bytes": 794,
+    "todos": 0,
+    "sha256": "88046ce5eacb5d5302284dcbc4af13abd01c57c7bd424f7a3479d6082dcb0cd2"
+  },
+  {
+    "path": "tests/unit/continue-mission-card.test.tsx",
+    "lines": 30,
+    "bytes": 1215,
+    "todos": 0,
+    "sha256": "5126b31dbecda4416783f8d168cb9957ff60ed11e13c8424657ca53e243d0e7d"
+  },
+  {
+    "path": "tests/unit/course-card.test.tsx",
+    "lines": 49,
+    "bytes": 1829,
+    "todos": 0,
+    "sha256": "efbbdc11097754169027fca0238b92f5f9f1498e61c6a5351ac399a825607d52"
+  },
+  {
+    "path": "tests/unit/course-catalog.test.tsx",
+    "lines": 56,
+    "bytes": 2230,
+    "todos": 0,
+    "sha256": "428f7fa0845894b50df73a6323dd608295dcbe6c359c387966816de216099040"
+  },
+  {
+    "path": "tests/unit/course-progress.test.ts",
+    "lines": 195,
+    "bytes": 7161,
+    "todos": 0,
+    "sha256": "42ff262a67907c9710cc9c231d9fba6ffc1dc110e878860b93f7d4046844965b"
+  },
+  {
+    "path": "tests/unit/courses-action-authorization.test.ts",
+    "lines": 122,
+    "bytes": 3884,
+    "todos": 0,
+    "sha256": "220b5b95a5d7c6de813ec64120e0c2ff126d03e36f574acf3900ca8b41a51a3e"
+  },
+  {
+    "path": "tests/unit/courses-service.test.ts",
+    "lines": 162,
+    "bytes": 6711,
+    "todos": 0,
+    "sha256": "de19d8f8e57a26c4f2a2804f6ebe61da9370c4e28ab70cbbff81a5bdef46e6e9"
+  },
+  {
+    "path": "tests/unit/credentials-service-repository-boundary.test.ts",
+    "lines": 53,
+    "bytes": 1968,
+    "todos": 0,
+    "sha256": "034c23870d2fe6a2b12b37e25ffa6011b269dd3185284f608eafe632da1c7092"
+  },
+  {
+    "path": "tests/unit/credentials-service.test.ts",
+    "lines": 39,
+    "bytes": 1425,
+    "todos": 0,
+    "sha256": "cb51c2ca82e79991e55fc18be1259530155f1e11ae12d51efad3eb65d29eb7b6"
+  },
+  {
+    "path": "tests/unit/dashboard-action-authorization.test.ts",
+    "lines": 47,
+    "bytes": 1504,
+    "todos": 0,
+    "sha256": "b237d6ec8fa0976ce3ca253fa5e5fdaec5fedc8c2afcc7fd47282c2ece0eef46"
+  },
+  {
+    "path": "tests/unit/dashboard-service.test.ts",
+    "lines": 75,
+    "bytes": 2989,
+    "todos": 0,
+    "sha256": "b6c15686629e257f3d46381f61830f235da4f9680eb2dc93b8dcc857867b5ca0"
+  },
+  {
+    "path": "tests/unit/diagnosis-panel.test.tsx",
+    "lines": 41,
+    "bytes": 1892,
+    "todos": 0,
+    "sha256": "a7af8be3a3126d9bd73f3ad14a78def454bd3fb184eaff0ce93205f7e098c5bc"
+  },
+  {
+    "path": "tests/unit/diagnosis.test.ts",
+    "lines": 187,
+    "bytes": 7538,
+    "todos": 0,
+    "sha256": "8cf91f1dc120176ffb9bf65a4fad055d973b68ab3250ade59108b9a04cb23d43"
+  },
+  {
+    "path": "tests/unit/edit-profile-dialog.test.tsx",
+    "lines": 132,
+    "bytes": 5020,
+    "todos": 0,
+    "sha256": "30e18b59163d5da100f393faaf7c84a7f7963c7d0913d528b4cd84bbdbebed4f"
+  },
+  {
+    "path": "tests/unit/enroll-button.test.tsx",
+    "lines": 62,
+    "bytes": 2103,
+    "todos": 0,
+    "sha256": "915cd5a9deb43ce2a8bfcebbb061407932cd51baa4818a3becb20189e551d88b"
+  },
+  {
+    "path": "tests/unit/error-notebook-list.test.tsx",
+    "lines": 75,
+    "bytes": 2670,
+    "todos": 0,
+    "sha256": "d4f648fae6c8c573dd36371c927fb2a760a9b02684554faab85bdece5279522e"
+  },
+  {
+    "path": "tests/unit/evolution-chart.test.tsx",
+    "lines": 32,
+    "bytes": 1490,
+    "todos": 0,
+    "sha256": "273a2330cb3fc34cbb1ebf772969b945ae72272abeab868b1b2c92d650f2fe34"
+  },
+  {
+    "path": "tests/unit/exam-progress-chart.test.tsx",
+    "lines": 25,
+    "bytes": 1289,
+    "todos": 0,
+    "sha256": "9d8bcea7c007f79429c88b3a42edb48f8148a8ea4d0043e94a2cb770bab4de37"
+  },
+  {
+    "path": "tests/unit/favorite-toggle-button.test.tsx",
+    "lines": 72,
+    "bytes": 2740,
+    "todos": 0,
+    "sha256": "ea064e2aa71da45fdff0f6012be02ae86f4d07a9040423549674906d5a93fcf9"
+  },
+  {
+    "path": "tests/unit/flashcard-card-form-dialog.test.tsx",
+    "lines": 154,
+    "bytes": 6692,
+    "todos": 0,
+    "sha256": "dca0ede0df8021fd671ec7733de23ecef50e46d7cb121a2a30617bc6d5275c1d"
+  },
+  {
+    "path": "tests/unit/flashcard-create-deck-dialog.test.tsx",
+    "lines": 102,
+    "bytes": 4035,
+    "todos": 0,
+    "sha256": "29b519e518acc8d151b523d4dc390251c1ac4ec36e4a6f70661bb7167a86d6cf"
+  },
+  {
+    "path": "tests/unit/flashcard-favorite-toggle-button.test.tsx",
+    "lines": 74,
+    "bytes": 2923,
+    "todos": 0,
+    "sha256": "7d72ad52a5af6f17182ba7695090fe196e02805811a1d59aa9f48ef1b098559d"
+  },
+  {
+    "path": "tests/unit/flashcard-retention-chart.test.tsx",
+    "lines": 39,
+    "bytes": 1735,
+    "todos": 0,
+    "sha256": "74e07a8b867424947fe91c46305c25c0c16d23889ac18d651cdc268575c0eda8"
+  },
+  {
+    "path": "tests/unit/flashcard-review-session.test.tsx",
+    "lines": 214,
+    "bytes": 9795,
+    "todos": 0,
+    "sha256": "49dec4a9d9bc2e03d1e4377ef55a9a4f23b12bc1f8153f1d06e03b1623cb0fe6"
+  },
+  {
+    "path": "tests/unit/flashcards-action-authorization.test.ts",
+    "lines": 275,
+    "bytes": 12052,
+    "todos": 0,
+    "sha256": "3cdf2f5a540f14a02c6c5e6c69aa01a75d6bbd099b2bfb0db82f9340b306c417"
+  },
+  {
+    "path": "tests/unit/flashcards-service.test.ts",
+    "lines": 399,
+    "bytes": 18784,
+    "todos": 0,
+    "sha256": "99d58be672293b2287595800bdbf23a7ac843cbf4d79db97209c88b6d94bd1f4"
+  },
+  {
+    "path": "tests/unit/flashcards-workspace.test.tsx",
+    "lines": 177,
+    "bytes": 7586,
+    "todos": 0,
+    "sha256": "1e83024d3eb6b1d4a8aacdfd905f1442d1153093328e1213fc43764bd00eda80"
+  },
+  {
+    "path": "tests/unit/focus-action-authorization.test.ts",
+    "lines": 197,
+    "bytes": 8903,
+    "todos": 0,
+    "sha256": "8077b3a85afcac1093fd5f5228aba5a8f7e484f0a0d50128fd48351df5f898b6"
+  },
+  {
+    "path": "tests/unit/focus-heartbeat-evaluator.test.ts",
+    "lines": 150,
+    "bytes": 5563,
+    "todos": 0,
+    "sha256": "0b222bfcc58b1c1066a051f247a209d59ae90cf12285890c34f2c973a6ff5a9a"
+  },
+  {
+    "path": "tests/unit/focus-mode-form.test.tsx",
+    "lines": 154,
+    "bytes": 6302,
+    "todos": 0,
+    "sha256": "0b1e1859a777d21dd1cd208f536f6fb282d24d5387218b3c8cfcd2380332ec05"
+  },
+  {
+    "path": "tests/unit/focus-service.test.ts",
+    "lines": 447,
+    "bytes": 20120,
+    "todos": 0,
+    "sha256": "01e31cf3a530c2fb417dc697e15a71a4b1c339e7a5f6c93e73958431cd927fe3"
+  },
+  {
+    "path": "tests/unit/focus-timer.test.tsx",
+    "lines": 254,
+    "bytes": 10157,
+    "todos": 0,
+    "sha256": "a0205cddd840526539fb3e501721ebb071f0b9a730fbdc3028e460bdc517f59c"
+  },
+  {
+    "path": "tests/unit/gamification-achievements.test.ts",
+    "lines": 104,
+    "bytes": 4417,
+    "todos": 0,
+    "sha256": "9d78fe3dc97e43502b0cc954d9ebe8eb4e4ed6875b1b98eca3eb7c29229285b2"
+  },
+  {
+    "path": "tests/unit/gamification-engine.test.ts",
+    "lines": 172,
+    "bytes": 7362,
+    "todos": 2,
+    "sha256": "2d911b38054eaf019862b165182bc7ce35ae481e4ff9c2ffdd1c4b881723d483"
+  },
+  {
+    "path": "tests/unit/gamification-levels.test.ts",
+    "lines": 66,
+    "bytes": 2541,
+    "todos": 0,
+    "sha256": "61b75b7c3c3d5dd215716083409c07185fdc3da30bc5621da1144ccfd58f3888"
+  },
+  {
+    "path": "tests/unit/gamification-module-course-handlers.test.ts",
+    "lines": 188,
+    "bytes": 7620,
+    "todos": 0,
+    "sha256": "41b953dfd4516cd0712197b0e16ee8bb4fe98cce514d7d7ea09f81cda4f82883"
+  },
+  {
+    "path": "tests/unit/gamification-panel.test.tsx",
+    "lines": 36,
+    "bytes": 1174,
+    "todos": 0,
+    "sha256": "e1854590f2338beb9bad5ab058d874e373bcdecf4273a8bafe97f585df82a00f"
+  },
+  {
+    "path": "tests/unit/generate-plan-form.test.tsx",
+    "lines": 121,
+    "bytes": 5125,
+    "todos": 0,
+    "sha256": "eca02312a5ed0f4506e65f19a3e5b2c931d7d1d24ea6bc811a8256a19f6046d8"
+  },
+  {
+    "path": "tests/unit/heartbeat-evaluator.test.ts",
+    "lines": 269,
+    "bytes": 11505,
+    "todos": 0,
+    "sha256": "7d2f386dfd73ab6607c11870163d8ce2a4032f4477f18f7769e49552c6e65a78"
+  },
+  {
+    "path": "tests/unit/kanban-board.test.tsx",
+    "lines": 280,
+    "bytes": 11394,
+    "todos": 0,
+    "sha256": "a841d2cfcdf3af87176d2926023fc4b8cb00ff541f99e0fb80420b09d9a6be67"
+  },
+  {
+    "path": "tests/unit/lesson-notes.test.tsx",
+    "lines": 17,
+    "bytes": 736,
+    "todos": 0,
+    "sha256": "7e576c5bec94c3af820ac48cece4d065954bda40bb8f96764167ac139cb5d8e6"
+  },
+  {
+    "path": "tests/unit/lesson-player.test.tsx",
+    "lines": 247,
+    "bytes": 7904,
+    "todos": 0,
+    "sha256": "ab4c5dea60598969ac215a4c976e9011cc7dd96a43fec96dc34a281d52c47373"
+  },
+  {
+    "path": "tests/unit/lesson-row.test.tsx",
+    "lines": 31,
+    "bytes": 1210,
+    "todos": 0,
+    "sha256": "6cdc6c0e47d0d50ecf02c2896280740f3647660018d8eb7fee3016120d260b4c"
+  },
+  {
+    "path": "tests/unit/level-header.test.tsx",
+    "lines": 51,
+    "bytes": 1665,
+    "todos": 0,
+    "sha256": "44f1d175d91885829185df8bd0ad18a31b232f9c8762b3181b82845606363e10"
+  },
+  {
+    "path": "tests/unit/level-track.test.tsx",
+    "lines": 23,
+    "bytes": 1072,
+    "todos": 0,
+    "sha256": "3b11c7dedfa6e0cf0011e12d31fd78d91bb8e6a53f034650ee96d51a30cd11a9"
+  },
+  {
+    "path": "tests/unit/login-action-authorization.test.ts",
+    "lines": 23,
+    "bytes": 912,
+    "todos": 0,
+    "sha256": "9e26843533d085d4fe1d409446469060975e43ebe2244e83d33243d139482216"
+  },
+  {
+    "path": "tests/unit/login-rate-limit.test.ts",
+    "lines": 75,
+    "bytes": 2645,
+    "todos": 0,
+    "sha256": "149c5ae28dace2d033629d49660f7f594bbea68479ab703fc2396349479a313d"
+  },
+  {
+    "path": "tests/unit/lucide-icon.test.ts",
+    "lines": 15,
+    "bytes": 636,
+    "todos": 0,
+    "sha256": "d14f601945be92a2bb5e5de01479586dc590a15dfa117237afa73dfc195db648"
+  },
+  {
+    "path": "tests/unit/mock-exam-builder-form.test.tsx",
+    "lines": 149,
+    "bytes": 5856,
+    "todos": 0,
+    "sha256": "41ce757dfd70adff4570427d9f3a1be7c58df185724c4aa10de638e61a3d4d18"
+  },
+  {
+    "path": "tests/unit/parse-input.test.ts",
+    "lines": 28,
+    "bytes": 874,
+    "todos": 0,
+    "sha256": "8c608557fd326b2ea2626b01552327737d9fcf7393492ead473f6eb723ff1d4e"
+  },
+  {
+    "path": "tests/unit/prisma-user-repository-credentials.test.ts",
+    "lines": 46,
+    "bytes": 1342,
+    "todos": 0,
+    "sha256": "2a7c7da32c5741520c25572bfe1301ef53d889529f082c2ae9d7558073fae760"
+  },
+  {
+    "path": "tests/unit/privacy-settings-card.test.tsx",
+    "lines": 137,
+    "bytes": 4804,
+    "todos": 0,
+    "sha256": "c96a4704dcc675cfad5e6adcca59082d973aaa3095ad5e871d941bb3a5706eb7"
+  },
+  {
+    "path": "tests/unit/profile-action-authorization.test.ts",
+    "lines": 124,
+    "bytes": 5260,
+    "todos": 0,
+    "sha256": "8ff86fc529df1d6080042dddb9f14ea9d6e292d86fb8326b5b7cdec19a4844f0"
+  },
+  {
+    "path": "tests/unit/profile-preview-dialog.test.tsx",
+    "lines": 123,
+    "bytes": 4096,
+    "todos": 0,
+    "sha256": "ec768db5bd16b550ac4709f4cffb47c08f2ba6f1762b226532c12c2a3746c40e"
+  },
+  {
+    "path": "tests/unit/profile-service.test.ts",
+    "lines": 382,
+    "bytes": 17222,
+    "todos": 0,
+    "sha256": "0eebec27575a1d29b37e5f6b058433cdb25f5fea6cc9d4750232668112cd5205"
+  },
+  {
+    "path": "tests/unit/profile-workspace.test.tsx",
+    "lines": 174,
+    "bytes": 6053,
+    "todos": 0,
+    "sha256": "c8b6296bd0212d84556fdaf947bcfc56a87013cd2a10e6e8a33e67262345e2bb"
+  },
+  {
+    "path": "tests/unit/question-review-list.test.tsx",
+    "lines": 84,
+    "bytes": 2935,
+    "todos": 0,
+    "sha256": "bcab3bac070f5a37bff72e8394d931f3ac2b7e7d861648edd184a13ea91cc8b8"
+  },
+  {
+    "path": "tests/unit/ranking-cron.test.ts",
+    "lines": 87,
+    "bytes": 3930,
+    "todos": 0,
+    "sha256": "9740dbbbdfc1a2d41a392f85e1a9aa066e33168d7f6ede526fb81ab9afd14c3d"
+  },
+  {
+    "path": "tests/unit/ranking-formula.test.ts",
+    "lines": 89,
+    "bytes": 4133,
+    "todos": 0,
+    "sha256": "c8f6e96cd682c46e20738f7db431861dd4cd07646daf6125bc2675bb4eb3364d"
+  },
+  {
+    "path": "tests/unit/ranking-page-components.test.tsx",
+    "lines": 139,
+    "bytes": 6308,
+    "todos": 0,
+    "sha256": "44eba8c93d8bc06f70d98b21e26606afe059fddbf463834ebe5a258937b3909f"
+  },
+  {
+    "path": "tests/unit/ranking-read.test.ts",
+    "lines": 274,
+    "bytes": 12811,
+    "todos": 1,
+    "sha256": "d5d6db52693681562651466ab8e0065726c60af41ba3df8db18b393d91094abb"
+  },
+  {
+    "path": "tests/unit/ranking-recalculate.test.ts",
+    "lines": 137,
+    "bytes": 5510,
+    "todos": 0,
+    "sha256": "4e57bc232db4ba84b06080a177c42df9163ae91f74c76dcc93ef0a40b6093c21"
+  },
+  {
+    "path": "tests/unit/ranking-scope.test.ts",
+    "lines": 108,
+    "bytes": 5306,
+    "todos": 0,
+    "sha256": "15894958d1fa89de40b44f3de0c82b17cf2371e7f2d838fbf8037ec415bbe3d9"
+  },
+  {
+    "path": "tests/unit/ranking-tiebreak.test.ts",
+    "lines": 59,
+    "bytes": 2791,
+    "todos": 0,
+    "sha256": "dc1a7a688be9d095231b0bdfcc63322c01705650b3b54eca79b65820f0482f29"
+  },
+  {
+    "path": "tests/unit/reorder-day-items.test.ts",
+    "lines": 93,
+    "bytes": 3257,
+    "todos": 0,
+    "sha256": "1826b47ecb70807da5670749454bd5db9e775de6e5935293eed916e465826328"
+  },
+  {
+    "path": "tests/unit/simulations-action-authorization.test.ts",
+    "lines": 340,
+    "bytes": 12883,
+    "todos": 0,
+    "sha256": "4113a6290b1761c3e4be40e538a416e02cb63caefc3dac6253184917ddfa0677"
+  },
+  {
+    "path": "tests/unit/simulations-service.test.ts",
+    "lines": 490,
+    "bytes": 20941,
+    "todos": 0,
+    "sha256": "79592361c67f99db7c4a770c5b6465a05da027e03735aa2342af082048361e63"
+  },
+  {
+    "path": "tests/unit/spaced-repetition.test.ts",
+    "lines": 148,
+    "bytes": 6637,
+    "todos": 0,
+    "sha256": "9aa2b7c34a93ddf45f9cb91be97f4d0cdfb1f201c36838db7a5e0caeabb5ab1a"
+  },
+  {
+    "path": "tests/unit/start-catalog-exam-button.test.tsx",
+    "lines": 56,
+    "bytes": 2074,
+    "todos": 0,
+    "sha256": "b7a3eccfea1a7c090a9b3cd6d7c7a2f1a9119a5d799e18165d86b3b7aacc4319"
+  },
+  {
+    "path": "tests/unit/streak-calculation.test.ts",
+    "lines": 303,
+    "bytes": 13304,
+    "todos": 0,
+    "sha256": "cf41a95657f623c8e32235efd1223baaf2b75795d99fd356da2495f5da30c0eb"
+  },
+  {
+    "path": "tests/unit/study-goals.test.ts",
+    "lines": 183,
+    "bytes": 7908,
+    "todos": 0,
+    "sha256": "ca748c39033424ed67e9600d096e6397cf6f486af860de7d9b260a4918f21abc"
+  },
+  {
+    "path": "tests/unit/study-hours-chart.test.tsx",
+    "lines": 32,
+    "bytes": 1370,
+    "todos": 0,
+    "sha256": "dea1405d035dc55d4c418e58257f3572c4f9e62c7644031aeb76e9d5e8edc6cc"
+  },
+  {
+    "path": "tests/unit/study-plan-action-authorization.test.ts",
+    "lines": 238,
+    "bytes": 9735,
+    "todos": 0,
+    "sha256": "cce8e2492ae934da660603d9dd854d0bcba64dc83d94a23ad51fdd00314dcccf"
+  },
+  {
+    "path": "tests/unit/study-plan-calendar.test.tsx",
+    "lines": 223,
+    "bytes": 6889,
+    "todos": 0,
+    "sha256": "b6d849b1030f342f9711ea320ffd436ea77e93226f0dd19211061edf34960cfc"
+  },
+  {
+    "path": "tests/unit/study-plan-generator.test.ts",
+    "lines": 213,
+    "bytes": 8214,
+    "todos": 0,
+    "sha256": "edeb90cec6a31d29145aa7f80742510af30e75fdaf47ba2dfc2c134262229744"
+  },
+  {
+    "path": "tests/unit/study-plan-service.test.ts",
+    "lines": 262,
+    "bytes": 10682,
+    "todos": 0,
+    "sha256": "4bf05a999cb44d0d7f7f488b581dc0e9aff95eeda27db1f7c529a764d820ad6c"
+  },
+  {
+    "path": "tests/unit/study-session-allocation.test.ts",
+    "lines": 77,
+    "bytes": 3447,
+    "todos": 0,
+    "sha256": "09bcfa3f7d02e2c933770045225d787cbeee7c7121bbcfda08393f0e083f12cf"
+  },
+  {
+    "path": "tests/unit/study-session-builder-form.test.tsx",
+    "lines": 202,
+    "bytes": 7767,
+    "todos": 0,
+    "sha256": "b46fd50647936f093c1c585923081e1529f5fa38419b554529fddbd0e73b9cb8"
+  },
+  {
+    "path": "tests/unit/study-session-generator.test.ts",
+    "lines": 101,
+    "bytes": 4444,
+    "todos": 0,
+    "sha256": "1763b6693fe37ee8d73cbb046a4e233eeaa1496b795ad0556f9359a6fc6e439c"
+  },
+  {
+    "path": "tests/unit/study-session-service.test.ts",
+    "lines": 154,
+    "bytes": 5836,
+    "todos": 0,
+    "sha256": "3041b273b244196772e9f93a16468642b449623f606775e0254a65b8f294a62d"
+  },
+  {
+    "path": "tests/unit/study-tracking-service.test.ts",
+    "lines": 388,
+    "bytes": 16036,
+    "todos": 0,
+    "sha256": "f89e6000edcc0ebf865a03bb83195752e0de2b03de917d9aa4d0d6bc127a0037"
+  },
+  {
+    "path": "tests/unit/subject-performance-chart.test.tsx",
+    "lines": 21,
+    "bytes": 957,
+    "todos": 0,
+    "sha256": "4c4d433ecb1d1d8c58513102b14ccc13e77e93c44e6f668268ab4441c885aabe"
+  },
+  {
+    "path": "tests/unit/time-distribution-chart.test.tsx",
+    "lines": 32,
+    "bytes": 1601,
+    "todos": 0,
+    "sha256": "a2b618a9199e8e8a47e38fac3d35ba0889ff26f3a9e66b0bced109348bc3d800"
+  },
+  {
+    "path": "tests/unit/tracking-action-authorization.test.ts",
+    "lines": 87,
+    "bytes": 3492,
+    "todos": 0,
+    "sha256": "298957bdebe06d54a4b0030a28dbc8463a384423676def877a8d8046d480e0bf"
+  },
+  {
+    "path": "tests/unit/tracking-content-cards.test.tsx",
+    "lines": 84,
+    "bytes": 2920,
+    "todos": 0,
+    "sha256": "03a8bffefd51dbc77b82fd74a87eb03831b01fc37d3c5c25a57dcc911dc625c2"
+  },
+  {
+    "path": "tests/unit/tracking-labels.test.ts",
+    "lines": 52,
+    "bytes": 2322,
+    "todos": 0,
+    "sha256": "3f223f18f354ad25de8d54364f7d55fecca771f819df0e56f2607fe4954c6059"
+  },
+  {
+    "path": "tests/unit/tracking-overview-service.test.ts",
+    "lines": 210,
+    "bytes": 8589,
+    "todos": 0,
+    "sha256": "b9718c5d9728643d54e3351e9875e23d9ff14f087c77610d637a7f2020d6de4b"
+  },
+  {
+    "path": "tests/unit/victory-dialog.test.tsx",
+    "lines": 73,
+    "bytes": 2428,
+    "todos": 0,
+    "sha256": "f1f26a21542f73ea2acffa5f8e43e2a9341d1729c1fff812fb1e05d9c5cbe29b"
+  },
+  {
+    "path": "tsconfig.json",
+    "lines": 35,
+    "bytes": 708,
+    "todos": 0,
+    "sha256": "e4fe3b76feaecefb60209266a63935a6dcd443e58738c1cf1d0e6279d1e35f5c"
+  },
+  {
+    "path": "vitest.config.ts",
+    "lines": 19,
+    "bytes": 409,
+    "todos": 0,
+    "sha256": "b04420fe7d5cd747a845c217080af0540ba180594ff9ee9958a1b460d217c8f1"
+  }
+]
