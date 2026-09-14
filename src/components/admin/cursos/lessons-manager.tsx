@@ -16,6 +16,7 @@ import {
   listLessonsForAdminAction,
   reorderLessonsForAdminAction,
 } from "@/server/actions/admin/lessons";
+import { MaterialUpload } from "./material-upload";
 import { CreateLessonDialog } from "./create-lesson-dialog";
 import { EditLessonDialog } from "./edit-lesson-dialog";
 import { LinkVideoDialog } from "./link-video-dialog";
@@ -181,6 +182,7 @@ export function LessonsManager({ moduleId, teachers, isAdmin }: LessonsManagerPr
                     <div className="flex justify-end gap-1.5">
                       {!isDeleted ? (
                         <>
+                          <MaterialUpload lessonId={lesson.id} />
                           <LinkVideoDialog
                             lesson={lesson}
                             onSaved={(updated) =>

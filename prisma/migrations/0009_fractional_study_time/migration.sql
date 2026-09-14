@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "StudySession" ALTER COLUMN "validSeconds" SET DEFAULT 0,
+ALTER COLUMN "validSeconds" SET DATA TYPE DOUBLE PRECISION;

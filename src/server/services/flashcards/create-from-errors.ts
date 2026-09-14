@@ -1,3 +1,4 @@
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
 import type { FlashcardDTO } from "@/contracts/flashcards";
 import { auditLog } from "@/server/audit";
 import { assertOwnership, requireUser } from "@/server/authorization";
@@ -22,7 +23,7 @@ const ERRORS_DECK_TITLE = "Criados do caderno de erros";
  *
  * Autorização (ADR-0006): `requireUser` + `assertOwnership`.
  */
-export async function createFromErrors(userId: string, now: Date = new Date()): Promise<FlashcardDTO[]> {
+async function createFromErrorsInTransaction(userId: string, now: Date = new Date()): Promise<FlashcardDTO[]> {
   const session = await requireUser();
   assertOwnership(userId, session.userId);
 
@@ -65,7 +66,7 @@ export async function createFromErrors(userId: string, now: Date = new Date()): 
     });
   }
 
-  auditLog({
+  await auditLog({
     operation: "flashcards.create-from-errors",
     userId,
     entity: "FlashcardDeck",
@@ -77,4 +78,8 @@ export async function createFromErrors(userId: string, now: Date = new Date()): 
 
   const finalCards = await repos.flashcards.listByDeckId(deck.id);
   return toFlashcardDTOs(finalCards, userId, now);
+}
+
+export async function createFromErrors(...args: Parameters<typeof createFromErrorsInTransaction>): ReturnType<typeof createFromErrorsInTransaction> {
+  return inRepositoryTransaction(() => createFromErrorsInTransaction(...args));
 }

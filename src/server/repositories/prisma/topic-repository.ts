@@ -1,45 +1,77 @@
+import { randomUUID } from "node:crypto";
+import type { Topic as Row } from "@/generated/prisma/client";
 import type {
-  TopicCreateInput,
   TopicEntity,
   TopicRepository,
+  TopicCreateInput,
   TopicUpdateInput,
 } from "../contracts/topic-repository";
 
-/**
- * Stub Prisma — implementação real cabe ao agente `database` a partir da Fase de banco.
- * Proibido importar `@prisma/client` fora de `server/repositories/prisma/**` (ADR-0002).
- */
+function map(row: Row): TopicEntity {
+  return {
+    id: row.id,
+    subjectId: row.subjectId,
+    name: row.name,
+    deletedAt: row.deletedAt?.toISOString() ?? null,
+  };
+}
+
 export class PrismaTopicRepository implements TopicRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findById(_id: string): Promise<TopicEntity | null> {
-    throw new Error("not implemented: PrismaTopicRepository.findById");
+  async findById(id: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    const row = await prisma.topic.findUnique({ where: { id } });
+    return row ? map(row) : null;
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async listBySubjectId(_subjectId: string): Promise<TopicEntity[]> {
-    throw new Error("not implemented: PrismaTopicRepository.listBySubjectId");
+  async listBySubjectId(subjectId: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    return (
+      await prisma.topic.findMany({
+        where: { subjectId, deletedAt: null },
+        orderBy: { name: "asc" },
+      })
+    ).map(map);
   }
-
-  async list(): Promise<TopicEntity[]> {
-    throw new Error("not implemented: PrismaTopicRepository.list");
+  async list() {
+    const { prisma } = await import("@/server/db/prisma");
+    return (
+      await prisma.topic.findMany({ where: { deletedAt: null }, orderBy: { name: "asc" } })
+    ).map(map);
   }
-
-  async listForAdmin(): Promise<TopicEntity[]> {
-    throw new Error("not implemented: PrismaTopicRepository.listForAdmin");
+  async listForAdmin() {
+    const { prisma } = await import("@/server/db/prisma");
+    return (await prisma.topic.findMany({ orderBy: { name: "asc" } })).map(map);
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async create(_input: TopicCreateInput): Promise<TopicEntity> {
-    throw new Error("not implemented: PrismaTopicRepository.create");
+  async create(input: TopicCreateInput) {
+    const { prisma } = await import("@/server/db/prisma");
+    const { now, ...data } = input;
+    return map(
+      await prisma.topic.create({
+        data: {
+          ...data,
+          slug:
+            input.name
+              .normalize("NFKD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/^-|-$/g, "") +
+            "-" +
+            randomUUID(),
+          createdAt: now,
+          updatedAt: now,
+        },
+      }),
+    );
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async update(_input: TopicUpdateInput): Promise<TopicEntity> {
-    throw new Error("not implemented: PrismaTopicRepository.update");
+  async update(input: TopicUpdateInput) {
+    const { prisma } = await import("@/server/db/prisma");
+    const { id, now, ...data } = input;
+    return map(await prisma.topic.update({ where: { id }, data: { ...data, updatedAt: now } }));
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async softDelete(_id: string, _now: Date): Promise<TopicEntity> {
-    throw new Error("not implemented: PrismaTopicRepository.softDelete");
+  async softDelete(id: string, now: Date) {
+    const { prisma } = await import("@/server/db/prisma");
+    return map(
+      await prisma.topic.update({ where: { id }, data: { deletedAt: now, updatedAt: now } }),
+    );
   }
 }

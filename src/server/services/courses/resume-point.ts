@@ -21,7 +21,7 @@ export async function getResumePoint(
 
   const repos = getRepositories();
   const course = await repos.courses.findById(courseId);
-  if (!course) {
+  if (!course || course.status !== "PUBLISHED" || course.deletedAt !== null) {
     throw new NotFoundError("Curso não encontrado.");
   }
 

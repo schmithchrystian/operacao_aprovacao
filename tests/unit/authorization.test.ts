@@ -79,3 +79,40 @@ describe("authorization — assertOwnership (anti-IDOR)", () => {
     expect(() => assertOwnership("user-1", "user-1")).not.toThrow();
   });
 });
+
+describe("authorization — live identity revocation", () => {
+  it("rejects an old version after password reset and accepts the matching new version", async () => {
+    const { getRepositories } = await import("@/server/repositories");
+    const user = await getRepositories().users.findById("user-1");
+    const spy = vi
+      .spyOn(getRepositories().users, "findById")
+      .mockResolvedValue({ ...user!, sessionVersion: 2 });
+    try {
+      authMock.mockResolvedValue(fakeNextAuthSession({ id: "user-1", sessionVersion: 1 }));
+      await expect(requireUser()).rejects.toBeInstanceOf(AuthError);
+      authMock.mockResolvedValue(fakeNextAuthSession({ id: "user-1", sessionVersion: 2 }));
+      await expect(requireUser()).resolves.toMatchObject({ userId: "user-1" });
+    } finally {
+      spy.mockRestore();
+    }
+  });
+  it("ignores stale administrator claims after demotion", async () => {
+    authMock.mockResolvedValue(fakeNextAuthSession({ role: "admin", id: "user-1" }));
+    await expect(requireRole("admin")).rejects.toBeInstanceOf(ForbiddenError);
+  });
+  it("rejects sessions after account deactivation and recovers only after reactivation", async () => {
+    const { getRepositories } = await import("@/server/repositories");
+    const users = getRepositories().users;
+    authMock.mockResolvedValue(fakeNextAuthSession({ id: "user-4", role: "admin" }));
+    await users.setActive("user-4", false);
+    try {
+      await expect(requireUser()).rejects.toBeInstanceOf(AuthError);
+    } finally {
+      await users.setActive("user-4", true);
+    }
+  });
+  it("rejects an otherwise valid session for a missing identity", async () => {
+    authMock.mockResolvedValue(fakeNextAuthSession({ id: "nonexistent", role: "admin" }));
+    await expect(requireUser()).rejects.toBeInstanceOf(AuthError);
+  });
+});

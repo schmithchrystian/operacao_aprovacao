@@ -10,18 +10,18 @@ const store = mockStore<UserEntity[]>("user", () => [...mockUsers]);
 
 export class MockUserRepository implements UserRepository {
   async findById(id: string): Promise<UserEntity | null> {
-    return store.find((user) => user.id === id) ?? null;
+    return store.find((user) => user.id === id && !user.deletedAt) ?? null;
   }
 
   async findByEmail(email: string): Promise<UserEntity | null> {
-    return store.find((user) => user.email === email) ?? null;
+    return store.find((user) => user.email === email && !user.deletedAt) ?? null;
   }
 
   async findCredentialsByEmail(email: string): Promise<UserCredentials | null> {
     const user = store.find((candidate) => candidate.email === email);
     const passwordHash = mockCredentials[email];
 
-    if (!user || !passwordHash) {
+    if (!user || user.deletedAt || !passwordHash) {
       return null;
     }
 
@@ -31,6 +31,9 @@ export class MockUserRepository implements UserRepository {
       email: user.email,
       role: user.role,
       isActive: user.isActive,
+      sessionVersion: user.sessionVersion ?? 0,
+      requiresEmailVerification: user.requiresEmailVerification ?? false,
+      emailVerified: user.emailVerified ?? null,
       passwordHash,
     };
   }

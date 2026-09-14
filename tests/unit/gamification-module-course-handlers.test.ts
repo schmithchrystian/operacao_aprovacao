@@ -1,3 +1,4 @@
+import { ensureAuthenticatedUser } from "../helpers/authenticated-user";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Session as NextAuthSession } from "next-auth";
 
@@ -40,6 +41,7 @@ const { getRepositories } = await import("@/server/repositories");
  * fica registrado como pendência de um teste de integração mais amplo (ex.: `tests/e2e`).
  */
 function fakeSession(id: string): NextAuthSession {
+  ensureAuthenticatedUser(id);
   return {
     user: { id, role: "aluno", name: "Teste", email: "teste@example.com" },
     expires: new Date(Date.now() + 60_000).toISOString(),

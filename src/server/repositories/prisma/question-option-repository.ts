@@ -1,31 +1,66 @@
+import { ConflictError } from "@/server/errors";
 import type {
-  QuestionOptionDraft,
   QuestionOptionEntity,
+  QuestionOptionDraft,
   QuestionOptionRepository,
 } from "../contracts/question-option-repository";
-
-/**
- * Stub Prisma — implementação real cabe ao agente `database` a partir da Fase de banco.
- * Proibido importar `@prisma/client` fora de `server/repositories/prisma/**` (ADR-0002).
- */
+import { inRepositoryTransaction } from "../transaction";
+const select = {
+  id: true,
+  questionId: true,
+  label: true,
+  text: true,
+  isCorrect: true,
+  order: true,
+} as const;
 export class PrismaQuestionOptionRepository implements QuestionOptionRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findById(_id: string): Promise<QuestionOptionEntity | null> {
-    throw new Error("not implemented: PrismaQuestionOptionRepository.findById");
+  async findById(id: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    return prisma.questionOption.findUnique({ where: { id }, select });
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async listByQuestionId(_questionId: string): Promise<QuestionOptionEntity[]> {
-    throw new Error("not implemented: PrismaQuestionOptionRepository.listByQuestionId");
+  async listByQuestionId(questionId: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    return prisma.questionOption.findMany({
+      where: { questionId },
+      select,
+      orderBy: { order: "asc" },
+    });
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async listByQuestionIds(_questionIds: string[]): Promise<QuestionOptionEntity[]> {
-    throw new Error("not implemented: PrismaQuestionOptionRepository.listByQuestionIds");
+  async listByQuestionIds(questionIds: string[]) {
+    const { prisma } = await import("@/server/db/prisma");
+    return prisma.questionOption.findMany({
+      where: { questionId: { in: questionIds } },
+      select,
+      orderBy: [{ questionId: "asc" }, { order: "asc" }],
+    });
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async replaceForQuestion(_questionId: string, _drafts: QuestionOptionDraft[]): Promise<QuestionOptionEntity[]> {
-    throw new Error("not implemented: PrismaQuestionOptionRepository.replaceForQuestion");
+  async replaceForQuestion(
+    questionId: string,
+    drafts: QuestionOptionDraft[],
+  ): Promise<QuestionOptionEntity[]> {
+    return inRepositoryTransaction(async () => {
+      const { prisma } = await import("@/server/db/prisma");
+      await prisma.$queryRaw`SELECT "id" FROM "Question" WHERE "id" = ${questionId} FOR UPDATE`;
+      if (
+        await prisma.question.count({
+          where: {
+            id: questionId,
+            OR: [
+              { attempts: { some: {} } },
+              { mockExams: { some: { mockExam: { attempts: { some: {} } } } } },
+            ],
+          },
+        })
+      )
+        throw new ConflictError(
+          "Questão já utilizada em uma tentativa. Crie uma nova questão para alterar alternativas.",
+        );
+      // Referenced alternatives cannot be removed; the FK makes historical answers immutable.
+      await prisma.questionOption.deleteMany({ where: { questionId } });
+      await prisma.questionOption.createMany({
+        data: drafts.map((draft, index) => ({ ...draft, questionId, order: index + 1 })),
+      });
+      return this.listByQuestionId(questionId);
+    });
   }
 }

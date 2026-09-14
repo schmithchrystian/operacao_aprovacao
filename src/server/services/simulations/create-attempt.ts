@@ -24,7 +24,7 @@ export async function createAttempt(userId: string, config: MockExamConfigInput)
   const now = new Date();
   const attempt = await repos.mockExamAttempts.create({ userId, mockExamId, timeLimitSeconds, now });
 
-  auditLog({
+  await auditLog({
     operation: "simulations.create-attempt",
     userId,
     entity: "MockExamAttempt",

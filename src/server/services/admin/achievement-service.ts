@@ -38,6 +38,7 @@ export const createAchievementForAdmin = withAdminAudit(
       description: input.description,
       icon: input.icon,
       points: input.points,
+      criteria: input.criteria,
       now,
     });
     return toAdminAchievementDTO(created);
@@ -58,6 +59,7 @@ export const updateAchievementForAdmin = withAdminAudit(
       description: input.description,
       icon: input.icon,
       points: input.points,
+      criteria: input.criteria,
       now,
     });
     return toAdminAchievementDTO(updated);

@@ -1,3 +1,5 @@
+import { env } from "@/config/env";
+import { getPersistentDashboardData } from "./dashboard-persistence";
 import type { DashboardGoal } from "@/contracts/dashboard";
 import {
   mockNextLessons,
@@ -10,51 +12,14 @@ import { assertOwnership, requireUser } from "@/server/authorization";
 import { NotFoundError } from "@/server/errors";
 import { getRepositories } from "@/server/repositories";
 import { getUserGamification } from "@/server/services/gamification";
-import { recalculateDailyGoal, recalculateWeeklyGoal, recalculateStreak } from "@/server/services/study-tracking";
+import {
+  recalculateDailyGoal,
+  recalculateWeeklyGoal,
+  recalculateStreak,
+} from "@/server/services/study-tracking";
 import type { DashboardDTO } from "@/contracts/dashboard";
 
-/**
- * Serviço de agregação de leitura do dashboard do aluno (Fase 5 — backend/leitura).
- *
- * Este serviço SÓ agrega: junta o usuário autenticado (`UserRepository`), o curso da
- * próxima aula recomendada (`CourseRepository`) e os estados pré-computados em
- * `src/mocks/data/dashboard-*`, devolvendo o `DashboardDTO` já pronto para a UI.
- *
- * Nenhuma regra de pontos/XP/nível/tempo válido/sequência é calculada aqui:
- * - Pontos, XP, nível e conquistas vêm do motor de gamificação real (Fase 8,
- *   `@/server/services/gamification`), lido a partir de `PointTransaction`/`UserAchievement`
- *   (ledger auditável) — não são mais literais fixos.
- * - `streakDays`/`goals` (Fase 12 — agente `study-tracking`): agora vêm de
- *   `recalculateStreak`/`recalculateDailyGoal`/`recalculateWeeklyGoal`
- *   (`@/server/services/study-tracking`), que recalculam a partir de `StudySession`/
- *   `PointTransaction` reais e persistem em `UserStreak`/`DailyGoal`/`WeeklyGoal` — não são
- *   mais literais fixos do mock (`mockGamificationStates`/`mockGoals`, mantidos só como
- *   histórico de decisão em `src/mocks/data/dashboard-{gamification,goals}.ts`). Num processo
- *   mock "frio" (sem nenhuma `StudySession`/`PointTransaction` recente para o usuário), estes
- *   valores começam honestamente em zero — ver pendência no relatório da Fase 12.
- * - TODO(Fase 9 — agente `gamification`): o motor de ranking real já existe
- *   (`@/server/services/gamification/ranking`, `getRanking`), mas este widget simples de
- *   dashboard (posição + total no concurso) ainda lê `mockRankings` em vez de chamar
- *   `getRanking({ periodType: "ALL_TIME", scopeType: "CONTEST", scopeKeyRaw: contestId })` —
- *   os valores do mock foram ajustados para não divergir do resultado real (ver
- *   `dashboard-ranking.ts`), mas a troca de fonte fica como pendência (fora do escopo desta
- *   fase, que focou no motor/backend do ranking).
- * - TODO(Fase 12 — agente `study-tracking`): tempo estudado/aulas concluídas/simulados/
- *   percentual de acertos (`study.*`) ainda vêm do mock (`mockStudyStats`) — a fonte real e
- *   mais rica (evolução semanal/mensal, aproveitamento por matéria, etc.) já existe em
- *   `getTrackingOverview` (`@/server/services/study-tracking/tracking-overview`), consumida
- *   pela página dedicada de Acompanhamento; portar este widget resumido do dashboard principal
- *   para a mesma fonte fica como pendência (mantido aqui para não regredir o layout desta
- *   fase, focada no serviço de acompanhamento).
- * - TODO(Fase 7 — cursos/concursos): `selectedContest` e a próxima aula recomendada
- *   (módulo/aula) devem passar a vir de repositórios reais de `Contest`/`Module`/`Lesson`
- *   quando existirem; hoje só `CourseRepository` existe.
- *
- * Autorização (ADR-0006, CLAUDE.md §11): quem chama só pode ler o próprio dashboard —
- * `requireUser` garante sessão real (nunca aceitar `userId` do corpo da requisição) e
- * `assertOwnership` impede que um usuário autenticado leia o dashboard de outro (anti-IDOR).
- */
-
+/** Agrega o painel autorizado; dados demonstrativos são exclusivos de DATA_SOURCE=mock. */
 interface GoalLike {
   targetMinutes: number | null;
   targetPoints: number | null;
@@ -92,12 +57,13 @@ export async function getStudentDashboard(userId: string): Promise<DashboardDTO>
     throw new NotFoundError("Aluno não encontrado.");
   }
 
-  const study = mockStudyStats[userId];
-  const performanceSummary = mockPerformanceSummaries[userId];
-  const ranking = mockRankings[userId];
-  const contest = mockSelectedContests[userId];
+  const persistent = env.DATA_SOURCE === "prisma" ? await getPersistentDashboardData(userId) : null;
+  const study = persistent?.study ?? mockStudyStats[userId];
+  const performanceSummary = persistent?.performanceSummary ?? mockPerformanceSummaries[userId];
+  const ranking = persistent ? persistent.ranking : mockRankings[userId];
+  const contest = persistent ? persistent.contest : mockSelectedContests[userId];
 
-  if (!study || !performanceSummary || !ranking || !contest) {
+  if (!study || !performanceSummary) {
     throw new NotFoundError("Dados de dashboard indisponíveis para este aluno.");
   }
 
@@ -116,8 +82,8 @@ export async function getStudentDashboard(userId: string): Promise<DashboardDTO>
     recalculateWeeklyGoal(userId, now),
   ]);
 
-  const nextLessonEntity = mockNextLessons[userId];
-  let nextLesson: DashboardDTO["nextLesson"] = null;
+  const nextLessonEntity = persistent ? null : mockNextLessons[userId];
+  let nextLesson: DashboardDTO["nextLesson"] = persistent?.nextLesson ?? null;
   if (nextLessonEntity) {
     const course = await repos.courses.findById(nextLessonEntity.courseId);
     nextLesson = {
@@ -146,8 +112,8 @@ export async function getStudentDashboard(userId: string): Promise<DashboardDTO>
   return {
     identity: {
       studentName: user.name,
-      selectedContestId: contest.contestId,
-      selectedContestName: contest.contestName,
+      selectedContestId: contest?.contestId ?? null,
+      selectedContestName: contest?.contestName ?? null,
     },
     gamification: {
       level: { index: gamification.level.level.index, name: gamification.level.level.name },
@@ -163,11 +129,13 @@ export async function getStudentDashboard(userId: string): Promise<DashboardDTO>
       mockExamsTaken: study.mockExamsTaken,
       accuracyPercent: study.accuracyPercent,
     },
-    ranking: {
-      position: ranking.position,
-      totalParticipants: ranking.totalParticipants,
-      contestId: ranking.contestId,
-    },
+    ranking: ranking
+      ? {
+          position: ranking.position,
+          totalParticipants: ranking.totalParticipants,
+          contestId: ranking.contestId,
+        }
+      : null,
     nextLesson,
     goals: {
       daily: toDashboardGoal(dailyGoal, "estudando hoje"),

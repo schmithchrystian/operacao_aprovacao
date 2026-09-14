@@ -1,3 +1,4 @@
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
 import { SIMULATIONS } from "@/config/business";
 import type { AttemptResultDTO, SubmitAnswersInput } from "@/contracts/simulations";
 import { auditLog } from "@/server/audit";
@@ -18,6 +19,8 @@ import { buildAttemptResultDTO } from "./mappers";
  * `study-tracking/record-heartbeat.ts` (idempotente; seguro com múltiplos imports/hot-reload).
  */
 registerGamificationEventHandlers();
+
+class AttemptExpiredError extends ConflictError {}
 
 interface CorrectionEntry {
   questionId: string;
@@ -45,7 +48,7 @@ interface CorrectionEntry {
  *    nunca produz pontuação parcial (CLAUDE.md §25: "falha transacional não gera pontuação
  *    parcial").
  */
-export async function submitAndFinalize(userId: string, input: SubmitAnswersInput): Promise<AttemptResultDTO> {
+async function submitAndFinalizeInTransaction(userId: string, input: SubmitAnswersInput): Promise<AttemptResultDTO> {
   const session = await requireUser();
   assertOwnership(userId, session.userId);
 
@@ -76,7 +79,7 @@ export async function submitAndFinalize(userId: string, input: SubmitAnswersInpu
         // `null`, um finalize/expire concorrente já venceu a corrida — não logar um audit
         // enganoso de "expirado" para uma tentativa que na verdade foi finalizada por outra
         // chamada (achado de segurança Fase 10 — BAIXO).
-        auditLog({
+        await auditLog({
           operation: "simulations.attempt-expired",
           userId,
           entity: "MockExamAttempt",
@@ -86,7 +89,7 @@ export async function submitAndFinalize(userId: string, input: SubmitAnswersInpu
           metadata: { elapsedSeconds, timeLimitSeconds: attempt.timeLimitSeconds },
         });
       }
-      throw new ConflictError("O tempo da tentativa foi esgotado.");
+      throw new AttemptExpiredError("O tempo da tentativa foi esgotado.");
     }
   }
 
@@ -187,7 +190,7 @@ export async function submitAndFinalize(userId: string, input: SubmitAnswersInpu
     occurredAt: now,
   });
 
-  auditLog({
+  await auditLog({
     operation: "simulations.submit-and-finalize",
     userId,
     entity: "MockExamAttempt",
@@ -198,4 +201,13 @@ export async function submitAndFinalize(userId: string, input: SubmitAnswersInpu
   });
 
   return buildAttemptResultDTO(finalized);
+}
+
+export async function submitAndFinalize(userId: string, input: SubmitAnswersInput): Promise<AttemptResultDTO> {
+  const result = await inRepositoryTransaction(async () => {
+    try { return await submitAndFinalizeInTransaction(userId, input); }
+    catch (error) { if (error instanceof AttemptExpiredError) return error; throw error; }
+  });
+  if (result instanceof AttemptExpiredError) throw result;
+  return result;
 }

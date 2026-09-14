@@ -112,7 +112,7 @@ export function noteSourceTag(draftId: string): string {
 }
 
 export function isReservedTag(tag: string): boolean {
-  return tag.startsWith(RESERVED_TAG_PREFIX.errorNotebook) || tag.startsWith(RESERVED_TAG_PREFIX.brainstormNote);
+  return tag.startsWith("src:");
 }
 
 /** Remove as marcações reservadas antes de expor `tags` num DTO (nunca vaza para o cliente). */

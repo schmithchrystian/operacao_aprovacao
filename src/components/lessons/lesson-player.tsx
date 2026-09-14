@@ -71,6 +71,7 @@ export function LessonPlayer({
 
   // Um `sessionId` novo por montagem do player — agrupa os heartbeats desta reprodução
   // (docs/ARCHITECTURE.md §5). Gerado uma única vez, nunca recalculado durante a sessão.
+  const [mediaError, setMediaError] = useState(false);
   const [sessionId] = useState(() => crypto.randomUUID());
   const [watchedPercent, setWatchedPercent] = useState(initialWatchedPercent);
   const [status, setStatus] = useState<LessonStatus>(initialStatus);
@@ -270,10 +271,12 @@ export function LessonPlayer({
 
   return (
     <div className="space-y-4">
+      {mediaError ? <p role="alert" className="text-sm">Não foi possível carregar o vídeo ou o acesso expirou. <button className="underline" onClick={() => { window.location.reload(); }}>Recarregar aula</button></p> : null}
       <div className="border-border relative aspect-video w-full overflow-hidden rounded-lg border bg-black">
         {videoUrl ? (
           <video
             ref={videoRef}
+            onError={() => setMediaError(true)}
             className="h-full w-full"
             controls
             preload="metadata"

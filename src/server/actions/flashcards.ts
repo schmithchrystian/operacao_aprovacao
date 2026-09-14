@@ -17,7 +17,7 @@ import {
 import { requireUser } from "@/server/authorization";
 import { isDomainError, ValidationError } from "@/server/errors";
 import {
-  assertReviewCardRateLimit,
+  assertSharedReviewCardRateLimit,
   createCard,
   createDeck,
   createFromErrors,
@@ -57,7 +57,9 @@ export async function listDecksAction(): Promise<ActionResult<DeckDTO[]>> {
 }
 
 /** Monta a sessão de revisão (cartões devidos) — `deckId` omitido agrega todos os baralhos. */
-export async function getReviewSessionAction(rawInput: unknown): Promise<ActionResult<ReviewSessionDTO>> {
+export async function getReviewSessionAction(
+  rawInput: unknown,
+): Promise<ActionResult<ReviewSessionDTO>> {
   try {
     const input = parseInput(getReviewSessionInputSchema, rawInput);
     const session = await requireUser();
@@ -75,7 +77,11 @@ export async function reviewCardAction(rawInput: unknown): Promise<ActionResult<
     const session = await requireUser();
     // Rate limit leve por (usuário, cartão) — defesa em profundidade do achado A1 (a barreira
     // principal contra farm por corrida é o mutex + gate no service).
-    assertReviewCardRateLimit(session.userId, input.flashcardId, FLASHCARDS.reviewCardMinIntervalMs);
+    await assertSharedReviewCardRateLimit(
+      session.userId,
+      input.flashcardId,
+      FLASHCARDS.reviewCardMinIntervalMs,
+    );
     const card = await reviewCard(session.userId, input.flashcardId, input.rating);
     return ok(card);
   } catch (error) {
@@ -130,7 +136,9 @@ export async function createFromNotesAction(): Promise<ActionResult<FlashcardDTO
 }
 
 /** Favorita/desfavorita um cartão para o aluno autenticado. */
-export async function toggleFavoriteAction(rawInput: unknown): Promise<ActionResult<FlashcardFavoriteResultDTO>> {
+export async function toggleFavoriteAction(
+  rawInput: unknown,
+): Promise<ActionResult<FlashcardFavoriteResultDTO>> {
   try {
     const input = parseInput(flashcardIdInputSchema, rawInput);
     const session = await requireUser();

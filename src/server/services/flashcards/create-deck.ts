@@ -34,7 +34,7 @@ export async function createDeck(userId: string, input: CreateDeckInput, now: Da
     now,
   });
 
-  auditLog({
+  await auditLog({
     operation: "flashcards.create-deck",
     userId,
     entity: "FlashcardDeck",

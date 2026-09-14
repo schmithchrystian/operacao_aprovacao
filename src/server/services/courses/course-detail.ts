@@ -19,7 +19,7 @@ export async function getCourseDetail(userId: string, slug: string): Promise<Cou
 
   const repos = getRepositories();
   const course = await repos.courses.findBySlug(slug);
-  if (!course) {
+  if (!course || course.status !== "PUBLISHED" || course.deletedAt !== null) {
     throw new NotFoundError("Curso não encontrado.");
   }
 

@@ -1,3 +1,4 @@
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
 import type { BrainstormCardDTO, CreateCardInput } from "@/contracts/brainstorm";
 import { auditLog } from "@/server/audit";
 import { assertOwnership, requireUser } from "@/server/authorization";
@@ -15,7 +16,7 @@ import { loadOwnedColumn } from "./shared";
  * pertence à matéria informada — nunca grava um cartão "órfão" a partir de ids fabricados pelo
  * cliente (mesmo padrão de `generatePlan`, `@/server/services/study-plan/generate-plan.ts`).
  */
-export async function createCard(
+async function createCardInTransaction(
   userId: string,
   input: CreateCardInput,
   now: Date = new Date(),
@@ -59,7 +60,7 @@ export async function createCard(
     now,
   });
 
-  auditLog({
+  await auditLog({
     operation: "brainstorm.create-card",
     userId,
     entity: "BrainstormCard",
@@ -70,4 +71,8 @@ export async function createCard(
   });
 
   return toBrainstormCardDTO(card, column.name);
+}
+
+export async function createCard(...args: Parameters<typeof createCardInTransaction>): ReturnType<typeof createCardInTransaction> {
+  return inRepositoryTransaction(() => createCardInTransaction(...args));
 }

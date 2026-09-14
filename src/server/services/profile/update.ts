@@ -60,7 +60,7 @@ export async function updateProfile(
     now,
   });
 
-  auditLog({
+  await auditLog({
     operation: "profile.update",
     userId,
     entity: "Profile",
@@ -95,7 +95,7 @@ export async function updatePrivacy(
     now,
   });
 
-  auditLog({
+  await auditLog({
     operation: "profile.update-privacy",
     userId,
     entity: "Profile",

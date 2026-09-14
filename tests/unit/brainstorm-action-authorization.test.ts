@@ -1,3 +1,4 @@
+import { ensureAuthenticatedUser } from "../helpers/authenticated-user";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Session as NextAuthSession } from "next-auth";
 
@@ -34,6 +35,7 @@ const { __resetFlashcardDraftStore } = await import("@/server/services/brainstor
  * Mesmo padrão de `tests/unit/study-plan-action-authorization.test.ts`.
  */
 function fakeSession(id: string): NextAuthSession {
+  ensureAuthenticatedUser(id);
   return {
     user: { id, role: "aluno", name: "Teste", email: "teste@example.com" },
     expires: new Date(Date.now() + 60_000).toISOString(),

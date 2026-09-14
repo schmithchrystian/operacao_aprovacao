@@ -1,3 +1,5 @@
+import { withFocusLock } from "./focus-lock";
+import { reserveInterval } from "@/server/concurrency/rate-limit";
 import type { FocusHeartbeatInput, FocusHeartbeatResultDTO } from "@/contracts/focus";
 import { assertOwnership, requireUser } from "@/server/authorization";
 import { ConflictError, NotFoundError, RateLimitError } from "@/server/errors";
@@ -19,7 +21,7 @@ import { toFocusSessionDTO } from "./mappers";
  *
  * Rate limit LEVE (CLAUDE.md §24) com store próprio deste domínio (`./focus-rate-limit.ts`).
  */
-export async function focusHeartbeat(
+async function focusHeartbeatLocked(
   userId: string,
   input: FocusHeartbeatInput,
   now: Date = new Date(),
@@ -29,7 +31,7 @@ export async function focusHeartbeat(
 
   const receivedAt = now.getTime();
   const rateLimitKey = focusHeartbeatRateLimitKey(userId, input.sessionId);
-  if (!checkFocusHeartbeatRateLimit(rateLimitKey, receivedAt)) {
+  if (!await reserveInterval(`focus-heartbeat:${userId}`, 1000, () => checkFocusHeartbeatRateLimit(rateLimitKey, receivedAt))) {
     throw new RateLimitError("Heartbeat de foco enviado com frequência excessiva.");
   }
 
@@ -56,3 +58,5 @@ export async function focusHeartbeat(
 
   return { session: toFocusSessionDTO(saved), flags: evaluation.flags };
 }
+
+export async function focusHeartbeat(...args: Parameters<typeof focusHeartbeatLocked>): ReturnType<typeof focusHeartbeatLocked> { return withFocusLock(args[0], () => focusHeartbeatLocked(...args)); }

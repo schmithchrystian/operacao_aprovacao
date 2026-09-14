@@ -12,12 +12,27 @@ export interface UserEntity {
   /** Fase 17 (admin) — conta ativa/desativada (`User.isActive`, Prisma). Uma conta desativada
    *  não autentica (`@/server/auth/credentials-service.ts`). */
   isActive: boolean;
+  deletedAt?: string | null;
+  sessionVersion?: number;
+  requiresEmailVerification?: boolean;
+  emailVerified?: string | null;
   /** Fase 17 (admin — dashboard "novos usuários"). ISO 8601. */
   createdAt: string;
 }
 
 /** Projeção mínima e exclusiva para verificação de credenciais no servidor. */
-export interface UserCredentials extends Pick<UserEntity, "id" | "name" | "email" | "role" | "isActive"> {
+export interface UserCredentials extends Pick<
+  UserEntity,
+  | "id"
+  | "name"
+  | "email"
+  | "role"
+  | "isActive"
+  | "deletedAt"
+  | "sessionVersion"
+  | "requiresEmailVerification"
+  | "emailVerified"
+> {
   passwordHash: string;
 }
 

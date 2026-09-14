@@ -1,3 +1,4 @@
+import { achievementCriteriaSchema } from "./achievement-criteria";
 import { z } from "zod";
 import { idSchema } from "./common";
 
@@ -409,6 +410,7 @@ export const adminAchievementDTOSchema = z.object({
   description: z.string().nullable(),
   icon: z.string().nullable(),
   points: z.number().int().min(0),
+  criteria: achievementCriteriaSchema.nullable().optional(),
   deletedAt: z.string().nullable(),
 });
 export type AdminAchievementDTO = z.infer<typeof adminAchievementDTOSchema>;
@@ -423,6 +425,7 @@ export const createAchievementInputSchema = z.object({
   description: z.string().max(2000).optional(),
   icon: z.string().max(80).optional(),
   points: z.coerce.number().int().min(0).max(100_000).optional(),
+  criteria: achievementCriteriaSchema.nullable().optional(),
 });
 export type CreateAchievementInput = z.infer<typeof createAchievementInputSchema>;
 
@@ -432,5 +435,6 @@ export const updateAchievementInputSchema = z.object({
   description: z.string().max(2000).nullable().optional(),
   icon: z.string().max(80).nullable().optional(),
   points: z.coerce.number().int().min(0).max(100_000).optional(),
+  criteria: achievementCriteriaSchema.nullable().optional(),
 });
 export type UpdateAchievementInput = z.infer<typeof updateAchievementInputSchema>;

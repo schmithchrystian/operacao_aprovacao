@@ -4,7 +4,7 @@ import { getRepositories } from "@/server/repositories";
 import type { FlashcardDeckEntity, FlashcardDeckKind } from "@/server/repositories/contracts/flashcard-deck-repository";
 import type { FlashcardEntity } from "@/server/repositories/contracts/flashcard-repository";
 import type { FlashcardReviewEntity } from "@/server/repositories/contracts/flashcard-review-repository";
-import { listFavoriteFlashcardIds } from "./favorite-store";
+import { getFavoriteFlashcardIds } from "./favorite-store";
 import { isCardDue, loadLatestReviewsByFlashcardId, publicTags } from "./shared";
 
 /**
@@ -26,7 +26,7 @@ export async function toFlashcardDTO(
   const [resolvedDeck, latestReview, favoriteIds] = await Promise.all([
     deck !== undefined ? Promise.resolve(deck) : repos.flashcardDecks.findById(card.deckId),
     repos.flashcardReviews.findLatestByUserAndFlashcard(userId, card.id),
-    Promise.resolve(listFavoriteFlashcardIds(userId)),
+    Promise.resolve(getFavoriteFlashcardIds(userId)),
   ]);
   return buildFlashcardDTO(card, resolvedDeck, latestReview ?? undefined, favoriteIds.includes(card.id), now);
 }
@@ -48,7 +48,7 @@ export async function toFlashcardDTOs(
       userId,
       cards.map((card) => card.id),
     ),
-    Promise.resolve(new Set(listFavoriteFlashcardIds(userId))),
+    getFavoriteFlashcardIds(userId).then((ids) => new Set(ids)),
   ]);
   const decksById = new Map(deckEntries);
 

@@ -17,6 +17,12 @@ export class MockNotificationRepository implements NotificationRepository {
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   }
 
+  async markRead(userId: string, id: string): Promise<boolean> {
+    const notification = store.find(entry => entry.id === id && entry.userId === userId);
+    if (!notification) return false;
+    notification.isRead = true;
+    return true;
+  }
   async createMany(inputs: NotificationCreateInput[]): Promise<NotificationEntity[]> {
     const created = inputs.map((input): NotificationEntity => {
       sequence.value += 1;

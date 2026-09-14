@@ -28,7 +28,7 @@ export interface RankingRawMetrics {
   goalsCompleted: number;
 }
 
-export type RankingWeights = typeof RANKING_WEIGHTS;
+export type RankingWeights = { [K in keyof typeof RANKING_WEIGHTS]: number };
 
 export interface ScoredRankingEntry<TParticipant> {
   participant: TParticipant;

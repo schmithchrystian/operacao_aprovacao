@@ -1,22 +1,26 @@
-import type { QuestionFavoriteEntity, QuestionFavoriteRepository } from "../contracts/question-favorite-repository";
-
-/**
- * Stub Prisma — implementação real cabe ao agente `database` a partir da Fase de banco.
- * Proibido importar `@prisma/client` fora de `server/repositories/prisma/**` (ADR-0002).
- */
+import type { QuestionFavoriteRepository } from "../contracts/question-favorite-repository";
+import { inRepositoryTransaction } from "../transaction";
 export class PrismaQuestionFavoriteRepository implements QuestionFavoriteRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async listByUserId(_userId: string): Promise<QuestionFavoriteEntity[]> {
-    throw new Error("not implemented: PrismaQuestionFavoriteRepository.listByUserId");
+  async listByUserId(userId: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    return (
+      await prisma.questionFavorite.findMany({ where: { userId }, orderBy: { createdAt: "desc" } })
+    ).map((row) => ({ ...row, createdAt: row.createdAt.toISOString() }));
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async isFavorite(_userId: string, _questionId: string): Promise<boolean> {
-    throw new Error("not implemented: PrismaQuestionFavoriteRepository.isFavorite");
+  async isFavorite(userId: string, questionId: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    return !!(await prisma.questionFavorite.findUnique({
+      where: { userId_questionId: { userId, questionId } },
+    }));
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async toggle(_userId: string, _questionId: string): Promise<boolean> {
-    throw new Error("not implemented: PrismaQuestionFavoriteRepository.toggle");
+  async toggle(userId: string, questionId: string) {
+    return inRepositoryTransaction(async () => {
+      const { prisma } = await import("@/server/db/prisma");
+      await prisma.$queryRaw`SELECT "id" FROM "User" WHERE "id" = ${userId} FOR UPDATE`;
+      const deleted = await prisma.questionFavorite.deleteMany({ where: { userId, questionId } });
+      if (deleted.count) return false;
+      await prisma.questionFavorite.create({ data: { userId, questionId } });
+      return true;
+    });
   }
 }

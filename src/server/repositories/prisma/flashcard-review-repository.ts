@@ -1,40 +1,9 @@
-import type {
-  FlashcardReviewCreateInput,
-  FlashcardReviewEntity,
-  FlashcardReviewRepository,
-} from "../contracts/flashcard-review-repository";
-
-/**
- * Stub Prisma — implementação real cabe ao agente `database`/`backend` a partir da Fase de
- * banco. Proibido importar `@prisma/client` fora de `server/repositories/prisma/**` (ADR-0002).
- *
- * PENDÊNCIA (performance): `listLatestByUserIdForFlashcardIds` deve ser implementado com uma
- * query agregada (`DISTINCT ON`/`groupBy` + `orderBy reviewedAt desc`), nunca carregando todo o
- * histórico de revisões em memória para reduzir no Node — o mock (`../mock/`) faz a redução em
- * memória porque o volume de teste é desprezível.
- */
+import type { FlashcardReview } from "@/generated/prisma/client";
+import type { FlashcardReviewRepository, FlashcardReviewCreateInput, FlashcardReviewEntity } from "../contracts/flashcard-review-repository";
+const map=(r:FlashcardReview):FlashcardReviewEntity=>({...r,reviewedAt:r.reviewedAt.toISOString(),nextReviewAt:r.nextReviewAt.toISOString()});
 export class PrismaFlashcardReviewRepository implements FlashcardReviewRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findLatestByUserAndFlashcard(_userId: string, _flashcardId: string): Promise<FlashcardReviewEntity | null> {
-    throw new Error("not implemented: PrismaFlashcardReviewRepository.findLatestByUserAndFlashcard");
-  }
-
-  async listLatestByUserIdForFlashcardIds(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-    _userId: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-    _flashcardIds: string[],
-  ): Promise<FlashcardReviewEntity[]> {
-    throw new Error("not implemented: PrismaFlashcardReviewRepository.listLatestByUserIdForFlashcardIds");
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async listByUserId(_userId: string): Promise<FlashcardReviewEntity[]> {
-    throw new Error("not implemented: PrismaFlashcardReviewRepository.listByUserId");
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async create(_input: FlashcardReviewCreateInput): Promise<FlashcardReviewEntity> {
-    throw new Error("not implemented: PrismaFlashcardReviewRepository.create");
-  }
+ async findLatestByUserAndFlashcard(userId:string,flashcardId:string){const {prisma}=await import("@/server/db/prisma");const r=await prisma.flashcardReview.findFirst({where:{userId,flashcardId},orderBy:[{reviewedAt:'desc'},{id:'desc'}]});return r?map(r):null;}
+ async listLatestByUserIdForFlashcardIds(userId:string,flashcardIds:string[]){const {prisma}=await import("@/server/db/prisma");return(await prisma.flashcardReview.findMany({where:{userId,flashcardId:{in:flashcardIds}},distinct:['flashcardId'],orderBy:[{reviewedAt:'desc'},{id:'desc'}]})).map(map);}
+ async listByUserId(userId:string){const {prisma}=await import("@/server/db/prisma");return(await prisma.flashcardReview.findMany({where:{userId},orderBy:{reviewedAt:'asc'}})).map(map);}
+ async create({now,nextReviewAt,...input}:FlashcardReviewCreateInput){const {prisma}=await import("@/server/db/prisma");return map(await prisma.flashcardReview.create({data:{...input,nextReviewAt:new Date(nextReviewAt),reviewedAt:now}}));}
 }

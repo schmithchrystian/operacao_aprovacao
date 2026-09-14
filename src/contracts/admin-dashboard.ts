@@ -6,10 +6,8 @@ import { idSchema } from "./common";
  * domínios já existentes (`server/services/admin/dashboard-service.ts`) — sem uma segunda fonte
  * de verdade paralela às tabelas/repositórios de cada domínio.
  *
- * PENDÊNCIAS EXPLÍCITAS (mock/derivado, sem fonte própria ainda):
- * - `activeSubscriptions`: não existe `SubscriptionRepository` neste projeto ainda (`Subscription`
- *   está no schema Prisma, docs/DATA-MODEL.md, mas sem repositório/mock — fora do escopo desta
- *   fase). Fixo em `0` até esse domínio ganhar um repositório real.
+ * `activeSubscriptions` consulta assinaturas Stripe válidas no ambiente Prisma.
+ * Limite de interpretação:
  * - `engagementScore`: heurística simples (média de conclusão + retenção) — não é uma fórmula
  *   oficial do agente `gamification`; documentar/revisar com esse agente antes de expor como
  *   métrica "definitiva" num relatório executivo.
@@ -51,7 +49,7 @@ export const adminDashboardDTOSchema = z.object({
   topCourses: z.array(adminDashboardTopCourseSchema),
   topLessons: z.array(adminDashboardTopLessonSchema),
   topMockExams: z.array(adminDashboardTopMockExamSchema),
-  /** TODO — ver PENDÊNCIA no topo do arquivo (sem `SubscriptionRepository` ainda). */
+  /** Assinaturas pagas válidas; o modo de demonstração não simula receita. */
   activeSubscriptions: z.number().int().min(0),
   /** ISO 8601 — instante do cálculo (nunca `Date.now()` implícito; injetado pelo service). */
   generatedAt: z.string().min(1),

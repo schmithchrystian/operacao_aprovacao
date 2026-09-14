@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { StudySessionBuilderForm } from "@/components/study-session/study-session-builder-form";
@@ -39,6 +40,7 @@ export default async function MontarEstudoPage() {
         </p>
       </div>
 
+      <Link href="/missoes" className="text-primary underline">Retomar minhas missões</Link>
       <StudySessionBuilderForm contests={contests} courses={courseOptions} subjects={subjects} />
     </div>
   );

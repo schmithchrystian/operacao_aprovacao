@@ -112,7 +112,7 @@ export async function reviewCard(
       });
     }
 
-    auditLog({
+    await auditLog({
       operation: "flashcards.review-card",
       userId,
       entity: "FlashcardReview",

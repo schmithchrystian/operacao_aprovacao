@@ -1,5 +1,8 @@
 "use server";
 
+import { reserveInterval } from "@/server/concurrency/rate-limit";
+import { RateLimitError } from "@/server/errors";
+
 import { SIMULATIONS } from "@/config/business";
 import { fail, ok, type ActionResult } from "@/contracts/common";
 import {
@@ -60,7 +63,7 @@ export async function createAttemptAction(rawInput?: unknown): Promise<ActionRes
     const session = await requireUser();
     // Rate limit leve (CLAUDE.md §24): `createAttempt` grava um registro (e, no modo
     // personalizado, um `MockExam` ad-hoc) por chamada — barra spam antes de tocar o service.
-    assertSimulationsRateLimit(session.userId, "create-attempt", SIMULATIONS.createAttemptMinIntervalMs);
+    await assertSharedSimulationsRateLimit(session.userId, "create-attempt", SIMULATIONS.createAttemptMinIntervalMs);
     const attempt = await createAttempt(session.userId, input);
     return ok(attempt);
   } catch (error) {
@@ -73,7 +76,7 @@ export async function submitAttemptAction(rawInput: unknown): Promise<ActionResu
   try {
     const input = parseInput(submitAnswersInputSchema, rawInput);
     const session = await requireUser();
-    assertSimulationsRateLimit(session.userId, "submit-attempt", SIMULATIONS.submitAttemptMinIntervalMs);
+    await assertSharedSimulationsRateLimit(session.userId, "submit-attempt", SIMULATIONS.submitAttemptMinIntervalMs);
     const result = await submitAndFinalize(session.userId, input);
     return ok(result);
   } catch (error) {
@@ -202,4 +205,8 @@ export async function listTopicOptionsAction(rawInput: unknown): Promise<ActionR
   } catch (error) {
     return toActionError(error);
   }
+}
+
+async function assertSharedSimulationsRateLimit(userId: string, action: "create-attempt" | "submit-attempt", interval: number) {
+  if (!await reserveInterval(`simulations:${userId}:${action}`, interval, () => { assertSimulationsRateLimit(userId, action, interval); return true; })) throw new RateLimitError("Muitas solicitações. Aguarde alguns instantes.");
 }

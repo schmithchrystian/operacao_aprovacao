@@ -1,3 +1,4 @@
+import { assertSubscriptionAccess } from "@/server/billing/entitlement";
 import { assertOwnership, requireUser } from "@/server/authorization";
 import { NotFoundError } from "@/server/errors";
 import { getRepositories } from "@/server/repositories";
@@ -17,10 +18,11 @@ export async function enroll(userId: string, courseId: string): Promise<Enrollme
 
   const repos = getRepositories();
   const course = await repos.courses.findById(courseId);
-  if (!course) {
+  if (!course || course.status !== "PUBLISHED" || course.deletedAt !== null) {
     throw new NotFoundError("Curso não encontrado.");
   }
 
+  await assertSubscriptionAccess(userId);
   const enrollment = await repos.enrollments.create({ userId, courseId });
 
   return {

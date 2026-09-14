@@ -467,6 +467,7 @@ export function StudySessionBuilderForm({
                 </span>{" "}
                 ({missionResult.startingBlock.minutes} min)
               </p>
+              <Link href={`/missoes/${encodeURIComponent(missionResult.mission.id)}`} className={cn(buttonVariants())}>Acompanhar missão</Link>
               {startingBlockHref ? (
                 <Link href={startingBlockHref} className={cn(buttonVariants())}>
                   Ir para o conteúdo

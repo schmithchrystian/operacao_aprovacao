@@ -46,6 +46,10 @@ import {
 } from "../src/generated/prisma/client";
 import { LESSON_COMPLETION_MIN_PERCENT } from "../src/config/business";
 
+if (process.env.NODE_ENV === "production" || ["production", "staging"].includes(process.env.APP_ENV ?? "") || process.env.ALLOW_DEMO_SEED !== "true") {
+  throw new Error("Seed demonstrativo exige ALLOW_DEMO_SEED=true em ambiente local/teste; proibido em produção/staging.");
+}
+
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
   throw new Error(
@@ -53,7 +57,7 @@ if (!databaseUrl) {
   );
 }
 
-const adapter = new PrismaPg(databaseUrl);
+const adapter = new PrismaPg({ connectionString: databaseUrl });
 const prisma = new PrismaClient({ adapter });
 
 /** Hash placeholder ÚNICO para todos os usuários seedados. Nunca usar em produção. */

@@ -1,3 +1,5 @@
+import { env } from "@/config/env";
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
 import type { FlashcardDTO } from "@/contracts/flashcards";
 import { auditLog } from "@/server/audit";
 import { assertOwnership, requireUser } from "@/server/authorization";
@@ -25,12 +27,14 @@ const EMPTY_ANSWER_FALLBACK = "Sem resposta anotada — complementar ao revisar.
  *
  * Autorização (ADR-0006): `requireUser` + `assertOwnership`.
  */
-export async function createFromNotes(userId: string, now: Date = new Date()): Promise<FlashcardDTO[]> {
+async function createFromNotesInTransaction(userId: string, now: Date = new Date()): Promise<FlashcardDTO[]> {
   const session = await requireUser();
   assertOwnership(userId, session.userId);
 
   const repos = getRepositories();
-  const drafts = listFlashcardDraftsByUserId(userId);
+  const drafts = env.DATA_SOURCE === "prisma"
+    ? await (await import("@/server/repositories/prisma/note-source-repository")).listNoteSources(userId)
+    : listFlashcardDraftsByUserId(userId);
 
   const deck = await getOrCreatePersonalDeck(userId, "NOTES", NOTES_DECK_TITLE, now);
   const existingCards = await repos.flashcards.listByDeckId(deck.id);
@@ -54,7 +58,7 @@ export async function createFromNotes(userId: string, now: Date = new Date()): P
     });
   }
 
-  auditLog({
+  await auditLog({
     operation: "flashcards.create-from-notes",
     userId,
     entity: "FlashcardDeck",
@@ -66,4 +70,8 @@ export async function createFromNotes(userId: string, now: Date = new Date()): P
 
   const finalCards = await repos.flashcards.listByDeckId(deck.id);
   return toFlashcardDTOs(finalCards, userId, now);
+}
+
+export async function createFromNotes(...args: Parameters<typeof createFromNotesInTransaction>): ReturnType<typeof createFromNotesInTransaction> {
+  return inRepositoryTransaction(() => createFromNotesInTransaction(...args));
 }

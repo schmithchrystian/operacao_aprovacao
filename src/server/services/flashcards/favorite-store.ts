@@ -1,3 +1,5 @@
+import { env } from "@/config/env";
+import { withDomainLock } from "@/server/concurrency/domain-lock";
 import { mockStore } from "@/server/repositories/mock/mock-store";
 
 /**
@@ -43,7 +45,14 @@ export function listFavoriteFlashcardIds(userId: string): string[] {
 
 /** Alterna o favorito (cria se não existir, remove se existir). Retorna o novo estado —
  *  mesmo formato de `QuestionFavoriteRepository.toggle`. */
-export function toggleFavorite(userId: string, flashcardId: string, now: Date): boolean {
+export async function toggleFavorite(userId: string, flashcardId: string, now: Date): Promise<boolean> {
+  if (env.DATA_SOURCE === "prisma") return withDomainLock(`favorite:${userId}:${flashcardId}`, async () => {
+    const { prisma } = await import("@/server/db/prisma");
+    const where = { userId_flashcardId: { userId, flashcardId } };
+    if (await prisma.flashcardFavorite.findUnique({ where })) { await prisma.flashcardFavorite.delete({ where }); return false; }
+    await prisma.flashcardFavorite.create({ data: { userId, flashcardId, createdAt: now } });
+    return true;
+  });
   const index = favorites.findIndex((entry) => entry.userId === userId && entry.flashcardId === flashcardId);
   if (index >= 0) {
     favorites.splice(index, 1);
@@ -56,4 +65,10 @@ export function toggleFavorite(userId: string, flashcardId: string, now: Date): 
 /** Uso exclusivo de testes — restaura o store ao estado inicial (vazio). */
 export function __resetFlashcardFavoriteStore(): void {
   favorites.splice(0, favorites.length);
+}
+
+export async function getFavoriteFlashcardIds(userId: string): Promise<string[]> {
+  if (env.DATA_SOURCE !== "prisma") return listFavoriteFlashcardIds(userId);
+  const { prisma } = await import("@/server/db/prisma");
+  return (await prisma.flashcardFavorite.findMany({ where: { userId }, select: { flashcardId: true } })).map((r) => r.flashcardId);
 }

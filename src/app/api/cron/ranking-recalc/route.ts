@@ -61,7 +61,7 @@ type TargetedRecalcBody = z.infer<typeof targetedRecalcBodySchema>;
 
 async function handleRecalc(request: NextRequest): Promise<NextResponse> {
   if (!isAuthorized(request)) {
-    auditLog({
+    await auditLog({
       operation: "gamification.ranking.recalculate.unauthorized",
       entity: "RankingScore",
       result: "failure",
@@ -80,7 +80,7 @@ async function handleRecalc(request: NextRequest): Promise<NextResponse> {
   const parsedBody = targetedRecalcBodySchema.safeParse(rawBody ?? {});
 
   if (!parsedBody.success) {
-    auditLog({
+    await auditLog({
       operation: "gamification.ranking.recalculate.invalid_body",
       entity: "RankingScore",
       result: "failure",
@@ -111,7 +111,7 @@ async function handleRecalc(request: NextRequest): Promise<NextResponse> {
     const summary = await recalculateAllRankingScopes();
     return NextResponse.json(ok({ scopesRecalculated: summary.length, summary }));
   } catch {
-    auditLog({
+    await auditLog({
       operation: "gamification.ranking.recalculate.failed",
       entity: "RankingScore",
       result: "failure",

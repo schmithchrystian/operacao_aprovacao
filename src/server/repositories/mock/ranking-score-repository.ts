@@ -1,4 +1,5 @@
 import type {
+  FinalizeRankingScopeVersionInput,
   RankingPeriodType,
   RankingScopeType,
   RankingScoreEntity,
@@ -19,10 +20,11 @@ import { mockStore } from "./mock-store";
  * (Server Component) não enxergar o resultado, por rodarem em instâncias de módulo separadas.
  */
 const store = mockStore<RankingScoreEntity[]>("ranking-score", () => []);
+const snapshots = mockStore<Array<Omit<FinalizeRankingScopeVersionInput, "userIds">>>("ranking-snapshots", () => []);
 const sequence = mockStore<{ value: number }>("ranking-score:sequence", () => ({ value: 0 }));
 
 function matchesScope(
-  entry: RankingScoreEntity,
+  entry: Pick<RankingScoreEntity, "periodType" | "periodKey" | "scopeType" | "scopeKey">,
   periodType: RankingPeriodType,
   periodKey: string,
   scopeType: RankingScopeType,
@@ -37,6 +39,20 @@ function matchesScope(
 }
 
 export class MockRankingScoreRepository implements RankingScoreRepository {
+  async listKnownScopes(): Promise<Array<{ scopeType: RankingScopeType; scopeKey: string }>> {
+    return [...new Map([...store, ...snapshots].map(row => [`${row.scopeType}:${row.scopeKey}`, { scopeType: row.scopeType, scopeKey: row.scopeKey }])).values()];
+  }
+  async finalizeScopeVersion(input: FinalizeRankingScopeVersionInput): Promise<void> {
+    const ids = new Set(input.userIds);
+    for (let index = store.length - 1; index >= 0; index -= 1) {
+      const row = store[index]!;
+      if (matchesScope(row, input.periodType, input.periodKey, input.scopeType, input.scopeKey) && row.calculationVersion === input.calculationVersion && !ids.has(row.userId)) store.splice(index, 1);
+    }
+    const index = snapshots.findIndex(row => matchesScope(row, input.periodType, input.periodKey, input.scopeType, input.scopeKey) && row.calculationVersion === input.calculationVersion);
+    const snapshot = { periodType: input.periodType, periodKey: input.periodKey, scopeType: input.scopeType, scopeKey: input.scopeKey, calculationVersion: input.calculationVersion, now: input.now };
+    if (index === -1) snapshots.push(snapshot); else snapshots[index] = snapshot;
+  }
+
   async upsert(input: RankingScoreUpsertInput): Promise<RankingScoreEntity> {
     const index = store.findIndex(
       (entry) =>
@@ -98,7 +114,7 @@ export class MockRankingScoreRepository implements RankingScoreRepository {
     scopeKey: string,
   ): Promise<number[]> {
     const versions = new Set(
-      store
+      [...store, ...snapshots]
         .filter((entry) => matchesScope(entry, periodType, periodKey, scopeType, scopeKey))
         .map((entry) => entry.calculationVersion),
     );
@@ -128,4 +144,5 @@ export class MockRankingScoreRepository implements RankingScoreRepository {
 export function __resetMockRankingScoreStore(): void {
   store.splice(0, store.length);
   sequence.value = 0;
+  snapshots.splice(0, snapshots.length);
 }

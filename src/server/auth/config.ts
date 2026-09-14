@@ -39,6 +39,7 @@ export const authConfig: NextAuthConfig = {
           name: session.name,
           email: session.email,
           role: session.role,
+          sessionVersion: session.sessionVersion,
         };
       },
     }),

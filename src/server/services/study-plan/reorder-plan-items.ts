@@ -54,7 +54,7 @@ export async function reorderPlanItems(
 
   const reordered = await repos.studyPlanItems.reorder(plan.id, input.itemIds, now);
 
-  auditLog({
+  await auditLog({
     operation: "study-plan.reorder-items",
     userId,
     entity: "StudyPlan",

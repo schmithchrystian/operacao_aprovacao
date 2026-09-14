@@ -19,14 +19,21 @@ import { mockStore } from "@/server/repositories/mock/mock-store";
  * Estado via `mockStore` (`@/server/repositories/mock/mock-store`) — compartilhado entre
  * instâncias de módulo (Next.js 16/Turbopack).
  */
-const lastAcceptedAt = mockStore<Map<string, number>>("flashcards-review-rate-limit", () => new Map());
+const lastAcceptedAt = mockStore<Map<string, number>>(
+  "flashcards-review-rate-limit",
+  () => new Map(),
+);
 
 export function reviewCardRateLimitKey(userId: string, flashcardId: string): string {
   return `review-card:${userId}:${flashcardId}`;
 }
 
 /** `true` quando a chamada é aceita (registra o instante); `false` quando está sendo limitada. */
-export function checkFlashcardsRateLimit(key: string, minIntervalMs: number, now: number = Date.now()): boolean {
+export function checkFlashcardsRateLimit(
+  key: string,
+  minIntervalMs: number,
+  now: number = Date.now(),
+): boolean {
   const last = lastAcceptedAt.get(key);
   if (last !== undefined && now - last < minIntervalMs) {
     return false;
@@ -46,11 +53,30 @@ export function assertReviewCardRateLimit(
   now: number = Date.now(),
 ): void {
   if (!checkFlashcardsRateLimit(reviewCardRateLimitKey(userId, flashcardId), minIntervalMs, now)) {
-    throw new RateLimitError("Muitas revisões em sequência para este cartão. Aguarde alguns instantes.");
+    throw new RateLimitError(
+      "Muitas revisões em sequência para este cartão. Aguarde alguns instantes.",
+    );
   }
 }
 
 /** Uso exclusivo de testes — limpa todo o store em memória. */
 export function __resetFlashcardsRateLimitStore(): void {
   lastAcceptedAt.clear();
+}
+
+/** Shared production gate; the synchronous helper remains only for mock tests. */
+export async function assertSharedReviewCardRateLimit(
+  userId: string,
+  flashcardId: string,
+  minIntervalMs: number,
+): Promise<void> {
+  const { reserveInterval } = await import("@/server/concurrency/rate-limit");
+  const key = reviewCardRateLimitKey(userId, flashcardId);
+  if (
+    !(await reserveInterval(key, minIntervalMs, () => checkFlashcardsRateLimit(key, minIntervalMs)))
+  ) {
+    throw new RateLimitError(
+      "Muitas revisões em sequência para este cartão. Aguarde alguns instantes.",
+    );
+  }
 }

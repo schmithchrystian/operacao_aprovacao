@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Bell, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +16,7 @@ import { getCurrentSession } from "@/server/authorization";
 import { logoutAction } from "@/server/actions/auth";
 import { MobileNav } from "./mobile-nav";
 import { ThemeToggle } from "./theme-toggle";
+import { NotificationsMenu } from "./notifications-menu";
 
 function getInitials(name: string): string {
   return name
@@ -44,7 +45,7 @@ export async function Topbar() {
     <header className="border-border bg-background/95 supports-backdrop-filter:bg-background/70 sticky top-0 z-30 flex h-16 items-center gap-3 border-b px-4 backdrop-blur sm:px-6">
       <MobileNav />
 
-      <div className="flex flex-1 items-center gap-2">
+      <form action="/busca" role="search" className="flex flex-1 items-center gap-2">
         <Label htmlFor="global-search" className="sr-only">
           Buscar
         </Label>
@@ -55,35 +56,20 @@ export async function Topbar() {
           />
           <Input
             id="global-search"
+            name="q"
+            required
+            minLength={2}
+            maxLength={100}
             type="search"
             placeholder="Buscar cursos, aulas, flashcards..."
             className="pl-8"
           />
         </div>
-      </div>
+      </form>
 
       <ThemeToggle />
 
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          render={
-            <Button variant="ghost" size="icon" aria-label="Notificações" className="relative" />
-          }
-        >
-          <Bell className="h-4 w-4" aria-hidden="true" />
-          <span
-            className="bg-primary absolute top-1.5 right-1.5 h-2 w-2 rounded-full"
-            aria-hidden="true"
-          />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-72">
-          <DropdownMenuLabel>Notificações</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem disabled className="text-muted-foreground">
-            Nenhuma notificação por enquanto.
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <NotificationsMenu />
 
       <DropdownMenu>
         <DropdownMenuTrigger

@@ -1,3 +1,5 @@
+import { getRepositories } from "@/server/repositories";
+import { ensureAuthenticatedUser } from "../helpers/authenticated-user";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Session as NextAuthSession } from "next-auth";
 import type { BrainstormBoardDTO } from "@/contracts/brainstorm";
@@ -20,7 +22,6 @@ const {
   markResolved,
   convertToFlashcard,
   convertToStudyTask,
-  listFlashcardDraftsByUserId,
 } = await import("@/server/services/brainstorm");
 const { __resetMockBrainstormBoardStore } = await import("@/server/repositories/mock/brainstorm-board-repository");
 const { __resetMockBrainstormColumnStore } = await import("@/server/repositories/mock/brainstorm-column-repository");
@@ -37,6 +38,7 @@ const { SUBJECT_IDS, TOPIC_IDS } = await import("@/mocks");
  * outro usuário sempre rejeitado, anti-IDOR).
  */
 function fakeSession(id: string): NextAuthSession {
+  ensureAuthenticatedUser(id);
   return {
     user: { id, role: "aluno", name: "Teste", email: "teste@example.com" },
     expires: new Date(Date.now() + 60_000).toISOString(),
@@ -407,7 +409,7 @@ describe("services/brainstorm", () => {
   });
 
   describe("convertToFlashcard / convertToStudyTask — idempotentes e coerentes", () => {
-    it("convertToFlashcard marca CONVERTED e não gera um 2º rascunho ao repetir", async () => {
+    it("convertToFlashcard cria Flashcard persistente e reutiliza o mesmo ID ao repetir", async () => {
       const userId = "convert-flashcard-1";
       const board = await seedBoard(userId);
       authMock.mockResolvedValue(fakeSession(userId));
@@ -420,11 +422,11 @@ describe("services/brainstorm", () => {
       const first = await convertToFlashcard(userId, card.id, FIXED_NOW);
       expect(first.status).toBe("CONVERTED");
       expect(first.convertedFlashcardId).not.toBeNull();
-      expect(listFlashcardDraftsByUserId(userId).length).toBe(1);
+      expect(await getRepositories().flashcards.findById(first.convertedFlashcardId!)).toMatchObject({ question: card.title });
 
       const second = await convertToFlashcard(userId, card.id, LATER_NOW);
       expect(second.convertedFlashcardId).toBe(first.convertedFlashcardId);
-      expect(listFlashcardDraftsByUserId(userId).length).toBe(1); // não duplicou o rascunho
+      expect(await getRepositories().flashcards.findById(second.convertedFlashcardId!)).toMatchObject({ question: card.title });
     });
 
     it("convertToFlashcard rejeita cartão de outro usuário (anti-IDOR)", async () => {

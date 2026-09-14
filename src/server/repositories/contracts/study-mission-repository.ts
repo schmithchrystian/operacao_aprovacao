@@ -68,5 +68,7 @@ export interface StudyMissionCreateInput {
 /** Abstração de persistência para missões de estudo (ADR-0002). */
 export interface StudyMissionRepository {
   findById(userId: string, id: string): Promise<StudyMissionEntity | null>;
+  listByUserId(userId: string): Promise<StudyMissionEntity[]>;
+  advance(userId: string, id: string, expectedBlockIndex: number, now: Date): Promise<StudyMissionEntity | null>;
   create(input: StudyMissionCreateInput): Promise<StudyMissionEntity>;
 }

@@ -64,3 +64,29 @@ export function mockStore<T>(key: string, init: () => T): T {
   }
   return registry.get(key) as T;
 }
+
+/** Restore serializable mock data in place; synchronization queues are excluded. */
+export function snapshotMockStores(): () => void {
+  const snapshots = new Map<string, unknown>();
+  for (const [key, value] of getRegistry()) {
+    if (key.includes("lock") || key.includes("rate-limit")) continue;
+    snapshots.set(key, structuredClone(value));
+  }
+  return () => {
+    for (const [key, snapshot] of snapshots) {
+      const current = getRegistry().get(key);
+      if (Array.isArray(current) && Array.isArray(snapshot)) {
+        current.splice(0, current.length, ...snapshot);
+      } else if (current instanceof Map && snapshot instanceof Map) {
+        current.clear();
+        for (const [k, v] of snapshot) current.set(k, v);
+      } else if (current instanceof Set && snapshot instanceof Set) {
+        current.clear();
+        for (const v of snapshot) current.add(v);
+      } else if (typeof current === "object" && current !== null && typeof snapshot === "object" && snapshot !== null) {
+        for (const k of Object.keys(current)) Reflect.deleteProperty(current, k);
+        Object.assign(current, snapshot);
+      }
+    }
+  };
+}

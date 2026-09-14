@@ -1,3 +1,4 @@
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
 import { STUDY_PLAN } from "@/config/business";
 import type { BrainstormCardDTO } from "@/contracts/brainstorm";
 import { auditLog } from "@/server/audit";
@@ -18,7 +19,7 @@ import { loadOwnedCard } from "./shared";
  *
  * Autorização (ADR-0006): `requireUser` + `assertOwnership` + `loadOwnedCard` (anti-IDOR).
  */
-export async function convertToStudyTask(
+async function convertToStudyTaskInTransaction(
   userId: string,
   cardId: string,
   now: Date = new Date(),
@@ -70,7 +71,7 @@ export async function convertToStudyTask(
     now,
   });
 
-  auditLog({
+  await auditLog({
     operation: "brainstorm.convert-to-study-task",
     userId,
     entity: "BrainstormCard",
@@ -81,4 +82,8 @@ export async function convertToStudyTask(
   });
 
   return toBrainstormCardDTO(updated, column.name);
+}
+
+export async function convertToStudyTask(...args: Parameters<typeof convertToStudyTaskInTransaction>): ReturnType<typeof convertToStudyTaskInTransaction> {
+  return inRepositoryTransaction(() => convertToStudyTaskInTransaction(...args));
 }

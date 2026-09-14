@@ -54,7 +54,7 @@ export async function createCard(
     now,
   });
 
-  auditLog({
+  await auditLog({
     operation: "flashcards.create-card",
     userId,
     entity: "Flashcard",

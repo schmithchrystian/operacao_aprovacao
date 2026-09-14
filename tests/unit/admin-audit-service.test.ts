@@ -20,6 +20,21 @@ function fakeSession(role: NextAuthSession["user"]["role"], id: string): NextAut
 const NOW = new Date("2026-07-14T10:00:00.000Z");
 
 describe("services/admin/audit — Fase 17", () => {
+  it("records a denied administrative operation without invoking its handler", async () => {
+    const { withAdminAudit } = await import("@/server/audit/with-admin-audit");
+    const { getAuditRecords } = await import("@/server/audit/log");
+    authMock.mockResolvedValue(null);
+    const handler = vi.fn();
+    await expect(
+      withAdminAudit({ operation: "test.denied", entity: "Test" }, handler)(),
+    ).rejects.toThrow();
+    expect(handler).not.toHaveBeenCalled();
+    expect(
+      getAuditRecords().some(
+        (entry) => entry.operation === "test.denied" && entry.result === "failure",
+      ),
+    ).toBe(true);
+  });
   beforeEach(() => {
     authMock.mockReset();
     __resetMockSubjectStore();
@@ -27,7 +42,9 @@ describe("services/admin/audit — Fase 17", () => {
 
   it("moderador NÃO pode visualizar o log de auditoria (só admin)", async () => {
     authMock.mockResolvedValue(fakeSession("moderador", "user-3"));
-    await expect(listAuditLogForAdmin({ page: 1, pageSize: 20 })).rejects.toThrow("Você não tem permissão");
+    await expect(listAuditLogForAdmin({ page: 1, pageSize: 20 })).rejects.toThrow(
+      "Você não tem permissão",
+    );
   });
 
   it("admin visualiza entradas registradas por operações administrativas anteriores", async () => {
@@ -40,9 +57,19 @@ describe("services/admin/audit — Fase 17", () => {
     // Nunca deve conter dados sensíveis não relacionados — cada entrada só tem os campos do
     // contrato (operation/userId/entity/entityId/result/correlationId/metadata).
     for (const entry of page.items) {
-      expect(Object.keys(entry).every((key) =>
-        ["operation", "userId", "entity", "entityId", "result", "correlationId", "metadata"].includes(key),
-      )).toBe(true);
+      expect(
+        Object.keys(entry).every((key) =>
+          [
+            "operation",
+            "userId",
+            "entity",
+            "entityId",
+            "result",
+            "correlationId",
+            "metadata",
+          ].includes(key),
+        ),
+      ).toBe(true);
     }
   });
 
@@ -50,7 +77,11 @@ describe("services/admin/audit — Fase 17", () => {
     authMock.mockResolvedValue(fakeSession("admin", "user-4"));
     await createSubjectForAdmin({ name: "Outra Matéria" }, NOW);
 
-    const filtered = await listAuditLogForAdmin({ operation: "admin.subjects.create", page: 1, pageSize: 20 });
+    const filtered = await listAuditLogForAdmin({
+      operation: "admin.subjects.create",
+      page: 1,
+      pageSize: 20,
+    });
     expect(filtered.items.every((entry) => entry.operation === "admin.subjects.create")).toBe(true);
   });
 });

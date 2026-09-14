@@ -1,3 +1,4 @@
+import { ensureAuthenticatedUser } from "../helpers/authenticated-user";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Session as NextAuthSession } from "next-auth";
 
@@ -5,6 +6,7 @@ import type { Session as NextAuthSession } from "next-auth";
 // importar o módulo sob teste — mesmo padrão de `tests/unit/gamification-engine.test.ts`.
 const { authMock } = vi.hoisted(() => ({ authMock: vi.fn() }));
 vi.mock("@/server/auth", () => ({ auth: authMock }));
+
 
 const { getRanking, anonymizedRankingName } = await import("@/server/services/gamification/ranking/read");
 const { recalculateRankingForScope } = await import("@/server/services/gamification/ranking/recalculate");
@@ -15,6 +17,7 @@ const { __resetMockProfileStore } = await import("@/server/repositories/mock/pro
 const { RANKING_PAGE_SIZE } = await import("@/config/business");
 
 function fakeSession(id: string): NextAuthSession {
+  ensureAuthenticatedUser(id);
   return {
     user: { id, role: "aluno", name: "Teste", email: "teste@example.com" },
     expires: new Date(Date.now() + 60_000).toISOString(),

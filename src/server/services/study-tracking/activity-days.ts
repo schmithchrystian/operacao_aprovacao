@@ -58,36 +58,75 @@ export function toCalendarDateIso(instantIso: string, timezone: string = DEFAULT
  * `validSeconds > 0` (tempo válido de fato, nunca `fim - início` bruto — a reconstrução já
  * aconteceu em `heartbeat-evaluator.ts`; aqui só se AGREGA o resultado).
  *
- * LIMITAÇÃO CONHECIDA (documentada, não um bug): o dia atribuído a uma sessão é o de
+ * Para snapshots legados/mock, o dia atribuído a uma sessão é o de
  * `lastHeartbeatAt` (último heartbeat aceito) — uma sessão que atravessa a meia-noite tem TODO
  * o seu `validSeconds` contado no dia do ÚLTIMO heartbeat, não distribuído entre os dois dias.
  * Aceitável para o MVP (sessões de vídeo/Pomodoro são tipicamente curtas, minutos, não horas
  * atravessando a virada do dia) — pendência registrada no relatório da Fase 12.
  */
+
+export interface ValidActivityInterval {
+  validSeconds: number;
+  lastHeartbeatAt: string;
+  activityStartedAt?: string;
+}
 export function toActivityDates(
-  sessions: readonly { validSeconds: number; lastHeartbeatAt: string }[],
+  sessions: readonly ValidActivityInterval[],
   timezone: string = DEFAULT_TIMEZONE,
 ): string[] {
-  const dates = new Set<string>();
-  for (const session of sessions) {
-    if (session.validSeconds <= 0) continue;
-    dates.add(toCalendarDateIso(session.lastHeartbeatAt, timezone));
-  }
-  return [...dates];
+  return [...sumValidSecondsByDate(sessions, timezone).keys()];
 }
-
-/** Soma de `validSeconds`, agrupada por dia civil (mesma resolução de `toActivityDates`). */
+/** Accepted seconds are attributed to their short credited interval, split at civil midnight.
+ * Legacy/mock snapshots without an interval preserve their documented last-heartbeat semantics. */
 export function sumValidSecondsByDate(
-  sessions: readonly { validSeconds: number; lastHeartbeatAt: string }[],
+  sessions: readonly ValidActivityInterval[],
   timezone: string = DEFAULT_TIMEZONE,
 ): Map<string, number> {
-  const byDate = new Map<string, number>();
-  for (const session of sessions) {
-    if (session.validSeconds <= 0) continue;
-    const date = toCalendarDateIso(session.lastHeartbeatAt, timezone);
-    byDate.set(date, (byDate.get(date) ?? 0) + session.validSeconds);
+  const totals = new Map<string, number>();
+  const add = (date: string, seconds: number) => {
+    if (seconds > 0) totals.set(date, (totals.get(date) ?? 0) + seconds);
+  };
+  for (const sample of sessions) {
+    if (!Number.isFinite(sample.validSeconds) || sample.validSeconds <= 0) continue;
+    const end = Date.parse(sample.lastHeartbeatAt),
+      start = sample.activityStartedAt ? Date.parse(sample.activityStartedAt) : end;
+    if (!Number.isFinite(start) || !Number.isFinite(end)) continue;
+    if (start >= end) {
+      add(toCalendarDateIso(sample.lastHeartbeatAt, timezone), sample.validSeconds);
+      continue;
+    }
+    let cursor = start;
+    while (cursor < end) {
+      const date = toCalendarDateIso(new Date(cursor).toISOString(), timezone);
+      let boundary = end;
+      if (toCalendarDateIso(new Date(end - 1).toISOString(), timezone) !== date) {
+        let low = cursor,
+          high = end;
+        while (high - low > 1) {
+          const mid = Math.floor((low + high) / 2);
+          if (toCalendarDateIso(new Date(mid).toISOString(), timezone) === date) low = mid;
+          else high = mid;
+        }
+        boundary = high;
+      }
+      add(date, (sample.validSeconds * (boundary - cursor)) / (end - start));
+      cursor = boundary;
+    }
   }
-  return byDate;
+  return totals;
+}
+/** Clip accepted activity to a ranking window without moving its previous-day seconds. */
+export function validSecondsWithinWindow(
+  sample: ValidActivityInterval,
+  start: Date,
+  end: Date,
+): number {
+  const until = Date.parse(sample.lastHeartbeatAt),
+    from = sample.activityStartedAt ? Date.parse(sample.activityStartedAt) : until;
+  if (from >= until)
+    return until >= start.getTime() && until < end.getTime() ? sample.validSeconds : 0;
+  const overlap = Math.max(0, Math.min(until, end.getTime()) - Math.max(from, start.getTime()));
+  return (sample.validSeconds * overlap) / (until - from);
 }
 
 export interface StreakComputation {

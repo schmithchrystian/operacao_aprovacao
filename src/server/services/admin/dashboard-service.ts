@@ -1,20 +1,11 @@
+import { env } from "@/config/env";
+import { countActiveSubscriptions } from "@/server/repositories/prisma/billing-repository";
 import type { AdminDashboardDTO } from "@/contracts/admin-dashboard";
 import { withAdminAudit } from "@/server/audit/with-admin-audit";
 import { getRepositories } from "@/server/repositories";
 import { CONTENT_MANAGE_ROLES } from "./roles";
 
-/**
- * Dashboard administrativo (Fase 17 — "moderador pode... ver dashboard", agente `backend`).
- * Agrega métricas REAIS a partir dos repositórios já existentes — nenhum valor é uma segunda
- * fonte de verdade paralela. Ver PENDÊNCIAS explícitas em `@/contracts/admin-dashboard.ts`
- * (`activeSubscriptions` mock/derivado, `engagementScore` heurística).
- *
- * Implementação por ITERAÇÃO sobre `users.list()` (poucos usuários no mock) — uma implementação
- * Prisma real deve substituir isto por consultas agregadas (`GROUP BY`/`COUNT`) em vez de N+1;
- * documentado aqui e não corrigido porque TODOS os repositórios Prisma deste projeto ainda são
- * stubs "not implemented" (fase de banco).
- */
-
+// Aggregate repository data; optimize per-user queries before increasing deployment capacity.
 const EPOCH_ISO = "1970-01-01T00:00:00.000Z";
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 const TOP_N = 5;
@@ -65,7 +56,10 @@ export const getAdminDashboard = withAdminAudit(
       }
 
       for (const attempt of attempts) {
-        mockExamAttemptCounts.set(attempt.mockExamId, (mockExamAttemptCounts.get(attempt.mockExamId) ?? 0) + 1);
+        mockExamAttemptCounts.set(
+          attempt.mockExamId,
+          (mockExamAttemptCounts.get(attempt.mockExamId) ?? 0) + 1,
+        );
         if (attempt.status === "FINISHED" && attempt.scorePercent !== null) {
           totalScoreSum += attempt.scorePercent;
           totalScoreCount += 1;
@@ -73,20 +67,27 @@ export const getAdminDashboard = withAdminAudit(
       }
 
       for (const enrollment of enrollments) {
-        courseEnrollmentCounts.set(enrollment.courseId, (courseEnrollmentCounts.get(enrollment.courseId) ?? 0) + 1);
+        courseEnrollmentCounts.set(
+          enrollment.courseId,
+          (courseEnrollmentCounts.get(enrollment.courseId) ?? 0) + 1,
+        );
       }
     }
 
     const [courses, lessonEntries, mockExamEntries] = await Promise.all([
       repos.courses.listForAdmin(),
-      Promise.all(topEntries(lessonViewCounts, TOP_N).map(async ([lessonId, count]) => {
-        const lesson = await repos.lessons.findById(lessonId);
-        return { lessonId, title: lesson?.title ?? lessonId, viewCount: count };
-      })),
-      Promise.all(topEntries(mockExamAttemptCounts, TOP_N).map(async ([mockExamId, count]) => {
-        const exam = await repos.mockExams.findById(mockExamId);
-        return { mockExamId, title: exam?.title ?? mockExamId, attemptCount: count };
-      })),
+      Promise.all(
+        topEntries(lessonViewCounts, TOP_N).map(async ([lessonId, count]) => {
+          const lesson = await repos.lessons.findById(lessonId);
+          return { lessonId, title: lesson?.title ?? lessonId, viewCount: count };
+        }),
+      ),
+      Promise.all(
+        topEntries(mockExamAttemptCounts, TOP_N).map(async ([mockExamId, count]) => {
+          const exam = await repos.mockExams.findById(mockExamId);
+          return { mockExamId, title: exam?.title ?? mockExamId, attemptCount: count };
+        }),
+      ),
     ]);
 
     const courseTitleById = new Map(courses.map((course) => [course.id, course.title]));
@@ -97,12 +98,16 @@ export const getAdminDashboard = withAdminAudit(
     }));
 
     const completionRatePercent =
-      totalLessonProgressRecords > 0 ? (completedLessonProgressRecords / totalLessonProgressRecords) * 100 : 0;
+      totalLessonProgressRecords > 0
+        ? (completedLessonProgressRecords / totalLessonProgressRecords) * 100
+        : 0;
     const averagePerformancePercent = totalScoreCount > 0 ? totalScoreSum / totalScoreCount : 0;
-    const retentionRatePercent = totalStudents > 0 ? (activeStudentsInWindow / totalStudents) * 100 : 0;
+    const retentionRatePercent =
+      totalStudents > 0 ? (activeStudentsInWindow / totalStudents) * 100 : 0;
     // Heurística simples (ver PENDÊNCIA no contrato) — média de conclusão e retenção.
     const engagementScore = (completionRatePercent + retentionRatePercent) / 2;
-    const averageStudyMinutesPerStudent = totalStudents > 0 ? totalValidSeconds / 60 / totalStudents : 0;
+    const averageStudyMinutesPerStudent =
+      totalStudents > 0 ? totalValidSeconds / 60 / totalStudents : 0;
 
     return {
       totalStudents,
@@ -116,8 +121,7 @@ export const getAdminDashboard = withAdminAudit(
       topCourses,
       topLessons: lessonEntries,
       topMockExams: mockExamEntries,
-      // TODO — sem `SubscriptionRepository` ainda (ver PENDÊNCIA no contrato).
-      activeSubscriptions: 0,
+      activeSubscriptions: env.DATA_SOURCE === "prisma" ? await countActiveSubscriptions(now) : 0,
       generatedAt: now.toISOString(),
     };
   },

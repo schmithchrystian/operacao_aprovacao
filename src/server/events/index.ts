@@ -5,6 +5,12 @@
  *
  * TODO Fases futuras: outbox persistido (tabela) + consumidores idempotentes reais.
  */
+import { randomUUID } from "node:crypto";
+import { env } from "@/config/env";
+import { mockStore } from "@/server/repositories/mock/mock-store";
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
+import type { Prisma } from "@/generated/prisma/client";
+
 export interface DomainEvent<TPayload = unknown> {
   /** Nome do evento, ex.: "LessonCompleted". */
   type: string;
@@ -32,8 +38,11 @@ interface OutboxRecord {
 
 /** Implementação em memória do barramento — placeholder até existir outbox persistido. */
 export class InMemoryEventBus implements EventBus {
-  private readonly handlers = new Map<string, EventHandler[]>();
-  private readonly processed = new Map<string, OutboxRecord>();
+  protected readonly handlers = new Map<string, EventHandler[]>();
+  private readonly processed = mockStore<Map<string, OutboxRecord>>(
+    `eventbus:${randomUUID()}`,
+    () => new Map(),
+  );
 
   async emit<TPayload>(event: DomainEvent<TPayload>): Promise<void> {
     if (this.processed.has(event.idempotencyKey)) {
@@ -64,5 +73,37 @@ export class InMemoryEventBus implements EventBus {
   }
 }
 
-/** Instância única de processo — suficiente para o MVP sem runtime residente dedicado. */
-export const eventBus: EventBus = new InMemoryEventBus();
+/** Event and all local consumers commit with the domain write; failures roll back together. */
+class PersistentEventBus extends InMemoryEventBus {
+  async emit<TPayload>(event: DomainEvent<TPayload>): Promise<void> {
+    await inRepositoryTransaction(async () => {
+      const { prisma } = await import("@/server/db/prisma");
+      // INSERT ON CONFLICT DO NOTHING avoids Prisma's read/create upsert race.
+      await prisma.domainOutbox.createMany({
+        skipDuplicates: true,
+        data: [
+          {
+            idempotencyKey: event.idempotencyKey,
+            type: event.type,
+            payload: JSON.parse(JSON.stringify(event.payload)) as Prisma.InputJsonValue,
+            occurredAt: event.occurredAt,
+          },
+        ],
+      });
+      const record = await prisma.domainOutbox.findUniqueOrThrow({
+        where: { idempotencyKey: event.idempotencyKey },
+      });
+      if (record.status === "PROCESSED") return;
+      for (const handler of this.handlers.get(record.type) ?? []) {
+        await handler({ ...event, payload: record.payload });
+      }
+      await prisma.domainOutbox.update({
+        where: { id: record.id },
+        data: { status: "PROCESSED", processedAt: new Date(), attempts: { increment: 1 } },
+      });
+    });
+  }
+}
+
+export const eventBus: EventBus =
+  env.DATA_SOURCE === "prisma" ? new PersistentEventBus() : new InMemoryEventBus();

@@ -1,3 +1,5 @@
+import { headers } from "next/headers";
+import { connection } from "next/server";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "./providers";
@@ -22,11 +24,13 @@ export const metadata: Metadata = {
     "Plataforma de cursos preparatórios para concursos de segurança pública, com trilhas de estudo, simulados, flashcards, plano de estudos e gamificação.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await connection();
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
     <html
       lang="pt-BR"
@@ -34,7 +38,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-background text-foreground flex min-h-full flex-col">
-        <Providers>{children}</Providers>
+        <Providers nonce={nonce}>{children}</Providers>
       </body>
     </html>
   );

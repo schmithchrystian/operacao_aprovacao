@@ -1,45 +1,79 @@
+import { Prisma, type Achievement as Row } from "@/generated/prisma/client";
 import type {
-  AchievementCreateInput,
   AchievementEntity,
   AchievementRepository,
+  AchievementCreateInput,
   AchievementUpdateInput,
 } from "../contracts/achievement-repository";
-
-/**
- * Stub Prisma — implementação real cabe ao agente `database` a partir da Fase de banco.
- * Proibido importar `@prisma/client` fora de `server/repositories/prisma/**` (ADR-0002).
- */
+// Metadata CRUD does not change the separate gamification unlock predicates.
+function map(row: Row): AchievementEntity {
+  return {
+    id: row.id,
+    key: row.key,
+    name: row.name,
+    description: row.description,
+    icon: row.icon,
+    criteria: row.criteria,
+    points: row.points,
+    deletedAt: row.deletedAt?.toISOString() ?? null,
+  };
+}
+function json(value: unknown) {
+  return value === null
+    ? Prisma.DbNull
+    : (JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue);
+}
 export class PrismaAchievementRepository implements AchievementRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findById(_id: string): Promise<AchievementEntity | null> {
-    throw new Error("not implemented: PrismaAchievementRepository.findById");
+  async findById(id: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    const row = await prisma.achievement.findUnique({ where: { id } });
+    return row ? map(row) : null;
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findByKey(_key: string): Promise<AchievementEntity | null> {
-    throw new Error("not implemented: PrismaAchievementRepository.findByKey");
+  async findByKey(key: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    const row = await prisma.achievement.findUnique({ where: { key } });
+    return row ? map(row) : null;
   }
-
-  async list(): Promise<AchievementEntity[]> {
-    throw new Error("not implemented: PrismaAchievementRepository.list");
+  async list() {
+    const { prisma } = await import("@/server/db/prisma");
+    return (
+      await prisma.achievement.findMany({ where: { deletedAt: null }, orderBy: { name: "asc" } })
+    ).map(map);
   }
-
-  async listForAdmin(): Promise<AchievementEntity[]> {
-    throw new Error("not implemented: PrismaAchievementRepository.listForAdmin");
+  async listForAdmin() {
+    const { prisma } = await import("@/server/db/prisma");
+    return (await prisma.achievement.findMany({ orderBy: { name: "asc" } })).map(map);
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async create(_input: AchievementCreateInput): Promise<AchievementEntity> {
-    throw new Error("not implemented: PrismaAchievementRepository.create");
+  async create({ now, criteria, ...data }: AchievementCreateInput) {
+    const { prisma } = await import("@/server/db/prisma");
+    return map(
+      await prisma.achievement.create({
+        data: {
+          ...data,
+          ...(criteria === undefined ? {} : { criteria: json(criteria) }),
+          createdAt: now,
+          updatedAt: now,
+        },
+      }),
+    );
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async update(_input: AchievementUpdateInput): Promise<AchievementEntity> {
-    throw new Error("not implemented: PrismaAchievementRepository.update");
+  async update({ id, now, criteria, ...data }: AchievementUpdateInput) {
+    const { prisma } = await import("@/server/db/prisma");
+    return map(
+      await prisma.achievement.update({
+        where: { id },
+        data: {
+          ...data,
+          ...(criteria === undefined ? {} : { criteria: json(criteria) }),
+          updatedAt: now,
+        },
+      }),
+    );
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async softDelete(_id: string, _now: Date): Promise<AchievementEntity> {
-    throw new Error("not implemented: PrismaAchievementRepository.softDelete");
+  async softDelete(id: string, now: Date) {
+    const { prisma } = await import("@/server/db/prisma");
+    return map(
+      await prisma.achievement.update({ where: { id }, data: { deletedAt: now, updatedAt: now } }),
+    );
   }
 }

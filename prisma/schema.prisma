@@ -208,16 +208,24 @@ enum SubscriptionStatus {
 /// Conta de autenticação. `role` é o papel primário (fast-path de autorização,
 /// ADR-0006); `userRoles` permite papéis adicionais/customizados via RBAC granular.
 model User {
-  id            String     @id @default(cuid())
-  name          String
-  email         String     @unique
-  passwordHash  String
-  role          SystemRole @default(STUDENT)
-  emailVerified DateTime?
-  isActive      Boolean    @default(true)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  deletedAt     DateTime?
+  billingCheckout           BillingCheckout?
+  requiresEmailVerification Boolean             @default(false)
+  sessionVersion            Int                 @default(0)
+  accountTokens             AccountToken[]
+  flashcardFavorites        FlashcardFavorite[]
+  lessonNotes               LessonNote[]
+  focusSessions             FocusSession[]
+  studyMissions             StudyMission[]
+  id                        String              @id @default(cuid())
+  name                      String
+  email                     String              @unique
+  passwordHash              String
+  role                      SystemRole          @default(STUDENT)
+  emailVerified             DateTime?
+  isActive                  Boolean             @default(true)
+  createdAt                 DateTime            @default(now())
+  updatedAt                 DateTime            @updatedAt
+  deletedAt                 DateTime?
 
   profile   Profile?
   userRoles UserRole[]
@@ -254,8 +262,10 @@ model User {
 
 /// Dados de perfil público/privado do aluno. 1:1 com User.
 model Profile {
-  id     String @id @default(cuid())
-  userId String @unique
+  showStudyHours  Boolean @default(true)
+  showPerformance Boolean @default(true)
+  id              String  @id @default(cuid())
+  userId          String  @unique
 
   bio             String?
   avatarUrl       String?
@@ -351,16 +361,20 @@ model Contest {
 }
 
 model Course {
-  id            String        @id @default(cuid())
-  slug          String        @unique
+  teacherName   String           @default("")
+  workloadHours Float            @default(0)
+  coverColor    String           @default("#1F2937")
+  difficulty    CourseDifficulty @default(iniciante)
+  id            String           @id @default(cuid())
+  slug          String           @unique
   title         String
   description   String
   coverImageUrl String?
-  status        ContentStatus @default(DRAFT)
+  status        ContentStatus    @default(DRAFT)
   contestId     String?
   createdById   String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
   deletedAt     DateTime?
 
   contest     Contest?     @relation(fields: [contestId], references: [id])
@@ -374,6 +388,9 @@ model Course {
 }
 
 model Module {
+  subjectId   String?
+  slug        String?
+  subject     Subject?      @relation(fields: [subjectId], references: [id])
   id          String        @id @default(cuid())
   courseId    String
   title       String
@@ -390,6 +407,7 @@ model Module {
   lessons Lesson[]
 
   @@unique([courseId, order])
+  @@index([subjectId])
   @@index([teacherId])
   @@index([deletedAt])
 }
@@ -397,7 +415,9 @@ model Module {
 /// Aula. `minCompletionPercent` sobrescreve o default global (`LESSON_COMPLETION_MIN_PERCENT`,
 /// 80% — CLAUDE.md §12/§13) quando necessário para uma aula específica.
 model Lesson {
-  id                   String        @id @default(cuid())
+  notes                LessonNote[]
+  studySessions        StudySession[]
+  id                   String         @id @default(cuid())
   moduleId             String
   title                String
   description          String?
@@ -408,10 +428,10 @@ model Lesson {
   teacherId            String?
   minCompletionPercent Float?
   requiresLessonId     String?
-  status               ContentStatus @default(DRAFT)
+  status               ContentStatus  @default(DRAFT)
   publishedAt          DateTime?
-  createdAt            DateTime      @default(now())
-  updatedAt            DateTime      @updatedAt
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
   deletedAt            DateTime?
 
   module         Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
@@ -466,12 +486,14 @@ model LessonProgress {
 }
 
 model Subject {
-  id        String    @id @default(cuid())
-  slug      String    @unique
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  focusSessions FocusSession[]
+  modules       Module[]
+  id            String         @id @default(cuid())
+  slug          String         @unique
+  name          String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  deletedAt     DateTime?
 
   topics          Topic[]
   questions       Question[]
@@ -484,13 +506,14 @@ model Subject {
 }
 
 model Topic {
-  id        String    @id @default(cuid())
-  subjectId String
-  slug      String
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  focusSessions FocusSession[]
+  id            String         @id @default(cuid())
+  subjectId     String
+  slug          String
+  name          String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  deletedAt     DateTime?
 
   subject         Subject          @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   questions       Question[]
@@ -551,19 +574,29 @@ model Enrollment {
 /// (`validSeconds`) é reconstruído a partir de `StudyActivity` — nunca aceito como
 /// diferença bruta entre início e fim enviada pelo cliente (CLAUDE.md §14).
 model StudySession {
-  id           String             @id @default(cuid())
-  userId       String
-  source       StudySessionSource
-  status       StudySessionStatus @default(ACTIVE)
-  startedAt    DateTime           @default(now())
-  endedAt      DateTime?
-  validSeconds Int                @default(0)
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
+  clientSessionId     String?
+  lessonId            String?
+  lastHeartbeatAt     DateTime?
+  lastPositionSeconds Float              @default(0)
+  lastClientTimestamp Float?
+  coveredIntervals    Json               @default("[]")
+  heartbeatCount      Int                @default(0)
+  lesson              Lesson?            @relation(fields: [lessonId], references: [id])
+  id                  String             @id @default(cuid())
+  userId              String
+  source              StudySessionSource
+  status              StudySessionStatus @default(ACTIVE)
+  startedAt           DateTime           @default(now())
+  endedAt             DateTime?
+  validSeconds        Float              @default(0)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
 
   user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   activities StudyActivity[]
 
+  @@unique([userId, lessonId, clientSessionId])
+  @@index([userId, lastHeartbeatAt])
   @@index([userId, startedAt])
   @@index([status])
 }
@@ -604,6 +637,7 @@ model StudyPlan {
 }
 
 model StudyPlanItem {
+  kind             StudyPlanItemKind   @default(STUDY)
   id               String              @id @default(cuid())
   studyPlanId      String
   subjectId        String?
@@ -635,6 +669,7 @@ model StudyPlanItem {
 // =============================================================================
 
 model MockExam {
+  isPersonal      Boolean       @default(false)
   id              String        @id @default(cuid())
   title           String
   description     String?
@@ -722,19 +757,20 @@ model MockExamQuestion {
 /// garantindo que a mesma tentativa não seja finalizada (nem pontuada) duas vezes
 /// (CLAUDE.md §18/§25). Ver limitação documentada em docs/DATA-MODEL.md.
 model MockExamAttempt {
-  id           String                @id @default(cuid())
-  userId       String
-  mockExamId   String
-  status       MockExamAttemptStatus @default(IN_PROGRESS)
-  startedAt    DateTime              @default(now())
-  finishedAt   DateTime?
-  correctCount Int?
-  wrongCount   Int?
-  blankCount   Int?
-  scorePercent Float?
-  version      Int                   @default(0)
-  createdAt    DateTime              @default(now())
-  updatedAt    DateTime              @updatedAt
+  timeLimitSeconds Int?
+  id               String                @id @default(cuid())
+  userId           String
+  mockExamId       String
+  status           MockExamAttemptStatus @default(IN_PROGRESS)
+  startedAt        DateTime              @default(now())
+  finishedAt       DateTime?
+  correctCount     Int?
+  wrongCount       Int?
+  blankCount       Int?
+  scorePercent     Float?
+  version          Int                   @default(0)
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
 
   user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   mockExam         MockExam          @relation(fields: [mockExamId], references: [id])
@@ -789,13 +825,14 @@ model QuestionFavorite {
 
 /// Baralho de flashcards. `userId` nulo = baralho do sistema (compartilhado/público).
 model FlashcardDeck {
-  id        String    @id @default(cuid())
+  kind      FlashcardDeckKind @default(PERSONAL)
+  id        String            @id @default(cuid())
   userId    String?
   subjectId String?
   title     String
-  isPublic  Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  isPublic  Boolean           @default(false)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
   deletedAt DateTime?
 
   user       User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -807,17 +844,18 @@ model FlashcardDeck {
 }
 
 model Flashcard {
-  id         String        @id @default(cuid())
+  favorites  FlashcardFavorite[]
+  id         String              @id @default(cuid())
   deckId     String
   subjectId  String?
   topicId    String?
   question   String
   answer     String
-  difficulty Difficulty    @default(MEDIUM)
-  tags       String[]      @default([])
-  status     ContentStatus @default(PUBLISHED)
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  difficulty Difficulty          @default(MEDIUM)
+  tags       String[]            @default([])
+  status     ContentStatus       @default(PUBLISHED)
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
   deletedAt  DateTime?
 
   deck    FlashcardDeck     @relation(fields: [deckId], references: [id], onDelete: Cascade)
@@ -886,6 +924,7 @@ model BrainstormColumn {
 }
 
 model BrainstormCard {
+  type                     BrainstormCardType     @default(ANOTACAO)
   id                       String                 @id @default(cuid())
   columnId                 String
   subjectId                String?
@@ -1104,6 +1143,7 @@ model Subscription {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([provider, externalId])
   @@index([userId, status])
   @@index([externalId])
 }
@@ -1126,4 +1166,228 @@ model AuditLog {
 
   @@index([entityType, entityId, createdAt])
   @@index([actorUserId, createdAt])
+}
+
+enum CourseDifficulty {
+  iniciante
+  intermediario
+  avancado
+}
+
+enum StudyPlanItemKind {
+  STUDY
+  REVIEW
+  MOCK_EXAM
+  CUSTOM
+}
+
+enum FlashcardDeckKind {
+  SUBJECT
+  PERSONAL
+  ERRORS
+  NOTES
+}
+
+enum BrainstormCardType {
+  IDEIA
+  DUVIDA
+  RESUMO
+  ANOTACAO
+}
+
+enum FocusMode {
+  FOCUS_25_5
+  FOCUS_50_10
+  QUICK_15
+  INTENSE_90
+  FREE
+  CUSTOM
+}
+
+model FocusSession {
+  subject             Subject?           @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  topic               Topic?             @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  activities          FocusActivity[]
+  id                  String             @id @default(cuid())
+  userId              String
+  mode                FocusMode
+  status              StudySessionStatus @default(ACTIVE)
+  targetSeconds       Int
+  breakSeconds        Int
+  subjectId           String?
+  topicId             String?
+  objective           String?
+  startedAt           DateTime
+  endedAt             DateTime?
+  lastHeartbeatAt     DateTime
+  lastClientTimestamp Float?
+  activeSeconds       Float              @default(0)
+  heartbeatCount      Int                @default(0)
+  validHeartbeatCount Int                @default(0)
+  cyclesPlanned       Int                @default(1)
+  cyclesCompleted     Int                @default(0)
+  goalAchieved        Boolean?
+  contentStudied      String?
+  focusLevel          Int?
+  doubtNote           String?
+  scored              Boolean            @default(false)
+  updatedAt           DateTime           @updatedAt
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+}
+
+model StudyMission {
+  id                String             @id @default(cuid())
+  userId            String
+  status            StudySessionStatus @default(ACTIVE)
+  blocks            Json
+  currentBlockIndex Int                @default(0)
+  totalMinutes      Int
+  startedAt         DateTime
+  updatedAt         DateTime           @updatedAt
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startedAt])
+}
+
+model SecurityRateLimit {
+  key         String    @id
+  count       Int       @default(0)
+  windowStart DateTime
+  lockedUntil DateTime?
+
+  @@index([windowStart])
+}
+
+model PersistentLock {
+  key       String   @id
+  token     String
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
+
+model BusinessConfig {
+  id        String   @id
+  value     Json
+  version   Int      @default(1)
+  updatedAt DateTime @updatedAt
+}
+
+model DomainOutbox {
+  id             String                  @id @default(cuid())
+  idempotencyKey String                  @unique
+  type           String
+  payload        Json
+  occurredAt     DateTime
+  status         GamificationEventStatus @default(PENDING)
+  attempts       Int                     @default(0)
+  availableAt    DateTime                @default(now())
+  createdAt      DateTime                @default(now())
+  processedAt    DateTime?
+
+  @@index([status, availableAt])
+}
+
+model FocusActivity {
+  id             String       @id @default(cuid())
+  sessionId      String
+  heartbeatCount Int
+  occurredAt     DateTime
+  payload        Json
+  session        FocusSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, heartbeatCount])
+  @@index([sessionId, occurredAt])
+}
+
+model FlashcardFavorite {
+  userId      String
+  flashcardId String
+  createdAt   DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  flashcard   Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
+
+  @@id([userId, flashcardId])
+  @@index([flashcardId])
+}
+
+model LessonNote {
+  userId    String
+  lessonId  String
+  content   String
+  version   Int      @default(1)
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@id([userId, lessonId])
+  @@index([lessonId])
+}
+
+enum AccountTokenPurpose {
+  VERIFY_EMAIL
+  RESET_PASSWORD
+}
+
+model AccountToken {
+  proposedPasswordHash String?
+  emailOutbox          AccountEmailOutbox?
+  id                   String              @id @default(cuid())
+  hash                 String              @unique
+  purpose              AccountTokenPurpose
+  userId               String
+  expiresAt            DateTime
+  consumedAt           DateTime?
+  createdAt            DateTime            @default(now())
+  user                 User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose, expiresAt])
+}
+
+model BillingWebhookReceipt {
+  id             String   @id
+  subscriptionId String
+  processedAt    DateTime @default(now())
+}
+
+model BillingCheckout {
+  userId     String    @id
+  sessionId  String?
+  url        String?
+  expiresAt  DateTime?
+  requestKey String
+  createdAt  DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AccountEmailOutbox {
+  id            String                  @id
+  tokenHash     String                  @unique
+  ciphertext    String?
+  status        GamificationEventStatus @default(PENDING)
+  attempts      Int                     @default(0)
+  availableAt   DateTime                @default(now())
+  leaseUntil    DateTime?
+  leaseToken    String?
+  expiresAt     DateTime
+  createdAt     DateTime                @default(now())
+  processedAt   DateTime?
+  lastErrorCode String?
+  token         AccountToken            @relation(fields: [tokenHash], references: [hash], onDelete: Cascade)
+
+  @@index([status, availableAt, leaseUntil])
+  @@index([expiresAt])
+}
+
+model RankingSnapshot {
+  periodType         RankingPeriodType
+  periodKey          String
+  scopeType          RankingScopeType
+  scopeKey           String
+  calculationVersion Int
+  calculatedAt       DateTime
+
+  @@id([periodType, periodKey, scopeType, scopeKey, calculationVersion])
 }

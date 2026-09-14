@@ -1,3 +1,4 @@
+import { validatedVideoSource } from "@/server/services/courses/media-url";
 import type {
   AdminLessonDTO,
   CreateLessonInput,
@@ -49,7 +50,7 @@ export const createLessonForAdmin = withAdminAudit(
       title: input.title,
       durationMinutes: input.durationMinutes,
       requiresLessonId: input.requiresLessonId,
-      videoUrl: input.videoUrl,
+      videoUrl: input.videoUrl === undefined ? undefined : validatedVideoSource(input.videoUrl),
       teacherId: input.teacherId,
       order: input.order,
       now,
@@ -75,7 +76,7 @@ export const updateLessonForAdmin = withAdminAudit(
       title: input.title,
       durationMinutes: input.durationMinutes,
       requiresLessonId: input.requiresLessonId,
-      videoUrl: input.videoUrl,
+      videoUrl: input.videoUrl === undefined ? undefined : validatedVideoSource(input.videoUrl),
       teacherId: input.teacherId,
       status: input.status,
       now,
@@ -98,7 +99,7 @@ export const linkLessonVideoForAdmin = withAdminAudit(
     if (!current) {
       throw new NotFoundError("Aula não encontrada.");
     }
-    const updated = await repos.lessons.update({ id: input.id, videoUrl: input.videoUrl, now });
+    const updated = await repos.lessons.update({ id: input.id, videoUrl: input.videoUrl === undefined ? undefined : validatedVideoSource(input.videoUrl), now });
     return toAdminLessonDTO(updated);
   },
   (input) => input.id,

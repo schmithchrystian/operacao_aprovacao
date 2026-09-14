@@ -1,5 +1,8 @@
+import { ConflictError } from "@/server/errors";
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
+import { getEffectiveBusinessConfig } from "@/server/services/admin/effective-config";
 import { RANKING_CALCULATION_VERSION, RANKING_DEFAULT_RECALC_PERIOD_TYPES } from "@/config/business";
-import { mockRankingParticipants } from "@/mocks";
+import { loadRankingParticipants } from "./participants";
 import { auditLog } from "@/server/audit";
 import { getRepositories } from "@/server/repositories";
 import type { RankingBreakdown } from "@/server/repositories/contracts/ranking-score-repository";
@@ -45,20 +48,31 @@ export interface RecalculateRankingScopeResult {
   participantCount: number;
 }
 
+export async function recalculateRankingForScope(input: RecalculateRankingScopeInput): Promise<RecalculateRankingScopeResult> {
+  return inRepositoryTransaction(() => recalculateRankingForScopeInternal(input));
+}
+
 /** Recalcula e materializa UM escopo/período. */
-export async function recalculateRankingForScope(
+async function recalculateRankingForScopeInternal(
   input: RecalculateRankingScopeInput,
 ): Promise<RecalculateRankingScopeResult> {
   const referenceDate = input.referenceDate ?? new Date();
-  const calculationVersion = input.calculationVersion ?? RANKING_CALCULATION_VERSION;
+  const config = await getEffectiveBusinessConfig();
+  const requestedVersion = input.calculationVersion ?? (RANKING_CALCULATION_VERSION + config.version - 1);
   const window = buildPeriodWindow(input.periodType, referenceDate);
   const scopeKey = buildScopeKey(input.scopeType, input.scopeKeyRaw);
+  const latestVersion = await getRepositories().rankingScores.findLatestVersion(input.periodType, window.periodKey, input.scopeType, scopeKey);
+  if (input.calculationVersion !== undefined && latestVersion !== null && requestedVersion < latestVersion) throw new ConflictError("Não é permitido reescrever uma versão histórica do ranking.");
+  const calculationVersion = Math.max(requestedVersion, latestVersion ?? requestedVersion);
   const correlationId = `${input.periodType}:${window.periodKey}:${scopeKey}:v${calculationVersion}`;
 
-  const candidates = selectCandidatesForScope(mockRankingParticipants, input.scopeType, input.scopeKeyRaw);
+  const selected = selectCandidatesForScope(await loadRankingParticipants(), input.scopeType, input.scopeKeyRaw);
+  const candidates = [...new Map(selected.map(participant => [participant.userId, participant])).values()];
 
+  const snapshot = { periodType: input.periodType, periodKey: window.periodKey, scopeType: input.scopeType, scopeKey, calculationVersion, userIds: candidates.map(candidate => candidate.userId), now: referenceDate };
   if (candidates.length === 0) {
-    auditLog({
+    await getRepositories().rankingScores.finalizeScopeVersion(snapshot);
+    await auditLog({
       operation: "gamification.ranking.recalculate.empty-scope",
       entity: "RankingScore",
       result: "success",
@@ -78,7 +92,7 @@ export async function recalculateRankingForScope(
     candidates.map(async (participant) => ({ participant, metrics: await gatherRawMetrics(participant, window) })),
   );
 
-  const scored = computeRankingScores(gathered.map((entry) => ({ participant: entry.participant, metrics: entry.metrics })));
+  const scored = computeRankingScores(gathered.map((entry) => ({ participant: entry.participant, metrics: entry.metrics })), config.rankingWeights);
 
   const withTieBreakInput = scored.map((entry, index) => ({
     ...entry,
@@ -127,7 +141,9 @@ export async function recalculateRankingForScope(
     });
   }
 
-  auditLog({
+  await repos.rankingScores.finalizeScopeVersion(snapshot);
+
+  await auditLog({
     operation: "gamification.ranking.recalculate",
     entity: "RankingScore",
     result: "success",
@@ -154,7 +170,12 @@ export async function recalculateRankingForScope(
 export async function recalculateAllRankingScopes(
   referenceDate: Date = new Date(),
 ): Promise<RecalculateRankingScopeResult[]> {
-  const scopes = discoverScopesFromParticipants(mockRankingParticipants);
+  const discovered = discoverScopesFromParticipants(await loadRankingParticipants());
+  const known = await getRepositories().rankingScores.listKnownScopes();
+  const scopes = [...new Map([
+    ...discovered,
+    ...known.map(row => ({ scopeType: row.scopeType, scopeKeyRaw: row.scopeType === "GLOBAL" ? "global" : row.scopeKey.slice(row.scopeType.toLowerCase().length + 1) })),
+  ].map(scope => [`${scope.scopeType}:${buildScopeKey(scope.scopeType, scope.scopeKeyRaw)}`, scope])).values()];
   const results: RecalculateRankingScopeResult[] = [];
 
   for (const periodType of RANKING_DEFAULT_RECALC_PERIOD_TYPES) {

@@ -1,17 +1,26 @@
 import { LOGIN_RATE_LIMIT } from "@/config/business";
 import { mockStore } from "@/server/repositories/mock/mock-store";
+import { createHash } from "node:crypto";
+import { env } from "@/config/env";
 
-/**
- * Rate limiting / lockout de login em MEMÓRIA (CLAUDE.md §24, achado de segurança Fase 4).
- *
- * ⚠️ Store por processo — adequado ao MVP single-instance. Em produção com múltiplas
- * instâncias/serverless DEVE virar um store distribuído (Redis/Upstash, KV etc.) com a
- * MESMA interface pública deste módulo; só a implementação interna muda. Nunca depender
- * disto como única defesa: é complementar à autenticação, não substitui.
- *
- * A chave combina e-mail (normalizado) e, quando disponível, o IP do cliente — ver
- * `buildRateLimitKey`. Contagem por janela deslizante simples: `maxFailures` falhas dentro
- * de `windowMs` disparam bloqueio por `lockoutMs` (valores em `config/business.ts`).
+/** Account-wide budget cannot be bypassed by rotating untrusted forwarded-IP headers.
+ * Successful attempts also consume budget; resetting on success would reopen races.
+ */
+export async function consumeLoginAttempt(email: string): Promise<boolean> {
+  const key = createHash("sha256").update(email.trim().toLowerCase()).digest("hex");
+  if (env.DATA_SOURCE === "prisma") {
+    const { reserveLoginAttempt } =
+      await import("@/server/repositories/prisma/security-rate-limit-repository");
+    return reserveLoginAttempt(key);
+  }
+  // No await between check and increment: this mock reservation is atomic in one process.
+  if (checkLoginRateLimit(key).blocked) return false;
+  registerLoginFailure(key);
+  return true;
+}
+
+/** Legacy mock helpers below are retained for isolated tests. Runtime callers use
+ * consumeLoginAttempt: PostgreSQL in prisma mode; process memory only in mock mode.
  */
 
 interface AttemptRecord {

@@ -1,3 +1,4 @@
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
 import { STUDY_PLAN } from "@/config/business";
 import type { GeneratePlanInput, StudyPlanDTO } from "@/contracts/study-plan";
 import { auditLog } from "@/server/audit";
@@ -20,7 +21,7 @@ import { generateStudyPlanItems, type PlanGeneratorItem } from "./plan-generator
  * mesma convenção de `checkHeartbeatRateLimit`) e usado para TODOS os timestamps desta chamada
  * (criação/atualização do plano, criação dos itens, cálculo de progresso no retorno).
  */
-export async function generatePlan(
+async function generatePlanInTransaction(
   userId: string,
   input: GeneratePlanInput,
   now: Date = new Date(),
@@ -89,7 +90,7 @@ export async function generatePlan(
     })),
   );
 
-  auditLog({
+  await auditLog({
     operation: "study-plan.generate",
     userId,
     entity: "StudyPlan",
@@ -125,4 +126,8 @@ function titleForGeneratedItem(item: PlanGeneratorItem, subjectNameById: Readonl
     default:
       return "Item de plano de estudos";
   }
+}
+
+export async function generatePlan(...args: Parameters<typeof generatePlanInTransaction>): ReturnType<typeof generatePlanInTransaction> {
+  return inRepositoryTransaction(() => generatePlanInTransaction(...args));
 }

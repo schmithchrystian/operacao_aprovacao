@@ -35,6 +35,7 @@ describe("verifyCredentials - fronteira do repositório", () => {
       name: "Usuário Persistido",
       email: "persistent@example.com",
       role: "admin",
+      sessionVersion: 0,
     });
     expect(findCredentialsByEmailMock).toHaveBeenCalledWith("persistent@example.com");
     expect(compareMock).toHaveBeenCalledWith("senha-correta", "hash-do-repositorio");

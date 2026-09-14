@@ -1,3 +1,5 @@
+import { listUserActivitySamples } from "@/server/services/study-tracking/activity-samples";
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
 import { STUDY_TRACKING_OVERVIEW } from "@/config/business";
 import { eventBus } from "@/server/events";
 import { getRepositories } from "@/server/repositories";
@@ -8,7 +10,6 @@ import {
   type StreakReachedPayload,
 } from "@/server/services/gamification";
 import {
-  ALL_HISTORY_SINCE_ISO,
   computeStreak,
   DEFAULT_TIMEZONE,
   toActivityDates,
@@ -90,7 +91,7 @@ async function emitStreakReached(userId: string, milestone: 7 | 30, now: Date): 
  *     mesma transação (ou usar um outbox persistido). Não dobra pontos hoje — o risco é perder,
  *     não duplicar (a `idempotencyKey` já barra a duplicação).
  */
-export async function recalculateStreak(
+async function recalculateStreakInTransaction(
   userId: string,
   now: Date,
   timezone: string = DEFAULT_TIMEZONE,
@@ -98,7 +99,7 @@ export async function recalculateStreak(
   const repos = getRepositories();
   const existing = await repos.userStreaks.findByUserId(userId);
 
-  const sessions = await repos.studySessions.listRecentSessionsByUserId(userId, ALL_HISTORY_SINCE_ISO);
+  const sessions = await listUserActivitySamples(userId);
   const activeDates = toActivityDates(sessions, timezone);
   const today = toCalendarDateIso(now.toISOString(), timezone);
 
@@ -135,4 +136,10 @@ export async function getUserStreak(userId: string): Promise<UserStreakView | nu
   const repos = getRepositories();
   const entity = await repos.userStreaks.findByUserId(userId);
   return entity ? toView(entity) : null;
+}
+
+export async function recalculateStreak(
+  ...args: Parameters<typeof recalculateStreakInTransaction>
+): ReturnType<typeof recalculateStreakInTransaction> {
+  return inRepositoryTransaction(() => recalculateStreakInTransaction(...args));
 }

@@ -136,7 +136,7 @@ export async function finishFocusSession(
       reasonNotScored = "Atividade insuficiente registrada durante a sessão.";
     }
 
-    auditLog({
+    await auditLog({
       operation: "focus.session-finished",
       userId,
       entity: "FocusSession",
