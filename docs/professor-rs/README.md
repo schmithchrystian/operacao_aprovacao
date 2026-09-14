@@ -4,7 +4,7 @@ Agente de pesquisa e produção pedagógica para GCM, PM/Brigada Militar, Bombei
 
 ## O que está disponível
 
-A rota autenticada `/professor-rs`, também ligada ao catálogo `/cursos`, contém seis trilhas: Brigada Militar, CBMRS, PC, PP e GCM de Porto Alegre e Canoas. A biblioteca inicial possui **27 aulas únicas, 78 questões originais e 78 flashcards**, reaproveitados onde pertinente. As aulas têm conceitos, método de resolução, exemplo resolvido e resumo. Não é um curso integral de cada edital; as pendências aparecem em cada trilha.
+A rota autenticada `/professor-rs`, também ligada ao catálogo `/cursos`, contém seis trilhas: Brigada Militar, CBMRS, PC, PP e GCM de Porto Alegre e Canoas. A biblioteca inicial possui **27 aulas únicas, 135 questões originais e 135 flashcards**, reaproveitados onde pertinente. As aulas têm conceitos, método de resolução, exemplo resolvido e resumo. Não é um curso integral de cada edital; as pendências aparecem em cada trilha.
 
 A pesquisa de referência foi realizada em 13/09/2026. GCM Canoas usa edital histórico de 2023; GCM Porto Alegre usa CP 794 / 103-2024; Brigada e Bombeiros usam referências de soldado 2025; PC usa agentes 06/2025; PP tem portal 2026 e banca localizados, com extração integral do programa ainda pendente. Não se afirma que esses concursos estejam com inscrições abertas. Os URLs consultados estão no catálogo versionado, com notas de escopo.
 
@@ -69,3 +69,9 @@ A retificação SD-P 02/2025, item 2, foi conferida e vinculada ao catálogo. Du
 Seis aulas de 60 minutos ampliam a trilha PC: conectivos e De Morgan; quantificadores; frequências; dispersão; eventos; probabilidade condicional e Bayes. Cada aula tem três seções, exemplo resolvido, cinco questões de quatro alternativas com justificativas e cinco flashcards conceituais. O planejador distribui essas aulas respeitando o tempo diário e agenda as revisões existentes.
 
 O programa de lógica e estatística foi consultado nas páginas impressas 62 e 63 do edital 06/2025. As pendências de Estatística agora discriminam os blocos avançados ainda sem aulas. Isso aumenta a transparência da cobertura; o percentual de tópicos mapeados não equivale à cobertura integral do edital. Os capítulos OpenStax e materiais MIT OpenCourseWare vinculados às seis aulas são gratuitos, em inglês, e complementares; não são apresentados como bibliografia obrigatória da banca. Vídeos e revisão integral das retificações continuam pendentes.
+
+### Prática ampliada nas seis trilhas
+
+Em 14/09/2026, dezenove aulas de fundamentos passaram a ter cinco questões e cinco flashcards: interpretação, concordância, crase, porcentagem, lógica, estatística, contabilidade, informática, física, química, biologia e redação. Também foram ampliadas as aulas de Constitucional, Administrativo, Penal, Processo Penal, Direitos Humanos, Execução Penal e Guardas. Foram acrescentados 57 exercícios originais com quatro alternativas e 57 cartões conceituais. As duas questões anteriores de cada aula foram preservadas com seus IDs.
+
+Essas aulas passaram de 45 para 60 minutos para incluir treino e registro de erros. O planejador recalcula o tempo a partir do catálogo. O roteiro de caderno de erros orienta o estudo; não implica persistência automática das anotações ou do progresso. O guia oficial de phishing da Microsoft foi incluído em Informática. As 27 aulas disponíveis agora têm ao menos cinco questões e cinco flashcards. Atingir esse mínimo não certifica cobertura integral nem revisão editorial completa. Os novos exercícios jurídicos foram conferidos com os dispositivos oficiais; a revisão integral do marco temporal de cada edital continua pendente.

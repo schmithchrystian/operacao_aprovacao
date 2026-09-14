@@ -2,6 +2,16 @@ import type { ProfessorSource } from "./schema";
 const checkedAt = "2026-09-13";
 /** Referências descobertas em páginas institucionais/metadados; sem espelhar vídeos ou obras. */
 export const additionalResources: Record<string, ProfessorSource[]> = {
+  informatica: [
+    {
+      title: "Microsoft — Proteção contra phishing",
+      url: "https://support.microsoft.com/pt-br/security/protect-yourself-from-phishing",
+      kind: "curso",
+      checkedAt: "2026-09-14",
+      verified: true,
+      note: "Guia de estudo oficial em português, consultado para reconhecer mensagens fraudulentas e verificar solicitações por canais independentes. Não é curso completo ou bibliografia obrigatória da banca.",
+    },
+  ],
   porcentagem: [
     {
       title: "UNIVESP — Porcentagem",

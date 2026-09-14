@@ -317,7 +317,7 @@ export const professorCatalog: CoursePack[] = definitions.map((definition) => {
   return validatePack({
     schemaVersion: 1,
     slug: definition.slug,
-    version: ["PM", "PC"].includes(definition.career) ? "base-2026-09-13-r2" : "base-2026-09-13",
+    version: "base-2026-09-14-r3",
     title: definition.title,
     career: definition.career,
     jurisdiction: definition.jurisdiction,

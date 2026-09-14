@@ -1,5 +1,6 @@
 import { additionalResources } from "./resources";
 import quantitativeLessons from "./quantitative.json";
+import practiceExpansion from "./practice-expansion.json";
 import { lessonSchema } from "./schema";
 import type { ProfessorLesson, ProfessorSource } from "./schema";
 const date = "2026-09-13";
@@ -818,6 +819,30 @@ const seedLessons: ProfessorLesson[] = seeds.map((seed) => ({
 }));
 
 export const foundationLessons: ProfessorLesson[] = [
-  ...seedLessons,
+  ...seedLessons.map((lesson) => {
+    const expansion = practiceExpansion[lesson.id as keyof typeof practiceExpansion];
+    if (!expansion) return lesson;
+    return lessonSchema.parse({
+      ...lesson,
+      minutes: 60,
+      practice: [...lesson.practice, ...expansion.practice],
+      flashcards: [...lesson.flashcards, ...expansion.flashcards],
+      sections: [
+        ...lesson.sections,
+        ...(lesson.id === "humanos"
+          ? [
+              {
+                title: "Fundamentos, objetivos e relações internacionais",
+                text: "Diferencie três classificações constitucionais. A dignidade da pessoa humana é fundamento da República no art. 1º, III. Promover o bem de todos sem preconceitos e outras formas de discriminação é objetivo fundamental no art. 3º, IV. A prevalência dos direitos humanos é princípio que rege as relações internacionais no art. 4º, II. Na prova, uma expressão pode ser constitucionalmente correta, mas estar associada à categoria errada. Revise por pares: expressão, artigo e classificação.",
+              },
+            ]
+          : []),
+        {
+          title: "Treino orientado e caderno de erros",
+          text: "Reserve 15 minutos para resolver as cinco questões sem consultar a teoria. Antes de marcar, escreva a regra ou evidência que sustenta sua escolha. Depois da correção, registre o motivo do erro: interpretação do comando, conceito, cálculo ou distração. Refaça as questões erradas explicando por que cada alternativa não serve. Nas revisões D+1, D+7 e D+30, tente responder aos flashcards antes de revelar o verso e retome a teoria quando a justificativa ainda não estiver clara.",
+        },
+      ],
+    });
+  }),
   ...quantitativeLessons.map((lesson) => lessonSchema.parse(lesson)),
 ];

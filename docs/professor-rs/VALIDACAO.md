@@ -38,3 +38,14 @@ Geração real de cursos pela API, revisão integral de todos os editais, import
 - Verificação adicional do planejador com as 20 aulas atuais da PC: orçamentos de 30, 60 e 90 minutos/dia preservaram todos os minutos de aula e as três revisões por aula, sem exceder o limite diário. Planos resultantes: 66, 40 e 34 dias com atividades, respectivamente (cinco dias disponíveis por semana).
 - Totais calculados do catálogo: 27 aulas únicas, 78 questões e 78 flashcards.
 - Sem novo teste visual ou deploy nesta ampliação de conteúdo. Geração via API e importação no banco continuam sem execução por ausência das variáveis de ambiente exigidas.
+
+## Banco de prática ampliado — 14/09/2026
+
+- 57 novas questões autorais e 57 flashcards acrescentados às 19 aulas iniciais, preservando IDs das questões anteriores. Todas as 27 aulas agora têm cinco questões e cinco cartões; total único de 135 de cada.
+- Aulas ampliadas com duração de 60 minutos e roteiro de prática, revisão e registro de erros. A orientação não cria persistência de anotações.
+- Conferência dos textos oficiais: Constituição (arts. 1º, 3º, 4º, 5º e 37), CP (arts. 1º e 2º), CPP (art. 158-B), LEP (arts. 1º, 3º e 10) e Lei 13.022/2014 (arts. 2º e 3º). Revisão integral dos editais e retificações continua pendente.
+- ESLint nos arquivos TypeScript alterados e `tsc --noEmit`: aprovados.
+- Testes do Professor RS: 14 passaram. A suíte completa não foi repetida nesta ampliação de conteúdo.
+- Verificação do catálogo: cinco questões e cartões por aula e ausência de enunciados literalmente duplicados dentro da aula.
+- Planejador verificado nas seis trilhas com 30, 60 e 90 minutos diários: 18 cenários preservaram o total de minutos de aula e as três revisões, sem ultrapassar a disponibilidade diária.
+- Sem novo build, teste visual ou deploy nesta etapa. Outras tarefas atuavam em autenticação, cobrança e operação no checkout compartilhado.
