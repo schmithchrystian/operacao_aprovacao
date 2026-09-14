@@ -139,7 +139,19 @@ const definitions: Definition[] = [
       officialSources.pc,
       foundationLessons.find((l) => l.id === "estatistica")!.resources[0]!,
     ],
-    lessons: [...base, "processual", "estatistica", "contabilidade", "redacao"],
+    lessons: [
+      ...base,
+      "processual",
+      "estatistica",
+      "contabilidade",
+      "redacao",
+      "logica-demorgan",
+      "logica-quantificadores",
+      "estatistica-frequencias",
+      "estatistica-dispersao",
+      "probabilidade-eventos",
+      "probabilidade-condicional",
+    ],
     remaining: [
       ["estatutaria-pc", "Legislação Estatutária", "Estatuto e regime jurídico do cargo"],
       [
@@ -148,9 +160,55 @@ const definitions: Definition[] = [
         "Escrituração, demonstrações e demais itens do programa",
       ],
       [
-        "estatistica-programa",
+        "estatistica-posicao",
         "Estatística",
-        "Probabilidade, inferência e demais itens do programa",
+        "Médias geométrica e harmônica, moda, percentis, quartis e dados agrupados",
+      ],
+      [
+        "estatistica-variaveis",
+        "Estatística",
+        "Variáveis aleatórias, funções de distribuição, esperança e momentos",
+      ],
+      ["estatistica-discretas", "Estatística", "Distribuições binomial, Poisson e hipergeométrica"],
+      [
+        "estatistica-continuas",
+        "Estatística",
+        "Distribuições uniforme, normal, exponencial, t, F e qui-quadrado",
+      ],
+      [
+        "estatistica-amostragem",
+        "Estatística",
+        "Amostragem e distribuições amostrais de médias e proporções",
+      ],
+      [
+        "estatistica-estimacao",
+        "Estatística",
+        "Estimação, intervalos de confiança e tamanho de amostra",
+      ],
+      [
+        "estatistica-testes",
+        "Estatística",
+        "Testes de hipóteses, erros, significância e comparações entre populações",
+      ],
+      [
+        "estatistica-regressao",
+        "Estatística",
+        "Covariância, correlação e regressão simples e múltipla",
+      ],
+      [
+        "estatistica-indices",
+        "Estatística",
+        "Números índices, Laspeyres, Paasche e mudança de base",
+      ],
+      [
+        "estatistica-series",
+        "Estatística",
+        "Séries temporais, estacionariedade, ARIMA e Box-Jenkins",
+      ],
+      [
+        "logica-argumentos",
+        "Matemática e Raciocínio Lógico",
+        "Diagramas, argumentos categóricos, dedução e relações entre elementos",
       ],
       [
         "informatica-programa",
@@ -259,7 +317,7 @@ export const professorCatalog: CoursePack[] = definitions.map((definition) => {
   return validatePack({
     schemaVersion: 1,
     slug: definition.slug,
-    version: definition.career === "PM" ? "base-2026-09-13-r2" : "base-2026-09-13",
+    version: ["PM", "PC"].includes(definition.career) ? "base-2026-09-13-r2" : "base-2026-09-13",
     title: definition.title,
     career: definition.career,
     jurisdiction: definition.jurisdiction,
@@ -276,13 +334,18 @@ export const professorCatalog: CoursePack[] = definitions.map((definition) => {
         id: lesson.id,
         subject: lesson.subject,
         title: lesson.title,
-        sourceUrl: definition.sources[0]!.url,
+        sourceUrl:
+          lesson.resources.find((resource) => resource.kind === "edital")?.url ??
+          definition.sources[0]!.url,
       })),
       ...definition.remaining.map(([id, subject, title]) => ({
         id,
         subject,
         title,
-        sourceUrl: definition.sources[0]!.url,
+        sourceUrl:
+          definition.career === "PC" && (subject === "Estatística" || id === "logica-argumentos")
+            ? foundationLessons.find((lesson) => lesson.id === "estatistica")!.resources[0]!.url
+            : definition.sources[0]!.url,
       })),
     ],
     lessons,

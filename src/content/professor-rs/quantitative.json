@@ -1,0 +1,701 @@
+[
+  {
+    "id": "logica-demorgan",
+    "title": "Conectivos, equivalências e leis de De Morgan",
+    "subject": "Matemática e Raciocínio Lógico",
+    "topicIds": ["logica-demorgan"],
+    "minutes": 60,
+    "objectives": [
+      "Aplicar conectivos, equivalências e leis de de morgan em problemas originais de concurso.",
+      "Justificar a resposta e identificar o erro das alternativas."
+    ],
+    "sections": [
+      {
+        "title": "Conceitos e condições de aplicação",
+        "text": "Na lógica proposicional clássica, uma proposição tem valor verdadeiro ou falso. A conjunção p e q só é verdadeira quando ambas são verdadeiras. A disjunção inclusiva p ou q é falsa apenas quando ambas são falsas; ela admite que as duas sejam verdadeiras. Negar uma frase significa inverter seu valor em todas as situações possíveis. Por isso, a negação de p e q é não p ou não q; a negação de p ou q é não p e não q. Essas são as leis de De Morgan. A condicional se p, então q só é falsa quando p é verdadeira e q é falsa. Ela equivale a não p ou q."
+      },
+      {
+        "title": "Roteiro de resolução",
+        "text": "Comece separando as proposições simples e identifique o conectivo principal. Mantenha parênteses quando houver blocos. Ao negar uma conjunção ou disjunção, troque e por ou, ou vice-versa, e negue cada componente. Para negar uma condicional, mantenha o antecedente e negue o consequente: p e não q. Para verificar uma equivalência, construa as quatro linhas VV, VF, FV e FF para duas proposições. Duas fórmulas são equivalentes somente quando coincidem em todas as linhas, e não apenas no exemplo que você escolheu."
+      },
+      {
+        "title": "Erros frequentes e revisão ativa",
+        "text": "Não troque a negação de uma condicional por outra condicional. A contrapositiva não q implica não p é equivalente à original; a recíproca q implica p não é, em geral. Em linguagem comum, ou às vezes exclui a simultaneidade, mas, em questões formais, adote a disjunção inclusiva salvo indicação contrária. Para revisar, invente um caso com apenas um dos requisitos atendido e observe quais fórmulas mudam de valor."
+      }
+    ],
+    "workedExample": "Regra: se o formulário está completo, então será analisado. Defina p como formulário completo e q como será analisado. Para refutar a regra é necessário um formulário completo que não será analisado: p e não q. Um formulário incompleto analisado não refuta essa condicional, porque a regra não disse que apenas formulários completos seriam analisados. Sua contrapositiva é: se não será analisado, então não está completo. Já dizer que todo formulário analisado está completo acrescentaria a recíproca, não fornecida no enunciado.",
+    "summary": ["A negação de p e q é não p ou não q.", "A negação de p ou q é não p e não q."],
+    "practice": [
+      {
+        "id": "logica-demorgan-q1",
+        "statement": "Qual é a negação de “Ana revisa e Bruno pratica”?",
+        "options": [
+          "Ana não revisa e Bruno não pratica.",
+          "Ana não revisa ou Bruno não pratica.",
+          "Ana revisa ou Bruno pratica.",
+          "Se Ana revisa, Bruno não pratica."
+        ],
+        "correctIndex": 1,
+        "explanation": "Basta que uma das partes da conjunção seja falsa: aplica-se não p ou não q."
+      },
+      {
+        "id": "logica-demorgan-q2",
+        "statement": "Qual é a negação de “o arquivo é PDF ou é TXT”, com ou inclusivo?",
+        "options": [
+          "O arquivo é PDF e TXT.",
+          "O arquivo não é PDF ou não é TXT.",
+          "O arquivo não é PDF e não é TXT.",
+          "O arquivo é somente PDF."
+        ],
+        "correctIndex": 2,
+        "explanation": "A disjunção só é falsa quando ambas as possibilidades são falsas; a negação exige as duas ausências."
+      },
+      {
+        "id": "logica-demorgan-q3",
+        "statement": "Quando a proposição “se p, então q” é falsa?",
+        "options": [
+          "Quando p é verdadeira e q é falsa.",
+          "Quando p e q são falsas.",
+          "Quando p é falsa e q é verdadeira.",
+          "Sempre que q é verdadeira."
+        ],
+        "correctIndex": 0,
+        "explanation": "A única violação da implicação ocorre com antecedente atendido e consequente não atendido."
+      },
+      {
+        "id": "logica-demorgan-q4",
+        "statement": "Qual expressão equivale a “se p, então q”?",
+        "options": ["p e q.", "q implica p.", "não p e q.", "não q implica não p."],
+        "correctIndex": 3,
+        "explanation": "A contraposição preserva todas as linhas da tabela-verdade; inverter apenas a ordem produz a recíproca."
+      },
+      {
+        "id": "logica-demorgan-q5",
+        "statement": "Com p falsa e q verdadeira, qual é o valor de não (p ou q)?",
+        "options": [
+          "Verdadeiro, pois p é falsa.",
+          "Falso, pois p ou q é verdadeiro.",
+          "Verdadeiro, pois basta negar p.",
+          "Indeterminado sem uma terceira proposição."
+        ],
+        "correctIndex": 1,
+        "explanation": "A disjunção é verdadeira porque q é verdadeira; a negação externa torna o resultado falso."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Como negar uma conjunção p e q?",
+        "back": "A negação de p e q é não p ou não q."
+      },
+      {
+        "front": "Como negar uma disjunção inclusiva?",
+        "back": "A negação de p ou q é não p e não q."
+      },
+      {
+        "front": "Como negar a condicional p implica q?",
+        "back": "Use p e não q: antecedente verdadeiro e consequente falso."
+      },
+      {
+        "front": "Qual é a contrapositiva de p implica q?",
+        "back": "Não q implica não p; ela é equivalente à condicional original."
+      },
+      {
+        "front": "Como comprovar equivalência por tabela?",
+        "back": "Compare os valores em todas as combinações das proposições simples."
+      }
+    ],
+    "resources": [
+      {
+        "title": "PC RS — edital de agentes 06/2025, programa de lógica e estatística",
+        "url": "https://www.pc.rs.gov.br/upload/arquivos/202510/24083812-edital-de-abertura-agentes-admin-correto.pdf",
+        "kind": "edital",
+        "checkedAt": "2026-09-13",
+        "verified": true,
+        "note": "Programa nas páginas impressas 62 e 63. Referência de conteúdo, sem afirmar conferência de todas as retificações."
+      },
+      {
+        "title": "MIT OpenCourseWare — Chapter 1: Propositions",
+        "url": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/mit6_042jf10_chap01/",
+        "kind": "curso",
+        "note": "Notas de curso de 2010, em inglês, sobre lógica proposicional. Leitura complementar de fundamentos matemáticos. Não é bibliografia obrigatória indicada pela banca.",
+        "verified": true,
+        "checkedAt": "2026-09-13"
+      }
+    ]
+  },
+  {
+    "id": "logica-quantificadores",
+    "title": "Quantificadores: todo, algum e nenhum",
+    "subject": "Matemática e Raciocínio Lógico",
+    "topicIds": ["logica-quantificadores"],
+    "minutes": 60,
+    "objectives": [
+      "Aplicar quantificadores: todo, algum e nenhum em problemas originais de concurso.",
+      "Justificar a resposta e identificar o erro das alternativas."
+    ],
+    "sections": [
+      {
+        "title": "Conceitos e condições de aplicação",
+        "text": "Uma sentença aberta depende de uma variável: x entregou o documento não tem um valor definido sem saber quem é x. O quantificador universal afirma que a propriedade vale para cada elemento de um domínio; o existencial afirma que ao menos um elemento a satisfaz. Negar todos entregaram exige apenas encontrar alguém que não entregou. Negar existe alguém que entregou exige afirmar que ninguém entregou. Algum significa ao menos um, podendo incluir todos, a menos que o contexto imponha uma restrição explícita. Nenhum candidato faltou equivale a todo candidato não faltou."
+      },
+      {
+        "title": "Roteiro de resolução",
+        "text": "Defina o domínio antes de operar. Em todo candidato entregou, o domínio são os candidatos, não todas as pessoas. Troque universal por existencial, ou existencial por universal, e negue a propriedade. Para refutar uma afirmação universal, procure um contraexemplo. Para avaliar uma conclusão a partir de todos A são B, use inclusão de conjuntos: A está dentro de B, mas B pode conter elementos fora de A. Quando houver todo e existe na mesma frase, preserve a ordem: um responsável para cada sala pode ser diferente de um único responsável para todas as salas."
+      },
+      {
+        "title": "Erros frequentes e revisão ativa",
+        "text": "Não use nenhum como negação automática de todo: isso seria forte demais. Também não conclua que existe um A apenas porque todos A são B na interpretação da lógica clássica; a existência precisa ser dada. A frase nem todos compareceram equivale a pelo menos um não compareceu, não a ninguém compareceu. Na revisão, desenhe conjuntos com dois ou três elementos para testar conclusões e diferencie explicitamente pelo menos um de exatamente um."
+      }
+    ],
+    "workedExample": "Premissas: todos os integrantes da equipe Alfa fizeram o curso; Carla integra Alfa. Logo, Carla fez o curso, pois pertence ao conjunto contido entre os concluintes. Se Daniel fez o curso, não é possível concluir que integra Alfa: outras equipes podem ter participado. A negação de todos os integrantes de Alfa fizeram o curso é existe integrante de Alfa que não fez o curso. Um único integrante nessa situação já impede que a propriedade seja universal.",
+    "summary": [
+      "Afirme que existe ao menos um elemento que não tem P.",
+      "Afirme que nenhum elemento tem P, isto é, todos não têm P."
+    ],
+    "practice": [
+      {
+        "id": "logica-quantificadores-q1",
+        "statement": "Qual é a negação de “Todos os candidatos trouxeram documento”?",
+        "options": [
+          "Nenhum candidato trouxe documento.",
+          "Todos esqueceram o documento.",
+          "Pelo menos um candidato não trouxe documento.",
+          "Exatamente um candidato trouxe documento."
+        ],
+        "correctIndex": 2,
+        "explanation": "A universal é refutada por um contraexemplo; não é necessário que todos deixem de trazer documento."
+      },
+      {
+        "id": "logica-quantificadores-q2",
+        "statement": "Qual é a negação de “Existe uma sala vazia”?",
+        "options": [
+          "Todas as salas estão vazias.",
+          "Nenhuma sala está vazia.",
+          "Existe exatamente uma sala cheia.",
+          "Algumas salas estão vazias."
+        ],
+        "correctIndex": 1,
+        "explanation": "Negar a existência de sala vazia exige que não haja qualquer sala com essa propriedade."
+      },
+      {
+        "id": "logica-quantificadores-q3",
+        "statement": "Todos A são B e Lia é A. O que necessariamente decorre?",
+        "options": ["Lia é B.", "Todos B são A.", "Lia não é B.", "Só Lia é A."],
+        "correctIndex": 0,
+        "explanation": "A inclusão de A em B permite concluir que todo elemento identificado como A também pertence a B."
+      },
+      {
+        "id": "logica-quantificadores-q4",
+        "statement": "Em lógica clássica, afirmar “Algum candidato revisou” exige que:",
+        "options": [
+          "Exatamente um tenha revisado.",
+          "Nem todos tenham revisado.",
+          "Todos tenham revisado.",
+          "Ao menos um tenha revisado, sem excluir que todos revisaram."
+        ],
+        "correctIndex": 3,
+        "explanation": "O quantificador existencial assegura existência, mas não fixa a quantidade nem exclui universalidade."
+      },
+      {
+        "id": "logica-quantificadores-q5",
+        "statement": "“Para cada sala existe um fiscal” implica necessariamente que há um único fiscal responsável por todas?",
+        "options": [
+          "Sim, porque existe sempre significa único.",
+          "Não; fiscais diferentes podem atender salas diferentes.",
+          "Sim, porque todo e existe são intercambiáveis.",
+          "Não, porque a frase proíbe fiscais."
+        ],
+        "correctIndex": 1,
+        "explanation": "A ordem dos quantificadores permite que a escolha do fiscal dependa da sala; não estabelece um fiscal comum."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Como negar todo elemento tem P?",
+        "back": "Afirme que existe ao menos um elemento que não tem P."
+      },
+      {
+        "front": "Como negar existe um elemento com P?",
+        "back": "Afirme que nenhum elemento tem P, isto é, todos não têm P."
+      },
+      {
+        "front": "Algum significa exatamente um?",
+        "back": "Não: significa ao menos um e pode incluir todos."
+      },
+      {
+        "front": "Todos A são B permite inverter a inclusão?",
+        "back": "Não. Pode haver elementos de B que não pertençam a A."
+      },
+      {
+        "front": "A ordem dos quantificadores importa?",
+        "back": "Sim. Para cada x existe y não implica que exista um mesmo y para todo x."
+      }
+    ],
+    "resources": [
+      {
+        "title": "PC RS — edital de agentes 06/2025, programa de lógica e estatística",
+        "url": "https://www.pc.rs.gov.br/upload/arquivos/202510/24083812-edital-de-abertura-agentes-admin-correto.pdf",
+        "kind": "edital",
+        "checkedAt": "2026-09-13",
+        "verified": true,
+        "note": "Programa nas páginas impressas 62 e 63. Referência de conteúdo, sem afirmar conferência de todas as retificações."
+      },
+      {
+        "title": "MIT OpenCourseWare — Lecture 4: Predicate Logic Quantifiers",
+        "url": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2005/resources/slides2w/",
+        "kind": "curso",
+        "note": "Material de aula de 2005, em inglês, sobre predicados e quantificadores. Não é videoaula. Não é bibliografia obrigatória indicada pela banca.",
+        "verified": true,
+        "checkedAt": "2026-09-13"
+      }
+    ]
+  },
+  {
+    "id": "estatistica-frequencias",
+    "title": "Dados, frequências e leitura de distribuições",
+    "subject": "Estatística",
+    "topicIds": ["estatistica-frequencias"],
+    "minutes": 60,
+    "objectives": [
+      "Aplicar dados, frequências e leitura de distribuições em problemas originais de concurso.",
+      "Justificar a resposta e identificar o erro das alternativas."
+    ],
+    "sections": [
+      {
+        "title": "Conceitos e condições de aplicação",
+        "text": "Dados qualitativos representam categorias; dados quantitativos representam quantidades. Uma categoria nominal não possui ordem intrínseca, como a cor de um objeto. Uma categoria ordinal tem ordem, como graus de satisfação. Uma variável quantitativa discreta surge de contagens, enquanto uma contínua pode assumir valores em intervalos, como uma duração medida. A frequência absoluta conta observações; a relativa divide essa contagem pelo total. A acumulada soma frequências até determinada posição ordenada. Não faz sentido acumular categorias nominais sem uma ordem substantiva apenas para sugerir maior ou menor quantidade da característica."
+      },
+      {
+        "title": "Roteiro de resolução",
+        "text": "Confira o tamanho da amostra e some as frequências absolutas. Calcule cada frequência relativa por fi dividido por n e multiplique por 100 se a resposta for percentual. Para expressões até e no máximo, inclua o limite; para menos de, exclua-o. Em dados agrupados, observe se o intervalo inclui ou exclui seus extremos. Uma tabela de classes perde a posição exata dos valores dentro de cada classe: o ponto médio pode servir a uma aproximação, mas não recupera necessariamente a média exata dos dados originais."
+      },
+      {
+        "title": "Erros frequentes e revisão ativa",
+        "text": "Não confunda porcentagem do total com porcentagem de um subgrupo. Verifique a base do cálculo antes da divisão. Frequências relativas devem somar 1, ou 100%, admitida pequena diferença de arredondamento. Um número usado como código, como número de matrícula, não vira uma medida quantitativa apenas por conter algarismos. Na revisão, explique o significado de cada coluna em palavras e faça o total antes de calcular médias ou percentuais."
+      }
+    ],
+    "workedExample": "Em 25 dias, um estudante resolveu 0 questões em 3 dias, 5 questões em 7 dias e 10 questões em 15 dias. As frequências relativas são 3/25 = 12%, 7/25 = 28% e 15/25 = 60%. Em até 5 questões entram as duas primeiras categorias: 10 dias, equivalentes a 40%. O total de questões resolvidas foi 0×3 + 5×7 + 10×15 = 185, portanto a média diária é 185/25 = 7,4. Somar apenas 0, 5 e 10 e dividir por 3 ignoraria a frequência com que cada valor apareceu.",
+    "summary": [
+      "Divida a frequência absoluta da categoria pelo número total de observações.",
+      "É a soma das frequências até uma posição de uma variável ordenada."
+    ],
+    "practice": [
+      {
+        "id": "estatistica-frequencias-q1",
+        "statement": "Uma categoria aparece 12 vezes em 40 observações. Sua frequência relativa é:",
+        "options": ["12%.", "40%.", "30%.", "3%."],
+        "correctIndex": 2,
+        "explanation": "Divida 12 por 40: 0,30, correspondente a 30% do total."
+      },
+      {
+        "id": "estatistica-frequencias-q2",
+        "statement": "Os números de filhos dos participantes são classificados como variável:",
+        "options": [
+          "Quantitativa discreta.",
+          "Qualitativa nominal.",
+          "Quantitativa contínua.",
+          "Qualitativa sem possibilidade de contagem."
+        ],
+        "correctIndex": 0,
+        "explanation": "Número de filhos é uma contagem em valores inteiros não negativos."
+      },
+      {
+        "id": "estatistica-frequencias-q3",
+        "statement": "Uma escala com insatisfeito, neutro e satisfeito é uma variável:",
+        "options": [
+          "Quantitativa contínua.",
+          "Qualitativa nominal sem ordem.",
+          "Quantitativa de razão.",
+          "Qualitativa ordinal."
+        ],
+        "correctIndex": 3,
+        "explanation": "Há categorias com ordem de satisfação, mas sem distâncias numéricas necessariamente iguais entre elas."
+      },
+      {
+        "id": "estatistica-frequencias-q4",
+        "statement": "As frequências de 0, 1 e 2 faltas são 4, 9 e 7. Quantas pessoas tiveram no máximo uma falta?",
+        "options": ["9.", "13.", "16.", "20."],
+        "correctIndex": 1,
+        "explanation": "No máximo uma inclui zero e uma falta: 4 + 9 = 13 pessoas."
+      },
+      {
+        "id": "estatistica-frequencias-q5",
+        "statement": "Uma tabela informa apenas intervalos de notas e suas frequências. A média calculada por pontos médios é:",
+        "options": [
+          "Sempre exatamente a média dos dados individuais.",
+          "Impossível de calcular mesmo como aproximação.",
+          "Uma aproximação que pode diferir da média individual.",
+          "Sempre igual à maior nota."
+        ],
+        "correctIndex": 2,
+        "explanation": "Sem os valores dentro de cada intervalo, o ponto médio representa a classe, mas pode não coincidir com a média dos valores reais."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Como obter a frequência relativa?",
+        "back": "Divida a frequência absoluta da categoria pelo número total de observações."
+      },
+      {
+        "front": "O que significa frequência acumulada?",
+        "back": "É a soma das frequências até uma posição de uma variável ordenada."
+      },
+      {
+        "front": "Qual é a diferença entre nominal e ordinal?",
+        "back": "Nominal não tem ordem intrínseca; ordinal possui ordenação das categorias."
+      },
+      {
+        "front": "Uma contagem é discreta ou contínua?",
+        "back": "É discreta: seus valores possíveis são separados, como números inteiros de ocorrências."
+      },
+      {
+        "front": "Pontos médios recuperam a média exata?",
+        "back": "Não necessariamente: dados agrupados ocultam a distribuição dentro de cada classe."
+      }
+    ],
+    "resources": [
+      {
+        "title": "PC RS — edital de agentes 06/2025, programa de lógica e estatística",
+        "url": "https://www.pc.rs.gov.br/upload/arquivos/202510/24083812-edital-de-abertura-agentes-admin-correto.pdf",
+        "kind": "edital",
+        "checkedAt": "2026-09-13",
+        "verified": true,
+        "note": "Programa nas páginas impressas 62 e 63. Referência de conteúdo, sem afirmar conferência de todas as retificações."
+      },
+      {
+        "title": "OpenStax — Introductory Statistics 2e — Frequency Tables",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/1-3-frequency-frequency-tables-and-levels-of-measurement",
+        "kind": "livro",
+        "note": "Capítulo gratuito em inglês, consultado como leitura complementar sobre frequências e escalas de mensuração. Não é bibliografia obrigatória indicada pela banca.",
+        "verified": true,
+        "checkedAt": "2026-09-13"
+      }
+    ]
+  },
+  {
+    "id": "estatistica-dispersao",
+    "title": "Variância, desvio padrão e comparação de dispersões",
+    "subject": "Estatística",
+    "topicIds": ["estatistica-dispersao"],
+    "minutes": 60,
+    "objectives": [
+      "Aplicar variância, desvio padrão e comparação de dispersões em problemas originais de concurso.",
+      "Justificar a resposta e identificar o erro das alternativas."
+    ],
+    "sections": [
+      {
+        "title": "Conceitos e condições de aplicação",
+        "text": "Médias iguais podem esconder distribuições diferentes. A amplitude é a diferença entre maior e menor valor; a variância mede a dispersão usando desvios quadráticos em relação à média. Para uma população finita de N elementos, divida a soma desses quadrados por N. Na variância amostral usual que estima a variância populacional, divida por n menos 1. O desvio padrão é a raiz quadrada da variância e retorna à unidade dos dados. O coeficiente de variação é o desvio padrão dividido pela média, muitas vezes expresso em percentual; sua comparação faz sentido em escalas de razão com médias positivas e suficientemente distantes de zero."
+      },
+      {
+        "title": "Roteiro de resolução",
+        "text": "Anote se o comando pede variância populacional ou amostral. Calcule a média, obtenha cada desvio, eleve ao quadrado e some. Só depois escolha o divisor. Tire a raiz apenas se o comando pedir desvio padrão. Para transformações y = a x + b, a variância é multiplicada por a ao quadrado e o desvio padrão por valor absoluto de a; somar b a todos os valores não altera essas duas medidas. Uma conferência útil é verificar se os desvios simples somam zero antes de elevá-los ao quadrado."
+      },
+      {
+        "title": "Erros frequentes e revisão ativa",
+        "text": "A variância não usa a média dos desvios simples: esses desvios se cancelam. Não confunda unidade quadrática da variância com a unidade original do desvio padrão. Não compare coeficientes de variação de grandezas em escala intervalar, como temperatura em Celsius, sem discutir a inadequação de um zero arbitrário. Em revisão, construa dois conjuntos com a mesma média e dispersões distintas e explique o efeito de somar uma constante a ambos."
+      }
+    ],
+    "workedExample": "Considere a população completa 2, 4 e 6 minutos. A média é 4. Os desvios são -2, 0 e 2; seus quadrados são 4, 0 e 4, totalizando 8. A variância populacional é 8/3 minutos quadrados; o desvio padrão é a raiz de 8/3, aproximadamente 1,633 minuto. Se os mesmos três valores fossem uma amostra e o pedido fosse a variância amostral usual, o divisor seria 2 e o resultado 4. Acrescentar 10 minutos a cada observação alteraria a média para 14, mas manteria os desvios e a variância.",
+    "summary": [
+      "A populacional usa N; a amostral usual para estimação usa n−1.",
+      "Na mesma unidade dos dados; a variância usa a unidade ao quadrado."
+    ],
+    "practice": [
+      {
+        "id": "estatistica-dispersao-q1",
+        "statement": "Na população completa 1, 3 e 5, a variância populacional é:",
+        "options": ["2.", "8/3.", "4.", "8."],
+        "correctIndex": 1,
+        "explanation": "A média é 3; os quadrados dos desvios somam 8 e o divisor populacional é 3."
+      },
+      {
+        "id": "estatistica-dispersao-q2",
+        "statement": "Na amostra 1, 3 e 5, a variância amostral com divisor n−1 é:",
+        "options": ["8/3.", "8.", "4.", "2/3."],
+        "correctIndex": 2,
+        "explanation": "Os quadrados dos desvios somam 8 e n−1 = 2, portanto s² = 4."
+      },
+      {
+        "id": "estatistica-dispersao-q3",
+        "statement": "Somar 7 a cada valor de um conjunto produz qual efeito sobre seu desvio padrão?",
+        "options": ["Permanece igual.", "Aumenta 7.", "Multiplica por 7.", "Passa a ser zero."],
+        "correctIndex": 0,
+        "explanation": "A média também aumenta 7; os desvios em relação a ela permanecem iguais."
+      },
+      {
+        "id": "estatistica-dispersao-q4",
+        "statement": "Se todos os valores são multiplicados por 3, a variância é multiplicada por:",
+        "options": ["3.", "6.", "1.", "9."],
+        "correctIndex": 3,
+        "explanation": "A variância responde ao quadrado do fator de escala: 3² = 9."
+      },
+      {
+        "id": "estatistica-dispersao-q5",
+        "statement": "Uma duração tem média 20 minutos e desvio padrão 4 minutos. Seu coeficiente de variação é:",
+        "options": ["5%.", "20%.", "80%.", "400%."],
+        "correctIndex": 1,
+        "explanation": "CV = 4/20 × 100% = 20%; a duração tem zero substantivo e média positiva."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Qual divisor distingue as variâncias usuais?",
+        "back": "A populacional usa N; a amostral usual para estimação usa n−1."
+      },
+      {
+        "front": "Em que unidade está o desvio padrão?",
+        "back": "Na mesma unidade dos dados; a variância usa a unidade ao quadrado."
+      },
+      {
+        "front": "Somar uma constante muda a variância?",
+        "back": "Não. A translação preserva todos os desvios em relação à média."
+      },
+      {
+        "front": "Multiplicar os dados por a muda a variância como?",
+        "back": "Multiplica a variância por a² e o desvio padrão por |a|."
+      },
+      {
+        "front": "Como calcular o coeficiente de variação?",
+        "back": "Divida o desvio padrão pela média e multiplique por 100%; avalie a adequação da escala e da média."
+      }
+    ],
+    "resources": [
+      {
+        "title": "PC RS — edital de agentes 06/2025, programa de lógica e estatística",
+        "url": "https://www.pc.rs.gov.br/upload/arquivos/202510/24083812-edital-de-abertura-agentes-admin-correto.pdf",
+        "kind": "edital",
+        "checkedAt": "2026-09-13",
+        "verified": true,
+        "note": "Programa nas páginas impressas 62 e 63. Referência de conteúdo, sem afirmar conferência de todas as retificações."
+      },
+      {
+        "title": "OpenStax — Introductory Statistics 2e — Measures of the Spread of the Data",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/2-7-measures-of-the-spread-of-the-data",
+        "kind": "livro",
+        "checkedAt": "2026-09-13",
+        "verified": true,
+        "note": "Capítulo gratuito consultado. Texto em inglês; leitura complementar, não bibliografia obrigatória indicada pela banca."
+      }
+    ]
+  },
+  {
+    "id": "probabilidade-eventos",
+    "title": "Probabilidade: união, complemento e independência",
+    "subject": "Estatística",
+    "topicIds": ["probabilidade-eventos"],
+    "minutes": 60,
+    "objectives": [
+      "Aplicar probabilidade: união, complemento e independência em problemas originais de concurso.",
+      "Justificar a resposta e identificar o erro das alternativas."
+    ],
+    "sections": [
+      {
+        "title": "Conceitos e condições de aplicação",
+        "text": "O espaço amostral reúne os resultados possíveis de um experimento; um evento é um subconjunto desses resultados. Em um espaço finito com resultados equiprováveis, a probabilidade é o número de resultados favoráveis dividido pelo total. Sem equiprobabilidade, conte com as probabilidades individuais, não apenas com quantidades. O complemento de A reúne os resultados fora de A e tem probabilidade 1 menos P(A). Para a união, use P(A ou B) = P(A) + P(B) − P(A e B). A subtração evita contar duas vezes os resultados compartilhados."
+      },
+      {
+        "title": "Roteiro de resolução",
+        "text": "Desenhe os conjuntos ou enumere os resultados quando o espaço for pequeno. Para ao menos um, verifique se é mais simples calcular o complemento de nenhum. Só multiplique P(A) por P(B) para obter a interseção quando houver independência. Eventos mutuamente exclusivos não ocorrem juntos, mas eventos independentes não alteram a probabilidade um do outro. Dois eventos exclusivos com probabilidades positivas não são independentes: a ocorrência de um impede o outro. Em sorteios sucessivos, identifique se existe reposição e se o mecanismo mantém as chances."
+      },
+      {
+        "title": "Erros frequentes e revisão ativa",
+        "text": "Não some probabilidades de eventos sobrepostos sem descontar a interseção. Não confunda pelo menos um com exatamente um. Em retiradas sem reposição, o total disponível e a composição mudam após cada retirada. A independência é uma condição do modelo ou algo a verificar com dados fornecidos; não pode ser presumida porque os eventos têm nomes diferentes. Na revisão, construa um exemplo de eventos exclusivos e outro de eventos independentes."
+      }
+    ],
+    "workedExample": "Em um grupo de 50 estudantes, 28 estudam Português, 20 estudam Estatística e 8 estudam ambas. Estudam ao menos uma dessas matérias 28 + 20 − 8 = 40 pessoas, ou 80%. Não estudam nenhuma 50 − 40 = 10, ou 20%. Os eventos não são exclusivos porque há interseção. Também não são independentes: a probabilidade conjunta é 8/50 = 0,16, enquanto o produto das marginais é (28/50) × (20/50) = 0,224. A divergência impede afirmar independência nesse modelo de escolha uniforme de um estudante.",
+    "summary": [
+      "P(A ou B) = P(A) + P(B) − P(A e B).",
+      "Subtraia de 1 a probabilidade do evento original."
+    ],
+    "practice": [
+      {
+        "id": "probabilidade-eventos-q1",
+        "statement": "Em um dado honesto de seis faces, a probabilidade de resultado maior que 4 é:",
+        "options": ["1/6.", "1/2.", "1/3.", "2/3."],
+        "correctIndex": 2,
+        "explanation": "Os resultados favoráveis são 5 e 6: dois entre seis equiprováveis, ou 1/3."
+      },
+      {
+        "id": "probabilidade-eventos-q2",
+        "statement": "Se P(A)=0,5, P(B)=0,4 e P(A e B)=0,2, quanto vale P(A ou B)?",
+        "options": ["0,7.", "0,9.", "0,2.", "1,1."],
+        "correctIndex": 0,
+        "explanation": "A união vale 0,5 + 0,4 − 0,2 = 0,7, descontando a interseção duplicada."
+      },
+      {
+        "id": "probabilidade-eventos-q3",
+        "statement": "Se um evento tem probabilidade 0,35, seu complemento tem probabilidade:",
+        "options": ["0,35.", "1,35.", "0,75.", "0,65."],
+        "correctIndex": 3,
+        "explanation": "Evento e complemento particionam o espaço amostral: 1 − 0,35 = 0,65."
+      },
+      {
+        "id": "probabilidade-eventos-q4",
+        "statement": "A e B são independentes, com probabilidades 0,6 e 0,5. A interseção vale:",
+        "options": ["1,1.", "0,3.", "0,1.", "0,6."],
+        "correctIndex": 1,
+        "explanation": "A condição de independência autoriza o produto 0,6 × 0,5 = 0,3."
+      },
+      {
+        "id": "probabilidade-eventos-q5",
+        "statement": "Dois eventos mutuamente exclusivos têm probabilidades positivas. Eles podem ser independentes?",
+        "options": [
+          "Sim, sempre.",
+          "Sim, se as probabilidades forem iguais.",
+          "Não, pois a interseção zero difere do produto positivo.",
+          "Não é possível definir a interseção."
+        ],
+        "correctIndex": 2,
+        "explanation": "Exclusividade implica interseção zero; independência exigiria um produto positivo, gerando incompatibilidade."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Qual é a regra geral da união de dois eventos?",
+        "back": "P(A ou B) = P(A) + P(B) − P(A e B)."
+      },
+      {
+        "front": "Como calcular a probabilidade do complemento?",
+        "back": "Subtraia de 1 a probabilidade do evento original."
+      },
+      {
+        "front": "Quando contar favoráveis sobre possíveis funciona?",
+        "back": "Em um espaço finito de resultados equiprováveis."
+      },
+      {
+        "front": "O que caracteriza independência de dois eventos?",
+        "back": "A probabilidade conjunta é o produto das probabilidades marginais."
+      },
+      {
+        "front": "Exclusividade e independência são iguais?",
+        "back": "Não. Exclusividade impede ocorrência conjunta; independência preserva as probabilidades condicionais."
+      }
+    ],
+    "resources": [
+      {
+        "title": "PC RS — edital de agentes 06/2025, programa de lógica e estatística",
+        "url": "https://www.pc.rs.gov.br/upload/arquivos/202510/24083812-edital-de-abertura-agentes-admin-correto.pdf",
+        "kind": "edital",
+        "checkedAt": "2026-09-13",
+        "verified": true,
+        "note": "Programa nas páginas impressas 62 e 63. Referência de conteúdo, sem afirmar conferência de todas as retificações."
+      },
+      {
+        "title": "OpenStax — Introductory Statistics 2e — Independent and Mutually Exclusive Events",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events",
+        "kind": "livro",
+        "checkedAt": "2026-09-13",
+        "verified": true,
+        "note": "Capítulo gratuito consultado. Texto em inglês; leitura complementar, não bibliografia obrigatória indicada pela banca."
+      }
+    ]
+  },
+  {
+    "id": "probabilidade-condicional",
+    "title": "Probabilidade condicional, probabilidade total e Bayes",
+    "subject": "Estatística",
+    "topicIds": ["probabilidade-condicional"],
+    "minutes": 60,
+    "objectives": [
+      "Aplicar probabilidade condicional, probabilidade total e bayes em problemas originais de concurso.",
+      "Justificar a resposta e identificar o erro das alternativas."
+    ],
+    "sections": [
+      {
+        "title": "Conceitos e condições de aplicação",
+        "text": "A probabilidade condicional P(A dado B) considera apenas as situações em que B ocorreu. Quando P(B) é positiva, ela é P(A e B) dividida por P(B). Trocar A e B muda o grupo de referência e, em geral, muda o resultado. Se grupos B1, B2 e assim por diante formam uma partição do espaço, a probabilidade total de A é a soma de P(Bi) vezes P(A dado Bi). O teorema de Bayes reorganiza essa informação: P(Bi dado A) = P(Bi) vezes P(A dado Bi) dividida pela probabilidade total de A. Ele permite atualizar a chance do grupo após observar um resultado."
+      },
+      {
+        "title": "Roteiro de resolução",
+        "text": "Se houver percentuais de grupos e de resultados dentro de cada grupo, transforme-os em uma tabela com um total conveniente, como 1000 itens. Calcule primeiro quantos itens pertencem a cada grupo, depois quantos têm o resultado observado. A pergunta dado que ocorreu A restringe o denominador a todos os itens com A. Em uma árvore, multiplique probabilidades ao longo de um caminho e some caminhos incompatíveis que levam ao mesmo resultado. Antes de dividir, escreva por extenso qual população forma o denominador."
+      },
+      {
+        "title": "Erros frequentes e revisão ativa",
+        "text": "Não inverta uma condicional sem considerar as proporções dos grupos. Uma taxa alta dentro de um grupo pequeno pode gerar menos ocorrências do que uma taxa baixa em um grupo grande. O denominador do teorema de Bayes inclui todos os caminhos que produzem a evidência, não só o caminho do grupo procurado. Evite arredondar nas etapas intermediárias. Para revisar, explique a diferença entre fração de atrasos da unidade A e fração de itens da unidade A entre os atrasados."
+      }
+    ],
+    "workedExample": "Duas unidades processam 1000 formulários: A recebe 600 e B recebe 400. Em A, 10% apresentam pendência; em B, 25%. Logo há 60 pendências de A e 100 de B, totalizando 160. A probabilidade de pendência é 160/1000 = 16%. Sabendo que um formulário tem pendência, a chance de ele vir de B é 100/160 = 62,5%. Isso difere de 25%, que representa a chance de pendência dentro de B. Na fórmula: 0,4 × 0,25 dividido por (0,6 × 0,10 + 0,4 × 0,25) = 0,625.",
+    "summary": [
+      "P(A dado B) = P(A e B)/P(B), para P(B) maior que zero.",
+      "Some P(grupo) × P(evento dado grupo) sobre grupos que particionam o espaço."
+    ],
+    "practice": [
+      {
+        "id": "probabilidade-condicional-q1",
+        "statement": "Se P(A e B)=0,12 e P(B)=0,30, qual é P(A dado B)?",
+        "options": ["0,036.", "0,18.", "0,12.", "0,40."],
+        "correctIndex": 3,
+        "explanation": "Restrinja o denominador a B: 0,12/0,30 = 0,40."
+      },
+      {
+        "id": "probabilidade-condicional-q2",
+        "statement": "Em 80 inscritos, 20 estudam à noite; desses, 15 fizeram revisão. Escolhido um estudante noturno ao acaso, a chance de ter revisado é:",
+        "options": ["15/80.", "15/20.", "20/80.", "20/15."],
+        "correctIndex": 1,
+        "explanation": "A condição noturno reduz o universo para 20 pessoas; 15 delas fizeram revisão."
+      },
+      {
+        "id": "probabilidade-condicional-q3",
+        "statement": "A recebe 70% dos processos, com 10% de pendências; B recebe 30%, com 20% de pendências. A probabilidade total de pendência é:",
+        "options": ["13%.", "30%.", "15%.", "7%."],
+        "correctIndex": 0,
+        "explanation": "Some os caminhos: 0,70 × 0,10 + 0,30 × 0,20 = 0,13."
+      },
+      {
+        "id": "probabilidade-condicional-q4",
+        "statement": "No cenário com A recebendo 70% e B 30%, e taxas de pendência de 10% e 20%, qual a chance de um processo com pendência vir de B?",
+        "options": ["20%.", "30%.", "6/13, aproximadamente 46,15%.", "70%."],
+        "correctIndex": 2,
+        "explanation": "B com pendência corresponde a 0,06 do total; todas as pendências são 0,13. Assim, 0,06/0,13 = 6/13."
+      },
+      {
+        "id": "probabilidade-condicional-q5",
+        "statement": "Em uma caixa com 3 fichas azuis e 2 brancas, retiram-se duas sem reposição. Dado que a primeira foi azul, a chance de a segunda ser azul é:",
+        "options": ["3/5.", "1/2.", "3/4.", "2/5."],
+        "correctIndex": 1,
+        "explanation": "Após retirar uma azul, restam 2 azuis entre 4 fichas: 2/4 = 1/2."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Qual é a fórmula de probabilidade condicional?",
+        "back": "P(A dado B) = P(A e B)/P(B), para P(B) maior que zero."
+      },
+      {
+        "front": "Como obter a probabilidade total por grupos?",
+        "back": "Some P(grupo) × P(evento dado grupo) sobre grupos que particionam o espaço."
+      },
+      {
+        "front": "O que Bayes permite calcular?",
+        "back": "A probabilidade de um grupo após observar uma evidência, ponderando a frequência inicial do grupo."
+      },
+      {
+        "front": "P(A dado B) é sempre P(B dado A)?",
+        "back": "Não. Os denominadores se referem a grupos diferentes."
+      },
+      {
+        "front": "Como evitar inverter o denominador em Bayes?",
+        "back": "Conte todos os casos com a evidência e use esse total como denominador."
+      }
+    ],
+    "resources": [
+      {
+        "title": "PC RS — edital de agentes 06/2025, programa de lógica e estatística",
+        "url": "https://www.pc.rs.gov.br/upload/arquivos/202510/24083812-edital-de-abertura-agentes-admin-correto.pdf",
+        "kind": "edital",
+        "checkedAt": "2026-09-13",
+        "verified": true,
+        "note": "Programa nas páginas impressas 62 e 63. Referência de conteúdo, sem afirmar conferência de todas as retificações."
+      },
+      {
+        "title": "OpenStax — Introductory Statistics 2e — Two Basic Rules of Probability",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability",
+        "kind": "livro",
+        "note": "Capítulo gratuito em inglês para regras de probabilidade e condicionais; complemento introdutório, sem alegar cobertura integral de Bayes. Não é bibliografia obrigatória indicada pela banca.",
+        "verified": true,
+        "checkedAt": "2026-09-13"
+      }
+    ]
+  }
+]

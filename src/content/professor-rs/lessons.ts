@@ -1,4 +1,6 @@
 import { additionalResources } from "./resources";
+import quantitativeLessons from "./quantitative.json";
+import { lessonSchema } from "./schema";
 import type { ProfessorLesson, ProfessorSource } from "./schema";
 const date = "2026-09-13";
 const law = (title: string, url: string): ProfessorSource => ({
@@ -788,7 +790,7 @@ const seeds: Seed[] = [
   },
 ];
 
-export const foundationLessons: ProfessorLesson[] = seeds.map((seed) => ({
+const seedLessons: ProfessorLesson[] = seeds.map((seed) => ({
   id: seed.id,
   subject: seed.subject,
   title: seed.title,
@@ -814,3 +816,8 @@ export const foundationLessons: ProfessorLesson[] = seeds.map((seed) => ({
   })),
   resources: [seed.source, ...(additionalResources[seed.id] ?? [])],
 }));
+
+export const foundationLessons: ProfessorLesson[] = [
+  ...seedLessons,
+  ...quantitativeLessons.map((lesson) => lessonSchema.parse(lesson)),
+];
