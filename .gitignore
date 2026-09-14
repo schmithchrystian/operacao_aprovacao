@@ -45,3 +45,6 @@ next-env.d.ts
 !.env.example
 /playwright-report/
 /test-results/
+
+# Professor RS: checkpoints e respostas não revisadas da IA
+/.professor-rs/

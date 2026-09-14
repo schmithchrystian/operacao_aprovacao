@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { BookOpen } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { CourseCatalog } from "@/components/courses/course-catalog";
@@ -20,6 +21,15 @@ export default async function CursosPage() {
     <div className="space-y-6">
       <Breadcrumbs items={[{ label: "Início", href: "/dashboard" }, { label: "Cursos" }]} />
       <h1 className="text-2xl font-semibold tracking-tight">Cursos</h1>
+      <Link href="/professor-rs" className="bg-primary/5 block rounded-xl border p-5">
+        <span className="text-primary font-semibold">
+          Professor RS — concursos de segurança pública →
+        </span>
+        <span className="text-muted-foreground mt-1 block text-sm">
+          Editais de referência, aulas de fundamentos, flashcards e cronograma para PM, Bombeiros,
+          PC, PP e GCM.
+        </span>
+      </Link>
 
       {!result.ok ? (
         <ErrorState

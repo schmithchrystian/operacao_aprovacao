@@ -42,3 +42,7 @@ Comece pelo [roteiro de entrega controlada](docs/entrega-usuarios/README.md) e p
 `src/contracts` valida entradas/DTOs; `src/server/services` concentra regras e autorização; `src/server/repositories` implementa os contratos em mock e Prisma. Migrations são aditivas e ordenadas em `prisma/migrations`.
 
 Os [11 perfis de revisão](docs/agents/README.md) cobrem QA, segurança, desenvolvimento e operação. Relatórios datados preservam o diagnóstico da versão anterior; a situação atual fica em `docs/implementation`, com evidências e pendências operacionais separadas.
+
+## Professor RS
+
+A área `/professor-rs` reúne seis trilhas iniciais de concursos de segurança do RS, aulas escritas, exercícios comentados, flashcards e cronograma exportável. O [agente Professor RS](docs/professor-rs/README.md) pesquisa editais e gera novas aulas com checkpoints; publica apenas pacotes que passaram por validação e revisão. A biblioteca inicial **não é o curso integral dos editais**. A geração via API requer credenciais próprias; a importação no banco requer `DATABASE_URL`.
