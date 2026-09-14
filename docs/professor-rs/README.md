@@ -4,7 +4,7 @@ Agente de pesquisa e produção pedagógica para GCM, PM/Brigada Militar, Bombei
 
 ## O que está disponível
 
-A rota autenticada `/professor-rs`, também ligada ao catálogo `/cursos`, contém seis trilhas: Brigada Militar, CBMRS, PC, PP e GCM de Porto Alegre e Canoas. A biblioteca inicial possui **19 aulas únicas, 38 questões originais e 38 flashcards**, reaproveitados onde pertinente. As aulas têm conceitos, método de resolução, exemplo resolvido e resumo. Não é um curso integral de cada edital; as pendências aparecem em cada trilha.
+A rota autenticada `/professor-rs`, também ligada ao catálogo `/cursos`, contém seis trilhas: Brigada Militar, CBMRS, PC, PP e GCM de Porto Alegre e Canoas. A biblioteca inicial possui **21 aulas únicas, 48 questões originais e 48 flashcards**, reaproveitados onde pertinente. As aulas têm conceitos, método de resolução, exemplo resolvido e resumo. Não é um curso integral de cada edital; as pendências aparecem em cada trilha.
 
 A pesquisa de referência foi realizada em 13/09/2026. GCM Canoas usa edital histórico de 2023; GCM Porto Alegre usa CP 794 / 103-2024; Brigada e Bombeiros usam referências de soldado 2025; PC usa agentes 06/2025; PP tem portal 2026 e banca localizados, com extração integral do programa ainda pendente. Não se afirma que esses concursos estejam com inscrições abertas. Os URLs consultados estão no catálogo versionado, com notas de escopo.
 
@@ -59,3 +59,7 @@ O catálogo Professor RS é independente de banco para conteúdo editorial versi
 Não havia `OPENAI_API_KEY`, `PROFESSOR_RS_MODEL` ou `DATABASE_URL` configurados no ambiente desta execução. Portanto não foi executada geração pelo provedor nem importação em um banco persistente. A biblioteca não cobre integralmente os editais. Faltam aprofundamento, legislação estadual/municipal específica, provas/gabaritos correspondentes, simulados com regras oficiais, curadoria completa de livros/vídeos e revisão editorial integral. Não há alegação de curso completo ou aprovação garantida.
 
 Vídeos externos são referências da UNIVESP e TV Justiça. Alguns foram localizados via páginas institucionais/metadados; onde a reprodução não foi conferida, isso está declarado e `verified=false`. A Constituição em formatos digitais é referência da Câmara; somente o link é indicado, sem redistribuir conteúdo de terceiros.
+
+### Ampliação de Português da Brigada Militar
+
+A retificação SD-P 02/2025, item 2, foi conferida e vinculada ao catálogo. Duas aulas originais tratam de intenção comunicativa e variação linguística, cada uma com cinco exercícios comentados e cinco flashcards. Elas entram automaticamente no planejador e no simulado da trilha PM. A conferência deste ato não significa que todas as retificações ou todo o programa tenham sido revisados.

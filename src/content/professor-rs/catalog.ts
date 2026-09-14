@@ -1,4 +1,4 @@
-import { foundationLessons } from "./lessons";
+import { bmAmendment, foundationLessons } from "./lessons";
 import { validatePack, type CoursePack, type ProfessorSource } from "./schema";
 
 const checkedAt = "2026-09-13";
@@ -65,8 +65,12 @@ const definitions: Definition[] = [
     jurisdiction: "Rio Grande do Sul",
     role: "Soldado de primeira classe",
     examLabel: "SD-P 01/2025 — referência",
-    sources: [officialSources.pm, foundationLessons[0]!.resources[0]!],
-    lessons: base,
+    sources: [
+      officialSources.pm,
+      foundationLessons.find((l) => l.id === "interpretacao")!.resources[0]!,
+      bmAmendment,
+    ],
+    lessons: [...base, "intencao-comunicativa", "variacao-linguistica"],
     remaining: [
       [
         "legislacao-militar",
@@ -255,7 +259,7 @@ export const professorCatalog: CoursePack[] = definitions.map((definition) => {
   return validatePack({
     schemaVersion: 1,
     slug: definition.slug,
-    version: "base-2026-09-13",
+    version: definition.career === "PM" ? "base-2026-09-13-r2" : "base-2026-09-13",
     title: definition.title,
     career: definition.career,
     jurisdiction: definition.jurisdiction,

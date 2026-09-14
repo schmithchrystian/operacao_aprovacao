@@ -51,6 +51,15 @@ const cbm: ProfessorSource = {
   note: "Referência para ciências naturais e demais disciplinas.",
 };
 
+export const bmAmendment: ProfessorSource = {
+  title: "Brigada Militar — retificação SD-P 02/2025",
+  url: "https://www.brigadamilitar.rs.gov.br/upload/arquivos/202503/28074607-edital-dadresa-n-sd-p-02-2025-retifica-edtial-de-abertura.pdf",
+  kind: "edital",
+  checkedAt: date,
+  verified: true,
+  note: "Item 2 inclui intenção comunicativa e variação linguística. Também altera referências; esta conferência não substitui a revisão dos demais atos.",
+};
+
 type Seed = {
   id: string;
   subject: string;
@@ -63,6 +72,112 @@ type Seed = {
   source: ProfessorSource;
 };
 const seeds: Seed[] = [
+  {
+    id: "intencao-comunicativa",
+    subject: "Língua Portuguesa",
+    title: "Intenção comunicativa: finalidade, gênero e pistas do texto",
+    concept:
+      "A intenção comunicativa é a finalidade construída pelo texto em uma situação de comunicação: informar, orientar, convencer, solicitar, advertir ou produzir humor, por exemplo. O assunto responde sobre o que se fala; a finalidade responde para que aquele texto foi produzido. Um comunicado sobre trânsito pode informar uma interdição, enquanto uma campanha sobre o mesmo assunto pode tentar mudar comportamentos. O gênero oferece pistas, mas não determina sozinho a resposta: uma notícia pode incorporar opinião em uma fala citada sem que a finalidade principal de todo o texto deixe de ser informativa. É preciso distinguir a voz do autor, a voz de uma personagem e a fala de uma fonte entrevistada.",
+    method:
+      "Resolva em quatro passos. Primeiro, identifique quem fala, para quem e em que situação. Segundo, localize marcas como imperativos, dados, justificativas, avaliações e chamadas à ação. Terceiro, formule a finalidade com um verbo e um complemento: orientar o candidato sobre documentos, por exemplo. Quarto, compare essa formulação com as alternativas e com o alcance do comando, que pode perguntar sobre uma frase ou sobre o texto inteiro. Um imperativo pode orientar, convidar ou ordenar; não o interprete automaticamente como autoritarismo. Uma pergunta também pode funcionar como pedido indireto. Não atribua uma intenção psicológica secreta ao autor: sustente a análise em evidências do enunciado.",
+    example:
+      "Considere: 'O atendimento será encerrado às 17h. Para evitar deslocamentos desnecessários, confira os documentos antes de sair.' A primeira frase comunica um horário. A segunda orienta uma ação e apresenta sua justificativa. Se a pergunta tratar apenas da segunda frase, a finalidade é orientar o leitor a verificar os documentos; se tratar do conjunto, a resposta precisa contemplar a informação e a orientação. A alternativa 'criticar todos os usuários despreparados' acrescenta uma avaliação ausente. Já 'exigir que ninguém compareça' contradiz a possibilidade de atendimento. A palavra evitar não transforma o aviso em proibição.",
+    summary: [
+      "Assunto e finalidade são perguntas diferentes: sobre o quê e para quê.",
+      "Justifique a finalidade com marcas do texto e respeite o trecho solicitado.",
+    ],
+    questions: [
+      [
+        "Em 'Antes de comparecer, confira a documentação exigida', qual é a finalidade predominante?",
+        "Orientar uma preparação para o atendimento.",
+        "Narrar um atendimento já realizado.",
+        "O verbo confira solicita uma ação anterior ao comparecimento; não há relato de um fato passado.",
+        "Como identificar uma orientação?",
+      ],
+      [
+        "Um aviso e uma campanha abordam trânsito. Isso significa que têm necessariamente a mesma finalidade?",
+        "Não; um pode informar e o outro persuadir.",
+        "Sim; o assunto determina sempre a finalidade.",
+        "O tema pode coincidir sem que a ação pretendida sobre o leitor seja a mesma.",
+        "Assunto determina finalidade?",
+      ],
+      [
+        "Um cartaz diz 'Doe livros: sua leitura pode chegar a outras pessoas'. Qual pista sustenta a finalidade persuasiva?",
+        "O convite à doação acompanhado de uma razão para agir.",
+        "A apresentação neutra de um inventário de livros.",
+        "Doe convoca o leitor e a segunda oração apresenta um benefício que procura motivar a ação.",
+        "O que sustenta a persuasão?",
+      ],
+      [
+        "Em uma notícia, uma fonte afirma 'o serviço é excelente'. É correto atribuir automaticamente essa avaliação ao jornalista?",
+        "Não; é preciso distinguir a fala citada da voz do autor.",
+        "Sim; toda fala citada expressa necessariamente a opinião do jornalista.",
+        "A atribuição da fala a uma fonte delimita sua autoria; sua presença não prova adesão do jornalista.",
+        "Como distinguir vozes?",
+      ],
+      [
+        "Na recepção, 'Você poderia me informar o horário?' funciona principalmente como:",
+        "Um pedido de informação formulado de maneira indireta.",
+        "Uma avaliação técnica da capacidade intelectual do atendente.",
+        "O contexto de atendimento e o objeto da pergunta indicam solicitação de informação, não um teste de capacidade.",
+        "Como funciona um pedido indireto?",
+      ],
+    ],
+    source: bmAmendment,
+  },
+  {
+    id: "variacao-linguistica",
+    subject: "Língua Portuguesa",
+    title: "Variação linguística: usos, registros e adequação",
+    concept:
+      "Uma língua apresenta variações associadas à região, aos grupos sociais, à época e à situação de uso. A variação regional é chamada diatópica; a social, diastrática; a histórica, diacrônica; e a situacional, diafásica. Essas dimensões podem coexistir. Uma expressão regional não revela, por si só, escolaridade, competência ou caráter do falante. Registro formal e informal descrevem escolhas relacionadas à situação comunicativa. A norma-padrão funciona como referência codificada e pode ser exigida em uma redação de concurso; isso não significa que todos os demais usos sejam desprovidos de regras ou inferiores como formas de comunicação.",
+    method:
+      "Observe a evidência antes de classificar. Se o enunciado compara palavras usadas em regiões, a pista é geográfica. Se compara documentos de épocas distintas, é temporal. Se a mesma pessoa escreve de modos diferentes para um amigo e para uma instituição, a mudança decorre da situação. Não confunda canal com registro: pode haver fala formal em uma cerimônia e escrita informal em uma conversa digital. Em questões de reescrita, preserve o sentido e adapte vocabulário, tratamento e construção sintática ao contexto solicitado. Em questões gramaticais que exigem norma-padrão, aplique a regra pedida sem transformar a avaliação de uma construção em julgamento sobre o falante.",
+    example:
+      "Uma candidata envia ao amigo 'Me manda o endereço?' e escreve à organização 'Solicito o envio do endereço do local de prova'. O objetivo básico de obter o endereço permanece, mas o grau de formalidade e a relação com o destinatário mudam. A evidência principal é variação situacional, pois se trata da mesma pessoa adaptando seu uso. Não há informação suficiente para concluir que mudou de região ou de grupo social. Se a questão pedir adequação a um requerimento formal, a segunda formulação atende melhor ao gênero; isso não torna a primeira incapaz de comunicar o pedido na conversa entre amigos.",
+    summary: [
+      "Região, grupo, época e situação são dimensões de variação que podem se combinar.",
+      "Adequação depende do contexto; fala não é sinônimo de informalidade e escrita não é sinônimo de formalidade.",
+    ],
+    questions: [
+      [
+        "A mesma pessoa adapta seu vocabulário ao conversar com amigos e ao apresentar um requerimento. Qual dimensão se destaca?",
+        "Variação situacional ou diafásica.",
+        "Variação histórica ou diacrônica.",
+        "O contraste informado é entre situações e destinatários, não entre épocas da língua.",
+        "O que é variação situacional?",
+      ],
+      [
+        "Palavras diferentes para um mesmo objeto em localidades distintas exemplificam principalmente:",
+        "Variação regional ou diatópica.",
+        "Incapacidade de comunicação dos falantes.",
+        "A distribuição geográfica de formas linguísticas é uma manifestação da diversidade regional, não prova de incapacidade.",
+        "O que é variação regional?",
+      ],
+      [
+        "Uma palestra solene pode apresentar linguagem formal, mesmo sendo oral?",
+        "Sim; canal oral e registro formal são compatíveis.",
+        "Não; toda produção oral é informal.",
+        "A formalidade depende da situação comunicativa e das escolhas de linguagem, não exclusivamente do canal.",
+        "Fala pode ser formal?",
+      ],
+      [
+        "O contraste entre formas de tratamento em cartas antigas e mensagens atuais pode evidenciar:",
+        "Variação histórica ou diacrônica.",
+        "Obrigatoriamente uma diferença entre regiões contemporâneas.",
+        "Quando a comparação destaca períodos diferentes, a evidência principal é a mudança ao longo do tempo.",
+        "O que é variação histórica?",
+      ],
+      [
+        "Uma prova exige reescrever uma frase conforme a norma-padrão. Qual procedimento é adequado?",
+        "Aplicar as regras solicitadas e preservar o sentido, sem julgar a pessoa que usou outra variedade.",
+        "Concluir que o falante de outra variedade não conhece nenhuma regra linguística.",
+        "A adequação ao padrão pedido é uma tarefa específica; variedades também têm regularidades e não autorizam julgamentos sobre seus usuários.",
+        "Como aplicar a norma-padrão?",
+      ],
+    ],
+    source: bmAmendment,
+  },
   {
     id: "interpretacao",
     subject: "Língua Portuguesa",
