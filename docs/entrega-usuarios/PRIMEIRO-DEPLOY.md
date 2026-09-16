@@ -84,9 +84,11 @@ Se houver falha de autenticação, acesso indevido ou corrupção, suspender adm
 
 ## Agendamentos entregues no repositório
 
-O [vercel.json](../../vercel.json) registra dois jobs: envio da fila de e-mails a cada minuto e atualização de ranking a cada seis horas, às 00h, 06h, 12h e 18h UTC. Em 30 dias, são aproximadamente 43.200 chamadas de fila e 120 de ranking, mesmo quando a fila está vazia. Medir duração, queries e gasto de funções; processamento de fila é limitado por lote, e cadência não garante prazo de entrega do provedor de e-mail.
+Os endpoints autenticados de fila de e-mails, ranking e conciliação de cobrança continuam versionados. O `vercel.json` não registra agendamentos: a conta atual usa Vercel Hobby, que rejeita durante o deploy qualquer job com frequência superior a uma vez por dia. O primeiro Preview remoto confirmou essa restrição.
 
-Essa frequência exige Vercel Pro ou Enterprise: Hobby limita cron a uma vez por dia. Execuções usam as franquias e a cobrança de Functions. Fonte: [limites de cron](https://vercel.com/docs/cron-jobs/usage-and-pricing), consultada em 14/09/2026.
+Para a hospedagem inicial, configurar o Supabase Cron para chamar `/api/cron/account-emails` a cada minuto e `/api/cron/ranking-recalc` a cada seis horas. Configurar `/api/cron/billing` a cada quinze minutos somente depois de habilitar e homologar cobrança. As chamadas enviam `Authorization: Bearer CRON_SECRET`; o segredo deve ficar no Vault, nunca no SQL versionado ou na URL. Processamento de fila é limitado por lote, e cadência não garante prazo de entrega do provedor de e-mail.
+
+Se a operação migrar para Vercel Pro, os três agendamentos podem voltar ao `vercel.json` depois da validação de custo e duração. Fonte: [limites de cron](https://vercel.com/docs/cron-jobs/usage-and-pricing), consultada em 16/09/2026.
 
 O cron automático roda no deployment de Production do projeto Vercel, não nos Previews. Um projeto separado usado para staging pode ter seu próprio deployment de Production, com `APP_ENV=staging` e banco isolado. Preview deve ser testado com disparo controlado ou scheduler exclusivo sem credenciais de produção. Fonte: [configuração de cron](https://vercel.com/docs/cron-jobs/quickstart).
 

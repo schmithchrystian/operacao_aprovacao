@@ -29,7 +29,7 @@ Antes de ativar para clientes: executar Stripe test mode de ponta a ponta, confi
 
 ## Conciliação agendada
 
-`GET /api/cron/billing` exige `Authorization: Bearer <CRON_SECRET>` com comparação constante. O `vercel.json` agenda a cada 15 minutos; precisa de plano que suporte essa frequência. O worker seleciona até **5 assinaturas e 5 checkouts sem assinatura local** por execução. Assim recupera também o primeiro webhook perdido. Usa claim CAS em `reconciledAt`, ordenação dos mais antigos e intervalo mínimo de 15 minutos; duas invocações concorrentes não processam a mesma seleção. Tentativas com falha também giram na fila, sem alterar o bloqueio ou confirmar recebimento de evento.
+`GET /api/cron/billing` exige `Authorization: Bearer <CRON_SECRET>` com comparação constante. A hospedagem Hobby não o agenda no `vercel.json`; depois de habilitar cobrança, configure o scheduler externo para executar a cada 15 minutos. O worker seleciona até **5 assinaturas e 5 checkouts sem assinatura local** por execução. Assim recupera também o primeiro webhook perdido. Usa claim CAS em `reconciledAt`, ordenação dos mais antigos e intervalo mínimo de 15 minutos; duas invocações concorrentes não processam a mesma seleção. Tentativas com falha também giram na fila, sem alterar o bloqueio ou confirmar recebimento de evento.
 
 Cada chamada Stripe tem timeout de até 8 segundos, cada assinatura tem orçamento de 15 segundos e o lote de 40 segundos, dentro da rota de 60 segundos. A resposta contém contagens `attempted`, `reconciled`, `failed`, sem e-mail, IDs ou segredos. Uma falha parcial retorna HTTP 503 para monitoramento. Conciliação de checkout sem assinatura significa que a sessão foi consultada; não significa pagamento aprovado.
 
