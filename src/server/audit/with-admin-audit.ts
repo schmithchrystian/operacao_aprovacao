@@ -48,27 +48,29 @@ export function withAdminAudit<Args extends unknown[], Result>(
   const roles = options.roles ?? (["admin"] as Role[]);
 
   return async (...args: Args): Promise<Result> => {
-    const session = await requireRole(...roles);
     const correlationId = randomUUID();
-    const derivedEntityId = entityId?.(...args);
+    let session: Session | undefined;
+    let derivedEntityId: string | undefined;
 
     try {
+      session = await requireRole(...roles);
+      derivedEntityId = entityId?.(...args);
       const result = await handler(session, ...args);
-      auditLog({
+      await auditLog({
         operation: options.operation,
         entity: options.entity,
         entityId: derivedEntityId,
-        userId: session.userId,
+        userId: session?.userId,
         result: "success",
         correlationId,
       });
       return result;
     } catch (error) {
-      auditLog({
+      await auditLog({
         operation: options.operation,
         entity: options.entity,
         entityId: derivedEntityId,
-        userId: session.userId,
+        userId: session?.userId,
         result: "failure",
         correlationId,
       });

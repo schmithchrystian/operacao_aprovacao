@@ -1,0 +1,968 @@
+{
+  "interpretacao": {
+    "practice": [
+      {
+        "id": "interpretacao-q3",
+        "statement": "O aviso diz: “Somente candidatos com documento poderão entrar”. O texto permite concluir que:",
+        "options": [
+          "Ter documento é condição necessária para entrar.",
+          "Ter documento garante a entrada em qualquer situação.",
+          "Nenhum candidato com documento entrará.",
+          "O documento pode ser dispensado por qualquer candidato."
+        ],
+        "correctIndex": 0,
+        "explanation": "Somente estabelece uma restrição: quem entra deve ter documento. Não afirma que esse seja o único requisito."
+      },
+      {
+        "id": "interpretacao-q4",
+        "statement": "“O curso pode oferecer turmas extras.” Qual reescrita preserva o grau de certeza?",
+        "options": [
+          "O curso certamente oferecerá turmas extras.",
+          "Existe possibilidade de o curso oferecer turmas extras.",
+          "O curso nunca oferece turmas extras.",
+          "Todas as turmas serão extras."
+        ],
+        "correctIndex": 1,
+        "explanation": "Pode expressa possibilidade; certamente e nunca alteram a modalidade do enunciado."
+      },
+      {
+        "id": "interpretacao-q5",
+        "statement": "“O atendimento melhorou após a reforma.” Qual conclusão ultrapassa a informação fornecida?",
+        "options": [
+          "A melhoria foi posterior à reforma.",
+          "Houve melhoria no atendimento.",
+          "A reforma foi necessariamente a única causa da melhoria.",
+          "O texto estabelece uma sequência temporal."
+        ],
+        "correctIndex": 2,
+        "explanation": "A relação temporal não demonstra, sozinha, causalidade exclusiva. A palavra única acrescenta uma conclusão não sustentada."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "O que indica somente em uma condição de acesso?",
+        "back": "Indica uma condição necessária, sem garantir que ela seja suficiente."
+      },
+      {
+        "front": "Como reconhecer uma alteração de modalidade?",
+        "back": "Compare palavras que indicam possibilidade, obrigação, certeza ou proibição."
+      },
+      {
+        "front": "Uma sequência temporal prova causalidade exclusiva?",
+        "back": "Não. Dizer que um fato veio depois de outro não prova que este foi sua única causa."
+      }
+    ]
+  },
+  "concordancia": {
+    "practice": [
+      {
+        "id": "concordancia-q3",
+        "statement": "Qual construção segue a norma-padrão para o verbo existir?",
+        "options": [
+          "Existe três vagas.",
+          "Existem três vagas.",
+          "Existem uma vaga.",
+          "Existia três vagas."
+        ],
+        "correctIndex": 1,
+        "explanation": "Existir é pessoal e concorda com o sujeito três vagas, diferentemente de haver com sentido existencial."
+      },
+      {
+        "id": "concordancia-q4",
+        "statement": "Qual frase apresenta concordância adequada com fazer indicando tempo decorrido?",
+        "options": [
+          "Fazem dois anos desde o edital.",
+          "Faziam dois anos desde o edital.",
+          "Faz dois anos desde o edital.",
+          "Farão dois anos desde o edital."
+        ],
+        "correctIndex": 2,
+        "explanation": "Fazer indicando tempo decorrido é impessoal e permanece na terceira pessoa do singular."
+      },
+      {
+        "id": "concordancia-q5",
+        "statement": "Complete: “Os resultados da avaliação ___ publicados ontem”.",
+        "options": ["foi", "era", "é", "foram"],
+        "correctIndex": 3,
+        "explanation": "O núcleo do sujeito é resultados, no plural; da avaliação não muda a concordância."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Haver existencial e existir têm a mesma concordância?",
+        "back": "Não. Haver existencial é impessoal; existir concorda com seu sujeito."
+      },
+      {
+        "front": "Como flexionar fazer indicando tempo decorrido?",
+        "back": "Use a terceira pessoa do singular: faz dois anos, fazia dois anos."
+      },
+      {
+        "front": "Como evitar a concordância por atração?",
+        "back": "Localize o núcleo do sujeito e não flexione o verbo pelo substantivo mais próximo."
+      }
+    ]
+  },
+  "crase": {
+    "practice": [
+      {
+        "id": "crase-q3",
+        "statement": "Qual frase emprega corretamente o acento indicativo de crase?",
+        "options": [
+          "Visitou à escola.",
+          "Entregou o formulário à coordenadora.",
+          "Começou à responder.",
+          "Solicitou à revisão do resultado."
+        ],
+        "correctIndex": 1,
+        "explanation": "Entregar algo a alguém exige preposição; coordenadora admite artigo. Nas demais, falta preposição ou há verbo sem artigo."
+      },
+      {
+        "id": "crase-q4",
+        "statement": "Em “O candidato referiu-se à decisão”, a substituição por termo masculino resulta em:",
+        "options": [
+          "Referiu-se o parecer.",
+          "Referiu-se à parecer.",
+          "Referiu-se ao parecer.",
+          "Referiu-se pelo parecer."
+        ],
+        "correctIndex": 2,
+        "explanation": "Referir-se a exige preposição; com o artigo masculino o, forma-se ao, confirmando a estrutura preposição mais artigo."
+      },
+      {
+        "id": "crase-q5",
+        "statement": "Qual preenchimento respeita a norma-padrão: “A revisão ocorrerá ___ tarde”?",
+        "options": [
+          "à",
+          "a, pois toda indicação de tempo dispensa acento",
+          "há, pois indica horário futuro",
+          "as"
+        ],
+        "correctIndex": 0,
+        "explanation": "À tarde é uma locução adverbial feminina de tempo e recebe acento grave. Há expressaria existência ou tempo decorrido."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Palavra feminina basta para exigir crase?",
+        "back": "Não. É necessário verificar a preposição e o artigo ou a construção específica."
+      },
+      {
+        "front": "Qual é a utilidade da substituição por masculino?",
+        "back": "A ocorrência de ao ajuda a identificar a combinação de preposição e artigo no feminino."
+      },
+      {
+        "front": "Como se escreve a locução de tempo à tarde?",
+        "back": "Com acento grave: à tarde, como em outras locuções adverbiais femininas."
+      }
+    ]
+  },
+  "porcentagem": {
+    "practice": [
+      {
+        "id": "porcentagem-q3",
+        "statement": "Após desconto de 25%, uma apostila custa R$90. Qual era o preço antes do desconto?",
+        "options": ["R$112,50.", "R$120.", "R$115.", "R$67,50."],
+        "correctIndex": 1,
+        "explanation": "O preço final representa 75% do original. Assim, 90/0,75 = 120; somar 25% a 90 usaria a base errada."
+      },
+      {
+        "id": "porcentagem-q4",
+        "statement": "Uma taxa passa de 20% para 25%. A mudança corresponde a:",
+        "options": [
+          "5% de aumento relativo e 25 pontos percentuais.",
+          "25 pontos percentuais.",
+          "5 pontos percentuais e 25% de aumento relativo.",
+          "5 pontos percentuais e 5% de aumento relativo."
+        ],
+        "correctIndex": 2,
+        "explanation": "A diferença é 5 pontos percentuais. Em relação à taxa inicial de 20%, o crescimento é 5/20 = 25%."
+      },
+      {
+        "id": "porcentagem-q5",
+        "statement": "Dois descontos sucessivos de 20% sobre R$200 deixam o preço em:",
+        "options": ["R$120.", "R$160.", "R$100.", "R$128."],
+        "correctIndex": 3,
+        "explanation": "Multiplique os fatores: 200 × 0,80 × 0,80 = 128. O desconto total é 36%, não 40%."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Como recuperar o valor anterior a um desconto?",
+        "back": "Divida o preço final por 1 menos a taxa decimal de desconto."
+      },
+      {
+        "front": "Percentual e ponto percentual são iguais?",
+        "back": "Não. Pontos percentuais medem a diferença entre taxas; a variação relativa divide essa diferença pela taxa inicial."
+      },
+      {
+        "front": "Como combinar dois descontos sucessivos?",
+        "back": "Multiplique os fatores de permanência, pois o segundo desconto usa a base já reduzida."
+      }
+    ]
+  },
+  "logica": {
+    "practice": [
+      {
+        "id": "logica-q3",
+        "statement": "Se estudo, então reviso. Estudei. Qual conclusão segue dessas premissas?",
+        "options": [
+          "Revisei.",
+          "Não revisei.",
+          "Só quem revisa estuda.",
+          "Não é possível concluir que revisei."
+        ],
+        "correctIndex": 0,
+        "explanation": "O antecedente foi afirmado; pela regra de modus ponens, conclui-se o consequente."
+      },
+      {
+        "id": "logica-q4",
+        "statement": "Se estudo, então reviso. Não revisei. Qual conclusão é válida?",
+        "options": [
+          "Estudei.",
+          "Não estudei.",
+          "Revisei parcialmente.",
+          "A condicional é necessariamente falsa."
+        ],
+        "correctIndex": 1,
+        "explanation": "Negar o consequente permite negar o antecedente por modus tollens."
+      },
+      {
+        "id": "logica-q5",
+        "statement": "Se estudo, então reviso. Revisei. É válido concluir necessariamente que estudei?",
+        "options": [
+          "Sim, pois toda condicional é reversível.",
+          "Sim, pois o consequente garante o antecedente.",
+          "Não; isso seria afirmar o consequente.",
+          "Não; a premissa proíbe estudar."
+        ],
+        "correctIndex": 2,
+        "explanation": "O consequente pode ocorrer por outra condição; a implicação não autoriza sua recíproca."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "O que é modus ponens?",
+        "back": "De P implica Q e P, conclui-se Q."
+      },
+      {
+        "front": "O que é modus tollens?",
+        "back": "De P implica Q e não Q, conclui-se não P."
+      },
+      {
+        "front": "Qual é a falácia de afirmar o consequente?",
+        "back": "Concluir P apenas de P implica Q e Q; essa conclusão não é necessária."
+      }
+    ]
+  },
+  "estatistica": {
+    "practice": [
+      {
+        "id": "estatistica-q3",
+        "statement": "Qual é a mediana dos dados 8, 2, 4 e 10?",
+        "options": ["4.", "8.", "6.", "24."],
+        "correctIndex": 2,
+        "explanation": "Ordene 2, 4, 8, 10 e calcule a média dos dois valores centrais: (4+8)/2 = 6."
+      },
+      {
+        "id": "estatistica-q4",
+        "statement": "Nos valores 2, 2, 5, 7 e 7, o conjunto é:",
+        "options": [
+          "Sem moda.",
+          "Unimodal com moda 5.",
+          "Unimodal com moda 7.",
+          "Bimodal com modas 2 e 7."
+        ],
+        "correctIndex": 3,
+        "explanation": "Os valores 2 e 7 aparecem duas vezes cada, empatados na maior frequência."
+      },
+      {
+        "id": "estatistica-q5",
+        "statement": "A média de quatro notas é 6. Acrescentando uma quinta nota igual a 10, a nova média será:",
+        "options": ["6,8.", "8.", "6.", "7,5."],
+        "correctIndex": 0,
+        "explanation": "A soma inicial é 4 × 6 = 24; a nova soma é 34 e a quantidade é 5. Logo, 34/5 = 6,8."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Como obter a mediana com quantidade par de dados?",
+        "back": "Ordene e calcule a média dos dois valores centrais."
+      },
+      {
+        "front": "Pode haver mais de uma moda?",
+        "back": "Sim. Valores distintos podem compartilhar a frequência máxima."
+      },
+      {
+        "front": "Como atualizar uma média após acrescentar um valor?",
+        "back": "Recupere a soma pela média vezes quantidade, acrescente o novo valor e divida pela nova quantidade."
+      }
+    ]
+  },
+  "contabilidade": {
+    "practice": [
+      {
+        "id": "contabilidade-q3",
+        "statement": "Uma entidade compra equipamento à vista, sem tributos ou outros efeitos. Qual é o efeito imediato no total do ativo?",
+        "options": [
+          "Aumenta pelo preço inteiro.",
+          "Permanece igual, com troca de caixa por equipamento.",
+          "Diminui pelo preço inteiro.",
+          "Torna-se igual ao passivo."
+        ],
+        "correctIndex": 1,
+        "explanation": "Há troca entre componentes do ativo; a saída de caixa é compensada pela entrada do equipamento pelo mesmo valor."
+      },
+      {
+        "id": "contabilidade-q4",
+        "statement": "Uma entidade paga dívida de R$15 mil usando caixa, sem juros. Qual é o efeito patrimonial?",
+        "options": [
+          "Ativo e patrimônio líquido aumentam.",
+          "Só o patrimônio líquido diminui.",
+          "Ativo e passivo diminuem R$15 mil, sem alterar o patrimônio líquido.",
+          "O passivo aumenta R$15 mil."
+        ],
+        "correctIndex": 2,
+        "explanation": "O pagamento reduz caixa e extingue obrigação de igual valor; a diferença entre ativo e passivo permanece igual."
+      },
+      {
+        "id": "contabilidade-q5",
+        "statement": "Se o ativo é R$40 mil e o passivo é R$55 mil, o patrimônio líquido é:",
+        "options": [
+          "R$95 mil.",
+          "R$15 mil positivo.",
+          "Zero, obrigatoriamente.",
+          "R$15 mil negativo."
+        ],
+        "correctIndex": 3,
+        "explanation": "PL = 40 − 55 = −15 mil; obrigações superiores aos ativos geram patrimônio líquido negativo."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Uma compra à vista de equipamento sempre reduz o ativo total?",
+        "back": "Não. No caso simples, troca-se caixa por equipamento sem alterar o total do ativo."
+      },
+      {
+        "front": "Como o pagamento do principal de uma dívida afeta o patrimônio?",
+        "back": "Reduz ativo e passivo no mesmo valor, sem afetar o patrimônio líquido no caso sem juros."
+      },
+      {
+        "front": "O patrimônio líquido pode ser negativo?",
+        "back": "Sim. Isso ocorre quando o passivo supera o ativo."
+      }
+    ]
+  },
+  "informatica": {
+    "practice": [
+      {
+        "id": "informatica-q3",
+        "statement": "Uma mensagem ameaça cancelar sua inscrição e pede senha por link. Qual ação é adequada?",
+        "options": [
+          "Informar a senha para evitar o prazo.",
+          "Encaminhar a senha por resposta ao remetente.",
+          "Consultar o portal por endereço oficial conhecido, sem usar o link suspeito.",
+          "Confiar apenas no logotipo da mensagem."
+        ],
+        "correctIndex": 2,
+        "explanation": "Urgência e aparência visual não autenticam o remetente. Conferir por um canal oficial independente reduz o risco de fraude."
+      },
+      {
+        "id": "informatica-q4",
+        "statement": "Uma pasta sincronizada replica imediatamente exclusões em todos os dispositivos. Por que não equivale, sozinha, a um backup recuperável?",
+        "options": [
+          "Porque arquivos digitais não admitem cópias.",
+          "Porque uma exclusão pode se propagar sem deixar versão recuperável.",
+          "Porque sincronização impede acesso aos arquivos.",
+          "Porque backups nunca usam armazenamento remoto."
+        ],
+        "correctIndex": 1,
+        "explanation": "A sincronização pode replicar perdas; a recuperação depende de cópias ou versões preservadas e de restauração testada."
+      },
+      {
+        "id": "informatica-q5",
+        "statement": "Impedir que pessoas sem autorização leiam um documento está associado principalmente à:",
+        "options": [
+          "Confidencialidade.",
+          "Disponibilidade irrestrita.",
+          "Publicidade universal.",
+          "Redundância de energia."
+        ],
+        "correctIndex": 0,
+        "explanation": "Confidencialidade restringe divulgação e acesso; disponibilidade trata do acesso quando necessário por quem está autorizado."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Como verificar um pedido inesperado de credenciais?",
+        "back": "Consulte o serviço por um canal oficial conhecido, sem depender do link ou contato fornecido na mensagem."
+      },
+      {
+        "front": "O que diferencia sincronização de uma estratégia de recuperação?",
+        "back": "A recuperação exige versões ou cópias restauráveis, protegidas contra a propagação de perdas."
+      },
+      {
+        "front": "O que protege a confidencialidade?",
+        "back": "Protege informações contra acesso ou divulgação não autorizados."
+      }
+    ]
+  },
+  "fisica": {
+    "practice": [
+      {
+        "id": "fisica-q3",
+        "statement": "Um veículo mantém 72 km/h. Sua velocidade em m/s é:",
+        "options": ["72 m/s.", "20 m/s.", "259,2 m/s.", "2 m/s."],
+        "correctIndex": 1,
+        "explanation": "Para converter km/h em m/s, divida por 3,6: 72/3,6 = 20."
+      },
+      {
+        "id": "fisica-q4",
+        "statement": "Um deslocamento retilíneo de 150 m ocorre em 30 s. A velocidade média nesse sentido é:",
+        "options": ["30 m/s.", "0,2 m/s.", "5 m/s.", "4500 m/s."],
+        "correctIndex": 2,
+        "explanation": "Velocidade média é deslocamento dividido pelo intervalo de tempo: 150/30 = 5 m/s."
+      },
+      {
+        "id": "fisica-q5",
+        "statement": "Uma pessoa anda 100 m e retorna ao ponto inicial em 50 s. Qual é a velocidade vetorial média no percurso completo?",
+        "options": ["4 m/s.", "2 m/s.", "100 m/s.", "Zero."],
+        "correctIndex": 3,
+        "explanation": "O deslocamento total é zero, embora a distância percorrida seja 200 m. Velocidade vetorial média usa deslocamento."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Como converter km/h em m/s?",
+        "back": "Divida por 3,6; para a conversão inversa, multiplique por 3,6."
+      },
+      {
+        "front": "Como calcular velocidade média em um eixo?",
+        "back": "Divida o deslocamento orientado pelo intervalo de tempo."
+      },
+      {
+        "front": "Velocidade vetorial média e rapidez média são iguais?",
+        "back": "Não necessariamente. A primeira usa deslocamento; a rapidez média usa distância percorrida."
+      }
+    ]
+  },
+  "quimica": {
+    "practice": [
+      {
+        "id": "quimica-q3",
+        "statement": "Água e óleo formam duas camadas visíveis em repouso. O sistema é:",
+        "options": [
+          "Mistura homogênea.",
+          "Substância simples.",
+          "Mistura heterogênea de duas fases.",
+          "Uma única fase por ser líquido."
+        ],
+        "correctIndex": 2,
+        "explanation": "Há duas regiões com propriedades distintas. O mesmo estado físico não garante homogeneidade."
+      },
+      {
+        "id": "quimica-q4",
+        "statement": "Em água com sal totalmente dissolvido, sem sólido no fundo, há normalmente:",
+        "options": [
+          "Uma fase líquida e dois componentes.",
+          "Duas fases sólidas.",
+          "Dois componentes e necessariamente duas fases.",
+          "Um componente porque o sal desapareceu."
+        ],
+        "correctIndex": 0,
+        "explanation": "A dissolução produz uma fase homogênea; água e sal continuam sendo componentes do sistema."
+      },
+      {
+        "id": "quimica-q5",
+        "statement": "Um recipiente contém apenas gelo e água líquida puros. Quantos componentes e fases existem?",
+        "options": [
+          "Dois componentes e uma fase.",
+          "Dois componentes e duas fases.",
+          "Um componente e uma fase.",
+          "Um componente e duas fases."
+        ],
+        "correctIndex": 3,
+        "explanation": "A substância é apenas água, mas está presente em duas fases: sólida e líquida."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "O estado físico determina sozinho o número de fases?",
+        "back": "Não. Dois líquidos imiscíveis podem formar duas fases."
+      },
+      {
+        "front": "Fase e componente são sinônimos?",
+        "back": "Não. Componentes são as substâncias; fases são regiões homogêneas do sistema."
+      },
+      {
+        "front": "Uma substância pura pode apresentar mais de uma fase?",
+        "back": "Sim. A mesma substância pode coexistir em estados físicos distintos."
+      }
+    ]
+  },
+  "biologia": {
+    "practice": [
+      {
+        "id": "biologia-q3",
+        "statement": "Qual estrutura está presente tanto em células procarióticas quanto em eucarióticas?",
+        "options": [
+          "Núcleo delimitado por membrana.",
+          "Membrana plasmática.",
+          "Complexo golgiense.",
+          "Mitocôndria."
+        ],
+        "correctIndex": 1,
+        "explanation": "Todas as células têm membrana plasmática; as demais estruturas listadas não caracterizam procariontes."
+      },
+      {
+        "id": "biologia-q4",
+        "statement": "Na classificação celular básica, células com DNA no nucleoide, sem núcleo delimitado por membrana, são:",
+        "options": [
+          "Animal madura de qualquer tipo, necessariamente.",
+          "Vegetal, necessariamente.",
+          "Procarióticas.",
+          "Sem qualquer material genético."
+        ],
+        "correctIndex": 2,
+        "explanation": "Procariontes possuem material genético, mas não um núcleo envolvido por carioteca; ausência de núcleo não significa ausência de DNA."
+      },
+      {
+        "id": "biologia-q5",
+        "statement": "Qual estrutura realiza a síntese de proteínas nas células?",
+        "options": [
+          "Ribossomo.",
+          "Parede celular.",
+          "Vacúolo exclusivamente.",
+          "Membrana nuclear exclusivamente."
+        ],
+        "correctIndex": 0,
+        "explanation": "Ribossomos participam da tradução do RNA mensageiro em proteínas e ocorrem em procariontes e eucariontes."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "O que delimita a célula e regula trocas com o meio?",
+        "back": "A membrana plasmática, presente em células procarióticas e eucarióticas."
+      },
+      {
+        "front": "Procariontes não têm material genético?",
+        "back": "Têm material genético; ele não fica dentro de um núcleo delimitado por membrana."
+      },
+      {
+        "front": "Qual é a função dos ribossomos?",
+        "back": "Participam da síntese de proteínas por tradução do RNA mensageiro."
+      }
+    ]
+  },
+  "redacao": {
+    "practice": [
+      {
+        "id": "redacao-q3",
+        "statement": "Qual frase apresenta uma tese que pode orientar uma argumentação?",
+        "options": [
+          "O assunto existe há muitos anos.",
+          "Este texto terá três parágrafos.",
+          "Há opiniões diferentes sobre o tema.",
+          "A melhoria do atendimento exige capacitação contínua e avaliação dos processos."
+        ],
+        "correctIndex": 3,
+        "explanation": "A frase sustenta uma posição e aponta eixos argumentativos; as demais apenas anunciam ou comentam genericamente o texto."
+      },
+      {
+        "id": "redacao-q4",
+        "statement": "Qual estratégia desenvolve melhor um argumento sobre capacitação?",
+        "options": [
+          "Explicar como treinamento reduz erros, com exemplo pertinente.",
+          "Repetir a tese com outras palavras em todo o parágrafo.",
+          "Inserir um dado inventado.",
+          "Mudar para um assunto sem relação."
+        ],
+        "correctIndex": 0,
+        "explanation": "O desenvolvimento precisa mostrar a ligação entre a medida e o efeito alegado; repetição ou dados inventados não sustentam o argumento."
+      },
+      {
+        "id": "redacao-q5",
+        "statement": "A conclusão de uma redação argumentativa deve, em geral:",
+        "options": [
+          "Introduzir uma tese incompatível sem explicação.",
+          "Retomar o raciocínio desenvolvido e encerrar de modo coerente.",
+          "Apresentar estatísticas novas sem fonte.",
+          "Ignorar o posicionamento defendido."
+        ],
+        "correctIndex": 1,
+        "explanation": "A conclusão precisa ser consistente com o desenvolvimento. Exigências específicas de proposta ou formato dependem da prova."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Como reconhecer uma tese argumentativa?",
+        "back": "Ela apresenta uma posição defensável sobre o tema e orienta os argumentos."
+      },
+      {
+        "front": "Como desenvolver um argumento além de repetir a tese?",
+        "back": "Explique a relação entre causa e consequência e use evidência ou exemplo pertinente."
+      },
+      {
+        "front": "Toda redação de concurso exige o mesmo modelo de conclusão?",
+        "back": "Não. Respeite o gênero, o comando e os critérios do edital, mantendo coerência com a argumentação."
+      }
+    ]
+  },
+  "constitucional": {
+    "practice": [
+      {
+        "id": "constitucional-q3",
+        "statement": "Segundo a literalidade do art. 5º, XI, uma entrada sem consentimento exclusivamente por determinação judicial deve ocorrer:",
+        "options": [
+          "A qualquer hora, sem condição temporal.",
+          "Durante o dia.",
+          "Somente à noite.",
+          "Apenas no domingo."
+        ],
+        "correctIndex": 1,
+        "explanation": "O requisito diurno acompanha a determinação judicial no texto constitucional; não se confunde com as demais exceções."
+      },
+      {
+        "id": "constitucional-q4",
+        "statement": "Uma questão literal descreve desastre no interior de uma casa durante a noite, sem consentimento do morador. O art. 5º, XI:",
+        "options": [
+          "Não contém exceção para desastre.",
+          "Só admite ingresso em desastre durante o dia.",
+          "Prevê desastre como exceção, sem vinculá-lo ao requisito diurno.",
+          "Exige sempre mandado judicial prévio para desastre."
+        ],
+        "correctIndex": 2,
+        "explanation": "Desastre está expressamente entre as exceções; a restrição durante o dia está ligada à determinação judicial."
+      },
+      {
+        "id": "constitucional-q5",
+        "statement": "Fora das exceções constitucionais, qual elemento autoriza o ingresso na casa segundo o art. 5º, XI?",
+        "options": [
+          "A curiosidade de um vizinho.",
+          "Uma notícia genérica sem outros requisitos.",
+          "A vontade de qualquer pessoa de fora.",
+          "O consentimento do morador."
+        ],
+        "correctIndex": 3,
+        "explanation": "A regra constitucional protege contra ingresso sem consentimento, ressalvando as hipóteses enumeradas. O exercício trata da literalidade, não da prova de validade do consentimento em um caso real."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Qual cuidado tomar ao comparar exceções à inviolabilidade da casa?",
+        "back": "Identifique qual requisito acompanha cada hipótese, sem transferi-lo automaticamente às demais."
+      },
+      {
+        "front": "Desastre depende do requisito diurno no texto do art. 5º, XI?",
+        "back": "Não. A referência ao dia acompanha a determinação judicial, não a hipótese de desastre."
+      },
+      {
+        "front": "A quem se refere o consentimento no art. 5º, XI?",
+        "back": "Ao morador; a questão literal não dispensa requisitos de validade e prova em situações concretas."
+      }
+    ]
+  },
+  "administrativo": {
+    "practice": [
+      {
+        "id": "administrativo-q3",
+        "statement": "Uma campanha pública é usada para promover pessoalmente um gestor. Qual princípio é diretamente comprometido?",
+        "options": [
+          "Impessoalidade.",
+          "Livre concorrência privada.",
+          "Autonomia da vontade contratual.",
+          "Sigilo obrigatório de toda atuação pública."
+        ],
+        "correctIndex": 0,
+        "explanation": "A publicidade institucional não deve ser utilizada para promoção pessoal; o art. 37, §1º, orienta sua finalidade pública."
+      },
+      {
+        "id": "administrativo-q4",
+        "statement": "Os princípios do caput do art. 37 alcançam:",
+        "options": [
+          "Apenas a Administração federal direta.",
+          "Administração direta e indireta de qualquer dos Poderes e entes indicados na Constituição.",
+          "Apenas empresas privadas sem vínculo estatal.",
+          "Somente órgãos do Executivo municipal."
+        ],
+        "correctIndex": 1,
+        "explanation": "O dispositivo possui alcance amplo: direta e indireta, em qualquer dos Poderes da União, Estados, Distrito Federal e Municípios."
+      },
+      {
+        "id": "administrativo-q5",
+        "statement": "O princípio da publicidade permite afirmar que toda informação estatal deve ser divulgada sem exceção?",
+        "options": [
+          "Sim, inclusive informações protegidas por sigilo legítimo.",
+          "Sim, porque publicidade elimina a intimidade.",
+          "Não; a transparência deve ser compatibilizada com hipóteses legais e constitucionais de sigilo.",
+          "Não; todo ato estatal é secreto."
+        ],
+        "correctIndex": 2,
+        "explanation": "Publicidade não elimina a proteção de dados ou hipóteses legítimas de sigilo. Transparência e direitos fundamentais devem ser compatibilizados."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Qual é o limite da publicidade institucional quanto à pessoa do gestor?",
+        "back": "Ela não deve caracterizar promoção pessoal de autoridades ou servidores."
+      },
+      {
+        "front": "O art. 37 limita seus princípios ao Executivo federal?",
+        "back": "Não. Seu alcance inclui os Poderes e entes federativos indicados, na Administração direta e indireta."
+      },
+      {
+        "front": "Publicidade administrativa significa ausência absoluta de sigilo?",
+        "back": "Não. Existem hipóteses constitucionais e legais de restrição, que não tornam o sigilo a regra geral."
+      }
+    ]
+  },
+  "penal": {
+    "practice": [
+      {
+        "id": "penal-q3",
+        "statement": "Segundo o art. 2º do Código Penal, a lei posterior favorável pode alcançar fato com condenação transitada em julgado?",
+        "options": [
+          "Não, em nenhuma situação.",
+          "Somente se for mais grave.",
+          "Somente se o fato ocorrer depois da lei.",
+          "Sim, nos termos do dispositivo."
+        ],
+        "correctIndex": 3,
+        "explanation": "O parágrafo único do art. 2º prevê aplicação da lei posterior favorável aos fatos anteriores, inclusive decididos por condenação definitiva."
+      },
+      {
+        "id": "penal-q4",
+        "statement": "Uma lei deixa de considerar criminosa certa conduta, sem deslocá-la para outro tipo penal. Trata-se de:",
+        "options": [
+          "Abolitio criminis.",
+          "Criação de novo crime.",
+          "Aumento obrigatório da pena.",
+          "Lei penal necessariamente prejudicial."
+        ],
+        "correctIndex": 0,
+        "explanation": "A retirada da criminalização configura abolitio criminis. A ressalva do enunciado afasta a hipótese de continuidade da incriminação em outro tipo."
+      },
+      {
+        "id": "penal-q5",
+        "statement": "Nos termos do art. 2º, caput, a lei que deixa de considerar o fato criminoso faz cessar:",
+        "options": [
+          "Automaticamente qualquer efeito civil, sem distinção.",
+          "A execução e os efeitos penais da sentença condenatória.",
+          "Apenas o andamento de inquéritos ainda não concluídos.",
+          "Somente penas impostas após a nova lei."
+        ],
+        "correctIndex": 1,
+        "explanation": "O dispositivo menciona execução e efeitos penais. Não autoriza concluir que qualquer efeito civil desapareça automaticamente."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "O trânsito em julgado impede toda aplicação de lei penal favorável?",
+        "back": "Não. O art. 2º do Código Penal contempla fatos julgados definitivamente."
+      },
+      {
+        "front": "O que diferencia abolitio criminis de mera redução de pena?",
+        "back": "Na abolitio criminis, o fato deixa de ser criminoso; reduzir a pena não elimina necessariamente o crime."
+      },
+      {
+        "front": "A abolitio criminis elimina indistintamente efeitos civis e penais?",
+        "back": "O art. 2º trata da execução e dos efeitos penais; não prevê extinção automática de todo efeito civil."
+      }
+    ]
+  },
+  "processual": {
+    "practice": [
+      {
+        "id": "processual-q3",
+        "statement": "No art. 158-B do CPP, a descrição detalhada do vestígio e de sua posição, inclusive com fotografias, corresponde à etapa de:",
+        "options": ["Descarte.", "Transporte.", "Fixação.", "Recebimento."],
+        "correctIndex": 2,
+        "explanation": "Fixação registra a condição e a localização do vestígio; não é o deslocamento, a entrega formal nem o descarte."
+      },
+      {
+        "id": "processual-q4",
+        "statement": "Embalar individualmente o vestígio, considerando suas características e registrando os dados, corresponde a:",
+        "options": ["Acondicionamento.", "Reconhecimento.", "Processamento pericial.", "Descarte."],
+        "correctIndex": 0,
+        "explanation": "Acondicionamento é a etapa de embalagem adequada e individualizada, com registro, conforme o art. 158-B."
+      },
+      {
+        "id": "processual-q5",
+        "statement": "A transferência formal da posse do vestígio, documentada com informações pertinentes, caracteriza no art. 158-B:",
+        "options": ["Reconhecimento.", "Isolamento.", "Fixação.", "Recebimento."],
+        "correctIndex": 3,
+        "explanation": "Recebimento formaliza a transferência de posse; a cadeia registra quem recebeu e as condições da passagem."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Qual é a função da fixação na cadeia de custódia?",
+        "back": "Documentar detalhadamente o vestígio e sua posição, podendo usar registros visuais."
+      },
+      {
+        "front": "Por que o acondicionamento depende da natureza do vestígio?",
+        "back": "A embalagem deve preservar suas características e permitir identificação e rastreabilidade."
+      },
+      {
+        "front": "O que caracteriza recebimento na cadeia de custódia?",
+        "back": "A transferência formal da posse do vestígio, com documentação das informações exigidas."
+      }
+    ]
+  },
+  "humanos": {
+    "practice": [
+      {
+        "id": "humanos-q3",
+        "statement": "A proibição constitucional de tortura e de tratamento desumano ou degradante:",
+        "options": [
+          "Desaparece quando a suspeita é grave.",
+          "Aplica-se independentemente da gravidade da suspeita.",
+          "Protege apenas pessoas sem antecedentes.",
+          "Depende da concordância da autoridade responsável."
+        ],
+        "correctIndex": 1,
+        "explanation": "O art. 5º, III, não transforma a gravidade da suspeita em autorização para tortura ou tratamento degradante."
+      },
+      {
+        "id": "humanos-q4",
+        "statement": "A prevalência dos direitos humanos é prevista no art. 4º da Constituição como:",
+        "options": [
+          "Modalidade de pena.",
+          "Regra exclusiva de um município.",
+          "Princípio das relações internacionais do Brasil.",
+          "Exceção à dignidade humana."
+        ],
+        "correctIndex": 2,
+        "explanation": "O art. 4º, II, inclui a prevalência dos direitos humanos entre os princípios que regem as relações internacionais. Isso difere da classificação da dignidade no art. 1º."
+      },
+      {
+        "id": "humanos-q5",
+        "statement": "Promover o bem de todos, sem preconceitos e outras formas de discriminação, é previsto no art. 3º como:",
+        "options": [
+          "Benefício reservado a servidores.",
+          "Sanção penal específica.",
+          "Competência exclusiva da Polícia Penal.",
+          "Objetivo fundamental da República."
+        ],
+        "correctIndex": 3,
+        "explanation": "O art. 3º, IV, situa essa promoção entre os objetivos fundamentais. Não se deve confundir objetivos do art. 3º com fundamentos do art. 1º."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Uma suspeita grave autoriza tortura?",
+        "back": "Não. A proibição constitucional não depende da gravidade da suspeita."
+      },
+      {
+        "front": "Onde se situa a prevalência dos direitos humanos na Constituição?",
+        "back": "No art. 4º, como princípio das relações internacionais do Brasil."
+      },
+      {
+        "front": "Como distinguir fundamento, objetivo e princípio internacional?",
+        "back": "Compare a localização: fundamentos no art. 1º, objetivos no art. 3º e princípios internacionais no art. 4º da Constituição."
+      }
+    ]
+  },
+  "execucao": {
+    "practice": [
+      {
+        "id": "execucao-q3",
+        "statement": "Segundo o art. 1º da LEP, além de efetivar a decisão criminal, a execução deve:",
+        "options": [
+          "Proporcionar condições para a integração social do condenado e do internado.",
+          "Eliminar todo direito não mencionado na sentença.",
+          "Excluir qualquer finalidade de integração.",
+          "Substituir a decisão criminal por vontade administrativa."
+        ],
+        "correctIndex": 0,
+        "explanation": "A integração social compõe a finalidade legal ao lado da efetivação da sentença ou decisão criminal."
+      },
+      {
+        "id": "execucao-q4",
+        "statement": "O art. 3º da LEP assegura ao condenado e ao internado:",
+        "options": [
+          "Somente direitos escolhidos informalmente pela administração.",
+          "Direitos não atingidos pela sentença ou pela lei.",
+          "Ausência de qualquer direito durante a execução.",
+          "Direitos condicionados sempre a pagamento."
+        ],
+        "correctIndex": 1,
+        "explanation": "A execução não retira indistintamente todos os direitos. O art. 3º preserva os não atingidos pela sentença ou pela lei."
+      },
+      {
+        "id": "execucao-q5",
+        "statement": "Conforme o parágrafo único do art. 10 da LEP, a assistência estende-se também ao:",
+        "options": [
+          "Visitante eventual, sem qualquer outra condição.",
+          "Foragido exclusivamente.",
+          "Egresso.",
+          "Empregador privado obrigatoriamente."
+        ],
+        "correctIndex": 2,
+        "explanation": "O parágrafo único estende a assistência ao egresso; a disciplina específica deve ser estudada nos dispositivos correspondentes."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "A LEP apresenta uma finalidade exclusivamente retributiva?",
+        "back": "Não. Seu art. 1º também contempla condições para a integração social."
+      },
+      {
+        "front": "Qual é a regra da LEP para direitos durante a execução?",
+        "back": "Preservam-se os direitos não atingidos pela sentença ou pela lei."
+      },
+      {
+        "front": "A assistência do art. 10 termina necessariamente com a saída do estabelecimento?",
+        "back": "Não. O parágrafo único prevê sua extensão ao egresso."
+      }
+    ]
+  },
+  "guardas": {
+    "practice": [
+      {
+        "id": "guardas-q3",
+        "statement": "Segundo o art. 2º da Lei 13.022/2014, as guardas municipais são instituições de caráter:",
+        "options": ["Militar, necessariamente.", "Judiciário.", "Legislativo.", "Civil."],
+        "correctIndex": 3,
+        "explanation": "A lei define caráter civil e trata da proteção municipal preventiva, ressalvadas as competências dos demais entes."
+      },
+      {
+        "id": "guardas-q4",
+        "statement": "Qual atuação corresponde a um princípio mínimo expresso no art. 3º da Lei 13.022/2014?",
+        "options": [
+          "Patrulhamento preventivo.",
+          "Punição sem procedimento.",
+          "Supressão de direitos fundamentais.",
+          "Promoção de violência evitável."
+        ],
+        "correctIndex": 0,
+        "explanation": "O patrulhamento preventivo integra os princípios mínimos, juntamente com proteção de direitos e preservação da vida."
+      },
+      {
+        "id": "guardas-q5",
+        "statement": "A proteção municipal preventiva prevista no art. 2º da Lei 13.022/2014:",
+        "options": [
+          "Elimina todas as competências estaduais.",
+          "Ressalva as competências da União, dos Estados e do Distrito Federal.",
+          "Transfere toda função judicial às guardas.",
+          "Dispensa a observância da lei."
+        ],
+        "correctIndex": 1,
+        "explanation": "O dispositivo ressalva expressamente as competências dos demais entes. A questão não resolve, por si, todo o debate jurisprudencial sobre atribuições."
+      }
+    ],
+    "flashcards": [
+      {
+        "front": "Qual é o caráter institucional previsto no art. 2º da Lei 13.022?",
+        "back": "Caráter civil; a lei disciplina a proteção municipal preventiva."
+      },
+      {
+        "front": "Patrulhamento preventivo integra os princípios mínimos das guardas?",
+        "back": "Sim. Está previsto no art. 3º da Lei 13.022/2014."
+      },
+      {
+        "front": "A proteção municipal preventiva substitui todas as competências dos demais entes?",
+        "back": "Não. O art. 2º contém ressalva expressa dessas competências."
+      }
+    ]
+  }
+}

@@ -22,9 +22,9 @@ export async function toggleFavorite(
 
   await loadReviewableFlashcard(userId, flashcardId); // garante existência + acesso (404 anti-IDOR).
 
-  const isFavorite = toggleFavoriteEntry(userId, flashcardId, now);
+  const isFavorite = await toggleFavoriteEntry(userId, flashcardId, now);
 
-  auditLog({
+  await auditLog({
     operation: "flashcards.toggle-favorite",
     userId,
     entity: "Flashcard",

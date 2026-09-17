@@ -1,3 +1,4 @@
+import { env } from "@/config/env";
 import { RANKING_PAGE_SIZE, RANKING_TOP_HIGHLIGHT_COUNT } from "@/config/business";
 import { mockRankingParticipants, type RankingParticipantEntity } from "@/mocks";
 import { requireUser } from "@/server/authorization";
@@ -46,10 +47,10 @@ export interface RankingListEntryDTO {
   level: { index: number; name: string };
   contestName: string | null;
   points: number;
-  validHours: number;
-  lessonsCompleted: number;
-  accuracyPercent: number;
-  streakDays: number;
+  validHours: number | null;
+  lessonsCompleted: number | null;
+  accuracyPercent: number | null;
+  streakDays: number | null;
   /** Delta de posição vs. a versão anterior do mesmo escopo/período (positivo = subiu). */
   evolution: number;
   /** `true` quando esta linha é do próprio usuário autenticado. */
@@ -107,6 +108,8 @@ interface ResolvedRankingIdentity {
   showInRanking: boolean;
   showRealName: boolean;
   showCityState: boolean;
+  showStudyHours: boolean;
+  showPerformance: boolean;
 }
 
 /**
@@ -129,6 +132,7 @@ async function resolveRankingIdentities(
 
   for (const profile of profiles) {
     const user = await repos.users.findById(profile.userId);
+    if (!user || !user.isActive || user.deletedAt) continue;
     resolved.set(profile.userId, {
       displayName: user?.name ?? anonymizedRankingName(profile.userId),
       avatarUrl: profile.avatarUrl,
@@ -138,11 +142,13 @@ async function resolveRankingIdentities(
       showInRanking: profile.showInRanking,
       showRealName: profile.showRealName,
       showCityState: profile.showCityState,
+      showStudyHours: profile.showStudyHours,
+      showPerformance: profile.showPerformance,
     });
   }
 
   for (const userId of userIds) {
-    if (resolved.has(userId)) continue; // já resolvido via Profile real acima
+    if (resolved.has(userId) || profiles.some(profile => profile.userId === userId)) continue; // já resolvido via Profile real acima
     const participant = participantsById.get(userId);
     if (!participant) continue; // sem Profile E sem participante mock => fail-closed (ver uso)
     resolved.set(userId, {
@@ -154,6 +160,8 @@ async function resolveRankingIdentities(
       showInRanking: participant.showInRanking,
       showRealName: participant.showRealName,
       showCityState: participant.showCityState,
+      showStudyHours: true,
+      showPerformance: true,
     });
   }
 
@@ -169,6 +177,8 @@ function toEntryDTO(
 ): RankingListEntryDTO {
   const displayName = isSelf || !identity || identity.showRealName ? (identity?.displayName ?? row.userId) : anonymizedRankingName(row.userId);
   const showLocation = isSelf || !identity || identity.showCityState;
+  const showHours = isSelf || identity?.showStudyHours === true;
+  const showPerformance = isSelf || identity?.showPerformance === true;
   const points = row.breakdown?.display.points ?? 0;
   const xp = row.breakdown?.display.xp ?? 0;
   const previousRank = previousRankByUser.get(row.userId) ?? null;
@@ -184,10 +194,10 @@ function toEntryDTO(
     level: computeLevel(xp).level,
     contestName,
     points,
-    validHours: row.breakdown?.metrics.validHours.raw ?? 0,
-    lessonsCompleted: row.breakdown?.metrics.lessonsCompleted.raw ?? 0,
-    accuracyPercent: row.breakdown?.metrics.mockExamPerformance.raw ?? 0,
-    streakDays: row.breakdown?.display.streakDays ?? 0,
+    validHours: showHours ? (row.breakdown?.metrics.validHours.raw ?? 0) : null,
+    lessonsCompleted: showHours ? (row.breakdown?.metrics.lessonsCompleted.raw ?? 0) : null,
+    accuracyPercent: showPerformance ? (row.breakdown?.metrics.mockExamPerformance.raw ?? 0) : null,
+    streakDays: showHours ? (row.breakdown?.display.streakDays ?? 0) : null,
     evolution,
     isCurrentUser: isSelf,
   };
@@ -269,7 +279,7 @@ export async function getRanking(input: GetRankingInput): Promise<RankingReadRes
     previousRankByUser = new Map(previousRows.map((row) => [row.userId, row.rank ?? null]));
   }
 
-  const participantsById = new Map(mockRankingParticipants.map((participant) => [participant.userId, participant]));
+  const participantsById = new Map((env.DATA_SOURCE === "mock" ? mockRankingParticipants : []).map((participant) => [participant.userId, participant]));
   // Fase 16: identidade/privacidade resolvida via `Profile` real quando existir, com fallback
   // para `mockRankingParticipants` (ver docstring do arquivo e `resolveRankingIdentities`).
   const identityByUserId = await resolveRankingIdentities(

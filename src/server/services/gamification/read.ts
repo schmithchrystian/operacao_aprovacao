@@ -1,12 +1,14 @@
+import { listUserActivitySamples } from "@/server/services/study-tracking/activity-samples";
+import { env } from "@/config/env";
+import { achievementCriteriaSchema } from "@/contracts/achievement-criteria";
 import { assertOwnership, requireUser } from "@/server/authorization";
 import { getRepositories } from "@/server/repositories";
 import {
-  ALL_HISTORY_SINCE_ISO,
   isFirstWeekFullyActive,
   toActivityDates,
 } from "@/server/services/study-tracking/activity-days";
 import { ACHIEVEMENTS } from "./achievements";
-import type { UserGamificationStats } from "./achievements";
+import type { UserGamificationStats, AchievementDefinition } from "./achievements";
 import { computeLevel, type ComputedLevel } from "./levels";
 
 /**
@@ -44,24 +46,61 @@ export async function computeUserGamificationStats(userId: string): Promise<User
 
   // Fase 12 (study-tracking): calendário real de atividade (`StudySession.validSeconds > 0`,
   // nunca `fim - início` bruto — CLAUDE.md §14), usado para "1ª semana completa" e horas de estudo.
-  const sessions = await repos.studySessions.listRecentSessionsByUserId(userId, ALL_HISTORY_SINCE_ISO);
+  const sessions = await listUserActivitySamples(userId);
   const activeDates = toActivityDates(sessions);
   const firstWeekFullyActive = isFirstWeekFullyActive(activeDates);
   const studyHours = sessions.reduce((sum, session) => sum + session.validSeconds, 0) / 3600;
+
+  const attempts = await repos.mockExamAttempts.listByUserId(userId);
+  const scores = attempts
+    .filter((attempt) => attempt.status === "FINISHED" && attempt.scorePercent !== null)
+    .map((attempt) => attempt.scorePercent!);
 
   return {
     lessonsCompleted: countByType("LESSON_COMPLETED"),
     firstWeekFullyActive,
     streakDays,
     mockExamsCompleted: countByType("MOCK_EXAM_COMPLETED"),
-    // TODO(Fase 10 — simulations): sem fonte própria de acerto por simulado ainda.
-    bestMockExamAccuracyPercent: 0,
-    mockExamsAboveAccuracyThreshold: 0,
+    bestMockExamAccuracyPercent: scores.length ? Math.max(...scores) : 0,
+    mockExamsAboveAccuracyThreshold: scores.filter((score) => score > 90).length,
     questionsCorrect: countByType("QUESTION_CORRECT"),
     studyHours,
     flashcardsMastered: countByType("FLASHCARD_CORRECT"),
     weeklyGoalsCompleted: countByType("WEEKLY_GOAL_COMPLETED"),
   };
+}
+
+/** Persisted catalog controls both display and unlocks; built-in predicates support legacy keys. */
+export async function getAchievementDefinitions(): Promise<AchievementDefinition[]> {
+  const stored = await getRepositories().achievements.listForAdmin();
+  const builtins = new Map(ACHIEVEMENTS.map((definition) => [definition.key, definition]));
+  const definitions = new Map<string, AchievementDefinition>(
+    env.DATA_SOURCE === "mock" ? builtins : [],
+  );
+  for (const row of stored) {
+    definitions.delete(row.key);
+    if (row.deletedAt) continue;
+    const criteria = achievementCriteriaSchema.safeParse(row.criteria);
+    const builtin = builtins.get(row.key);
+    const isUnlocked = criteria.success
+      ? (stats: UserGamificationStats) => {
+          const value = Number(stats[criteria.data.metric]);
+          return criteria.data.operator === "gt"
+            ? value > criteria.data.threshold
+            : value >= criteria.data.threshold;
+        }
+      : row.criteria == null && builtin
+        ? builtin.isUnlocked
+        : () => false;
+    definitions.set(row.key, {
+      key: row.key,
+      name: row.name,
+      description: row.description ?? "",
+      icon: row.icon ?? "Award",
+      isUnlocked,
+    });
+  }
+  return [...definitions.values()];
 }
 
 export interface UserAchievementView {
@@ -97,9 +136,12 @@ export async function computeUserGamificationView(userId: string): Promise<UserG
   const level = computeLevel(xp);
 
   const unlockedRecords = await repos.userAchievements.listByUserId(userId);
-  const unlockedByKey = new Map(unlockedRecords.map((record) => [record.achievementKey, record.unlockedAt]));
+  const unlockedByKey = new Map(
+    unlockedRecords.map((record) => [record.achievementKey, record.unlockedAt]),
+  );
 
-  const achievements: UserAchievementView[] = ACHIEVEMENTS.map((definition) => ({
+  const definitions = await getAchievementDefinitions();
+  const achievements: UserAchievementView[] = definitions.map((definition) => ({
     key: definition.key,
     name: definition.name,
     description: definition.description,

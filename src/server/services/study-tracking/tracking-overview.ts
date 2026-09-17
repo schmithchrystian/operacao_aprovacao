@@ -1,3 +1,5 @@
+import type { StudyActivitySample } from "@/server/services/study-tracking/activity-samples";
+import { listUserActivitySamples } from "@/server/services/study-tracking/activity-samples";
 import { STUDY_TRACKING_OVERVIEW } from "@/config/business";
 import type { SubjectPerformanceDTO, TopicPerformanceDTO } from "@/contracts/simulations";
 import type { StudyPlanDTO } from "@/contracts/study-plan";
@@ -16,12 +18,15 @@ import type {
 } from "@/contracts/tracking";
 import { assertOwnership, requireUser } from "@/server/authorization";
 import { getRepositories } from "@/server/repositories";
-import type { StudySessionEntity } from "@/server/repositories/contracts/study-session-repository";
 import { computePerformance } from "@/server/services/simulations";
 import { getPlan } from "@/server/services/study-plan";
-import { addDaysIso, diffDaysIso, monthKeyIso, weekStartIso } from "@/server/services/study-plan/date-utils";
 import {
-  ALL_HISTORY_SINCE_ISO,
+  addDaysIso,
+  diffDaysIso,
+  monthKeyIso,
+  weekStartIso,
+} from "@/server/services/study-plan/date-utils";
+import {
   DEFAULT_TIMEZONE,
   sumValidSecondsByDate,
   toActivityDates,
@@ -52,7 +57,10 @@ import { recalculateStreak } from "./streak";
 const WEEKLY_EVOLUTION_WEEKS = 8;
 const MONTHLY_EVOLUTION_MONTHS = 6;
 
-function buildHoursSummary(secondsByDate: ReadonlyMap<string, number>, today: string): TrackingHoursSummaryDTO {
+function buildHoursSummary(
+  secondsByDate: ReadonlyMap<string, number>,
+  today: string,
+): TrackingHoursSummaryDTO {
   const weekStart = weekStartIso(today);
   const weekEndExclusive = addDaysIso(weekStart, 7);
   const monthKey = monthKeyIso(today);
@@ -72,7 +80,10 @@ function buildHoursSummary(secondsByDate: ReadonlyMap<string, number>, today: st
 }
 
 /** Últimas `WEEKLY_EVOLUTION_WEEKS` semanas (incluindo a atual), com zero para semanas sem atividade. */
-function buildWeeklyEvolution(secondsByDate: ReadonlyMap<string, number>, today: string): TrackingWeeklyPointDTO[] {
+function buildWeeklyEvolution(
+  secondsByDate: ReadonlyMap<string, number>,
+  today: string,
+): TrackingWeeklyPointDTO[] {
   const currentWeekStart = weekStartIso(today);
   const points: TrackingWeeklyPointDTO[] = [];
 
@@ -89,12 +100,17 @@ function buildWeeklyEvolution(secondsByDate: ReadonlyMap<string, number>, today:
 }
 
 /** Últimos `MONTHLY_EVOLUTION_MONTHS` meses (incluindo o atual), com zero para meses sem atividade. */
-function buildMonthlyEvolution(secondsByDate: ReadonlyMap<string, number>, today: string): TrackingMonthlyPointDTO[] {
+function buildMonthlyEvolution(
+  secondsByDate: ReadonlyMap<string, number>,
+  today: string,
+): TrackingMonthlyPointDTO[] {
   const points: TrackingMonthlyPointDTO[] = [];
   const todayDate = new Date(today);
 
   for (let i = MONTHLY_EVOLUTION_MONTHS - 1; i >= 0; i -= 1) {
-    const monthDate = new Date(Date.UTC(todayDate.getUTCFullYear(), todayDate.getUTCMonth() - i, 1));
+    const monthDate = new Date(
+      Date.UTC(todayDate.getUTCFullYear(), todayDate.getUTCMonth() - i, 1),
+    );
     const monthKey = monthKeyIso(monthDate.toISOString());
     let seconds = 0;
     for (const [date, value] of secondsByDate) {
@@ -167,7 +183,8 @@ async function buildQuestionsData(userId: string): Promise<QuestionsAggregation>
     ]);
 
     const subjectName = subject?.name ?? "—";
-    if (!subjectNameById.has(question.subjectId)) subjectNameById.set(question.subjectId, subjectName);
+    if (!subjectNameById.has(question.subjectId))
+      subjectNameById.set(question.subjectId, subjectName);
 
     entries.push({
       subjectId: question.subjectId,
@@ -184,7 +201,8 @@ async function buildQuestionsData(userId: string): Promise<QuestionsAggregation>
     questions: {
       totalAnswered,
       totalCorrect,
-      accuracyPercent: totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 10_000) / 100 : 0,
+      accuracyPercent:
+        totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 10_000) / 100 : 0,
       averageSecondsPerQuestion:
         timeSpentCount > 0 ? Math.round((timeSpentSum / timeSpentCount) * 100) / 100 : null,
     },
@@ -198,7 +216,7 @@ async function buildQuestionsData(userId: string): Promise<QuestionsAggregation>
  *  matéria via `Lesson.moduleId` → `Module.subjectId` (mesma cadeia usada em outros domínios,
  *  ex.: `@/server/services/study-plan/mappers`). */
 async function buildTimeDistribution(
-  sessions: readonly StudySessionEntity[],
+  sessions: readonly StudyActivitySample[],
 ): Promise<TrackingTimeDistributionEntryDTO[]> {
   const repos = getRepositories();
   const secondsBySubject = new Map<string, number>();
@@ -207,12 +225,15 @@ async function buildTimeDistribution(
   for (const session of sessions) {
     if (session.validSeconds <= 0) continue;
 
-    let subjectId = subjectIdByLessonId.get(session.lessonId);
-    if (subjectId === undefined) {
-      const lesson = await repos.lessons.findById(session.lessonId);
-      const courseModule = lesson ? await repos.modules.findById(lesson.moduleId) : null;
-      subjectId = courseModule?.subjectId ?? null;
-      subjectIdByLessonId.set(session.lessonId, subjectId);
+    let subjectId = session.subjectId;
+    if (!subjectId && session.lessonId) {
+      subjectId = subjectIdByLessonId.get(session.lessonId) ?? null;
+      if (!subjectId) {
+        const lesson = await repos.lessons.findById(session.lessonId);
+        const courseModule = lesson ? await repos.modules.findById(lesson.moduleId) : null;
+        subjectId = courseModule?.subjectId ?? null;
+        subjectIdByLessonId.set(session.lessonId, subjectId);
+      }
     }
     if (!subjectId) continue;
 
@@ -222,7 +243,11 @@ async function buildTimeDistribution(
   const entries: TrackingTimeDistributionEntryDTO[] = [];
   for (const [subjectId, seconds] of secondsBySubject) {
     const subject = await repos.subjects.findById(subjectId);
-    entries.push({ subjectId, subjectName: subject?.name ?? "—", minutes: Math.floor(seconds / 60) });
+    entries.push({
+      subjectId,
+      subjectName: subject?.name ?? "—",
+      minutes: Math.floor(seconds / 60),
+    });
   }
   return entries.sort((a, b) => b.minutes - a.minutes);
 }
@@ -234,7 +259,8 @@ function buildWeakContents(
   byTopic: readonly TopicPerformanceDTO[],
   subjectNameById: ReadonlyMap<string, string>,
 ): TrackingWeakContentDTO[] {
-  const { weakSubjectAccuracyThreshold: threshold, minSampleForPerformance: minSample } = STUDY_TRACKING_OVERVIEW;
+  const { weakSubjectAccuracyThreshold: threshold, minSampleForPerformance: minSample } =
+    STUDY_TRACKING_OVERVIEW;
 
   const weakSubjects: TrackingWeakContentDTO[] = bySubject
     .filter((entry) => entry.total >= minSample && entry.accuracyPercent < threshold)
@@ -283,7 +309,10 @@ async function buildPendingContents(
  *  ainda não terminal — reaproveita a mesma regra de "atrasado" de
  *  `@/server/services/study-plan/mappers#computeProgress`, mas filtrando só revisões (o plano
  *  geral já expõe `overdueItems` para QUALQUER kind em `StudyPlanProgressDTO`). */
-function buildOverdueReviews(plan: StudyPlanDTO | null, todayIso: string): TrackingOverdueReviewDTO[] {
+function buildOverdueReviews(
+  plan: StudyPlanDTO | null,
+  todayIso: string,
+): TrackingOverdueReviewDTO[] {
   if (!plan) return [];
 
   return plan.items
@@ -346,16 +375,23 @@ export async function getTrackingOverview(
   const repos = getRepositories();
   const today = toCalendarDateIso(now.toISOString(), timezone);
 
-  const [sessions, lessonProgressRows, questionsData, plan, streakView, dailyGoalView, weeklyGoalView] =
-    await Promise.all([
-      repos.studySessions.listRecentSessionsByUserId(userId, ALL_HISTORY_SINCE_ISO),
-      repos.lessonProgress.listByUserId(userId),
-      buildQuestionsData(userId),
-      getPlan(userId, now),
-      recalculateStreak(userId, now, timezone),
-      recalculateDailyGoal(userId, now, timezone),
-      recalculateWeeklyGoal(userId, now, timezone),
-    ]);
+  const [
+    sessions,
+    lessonProgressRows,
+    questionsData,
+    plan,
+    streakView,
+    dailyGoalView,
+    weeklyGoalView,
+  ] = await Promise.all([
+    listUserActivitySamples(userId),
+    repos.lessonProgress.listByUserId(userId),
+    buildQuestionsData(userId),
+    getPlan(userId, now),
+    recalculateStreak(userId, now, timezone),
+    recalculateDailyGoal(userId, now, timezone),
+    recalculateWeeklyGoal(userId, now, timezone),
+  ]);
 
   const secondsByDate = sumValidSecondsByDate(sessions, timezone);
   const activeDates = toActivityDates(sessions, timezone);
@@ -372,7 +408,11 @@ export async function getTrackingOverview(
     subjectPerformance: questionsData.bySubject,
     topicPerformance: questionsData.byTopic,
     timeDistribution,
-    weakContents: buildWeakContents(questionsData.bySubject, questionsData.byTopic, questionsData.subjectNameById),
+    weakContents: buildWeakContents(
+      questionsData.bySubject,
+      questionsData.byTopic,
+      questionsData.subjectNameById,
+    ),
     pendingContents,
     overdueReviews: buildOverdueReviews(plan, today),
     consistency: buildConsistency(activeDates, today),

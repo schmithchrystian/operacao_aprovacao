@@ -1,40 +1,67 @@
+import type { FlashcardDeck } from "@/generated/prisma/client";
 import type {
-  FlashcardDeckCreateInput,
-  FlashcardDeckEntity,
-  FlashcardDeckKind,
   FlashcardDeckRepository,
+  FlashcardDeckCreateInput,
+  FlashcardDeckKind,
+  FlashcardDeckEntity,
 } from "../contracts/flashcard-deck-repository";
-
-/**
- * Stub Prisma — implementação real cabe ao agente `database`/`backend` a partir da Fase de
- * banco. Proibido importar `@prisma/client` fora de `server/repositories/prisma/**` (ADR-0002).
- *
- * PENDÊNCIA (ver `../contracts/flashcard-deck-repository.ts`): `FlashcardDeckEntity.kind` ainda
- * não tem coluna própria em `FlashcardDeck` — a implementação real precisa dessa migration (ou
- * de outra forma de derivar o tipo) antes de existir de verdade (ver `docs/FLASHCARDS.md`).
- */
+import { inRepositoryTransaction } from "../transaction";
+const map = (r: FlashcardDeck): FlashcardDeckEntity => ({
+  ...r,
+  createdAt: r.createdAt.toISOString(),
+  updatedAt: r.updatedAt.toISOString(),
+});
 export class PrismaFlashcardDeckRepository implements FlashcardDeckRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findById(_id: string): Promise<FlashcardDeckEntity | null> {
-    throw new Error("not implemented: PrismaFlashcardDeckRepository.findById");
+  async findById(id: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    const r = await prisma.flashcardDeck.findFirst({ where: { id, deletedAt: null } });
+    return r ? map(r) : null;
   }
-
-  async listSystemDecks(): Promise<FlashcardDeckEntity[]> {
-    throw new Error("not implemented: PrismaFlashcardDeckRepository.listSystemDecks");
+  async listSystemDecks() {
+    const { prisma } = await import("@/server/db/prisma");
+    return (
+      await prisma.flashcardDeck.findMany({
+        where: { userId: null, kind: "SUBJECT", isPublic: true, deletedAt: null },
+        orderBy: { title: "asc" },
+      })
+    ).map(map);
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async listByUserId(_userId: string): Promise<FlashcardDeckEntity[]> {
-    throw new Error("not implemented: PrismaFlashcardDeckRepository.listByUserId");
+  async listByUserId(userId: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    return (
+      await prisma.flashcardDeck.findMany({
+        where: { userId, deletedAt: null },
+        orderBy: { createdAt: "asc" },
+      })
+    ).map(map);
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findByUserIdAndKind(_userId: string, _kind: FlashcardDeckKind): Promise<FlashcardDeckEntity | null> {
-    throw new Error("not implemented: PrismaFlashcardDeckRepository.findByUserIdAndKind");
+  async findByUserIdAndKind(userId: string, kind: FlashcardDeckKind) {
+    const { prisma } = await import("@/server/db/prisma");
+    const r = await prisma.flashcardDeck.findFirst({ where: { userId, kind, deletedAt: null } });
+    return r ? map(r) : null;
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async create(_input: FlashcardDeckCreateInput): Promise<FlashcardDeckEntity> {
-    throw new Error("not implemented: PrismaFlashcardDeckRepository.create");
+  async create({ now, ...input }: FlashcardDeckCreateInput) {
+    const special = input.userId && ["ERRORS", "NOTES"].includes(input.kind);
+    try {
+      return await inRepositoryTransaction(async () => {
+        const { prisma } = await import("@/server/db/prisma");
+        if (special) {
+          await prisma.$queryRaw`SELECT "id" FROM "User" WHERE "id"=${input.userId} FOR UPDATE`;
+          const existing = await this.findByUserIdAndKind(input.userId!, input.kind);
+          if (existing) return existing;
+        }
+        return map(
+          await prisma.flashcardDeck.create({ data: { ...input, createdAt: now, updatedAt: now } }),
+        );
+      });
+    } catch (error) {
+      const code =
+        typeof error === "object" && error !== null && "code" in error ? error.code : null;
+      if (special && code === "P2002") {
+        const existing = await this.findByUserIdAndKind(input.userId!, input.kind);
+        if (existing) return existing;
+      }
+      throw error;
+    }
   }
 }

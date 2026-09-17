@@ -1,3 +1,4 @@
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
 import { BRAINSTORM_DEFAULT_COLUMNS } from "@/config/business";
 import type { BrainstormBoardDTO, CreateBoardInput } from "@/contracts/brainstorm";
 import { auditLog } from "@/server/audit";
@@ -11,7 +12,7 @@ import { toBrainstormBoardDTO } from "./mappers";
  * (`BRAINSTORM_DEFAULT_COLUMNS`, `@/config/business`). Autorização (ADR-0006): `requireUser` +
  * `assertOwnership`.
  */
-export async function createBoard(
+async function createBoardInTransaction(
   userId: string,
   input: CreateBoardInput,
   now: Date = new Date(),
@@ -30,7 +31,7 @@ export async function createBoard(
     })),
   );
 
-  auditLog({
+  await auditLog({
     operation: "brainstorm.create-board",
     userId,
     entity: "BrainstormBoard",
@@ -41,4 +42,8 @@ export async function createBoard(
   });
 
   return toBrainstormBoardDTO(board, columns, []);
+}
+
+export async function createBoard(...args: Parameters<typeof createBoardInTransaction>): ReturnType<typeof createBoardInTransaction> {
+  return inRepositoryTransaction(() => createBoardInTransaction(...args));
 }

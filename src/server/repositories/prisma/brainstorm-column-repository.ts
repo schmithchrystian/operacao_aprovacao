@@ -1,27 +1,9 @@
-import type {
-  BrainstormColumnCreateInput,
-  BrainstormColumnEntity,
-  BrainstormColumnRepository,
-} from "../contracts/brainstorm-column-repository";
-
-/**
- * Stub Prisma — implementação real cabe ao agente `database`/`backend` a partir da Fase de
- * banco. Proibido importar `@prisma/client` fora de `server/repositories/prisma/**`
- * (ADR-0002).
- */
+import type { BrainstormColumn } from "@/generated/prisma/client";
+import type { BrainstormColumnRepository, BrainstormColumnCreateInput, BrainstormColumnEntity } from "../contracts/brainstorm-column-repository";
+import { inRepositoryTransaction } from "../transaction";
+const map = (r: BrainstormColumn): BrainstormColumnEntity => ({...r,createdAt:r.createdAt.toISOString(),updatedAt:r.updatedAt.toISOString()});
 export class PrismaBrainstormColumnRepository implements BrainstormColumnRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findById(_id: string): Promise<BrainstormColumnEntity | null> {
-    throw new Error("not implemented: PrismaBrainstormColumnRepository.findById");
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async listByBoardId(_boardId: string): Promise<BrainstormColumnEntity[]> {
-    throw new Error("not implemented: PrismaBrainstormColumnRepository.listByBoardId");
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async createMany(_inputs: BrainstormColumnCreateInput[]): Promise<BrainstormColumnEntity[]> {
-    throw new Error("not implemented: PrismaBrainstormColumnRepository.createMany");
-  }
+ async findById(id:string){const {prisma}=await import("@/server/db/prisma");const r=await prisma.brainstormColumn.findFirst({where:{id,deletedAt:null,board:{deletedAt:null}}});return r?map(r):null;}
+ async listByBoardId(boardId:string){const {prisma}=await import("@/server/db/prisma");return(await prisma.brainstormColumn.findMany({where:{boardId,deletedAt:null,board:{deletedAt:null}},orderBy:{order:'asc'}})).map(map);}
+ async createMany(inputs:BrainstormColumnCreateInput[]){return inRepositoryTransaction(async()=>{const {prisma}=await import("@/server/db/prisma");const rows:BrainstormColumnEntity[]=[];for(const {now,...input} of inputs)rows.push(map(await prisma.brainstormColumn.create({data:{...input,createdAt:now,updatedAt:now}})));return rows;});}
 }

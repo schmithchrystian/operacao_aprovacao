@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -35,34 +36,39 @@ export function LoginForm() {
     setFormError(null);
 
     startTransition(async () => {
-      const result = await loginAction(values);
+      try {
+        const result = await loginAction(values);
 
-      if (!result.ok) {
-        if (result.error.fieldErrors) {
-          for (const [field, messages] of Object.entries(result.error.fieldErrors)) {
-            if (field === "email" || field === "password") {
-              setError(field, { message: messages[0] });
+        if (!result.ok) {
+          if (result.error.fieldErrors) {
+            for (const [field, messages] of Object.entries(result.error.fieldErrors)) {
+              if (field === "email" || field === "password") {
+                setError(field, { message: messages[0] });
+              }
             }
           }
+          setFormError(result.error.message);
+          return;
         }
-        setFormError(result.error.message);
-        return;
-      }
 
-      toast.success("Login realizado com sucesso.");
-      router.push(result.data.redirectTo);
-      router.refresh();
+        toast.success("Login realizado com sucesso.");
+        router.push(result.data.redirectTo);
+        router.refresh();
+      } catch {
+        setFormError("Não foi possível conectar. Confira sua conexão e tente novamente.");
+      }
     });
   });
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-4">
+    <form onSubmit={onSubmit} noValidate className="space-y-4" aria-busy={isPending}>
       <div className="space-y-1.5">
         <Label htmlFor="email">E-mail</Label>
         <Input
           id="email"
           type="email"
           autoComplete="email"
+          disabled={isPending}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={errors.email ? "email-error" : undefined}
           {...register("email")}
@@ -75,11 +81,16 @@ export function LoginForm() {
       </div>
 
       <div className="space-y-1.5">
+        <Label htmlFor="otp">Código autenticador ou recuperação (se ativado)</Label>
+        <Input id="otp" autoComplete="one-time-code" disabled={isPending} {...register("otp")} />
+      </div>
+      <div className="space-y-1.5">
         <Label htmlFor="password">Senha</Label>
         <Input
           id="password"
           type="password"
           autoComplete="current-password"
+          disabled={isPending}
           aria-invalid={Boolean(errors.password)}
           aria-describedby={errors.password ? "password-error" : undefined}
           {...register("password")}
@@ -100,6 +111,14 @@ export function LoginForm() {
       <Button type="submit" className="w-full" disabled={isPending}>
         {isPending ? "Entrando..." : "Entrar"}
       </Button>
+      <div className="flex justify-between text-sm">
+        <Link href="/cadastro" className="underline">
+          Criar conta
+        </Link>
+        <Link href="/recuperar-senha" className="underline">
+          Esqueci minha senha
+        </Link>
+      </div>
     </form>
   );
 }

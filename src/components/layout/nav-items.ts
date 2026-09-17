@@ -30,6 +30,7 @@ export const STUDENT_NAV_ITEMS: NavItem[] = [
   { label: "Início", href: "/dashboard", icon: LayoutDashboard },
   { label: "Minha trilha", href: "/trilha", icon: Route },
   { label: "Cursos", href: "/cursos", icon: BookOpen },
+  { label: "Professor RS", href: "/professor-rs", icon: Lightbulb },
   { label: "Montar estudo", href: "/montar-estudo", icon: ClipboardList },
   { label: "Simulados", href: "/simulados", icon: FileCheck2 },
   { label: "Plano de estudos", href: "/plano-de-estudos", icon: CalendarDays },

@@ -1,3 +1,4 @@
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
 import type { BrainstormCardDTO, MoveCardInput } from "@/contracts/brainstorm";
 import { auditLog } from "@/server/audit";
 import { assertOwnership, requireUser } from "@/server/authorization";
@@ -15,7 +16,7 @@ import { clampIndex, loadOwnedCard, requireColumnOnBoard } from "./shared";
  * (anti-IDOR: a coluna destino precisa pertencer ao mesmo quadro do cartão, nunca a outro
  * quadro — nem do mesmo usuário, nem de outro).
  */
-export async function moveCard(
+async function moveCardInTransaction(
   userId: string,
   input: MoveCardInput,
   now: Date = new Date(),
@@ -28,7 +29,7 @@ export async function moveCard(
 
   const moved = await applyMove(card, sourceColumn, toColumn, input.toIndex, now);
 
-  auditLog({
+  await auditLog({
     operation: "brainstorm.move-card",
     userId,
     entity: "BrainstormCard",
@@ -51,7 +52,7 @@ export async function moveCard(
  * `updatedAt` dos cartões cuja ordem realmente mudou (nenhum, nesse caso) — a garantia vem de
  * `BrainstormCardRepository.reorderColumn`.
  */
-export async function applyMove(
+async function applyMoveInTransaction(
   card: BrainstormCardEntity,
   sourceColumn: BrainstormColumnEntity,
   toColumn: BrainstormColumnEntity,
@@ -86,4 +87,12 @@ export async function applyMove(
     throw new NotFoundError("Cartão não encontrado após mover.");
   }
   return moved;
+}
+
+export async function moveCard(...args: Parameters<typeof moveCardInTransaction>): ReturnType<typeof moveCardInTransaction> {
+  return inRepositoryTransaction(() => moveCardInTransaction(...args));
+}
+
+export async function applyMove(...args: Parameters<typeof applyMoveInTransaction>): ReturnType<typeof applyMoveInTransaction> {
+  return inRepositoryTransaction(() => applyMoveInTransaction(...args));
 }

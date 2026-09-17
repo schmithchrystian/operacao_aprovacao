@@ -1,0 +1,2 @@
+HTTP MFA PASS: mandatory admin setup, password-only denial, valid OTP login and replay denial.
+HTTP smoke PASS: readiness, protected metrics, public account routes, CSP nonce, direct Credentials login, revoked session redirect, shared callback rate limit.

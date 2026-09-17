@@ -8,7 +8,7 @@ import type { Role } from "@/types";
  * dependências Node (o Credentials Provider usa `bcryptjs`, ver `config.ts`).
  *
  * Usada por dois consumidores:
- * - `src/middleware.ts` (roda em Edge Runtime): só precisa decodificar o cookie JWT
+ * - `src/proxy.ts` (Node runtime): só precisa decodificar o cookie JWT
  *   para saber se há sessão — nunca chama `authorize()`.
  * - `config.ts` (config completa, Node runtime): estende este objeto e adiciona o
  *   Credentials Provider.
@@ -35,10 +35,17 @@ export const authEdgeConfig: NextAuthConfig = {
     // (inclui o caso "database strategy"), o que faz `session.user.id = token.userId`
     // falhar no typecheck (`Type '{}' is not assignable...`). Forçar aqui o shape real
     // usado neste projeto (JWT-only) resolve isso sem `any`.
-    async jwt({ token, user }: { token: JWT; user?: { id?: string; role?: Role } }): Promise<JWT> {
+    async jwt({
+      token,
+      user,
+    }: {
+      token: JWT;
+      user?: { id?: string; role?: Role; sessionVersion?: number };
+    }): Promise<JWT> {
       if (user?.id && user.role) {
         token.userId = user.id;
         token.role = user.role;
+        token.sessionVersion = user.sessionVersion ?? 0;
       }
       return token;
     },
@@ -46,6 +53,7 @@ export const authEdgeConfig: NextAuthConfig = {
       if (token.userId && token.role) {
         session.user.id = token.userId;
         session.user.role = token.role;
+        session.user.sessionVersion = token.sessionVersion ?? 0;
       }
       return session;
     },

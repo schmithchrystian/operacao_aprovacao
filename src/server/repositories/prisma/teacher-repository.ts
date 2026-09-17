@@ -1,40 +1,52 @@
+import type { Teacher as Row } from "@/generated/prisma/client";
 import type {
-  TeacherCreateInput,
   TeacherEntity,
   TeacherRepository,
+  TeacherCreateInput,
   TeacherUpdateInput,
 } from "../contracts/teacher-repository";
 
-/**
- * Stub Prisma — implementação real cabe ao agente `database` a partir da Fase de banco.
- * Proibido importar `@prisma/client` fora de `server/repositories/prisma/**` (ADR-0002).
- */
+function map(row: Row): TeacherEntity {
+  return {
+    id: row.id,
+    userId: row.userId,
+    name: row.name,
+    bio: row.bio,
+    avatarUrl: row.avatarUrl,
+    deletedAt: row.deletedAt?.toISOString() ?? null,
+  };
+}
+
 export class PrismaTeacherRepository implements TeacherRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findById(_id: string): Promise<TeacherEntity | null> {
-    throw new Error("not implemented: PrismaTeacherRepository.findById");
+  async findById(id: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    const row = await prisma.teacher.findUnique({ where: { id } });
+    return row ? map(row) : null;
   }
-
-  async list(): Promise<TeacherEntity[]> {
-    throw new Error("not implemented: PrismaTeacherRepository.list");
+  async list() {
+    const { prisma } = await import("@/server/db/prisma");
+    return (
+      await prisma.teacher.findMany({ where: { deletedAt: null }, orderBy: { name: "asc" } })
+    ).map(map);
   }
-
-  async listForAdmin(): Promise<TeacherEntity[]> {
-    throw new Error("not implemented: PrismaTeacherRepository.listForAdmin");
+  async listForAdmin() {
+    const { prisma } = await import("@/server/db/prisma");
+    return (await prisma.teacher.findMany({ orderBy: { name: "asc" } })).map(map);
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async create(_input: TeacherCreateInput): Promise<TeacherEntity> {
-    throw new Error("not implemented: PrismaTeacherRepository.create");
+  async create(input: TeacherCreateInput) {
+    const { prisma } = await import("@/server/db/prisma");
+    const { now, ...data } = input;
+    return map(await prisma.teacher.create({ data: { ...data, createdAt: now, updatedAt: now } }));
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async update(_input: TeacherUpdateInput): Promise<TeacherEntity> {
-    throw new Error("not implemented: PrismaTeacherRepository.update");
+  async update(input: TeacherUpdateInput) {
+    const { prisma } = await import("@/server/db/prisma");
+    const { id, now, ...data } = input;
+    return map(await prisma.teacher.update({ where: { id }, data: { ...data, updatedAt: now } }));
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async softDelete(_id: string, _now: Date): Promise<TeacherEntity> {
-    throw new Error("not implemented: PrismaTeacherRepository.softDelete");
+  async softDelete(id: string, now: Date) {
+    const { prisma } = await import("@/server/db/prisma");
+    return map(
+      await prisma.teacher.update({ where: { id }, data: { deletedAt: now, updatedAt: now } }),
+    );
   }
 }

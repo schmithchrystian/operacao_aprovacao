@@ -83,8 +83,21 @@ export interface RankingScoreUpsertInput {
   now: Date;
 }
 
+export interface FinalizeRankingScopeVersionInput {
+  periodType: RankingPeriodType;
+  periodKey: string;
+  scopeType: RankingScopeType;
+  scopeKey: string;
+  calculationVersion: number;
+  userIds: string[];
+  now: Date;
+}
+
 /** Abstração de persistência do ranking materializado (ADR-0002). */
 export interface RankingScoreRepository {
+  /** Prune removed candidates and persist snapshot metadata, including an empty result. */
+  finalizeScopeVersion(input: FinalizeRankingScopeVersionInput): Promise<void>;
+  listKnownScopes(): Promise<Array<{ scopeType: RankingScopeType; scopeKey: string }>>;
   /**
    * Cria ou sobrescreve a linha da MESMA versão para `(userId, periodType, periodKey,
    * scopeType, scopeKey, calculationVersion)` — recálculo idempotente (nunca duplica; a

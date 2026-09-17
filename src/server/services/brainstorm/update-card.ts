@@ -55,7 +55,7 @@ export async function updateCard(
     now,
   });
 
-  auditLog({
+  await auditLog({
     operation: "brainstorm.update-card",
     userId,
     entity: "BrainstormCard",

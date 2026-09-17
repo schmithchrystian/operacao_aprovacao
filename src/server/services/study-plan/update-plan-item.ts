@@ -44,7 +44,7 @@ export async function updatePlanItem(
     now,
   });
 
-  auditLog({
+  await auditLog({
     operation: "study-plan.update-item",
     userId,
     entity: "StudyPlanItem",

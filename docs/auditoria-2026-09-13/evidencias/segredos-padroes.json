@@ -1,0 +1,11 @@
+{
+  "unique_text_blobs_scanned": 976,
+  "patterns": [
+    "github_token",
+    "aws_key",
+    "private_key",
+    "live_api_key",
+    "postgres_password_url"
+  ],
+  "matches_metadata_only": []
+}

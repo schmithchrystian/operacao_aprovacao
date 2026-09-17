@@ -31,7 +31,7 @@ describe("getStudentDashboard — agregação e autorização", () => {
     expect(dashboard.identity.selectedContestId).toBe("contest-pm-soldado");
     expect(dashboard.gamification.level.name).toBe("Aspirante");
     expect(dashboard.study.lessonsCompleted).toBeGreaterThan(0);
-    expect(dashboard.ranking.position).toBeGreaterThan(0);
+    expect(dashboard.ranking?.position).toBeGreaterThan(0);
     expect(dashboard.studyHoursSeries).toHaveLength(7);
     expect(dashboard.recentAchievements.length).toBeGreaterThan(0);
     expect(dashboard.nextLesson).not.toBeNull();

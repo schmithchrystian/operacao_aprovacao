@@ -2,7 +2,7 @@ import type { DeckDTO } from "@/contracts/flashcards";
 import { assertOwnership, requireUser } from "@/server/authorization";
 import { getRepositories } from "@/server/repositories";
 import type { FlashcardEntity } from "@/server/repositories/contracts/flashcard-repository";
-import { listFavoriteFlashcardIds } from "./favorite-store";
+import { getFavoriteFlashcardIds } from "./favorite-store";
 import { toDeckDTO } from "./mappers";
 import { isCardDue, loadLatestReviewsByFlashcardId } from "./shared";
 
@@ -58,7 +58,7 @@ export async function listDecks(userId: string, now: Date = new Date()): Promise
     }),
   );
 
-  const favoriteIds = new Set(listFavoriteFlashcardIds(userId));
+  const favoriteIds = new Set(await getFavoriteFlashcardIds(userId));
   const favoriteCards = allCards.filter((card) => favoriteIds.has(card.id));
   const favoritesDeck: DeckDTO = {
     id: "virtual-favorites",

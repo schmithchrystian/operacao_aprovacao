@@ -1,5 +1,7 @@
 "use client";
 
+import { AchievementCriteriaFields } from "./achievement-criteria-fields";
+import type { AchievementCriteria } from "@/contracts/achievement-criteria";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,6 +39,7 @@ export function EditAchievementDialog({ achievement, onSaved }: EditAchievementD
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [formError, setFormError] = useState<string | null>(null);
+  const [criteria, setCriteria] = useState<AchievementCriteria | null>(achievement.criteria ?? null);
 
   const {
     register,
@@ -58,7 +61,7 @@ export function EditAchievementDialog({ achievement, onSaved }: EditAchievementD
     setFormError(null);
 
     startTransition(async () => {
-      const result = await updateAchievementForAdminAction(values);
+      const result = await updateAchievementForAdminAction({ ...values, criteria });
 
       if (!result.ok) {
         if (result.error.fieldErrors) {
@@ -137,6 +140,8 @@ export function EditAchievementDialog({ achievement, onSaved }: EditAchievementD
               {formError}
             </p>
           ) : null}
+
+          <AchievementCriteriaFields value={criteria} onChange={setCriteria} />
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isPending}>

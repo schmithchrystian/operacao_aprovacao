@@ -36,7 +36,10 @@ export default async function DashboardPage() {
     return (
       <div className="space-y-6">
         <Breadcrumbs items={[{ label: "Início" }]} />
-        <ErrorState title="Não foi possível carregar seu painel" description={result.error.message} />
+        <ErrorState
+          title="Não foi possível carregar seu painel"
+          description={result.error.message}
+        />
       </div>
     );
   }
@@ -55,7 +58,9 @@ export default async function DashboardPage() {
         </h1>
         <p className="text-muted-foreground text-sm">
           Concurso selecionado:{" "}
-          <span className="text-foreground font-medium">{dashboard.identity.selectedContestName}</span>
+          <span className="text-foreground font-medium">
+            {dashboard.identity.selectedContestName ?? "Ainda não selecionado"}
+          </span>
         </p>
       </div>
 
@@ -84,8 +89,12 @@ export default async function DashboardPage() {
         />
         <StatCard
           title="Posição no ranking"
-          value={`#${dashboard.ranking.position.toLocaleString("pt-BR")}`}
-          hint={`de ${dashboard.ranking.totalParticipants.toLocaleString("pt-BR")} participantes`}
+          value={dashboard.ranking ? `#${dashboard.ranking.position.toLocaleString("pt-BR")}` : "—"}
+          hint={
+            dashboard.ranking
+              ? `de ${dashboard.ranking.totalParticipants.toLocaleString("pt-BR")} participantes`
+              : "Ranking ainda não calculado"
+          }
           icon={Trophy}
         />
       </div>

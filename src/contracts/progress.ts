@@ -113,8 +113,8 @@ export const lessonViewDTOSchema = z.object({
   teacherName: z.string().min(1),
   description: z.string(),
   materials: z.array(lessonMaterialDTOSchema),
-  /** URL mock do vídeo — hospedagem real é pendência conhecida (docs/ARCHITECTURE.md §11). */
-  videoUrl: z.string().min(1),
+  /** URL HTTPS cadastrada e validada no servidor; vazio quando não há mídia. */
+  videoUrl: z.string(),
   status: lessonStatusSchema,
   locked: z.boolean(),
   /** Posição salva (segundos) para retomar — 0 quando não há progresso anterior. */

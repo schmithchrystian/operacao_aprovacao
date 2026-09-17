@@ -1,4 +1,7 @@
-import { LESSON_COMPLETION_MIN_PERCENT, STUDY_TRACKING } from "@/config/business";
+import { reserveInterval } from "@/server/concurrency/rate-limit";
+import { getEffectiveBusinessConfig } from "@/server/services/admin/effective-config";
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
+import { STUDY_TRACKING } from "@/config/business";
 import type { HeartbeatInput, HeartbeatResultDTO, LessonCompletionDTO } from "@/contracts/progress";
 import type { LessonStatus } from "@/contracts/courses";
 import { auditLog } from "@/server/audit";
@@ -53,12 +56,13 @@ function findLessonStatus(computed: ComputedCourseProgress, lessonId: string): L
  * - o intervalo real entre heartbeats é medido pelo relógio do SERVIDOR (`Date.now()`),
  *   nunca por `input.clientTimestamp` (que só serve para detectar duplicidade exata).
  */
-export async function recordHeartbeat(userId: string, input: HeartbeatInput): Promise<HeartbeatResultDTO> {
+async function recordHeartbeatInTransaction(userId: string, input: HeartbeatInput): Promise<HeartbeatResultDTO> {
   const session = await requireUser();
+  const config = await getEffectiveBusinessConfig();
   assertOwnership(userId, session.userId);
 
   const rateLimitKey = heartbeatRateLimitKey(userId, input.lessonId, input.sessionId);
-  if (!checkHeartbeatRateLimit(rateLimitKey)) {
+  if (!await reserveInterval(`heartbeat:${userId}`, 1000, () => checkHeartbeatRateLimit(rateLimitKey))) {
     throw new RateLimitError("Heartbeat enviado com frequência excessiva.");
   }
 
@@ -77,7 +81,7 @@ export async function recordHeartbeat(userId: string, input: HeartbeatInput): Pr
   // Matrícula ativa é obrigatória ANTES de creditar qualquer progresso/ponto — sem isto, a 1ª
   // aula (sempre `available`) permitiria a um não matriculado farmar os 100 pontos de conclusão
   // (achado de segurança Fase 7 — ALTO). Ver `./enrollment.ts`.
-  await assertActiveEnrollment(userId, courseModule.courseId);
+  await assertActiveEnrollment(userId, courseModule.courseId, lesson.id);
 
   // Aula bloqueada não pode registrar progresso (CLAUDE.md §12) — verificado ANTES de
   // processar o heartbeat, com o estado de liberação atual (independente desta chamada).
@@ -148,7 +152,7 @@ export async function recordHeartbeat(userId: string, input: HeartbeatInput): Pr
   let progressStatus: LessonProgressStatus;
   if (wasCompletedBefore) {
     progressStatus = "completed";
-  } else if (watchedFraction >= LESSON_COMPLETION_MIN_PERCENT) {
+  } else if (watchedFraction >= config.lessonCompletionMinPercent) {
     progressStatus = "completed";
   } else if (watchedFraction > 0 || persistedSession.heartbeatCount > 1) {
     progressStatus = "in_progress";
@@ -272,7 +276,7 @@ export async function recordHeartbeat(userId: string, input: HeartbeatInput): Pr
     };
   }
 
-  auditLog({
+  await auditLog({
     operation: "study-tracking.heartbeat",
     userId,
     entity: "Lesson",
@@ -295,4 +299,8 @@ export async function recordHeartbeat(userId: string, input: HeartbeatInput): Pr
     completion,
     flags,
   };
+}
+
+export async function recordHeartbeat(userId: string, input: HeartbeatInput): Promise<HeartbeatResultDTO> {
+  return inRepositoryTransaction(() => recordHeartbeatInTransaction(userId, input));
 }

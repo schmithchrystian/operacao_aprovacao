@@ -45,7 +45,7 @@ export async function startFocusSession(
         endedAt: nowIso,
         updatedAt: nowIso,
       });
-      auditLog({
+      await auditLog({
         operation: "focus.session-discarded-by-new-start",
         userId,
         entity: "FocusSession",
@@ -67,7 +67,7 @@ export async function startFocusSession(
       now,
     });
 
-    auditLog({
+    await auditLog({
       operation: "focus.session-started",
       userId,
       entity: "FocusSession",

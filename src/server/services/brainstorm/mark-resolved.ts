@@ -1,3 +1,4 @@
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
 import { BRAINSTORM_RESOLVED_COLUMN_TITLE } from "@/config/business";
 import type { BrainstormCardDTO } from "@/contracts/brainstorm";
 import { auditLog } from "@/server/audit";
@@ -15,7 +16,7 @@ import { loadOwnedCard } from "./shared";
  *
  * Autorização (ADR-0006): `requireUser` + `assertOwnership` + `loadOwnedCard` (anti-IDOR).
  */
-export async function markResolved(userId: string, cardId: string, now: Date = new Date()): Promise<BrainstormCardDTO> {
+async function markResolvedInTransaction(userId: string, cardId: string, now: Date = new Date()): Promise<BrainstormCardDTO> {
   const session = await requireUser();
   assertOwnership(userId, session.userId);
 
@@ -37,7 +38,7 @@ export async function markResolved(userId: string, cardId: string, now: Date = n
   const destinationCards = await repos.brainstormCards.listByColumnIds([resolvedColumn.id]);
   const moved = await applyMove(card, sourceColumn, resolvedColumn, destinationCards.length, now);
 
-  auditLog({
+  await auditLog({
     operation: "brainstorm.mark-resolved",
     userId,
     entity: "BrainstormCard",
@@ -48,4 +49,8 @@ export async function markResolved(userId: string, cardId: string, now: Date = n
   });
 
   return toBrainstormCardDTO(moved, resolvedColumn.name);
+}
+
+export async function markResolved(...args: Parameters<typeof markResolvedInTransaction>): ReturnType<typeof markResolvedInTransaction> {
+  return inRepositoryTransaction(() => markResolvedInTransaction(...args));
 }

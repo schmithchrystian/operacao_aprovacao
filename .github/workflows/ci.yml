@@ -1,0 +1,85 @@
+name: Validate SaaS
+on:
+  pull_request:
+  push:
+    branches: [main, "codex/**"]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: study_test
+          POSTGRES_PASSWORD: test-only-password
+          POSTGRES_DB: study_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U study_test -d study_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://study_test:test-only-password@127.0.0.1:5432/study_test
+      DATABASE_URL: postgresql://study_test:test-only-password@127.0.0.1:5432/study_test
+      AUTH_SECRET: ci-test-secret-not-a-production-credential-0001
+      CRON_SECRET: ci-test-secret-not-a-production-credential-0002
+      APP_URL: https://ci.example.invalid
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm install --global npm@12.0.2
+      - run: npm ci
+      - run: npm run db:validate
+      - run: npm run db:migrate
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test
+      - name: Independent notes navigation regression
+        run: npx vitest run --config docs/entrega-usuarios/notas.config.ts
+      - name: Deployment preflight regression
+        run: node --test docs/entrega-usuarios/preflight.test.mjs
+      - run: npm run test:integration
+      - name: Create synthetic recovery fixture
+        run: npx tsx scripts/qa-fixture.ts
+        env:
+          DATA_SOURCE: prisma
+          APP_ENV: test
+      - name: Restore isolated PostgreSQL backup
+        run: |
+          docker exec "${{ job.services.postgres.id }}" pg_dump -U study_test -d study_test -Fc -f /tmp/study.backup
+          docker exec "${{ job.services.postgres.id }}" createdb -U study_test study_restore_test
+          docker exec "${{ job.services.postgres.id }}" pg_restore -U study_test -d study_restore_test --exit-on-error /tmp/study.backup
+          docker exec "${{ job.services.postgres.id }}" psql -U study_test -d study_restore_test -v ON_ERROR_STOP=1 -c 'SELECT count(*) FROM "User"; SELECT count(*) FROM "_prisma_migrations";'
+      - name: Verify restored database behavior
+        run: npm run test:integration
+        env:
+          TEST_DATABASE_URL: postgresql://study_test:test-only-password@127.0.0.1:5432/study_restore_test
+      - run: npm audit --audit-level=moderate
+      - run: npm run build
+        env:
+          DATA_SOURCE: prisma
+          APP_ENV: staging
+      - name: HTTP acceptance against compiled app
+        env:
+          DATA_SOURCE: prisma
+          APP_ENV: test
+          APP_URL: http://localhost:3100
+          ADMIN_MFA_REQUIRED: "true"
+          MFA_ENCRYPTION_KEY: "0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+        run: |
+          npm run start -- --port 3100 > /tmp/study-http-server.log 2>&1 &
+          study_server_pid=$!
+          trap 'kill "$study_server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://localhost:3100/api/health > /dev/null; then break; fi
+            sleep 1
+          done
+          npx tsx scripts/http-smoke.ts

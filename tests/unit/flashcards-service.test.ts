@@ -1,3 +1,4 @@
+import { ensureAuthenticatedUser } from "../helpers/authenticated-user";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Session as NextAuthSession } from "next-auth";
 
@@ -48,6 +49,7 @@ const { createFlashcardDraft, __resetFlashcardDraftStore } = await import(
  * `user-1` (devidos imediatamente) — total: 19 de 20 cartões devidos.
  */
 function fakeSession(id: string): NextAuthSession {
+  ensureAuthenticatedUser(id);
   return {
     user: { id, role: "aluno", name: "Teste", email: "teste@example.com" },
     expires: new Date(Date.now() + 60_000).toISOString(),

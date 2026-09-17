@@ -1,47 +1,104 @@
+import type { StudyPlanItem as Row } from "@/generated/prisma/client";
 import type {
-  StudyPlanItemCreateInput,
   StudyPlanItemEntity,
   StudyPlanItemRepository,
+  StudyPlanItemCreateInput,
   StudyPlanItemUpdateInput,
 } from "../contracts/study-plan-item-repository";
-
-/**
- * Stub Prisma — implementação real cabe ao agente `database`/`study-tracking` a partir da
- * Fase de banco. Proibido importar `@prisma/client` fora de `server/repositories/prisma/**`
- * (ADR-0002).
- *
- * PENDÊNCIA (ver `../contracts/study-plan-item-repository.ts`): `StudyPlanItemEntity.kind`
- * ainda não tem coluna própria em `StudyPlanItem` — a implementação real precisa dessa
- * migration (ou de outra forma de derivar `kind`) antes de existir de verdade.
- */
+function map(row: Row): StudyPlanItemEntity {
+  return {
+    id: row.id,
+    studyPlanId: row.studyPlanId,
+    kind: row.kind,
+    subjectId: row.subjectId,
+    topicId: row.topicId,
+    lessonId: row.lessonId,
+    title: row.title,
+    targetDate: row.targetDate?.toISOString() ?? null,
+    estimatedMinutes: row.estimatedMinutes,
+    order: row.order,
+    status: row.status,
+    completedAt: row.completedAt?.toISOString() ?? null,
+    createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
+  };
+}
 export class PrismaStudyPlanItemRepository implements StudyPlanItemRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findById(_id: string): Promise<StudyPlanItemEntity | null> {
-    throw new Error("not implemented: PrismaStudyPlanItemRepository.findById");
+  async findById(id: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    const row = await prisma.studyPlanItem.findFirst({ where: { id, deletedAt: null } });
+    return row ? map(row) : null;
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async listByPlanId(_planId: string): Promise<StudyPlanItemEntity[]> {
-    throw new Error("not implemented: PrismaStudyPlanItemRepository.listByPlanId");
+  async listByPlanId(studyPlanId: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    return (
+      await prisma.studyPlanItem.findMany({
+        where: { studyPlanId, deletedAt: null },
+        orderBy: [{ order: "asc" }, { id: "asc" }],
+      })
+    ).map(map);
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async createMany(_inputs: StudyPlanItemCreateInput[]): Promise<StudyPlanItemEntity[]> {
-    throw new Error("not implemented: PrismaStudyPlanItemRepository.createMany");
+  async createMany(inputs: StudyPlanItemCreateInput[]) {
+    const { prisma } = await import("@/server/db/prisma");
+    const { inRepositoryTransaction } = await import("@/server/repositories/transaction");
+    return inRepositoryTransaction(async () => {
+      const rows: StudyPlanItemEntity[] = [];
+      for (const { now, targetDate, ...data } of inputs)
+        rows.push(
+          map(
+            await prisma.studyPlanItem.create({
+              data: {
+                ...data,
+                targetDate: targetDate ? new Date(targetDate) : null,
+                createdAt: now,
+                updatedAt: now,
+              },
+            }),
+          ),
+        );
+      return rows;
+    });
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async update(_input: StudyPlanItemUpdateInput): Promise<StudyPlanItemEntity> {
-    throw new Error("not implemented: PrismaStudyPlanItemRepository.update");
+  async update({ id, now, targetDate, ...data }: StudyPlanItemUpdateInput) {
+    const { prisma } = await import("@/server/db/prisma");
+    return map(
+      await prisma.studyPlanItem.update({
+        where: { id, deletedAt: null },
+        data: {
+          ...data,
+          ...(targetDate === undefined
+            ? {}
+            : { targetDate: targetDate ? new Date(targetDate) : null }),
+          ...(data.status === undefined
+            ? {}
+            : { completedAt: data.status === "DONE" ? now : null }),
+          updatedAt: now,
+        },
+      }),
+    );
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async reorder(_planId: string, _orderedItemIds: string[], _now: Date): Promise<StudyPlanItemEntity[]> {
-    throw new Error("not implemented: PrismaStudyPlanItemRepository.reorder");
+  async reorder(studyPlanId: string, orderedItemIds: string[], now: Date) {
+    const { prisma } = await import("@/server/db/prisma");
+    const { inRepositoryTransaction } = await import("@/server/repositories/transaction");
+    return inRepositoryTransaction(async () => {
+      await prisma.$queryRaw`SELECT "id" FROM "StudyPlan" WHERE "id"=${studyPlanId} FOR UPDATE`;
+      const rows = await prisma.studyPlanItem.findMany({ where: { studyPlanId, deletedAt: null } });
+      if (
+        new Set(orderedItemIds).size !== rows.length ||
+        orderedItemIds.length !== rows.length ||
+        rows.some((row) => !orderedItemIds.includes(row.id))
+      )
+        throw new Error("Reorder requires all plan items exactly once");
+      for (let order = 0; order < orderedItemIds.length; order++)
+        await prisma.studyPlanItem.update({
+          where: { id: orderedItemIds[order]! },
+          data: { order, updatedAt: now },
+        });
+      return this.listByPlanId(studyPlanId);
+    });
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async deleteByPlanId(_planId: string): Promise<void> {
-    throw new Error("not implemented: PrismaStudyPlanItemRepository.deleteByPlanId");
+  async deleteByPlanId(studyPlanId: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    await prisma.studyPlanItem.deleteMany({ where: { studyPlanId } });
   }
 }

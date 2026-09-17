@@ -123,8 +123,8 @@ export type DashboardAchievement = z.infer<typeof dashboardAchievementSchema>;
 /** Identidade exibida no topo do dashboard. */
 export const dashboardIdentitySchema = z.object({
   studentName: z.string().min(1),
-  selectedContestId: z.string().min(1),
-  selectedContestName: z.string().min(1),
+  selectedContestId: z.string().min(1).nullable(),
+  selectedContestName: z.string().min(1).nullable(),
 });
 export type DashboardIdentity = z.infer<typeof dashboardIdentitySchema>;
 
@@ -137,7 +137,7 @@ export const dashboardDTOSchema = z.object({
   identity: dashboardIdentitySchema,
   gamification: dashboardGamificationSchema,
   study: dashboardStudyStatsSchema,
-  ranking: dashboardRankingSchema,
+  ranking: dashboardRankingSchema.nullable(),
   nextLesson: dashboardNextLessonSchema.nullable(),
   goals: dashboardGoalsSchema,
   performanceSummary: dashboardPerformanceSummarySchema,

@@ -39,7 +39,7 @@ export async function startStudyMission(
     now,
   });
 
-  auditLog({
+  await auditLog({
     operation: "study-plan.start-mission",
     userId,
     entity: "StudyMission",

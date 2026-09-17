@@ -1,8 +1,9 @@
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
 import type { BrainstormCardDTO } from "@/contracts/brainstorm";
 import { auditLog } from "@/server/audit";
 import { assertOwnership, requireUser } from "@/server/authorization";
 import { getRepositories } from "@/server/repositories";
-import { createFlashcardDraft } from "./flashcard-draft-store";
+import { getOrCreatePersonalDeck } from "@/server/services/flashcards/shared";
 import { toBrainstormCardDTO } from "./mappers";
 import { loadOwnedCard } from "./shared";
 
@@ -15,7 +16,7 @@ import { loadOwnedCard } from "./shared";
  *
  * Autorização (ADR-0006): `requireUser` + `assertOwnership` + `loadOwnedCard` (anti-IDOR).
  */
-export async function convertToFlashcard(
+async function convertToFlashcardInTransaction(
   userId: string,
   cardId: string,
   now: Date = new Date(),
@@ -29,9 +30,9 @@ export async function convertToFlashcard(
     return toBrainstormCardDTO(card, column.name); // já convertido — idempotente.
   }
 
-  const draft = createFlashcardDraft(userId, card.id, card.title, card.content ?? "", now);
-
   const repos = getRepositories();
+  const deck = await getOrCreatePersonalDeck(userId, "NOTES", "Criados de anotações", now);
+  const draft = await repos.flashcards.create({ deckId: deck.id, subjectId: card.subjectId, topicId: card.topicId, question: card.title, answer: card.content?.trim() || "Complemente esta resposta ao revisar.", difficulty: "MEDIUM", tags: [...card.tags, `src:brainstorm:${card.id}`], now });
   const updated = await repos.brainstormCards.update({
     id: card.id,
     status: "CONVERTED",
@@ -39,7 +40,7 @@ export async function convertToFlashcard(
     now,
   });
 
-  auditLog({
+  await auditLog({
     operation: "brainstorm.convert-to-flashcard",
     userId,
     entity: "BrainstormCard",
@@ -50,4 +51,8 @@ export async function convertToFlashcard(
   });
 
   return toBrainstormCardDTO(updated, column.name);
+}
+
+export async function convertToFlashcard(...args: Parameters<typeof convertToFlashcardInTransaction>): ReturnType<typeof convertToFlashcardInTransaction> {
+  return inRepositoryTransaction(() => convertToFlashcardInTransaction(...args));
 }

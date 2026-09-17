@@ -97,13 +97,13 @@ export function RankingResults({ items }: RankingResultsProps) {
                 </td>
                 <td className="text-muted-foreground px-3 py-2">{entry.contestName ?? "—"}</td>
                 <td className="px-3 py-2 text-right font-semibold">{entry.points.toLocaleString("pt-BR")}</td>
-                <td className="px-3 py-2 text-right">{entry.validHours.toLocaleString("pt-BR")}h</td>
-                <td className="px-3 py-2 text-right">{entry.lessonsCompleted}</td>
-                <td className="px-3 py-2 text-right">{Math.round(entry.accuracyPercent)}%</td>
+                <td className="px-3 py-2 text-right">{entry.validHours === null ? "Privado" : `${entry.validHours.toLocaleString("pt-BR")}h`}</td>
+                <td className="px-3 py-2 text-right">{entry.lessonsCompleted ?? "Privado"}</td>
+                <td className="px-3 py-2 text-right">{entry.accuracyPercent === null ? "Privado" : `${Math.round(entry.accuracyPercent)}%`}</td>
                 <td className="px-3 py-2 text-right">
                   <span className="inline-flex items-center justify-end gap-1">
                     <Flame className="text-primary h-3.5 w-3.5" aria-hidden="true" />
-                    {entry.streakDays}
+                    {entry.streakDays ?? "Privado"}
                   </span>
                 </td>
                 <td className="px-3 py-2 text-right">
@@ -144,21 +144,21 @@ export function RankingResults({ items }: RankingResultsProps) {
                 <dl className="text-muted-foreground grid grid-cols-2 gap-x-3 gap-y-2 text-xs sm:grid-cols-4">
                   <div>
                     <dt className="font-medium">Horas válidas</dt>
-                    <dd>{entry.validHours.toLocaleString("pt-BR")}h</dd>
+                    <dd>{entry.validHours === null ? "Privado" : `${entry.validHours.toLocaleString("pt-BR")}h`}</dd>
                   </div>
                   <div>
                     <dt className="font-medium">Aulas</dt>
-                    <dd>{entry.lessonsCompleted}</dd>
+                    <dd>{entry.lessonsCompleted ?? "Privado"}</dd>
                   </div>
                   <div>
                     <dt className="font-medium">Aproveitamento</dt>
-                    <dd>{Math.round(entry.accuracyPercent)}%</dd>
+                    <dd>{entry.accuracyPercent === null ? "Privado" : `${Math.round(entry.accuracyPercent)}%`}</dd>
                   </div>
                   <div>
                     <dt className="font-medium">Sequência</dt>
                     <dd className="flex items-center gap-1">
                       <Flame className="text-primary h-3 w-3" aria-hidden="true" />
-                      {entry.streakDays} dias
+                      {entry.streakDays === null ? "Privado" : `${entry.streakDays} dias`}
                     </dd>
                   </div>
                 </dl>

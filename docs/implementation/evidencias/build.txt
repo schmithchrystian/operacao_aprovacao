@@ -1,0 +1,78 @@
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 96ms
+- Experiments (use with caution):
+  · serverActions
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.6s
+  Running TypeScript ...
+  Finished TypeScript in 7.5s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/47) ...
+  Generating static pages using 7 workers (11/47)
+  Generating static pages using 7 workers (23/47)
+  Generating static pages using 7 workers (35/47)
+✓ Generating static pages using 7 workers (47/47) in 912ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /acompanhamento
+├ ƒ /admin
+├ ƒ /admin/assuntos
+├ ƒ /admin/auditoria
+├ ƒ /admin/avisos
+├ ƒ /admin/concursos
+├ ƒ /admin/configuracao
+├ ƒ /admin/conquistas
+├ ƒ /admin/cursos
+├ ƒ /admin/cursos/[id]
+├ ƒ /admin/materias
+├ ƒ /admin/professores
+├ ƒ /admin/questoes
+├ ƒ /admin/simulados
+├ ƒ /admin/usuarios
+├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/billing/webhook
+├ ƒ /api/cron/account-emails
+├ ƒ /api/cron/ranking-recalc
+├ ƒ /api/focus/heartbeat
+├ ƒ /api/health
+├ ƒ /api/materials/[id]
+├ ƒ /api/ops/metrics
+├ ƒ /api/progress/heartbeat
+├ ƒ /assinatura
+├ ƒ /brainstorm
+├ ƒ /busca
+├ ƒ /cadastro
+├ ƒ /conquistas
+├ ƒ /cursos
+├ ƒ /cursos/[slug]
+├ ƒ /cursos/[slug]/modulos/[moduleSlug]/aulas/[lessonId]
+├ ƒ /dashboard
+├ ƒ /flashcards
+├ ƒ /flashcards/revisar
+├ ƒ /login
+├ ƒ /missoes
+├ ƒ /missoes/[id]
+├ ƒ /modo-foco
+├ ƒ /montar-estudo
+├ ƒ /perfil
+├ ƒ /plano-de-estudos
+├ ƒ /ranking
+├ ƒ /recuperar-senha
+├ ƒ /redefinir-senha
+├ ƒ /simulados
+├ ƒ /simulados/[attemptId]
+├ ƒ /simulados/[attemptId]/resultado
+├ ƒ /simulados/caderno-de-erros
+├ ƒ /simulados/favoritos
+├ ƒ /simulados/historico
+├ ƒ /trilha
+└ ƒ /verificar-email
+
+
+ƒ Proxy (Middleware)
+
+ƒ  (Dynamic)  server-rendered on demand

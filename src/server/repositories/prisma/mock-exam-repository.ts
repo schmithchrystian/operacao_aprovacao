@@ -1,48 +1,122 @@
+import { ConflictError } from "@/server/errors";
+import type { Prisma } from "@/generated/prisma/client";
 import type {
-  MockExamCatalogCreateInput,
-  MockExamCreateInput,
-  MockExamEntity,
   MockExamRepository,
+  MockExamEntity,
+  MockExamCreateInput,
+  MockExamCatalogCreateInput,
   MockExamUpdateInput,
 } from "../contracts/mock-exam-repository";
-
-/**
- * Stub Prisma — implementação real cabe ao agente `database` a partir da Fase de banco.
- * Proibido importar `@prisma/client` fora de `server/repositories/prisma/**` (ADR-0002).
- * A implementação real deve criar `MockExam` + as linhas de `MockExamQuestion` numa única
- * transação (docs/DATA-MODEL.md).
- */
+import { inRepositoryTransaction } from "../transaction";
+const include = { questions: { orderBy: { order: "asc" as const } } };
+type Row = Prisma.MockExamGetPayload<{ include: typeof include }>;
+function map(row: Row): MockExamEntity {
+  return {
+    id: row.id,
+    title: row.title,
+    description: row.description,
+    durationMinutes: row.durationMinutes,
+    status: row.status,
+    questionIds: row.questions.map((q) => q.questionId),
+    createdById: row.createdById,
+    isPersonal: row.isPersonal,
+    createdAt: row.createdAt.toISOString(),
+    deletedAt: row.deletedAt?.toISOString() ?? null,
+  };
+}
 export class PrismaMockExamRepository implements MockExamRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findById(_id: string): Promise<MockExamEntity | null> {
-    throw new Error("not implemented: PrismaMockExamRepository.findById");
+  async findById(id: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    const row = await prisma.mockExam.findUnique({ where: { id }, include });
+    return row ? map(row) : null;
   }
-
-  async list(): Promise<MockExamEntity[]> {
-    throw new Error("not implemented: PrismaMockExamRepository.list");
+  async list() {
+    const { prisma } = await import("@/server/db/prisma");
+    return (
+      await prisma.mockExam.findMany({
+        where: { isPersonal: false, status: "PUBLISHED", deletedAt: null },
+        include,
+        orderBy: { createdAt: "desc" },
+      })
+    ).map(map);
   }
-
-  async listForAdmin(): Promise<MockExamEntity[]> {
-    throw new Error("not implemented: PrismaMockExamRepository.listForAdmin");
+  async listForAdmin() {
+    const { prisma } = await import("@/server/db/prisma");
+    return (
+      await prisma.mockExam.findMany({
+        where: { isPersonal: false },
+        include,
+        orderBy: { createdAt: "desc" },
+      })
+    ).map(map);
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async create(_input: MockExamCreateInput): Promise<MockExamEntity> {
-    throw new Error("not implemented: PrismaMockExamRepository.create");
+  private async insert(input: MockExamCreateInput, isPersonal: boolean) {
+    const { prisma } = await import("@/server/db/prisma");
+    const { now, questionIds, ...data } = input;
+    return map(
+      await prisma.mockExam.create({
+        data: {
+          ...data,
+          isPersonal,
+          createdAt: now,
+          updatedAt: now,
+          questions: {
+            create: questionIds.map((questionId, index) => ({ questionId, order: index + 1 })),
+          },
+        },
+        include,
+      }),
+    );
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async createCatalog(_input: MockExamCatalogCreateInput): Promise<MockExamEntity> {
-    throw new Error("not implemented: PrismaMockExamRepository.createCatalog");
+  async create(input: MockExamCreateInput) {
+    return this.insert(input, true);
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async update(_input: MockExamUpdateInput): Promise<MockExamEntity> {
-    throw new Error("not implemented: PrismaMockExamRepository.update");
+  async createCatalog(input: MockExamCatalogCreateInput) {
+    return this.insert(input, false);
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async softDelete(_id: string, _now: Date): Promise<MockExamEntity> {
-    throw new Error("not implemented: PrismaMockExamRepository.softDelete");
+  async update(input: MockExamUpdateInput) {
+    return inRepositoryTransaction(async () => {
+      const { prisma } = await import("@/server/db/prisma");
+      const { id, now, questionIds, ...data } = input;
+      await prisma.$queryRaw`SELECT "id" FROM "MockExam" WHERE "id" = ${id} FOR UPDATE`;
+      if (
+        (questionIds !== undefined || Object.keys(data).some((key) => key !== "status")) &&
+        (await prisma.mockExamAttempt.count({ where: { mockExamId: id } }))
+      )
+        throw new ConflictError(
+          "Simulado já iniciado. Crie um novo simulado para alterar conteúdo ou duração.",
+        );
+      return map(
+        await prisma.mockExam.update({
+          where: { id, isPersonal: false },
+          data: {
+            ...data,
+            updatedAt: now,
+            ...(questionIds
+              ? {
+                  questions: {
+                    deleteMany: {},
+                    create: questionIds.map((questionId, index) => ({
+                      questionId,
+                      order: index + 1,
+                    })),
+                  },
+                }
+              : {}),
+          },
+          include,
+        }),
+      );
+    });
+  }
+  async softDelete(id: string, now: Date) {
+    const { prisma } = await import("@/server/db/prisma");
+    return map(
+      await prisma.mockExam.update({
+        where: { id, isPersonal: false },
+        data: { deletedAt: now, updatedAt: now },
+        include,
+      }),
+    );
   }
 }

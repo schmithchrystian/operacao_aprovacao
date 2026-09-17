@@ -1,4 +1,6 @@
-import { GAMIFICATION_REWARDS, GAMIFICATION_RULE_VERSION } from "@/config/business";
+import { getEffectiveBusinessConfig } from "@/server/services/admin/effective-config";
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
+import { GAMIFICATION_REWARDS } from "@/config/business";
 import { auditLog } from "@/server/audit";
 import { getRepositories } from "@/server/repositories";
 import type {
@@ -6,8 +8,8 @@ import type {
   GamificationEventEntity,
 } from "@/server/repositories/contracts/gamification-event-repository";
 import type { PointTransactionEntity } from "@/server/repositories/contracts/point-transaction-repository";
-import { evaluateAchievements, type AchievementDefinition } from "./achievements";
-import { computeUserGamificationStats } from "./read";
+import { type AchievementDefinition } from "./achievements";
+import { computeUserGamificationStats, getAchievementDefinitions } from "./read";
 
 /**
  * Motor central de recompensa (Fase 8 — agente `gamification`, CLAUDE.md §15/§25, ADR-0008).
@@ -58,7 +60,7 @@ export function computeReward(type: GamificationEventType): { points: number; xp
  * Credita (ou devolve o registro já existente para) um evento de gamificação. Idempotente
  * por `idempotencyKey` — nunca credita duas vezes o mesmo fato de origem.
  */
-export async function awardGamificationEvent(
+async function awardGamificationEventInTransaction(
   input: AwardGamificationEventInput,
 ): Promise<AwardGamificationEventResult> {
   const repos = getRepositories();
@@ -72,7 +74,7 @@ export async function awardGamificationEvent(
     }
     // Estado inconsistente defensivo (não deveria ocorrer): transação existe sem evento —
     // ainda assim não recredita; apenas relata o evento ausente como `SKIPPED` para auditoria.
-    auditLog({
+    await auditLog({
       operation: "gamification.award-event.inconsistent-state",
       userId: input.userId,
       entity: "GamificationEvent",
@@ -85,7 +87,8 @@ export async function awardGamificationEvent(
     );
   }
 
-  const { points, xp } = computeReward(input.type);
+  const config = await getEffectiveBusinessConfig();
+  const { points, xp } = config.gamificationRewards[input.type];
 
   const event = await repos.gamificationEvents.create({
     userId: input.userId,
@@ -95,7 +98,7 @@ export async function awardGamificationEvent(
     sourceId: input.sourceId,
     points,
     xp,
-    ruleVersion: GAMIFICATION_RULE_VERSION,
+    ruleVersion: config.version,
     status: "PROCESSED",
     context: input.context,
     now,
@@ -112,14 +115,14 @@ export async function awardGamificationEvent(
     now,
   });
 
-  auditLog({
+  await auditLog({
     operation: `gamification.award-event.${input.type.toLowerCase()}`,
     userId: input.userId,
     entity: "PointTransaction",
     entityId: input.sourceId ?? undefined,
     result: "success",
     correlationId: input.idempotencyKey,
-    metadata: { points, xp, ruleVersion: GAMIFICATION_RULE_VERSION },
+    metadata: { points, xp, ruleVersion: config.version },
   });
 
   return { transaction, event, awardedNow: true };
@@ -136,12 +139,13 @@ export async function syncAchievementsForUser(userId: string, now?: Date): Promi
   const unlockedRecords = await repos.userAchievements.listByUserId(userId);
   const alreadyUnlockedKeys = unlockedRecords.map((record) => record.achievementKey);
 
-  const newlyUnlocked = evaluateAchievements(stats, alreadyUnlockedKeys);
+  const definitions = await getAchievementDefinitions();
+  const newlyUnlocked = definitions.filter((definition) => !alreadyUnlockedKeys.includes(definition.key) && definition.isUnlocked(stats));
 
   const effectiveNow = now ?? new Date();
   for (const achievement of newlyUnlocked) {
     await repos.userAchievements.unlock(userId, achievement.key, effectiveNow);
-    auditLog({
+    await auditLog({
       operation: "gamification.achievement-unlocked",
       userId,
       entity: "UserAchievement",
@@ -152,4 +156,8 @@ export async function syncAchievementsForUser(userId: string, now?: Date): Promi
   }
 
   return newlyUnlocked;
+}
+
+export async function awardGamificationEvent(input: AwardGamificationEventInput): Promise<AwardGamificationEventResult> {
+  return inRepositoryTransaction(() => awardGamificationEventInTransaction(input));
 }

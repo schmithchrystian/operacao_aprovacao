@@ -39,6 +39,8 @@ export interface NotificationCreateInput {
 export interface NotificationRepository {
   /** Mais recentes primeiro. */
   listByUserId(userId: string): Promise<NotificationEntity[]>;
+  /** Marks only a notification owned by this user; repeated calls are idempotent. */
+  markRead(userId: string, id: string): Promise<boolean>;
   /** Fase 17 (admin) — cria uma notificação por destinatário informado (broadcast). Sem
    *  "id de lote" (TODO — não há coluna equivalente em `Notification`, docs/DATA-MODEL.md);
    *  cada linha é independente mesmo quando criada pelo mesmo broadcast. */

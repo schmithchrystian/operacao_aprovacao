@@ -18,6 +18,19 @@ export class MockStudyMissionRepository implements StudyMissionRepository {
     return store.find((mission) => mission.id === id && mission.userId === userId) ?? null;
   }
 
+  async listByUserId(userId: string): Promise<StudyMissionEntity[]> {
+    return store.filter(row => row.userId === userId).sort((a, b) => b.startedAt.localeCompare(a.startedAt));
+  }
+  async advance(userId: string, id: string, expectedBlockIndex: number, now: Date): Promise<StudyMissionEntity | null> {
+    const row = store.find(mission => mission.id === id && mission.userId === userId);
+    if (!row || row.currentBlockIndex !== expectedBlockIndex || row.status === "DISCARDED") return null;
+    if (row.status === "FINISHED") return row;
+    if (row.currentBlockIndex + 1 >= row.blocks.length) row.status = "FINISHED";
+    else row.currentBlockIndex += 1;
+    row.updatedAt = now.toISOString();
+    return row;
+  }
+
   async create(input: StudyMissionCreateInput): Promise<StudyMissionEntity> {
     sequence.value += 1;
     const nowIso = input.now.toISOString();

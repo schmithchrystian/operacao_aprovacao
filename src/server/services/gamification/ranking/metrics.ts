@@ -1,3 +1,6 @@
+import { validSecondsWithinWindow } from "@/server/services/study-tracking/activity-days";
+import { listUserActivitySamples } from "@/server/services/study-tracking/activity-samples";
+import { env } from "@/config/env";
 import type { RankingParticipantEntity } from "@/mocks";
 import { getRepositories } from "@/server/repositories";
 import type { RankingRawMetrics } from "./formula";
@@ -70,7 +73,7 @@ async function computeMockExamPerformance(
   );
 
   if (finishedInWindow.length === 0) {
-    return fallbackPercent;
+    return env.DATA_SOURCE === "mock" ? fallbackPercent : 0;
   }
 
   const total = finishedInWindow.reduce((sum, attempt) => sum + attempt.scorePercent, 0);
@@ -83,7 +86,10 @@ async function computeMockExamPerformance(
  * data em `activityIsoDates`, mínimo 1 dia) — não faz sentido dividir pela idade da
  * plataforma inteira; o que importa é "quão consistente a pessoa foi enquanto esteve ativa".
  */
-function computeConsistency(activityIsoDates: readonly string[], window: RankingPeriodWindow): number {
+function computeConsistency(
+  activityIsoDates: readonly string[],
+  window: RankingPeriodWindow,
+): number {
   const withinWindow = activityIsoDates.filter((iso) => isoWithinWindow(iso, window));
   const activeDays = countDistinctUtcDays(withinWindow);
 
@@ -95,7 +101,10 @@ function computeConsistency(activityIsoDates: readonly string[], window: Ranking
     return 0;
   }
   const times = withinWindow.map((iso) => Date.parse(iso));
-  const spanDays = Math.max(1, Math.round((Math.max(...times) - Math.min(...times)) / (24 * 60 * 60 * 1000)) + 1);
+  const spanDays = Math.max(
+    1,
+    Math.round((Math.max(...times) - Math.min(...times)) / (24 * 60 * 60 * 1000)) + 1,
+  );
   return Math.min(1, activeDays / spanDays);
 }
 
@@ -107,6 +116,8 @@ export async function gatherRawMetrics(
   const repos = getRepositories();
   const user = await repos.users.findById(participant.userId);
 
+  if (!user && env.DATA_SOURCE !== "mock")
+    throw new Error("Participante de ranking não encontrado.");
   if (!user) {
     // Participante de demonstração sem usuário/ledger reais — ver cabeçalho de
     // `ranking-participants.ts`. `timeToScoreMs` vem do intervalo mock de atividade.
@@ -129,14 +140,29 @@ export async function gatherRawMetrics(
 
   const progress = await repos.lessonProgress.listByUserId(participant.userId);
   const completedInWindow = progress.filter(
-    (row) => row.status === "completed" && row.completedAt !== null && isoWithinWindow(row.completedAt, window),
+    (row) =>
+      row.status === "completed" &&
+      row.completedAt !== null &&
+      isoWithinWindow(row.completedAt, window),
   );
 
-  let totalValidSeconds = 0;
-  for (const row of progress) {
-    const sessions = await repos.studySessions.listSessionsByUserAndLesson(participant.userId, row.lessonId);
-    totalValidSeconds += sessions.reduce((sum, session) => sum + session.validSeconds, 0);
-  }
+  const sessions = await listUserActivitySamples(participant.userId);
+  const totalValidSeconds = sessions
+    .filter((sample) => sample.status !== "DISCARDED")
+    .reduce(
+      (sum, sample) =>
+        sum +
+        validSecondsWithinWindow(sample, window.startDate, new Date(window.endDate.getTime() + 1)),
+      0,
+    );
+  const [dailyGoals, weeklyGoals, streak] = await Promise.all([
+    repos.dailyGoals.listByUserId(participant.userId),
+    repos.weeklyGoals.listByUserId(participant.userId),
+    repos.userStreaks.findByUserId(participant.userId),
+  ]);
+  const goalsCompleted = [...dailyGoals, ...weeklyGoals].filter(
+    (goal) => goal.achieved && goal.achievedAt && isoWithinWindow(goal.achievedAt, window),
+  ).length;
 
   const events = await repos.gamificationEvents.listByUserId(participant.userId);
   const consistency = computeConsistency(
@@ -144,13 +170,14 @@ export async function gatherRawMetrics(
     window,
   );
 
-  const eventTimes = events.map((event) => Date.parse(event.createdAt));
-  const timeToScoreMs = eventTimes.length > 0 ? Math.max(...eventTimes) - Math.min(...eventTimes) : 0;
+  const eventTimes = events
+    .filter((event) => isoWithinWindow(event.createdAt, window))
+    .map((event) => Date.parse(event.createdAt));
+  const timeToScoreMs =
+    eventTimes.length > 0 ? Math.max(...eventTimes) - Math.min(...eventTimes) : 0;
 
   const { points, xp } = await repos.pointTransactions.sumByUserId(participant.userId);
-  const hasStreak30 = events.some((event) => event.type === "STREAK_30");
-  const hasStreak7 = events.some((event) => event.type === "STREAK_7");
-  const streakDays = hasStreak30 ? 30 : hasStreak7 ? 7 : 0;
+  const streakDays = streak?.currentStreak ?? 0;
 
   const mockExamPerformance = await computeMockExamPerformance(
     participant.userId,
@@ -163,7 +190,7 @@ export async function gatherRawMetrics(
     lessonsCompleted: completedInWindow.length,
     consistency,
     validHours: totalValidSeconds / 3600,
-    goalsCompleted: participant.mockGoalsCompletedCount, // TODO(Fases 11/12/15 — study-tracking)
+    goalsCompleted,
     timeToScoreMs,
     points,
     xp,

@@ -1,3 +1,4 @@
+import { ensureAuthenticatedUser } from "../helpers/authenticated-user";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Session as NextAuthSession } from "next-auth";
 
@@ -15,6 +16,7 @@ const { __resetMockDailyGoalStore } = await import("@/server/repositories/mock/d
 const { __resetMockWeeklyGoalStore } = await import("@/server/repositories/mock/weekly-goal-repository");
 
 function fakeSession(role: NextAuthSession["user"]["role"], id: string): NextAuthSession {
+  ensureAuthenticatedUser(id, role);
   return {
     user: { id, role, name: "Teste", email: "teste@example.com" },
     expires: new Date(Date.now() + 60_000).toISOString(),

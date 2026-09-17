@@ -1,3 +1,4 @@
+import { achievementCriteriaSchema } from "@/contracts/achievement-criteria";
 import type {
   AdminAchievementDTO,
   AdminContestDTO,
@@ -105,6 +106,7 @@ export function toAdminAchievementDTO(entity: AchievementEntity): AdminAchieveme
     description: entity.description,
     icon: entity.icon,
     points: entity.points,
+    criteria: achievementCriteriaSchema.safeParse(entity.criteria).data ?? null,
     deletedAt: entity.deletedAt,
   };
 }

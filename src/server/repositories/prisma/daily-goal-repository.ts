@@ -1,28 +1,44 @@
+import { randomUUID } from "node:crypto";
+import type { DailyGoal as Row } from "@/generated/prisma/client";
 import type {
   DailyGoalEntity,
   DailyGoalRepository,
   DailyGoalUpsertInput,
 } from "../contracts/daily-goal-repository";
-
-/**
- * Stub Prisma — implementação real cabe ao agente `database`/`study-tracking` a partir da
- * Fase de banco. Proibido importar `@prisma/client` fora de `server/repositories/prisma/**`
- * (ADR-0002). Modelo alvo: `DailyGoal` (`prisma/schema.prisma`), único por `(userId, date)` —
- * a implementação real deve usar `prisma.dailyGoal.upsert` sobre essa chave composta.
- */
+function map(row: Row): DailyGoalEntity {
+  return {
+    id: row.id,
+    userId: row.userId,
+    date: row.date.toISOString(),
+    targetMinutes: row.targetMinutes,
+    targetPoints: row.targetPoints,
+    achieved: row.achieved,
+    achievedAt: row.achievedAt?.toISOString() ?? null,
+    createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
+  };
+}
 export class PrismaDailyGoalRepository implements DailyGoalRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findByUserIdAndDate(_userId: string, _date: string): Promise<DailyGoalEntity | null> {
-    throw new Error("not implemented: PrismaDailyGoalRepository.findByUserIdAndDate");
+  async findByUserIdAndDate(userId: string, date: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    const row = await prisma.dailyGoal.findUnique({
+      where: { userId_date: { userId, date: new Date(date) } },
+    });
+    return row ? map(row) : null;
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async listByUserId(_userId: string): Promise<DailyGoalEntity[]> {
-    throw new Error("not implemented: PrismaDailyGoalRepository.listByUserId");
+  async listByUserId(userId: string) {
+    const { prisma } = await import("@/server/db/prisma");
+    return (await prisma.dailyGoal.findMany({ where: { userId }, orderBy: { date: "asc" } })).map(
+      map,
+    );
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async upsert(_input: DailyGoalUpsertInput): Promise<DailyGoalEntity> {
-    throw new Error("not implemented: PrismaDailyGoalRepository.upsert");
+  async upsert(input: DailyGoalUpsertInput) {
+    const { prisma } = await import("@/server/db/prisma");
+    const date = new Date(input.date),
+      achievedAt = input.achievedAt ? new Date(input.achievedAt) : null;
+    const rows = await prisma.$queryRaw<
+      Row[]
+    >`INSERT INTO "DailyGoal" ("id","userId","date","targetMinutes","targetPoints","achieved","achievedAt","createdAt","updatedAt") VALUES (${randomUUID()},${input.userId},${date},${input.targetMinutes},${input.targetPoints},${input.achieved},${achievedAt},${input.now},${input.now}) ON CONFLICT ("userId","date") DO UPDATE SET "targetMinutes"=CASE WHEN EXCLUDED."updatedAt">="DailyGoal"."updatedAt" THEN EXCLUDED."targetMinutes" ELSE "DailyGoal"."targetMinutes" END,"targetPoints"=CASE WHEN EXCLUDED."updatedAt">="DailyGoal"."updatedAt" THEN EXCLUDED."targetPoints" ELSE "DailyGoal"."targetPoints" END,"achieved"="DailyGoal"."achieved" OR EXCLUDED."achieved","achievedAt"=COALESCE("DailyGoal"."achievedAt",EXCLUDED."achievedAt"),"updatedAt"=GREATEST("DailyGoal"."updatedAt",EXCLUDED."updatedAt") RETURNING *`;
+    return map(rows[0]!);
   }
 }

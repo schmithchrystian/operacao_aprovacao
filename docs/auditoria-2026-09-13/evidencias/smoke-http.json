@@ -1,0 +1,239 @@
+[
+  {
+    "anonymous_path": "/login",
+    "status": 200,
+    "location": null
+  },
+  {
+    "anonymous_path": "/dashboard",
+    "status": 307,
+    "location": "/login?callbackUrl=%2Fdashboard"
+  },
+  {
+    "anonymous_path": "/admin",
+    "status": 307,
+    "location": "/login?callbackUrl=%2Fadmin"
+  },
+  {
+    "anonymous_path": "/api/cron/ranking-recalc",
+    "status": 401,
+    "location": null
+  },
+  {
+    "anonymous_post": "/api/progress/heartbeat",
+    "status": 401
+  },
+  {
+    "anonymous_post": "/api/focus/heartbeat",
+    "status": 401
+  },
+  {
+    "invalid_direct_login": 1,
+    "status": 200,
+    "result": {
+      "url": "http://localhost:3107/login?error=CredentialsSignin&code=credentials"
+    }
+  },
+  {
+    "invalid_direct_login": 2,
+    "status": 200,
+    "result": {
+      "url": "http://localhost:3107/login?error=CredentialsSignin&code=credentials"
+    }
+  },
+  {
+    "invalid_direct_login": 3,
+    "status": 200,
+    "result": {
+      "url": "http://localhost:3107/login?error=CredentialsSignin&code=credentials"
+    }
+  },
+  {
+    "invalid_direct_login": 4,
+    "status": 200,
+    "result": {
+      "url": "http://localhost:3107/login?error=CredentialsSignin&code=credentials"
+    }
+  },
+  {
+    "invalid_direct_login": 5,
+    "status": 200,
+    "result": {
+      "url": "http://localhost:3107/login?error=CredentialsSignin&code=credentials"
+    }
+  },
+  {
+    "invalid_direct_login": 6,
+    "status": 200,
+    "result": {
+      "url": "http://localhost:3107/login?error=CredentialsSignin&code=credentials"
+    }
+  },
+  {
+    "invalid_direct_login": 7,
+    "status": 200,
+    "result": {
+      "url": "http://localhost:3107/login?error=CredentialsSignin&code=credentials"
+    }
+  },
+  {
+    "invalid_direct_login": 8,
+    "status": 200,
+    "result": {
+      "url": "http://localhost:3107/login?error=CredentialsSignin&code=credentials"
+    }
+  },
+  {
+    "valid_login_after_8_failures": 200,
+    "authenticated": true,
+    "role": "admin"
+  },
+  {
+    "admin_authenticated_page": "/",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/acompanhamento",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/assuntos",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/auditoria",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/avisos",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/concursos",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/configuracao",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/conquistas",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/cursos",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/materias",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/professores",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/questoes",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/simulados",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/admin/usuarios",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/brainstorm",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/conquistas",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/cursos",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/dashboard",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/flashcards",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/flashcards/revisar",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/login",
+    "status": 307
+  },
+  {
+    "admin_authenticated_page": "/modo-foco",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/montar-estudo",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/perfil",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/plano-de-estudos",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/ranking",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/simulados",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/simulados/caderno-de-erros",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/simulados/favoritos",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/simulados/historico",
+    "status": 200
+  },
+  {
+    "admin_authenticated_page": "/trilha",
+    "status": 200
+  },
+  {
+    "student_page": "/dashboard",
+    "status": 200,
+    "location": null
+  },
+  {
+    "student_page": "/admin",
+    "status": 307,
+    "location": "/dashboard"
+  },
+  {
+    "student_page": "/modo-foco",
+    "status": 200,
+    "location": null
+  },
+  {
+    "student_page": "/montar-estudo",
+    "status": 200,
+    "location": null
+  }
+]

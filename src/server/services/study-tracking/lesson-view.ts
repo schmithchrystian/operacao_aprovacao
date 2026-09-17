@@ -1,3 +1,5 @@
+import { listLessonMaterials } from "@/server/services/materials/list";
+import { resolveLessonVideoUrl } from "@/server/storage/video";
 import { buildLessonHref } from "@/lib/routes";
 import type { LessonViewDTO } from "@/contracts/progress";
 import { assertOwnership, requireUser } from "@/server/authorization";
@@ -33,7 +35,7 @@ export async function getLessonView(
 
   // Matrícula ativa obrigatória antes de expor QUALQUER dado da aula (achado de segurança
   // Fase 7 — ALTO). Ver `./enrollment.ts`.
-  await assertActiveEnrollment(userId, course.id);
+  await assertActiveEnrollment(userId, course.id, lessonId);
 
   const modules = await repos.modules.listByCourseId(course.id);
   const courseModule = modules.find((candidate) => candidate.slug === moduleSlug);
@@ -84,11 +86,8 @@ export async function getLessonView(
     // TODO(agente `database`): `Lesson` ainda não expõe um campo de descrição próprio nesta
     // fase — usa-se um texto derivado até o repositório/schema disponibilizar o campo real.
     description: `Aula "${lesson.title}" do módulo "${courseModule.title}".`,
-    // TODO(agente `database`): não existe repositório de `LessonMaterial` ainda (Fase 6 não o
-    // criou) — lista vazia até essa peça existir, em vez de inventar dados mock aqui.
-    materials: [],
-    // Placeholder — hospedagem real de vídeo é pendência conhecida (docs/ARCHITECTURE.md §11).
-    videoUrl: `https://cdn.opapp.mock/videos/${lesson.id}.mp4`,
+    materials: await listLessonMaterials(lesson.id),
+    videoUrl: await resolveLessonVideoUrl(lesson.videoUrl),
     status: currentEntry.status,
     locked: false,
     resumePositionSeconds,

@@ -29,6 +29,7 @@ export { isFavorite, listFavoriteFlashcardIds } from "./favorite-store";
 // Rate limit leve de revisão (defesa em profundidade — achado A1).
 export {
   assertReviewCardRateLimit,
+  assertSharedReviewCardRateLimit,
   checkFlashcardsRateLimit,
   reviewCardRateLimitKey,
   __resetFlashcardsRateLimitStore,

@@ -1,6 +1,7 @@
 import { auth } from "@/server/auth";
 import { AuthError, ForbiddenError } from "@/server/errors";
 import type { Role, Session } from "@/types";
+import { getRepositories } from "@/server/repositories";
 
 /**
  * Autorização server-side centralizada (ADR-0006, CLAUDE.md §11).
@@ -17,11 +18,16 @@ export async function getCurrentSession(): Promise<Session | null> {
     return null;
   }
 
+  const user = await getRepositories().users.findById(authSession.user.id);
+  if (!user?.isActive || user.deletedAt) return null;
+  if (user.requiresEmailVerification && !user.emailVerified) return null;
+  if ((authSession.user.sessionVersion ?? 0) !== (user.sessionVersion ?? 0)) return null;
+
   return {
-    userId: authSession.user.id,
-    role: authSession.user.role,
-    name: authSession.user.name ?? "",
-    email: authSession.user.email ?? "",
+    userId: user.id,
+    role: user.role,
+    name: user.name,
+    email: user.email,
   };
 }
 
@@ -39,6 +45,16 @@ export async function requireRole(...roles: Role[]): Promise<Session> {
   const session = await requireUser();
   if (!roles.includes(session.role)) {
     throw new ForbiddenError();
+  }
+  const { env } = await import("@/config/env");
+  if (env.ADMIN_MFA_REQUIRED && ["admin", "moderador"].includes(session.role)) {
+    const { prisma } = await import("@/server/db/prisma");
+    const mfa = await prisma.userMfa.findUnique({
+      where: { userId: session.userId },
+      select: { enabledAt: true },
+    });
+    if (!mfa?.enabledAt)
+      throw new ForbiddenError("Configure a autenticação adicional em /seguranca.");
   }
   return session;
 }

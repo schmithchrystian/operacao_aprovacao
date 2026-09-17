@@ -1,4 +1,6 @@
-import { STUDY_TRACKING_OVERVIEW } from "@/config/business";
+import { listUserActivitySamples } from "@/server/services/study-tracking/activity-samples";
+import { inRepositoryTransaction } from "@/server/repositories/transaction";
+import { getEffectiveBusinessConfig } from "@/server/services/admin/effective-config";
 import { eventBus } from "@/server/events";
 import { getRepositories } from "@/server/repositories";
 import { addDaysIso, weekStartIso } from "@/server/services/study-plan/date-utils";
@@ -8,7 +10,7 @@ import {
   type DailyGoalCompletedPayload,
   type WeeklyGoalCompletedPayload,
 } from "@/server/services/gamification";
-import { ALL_HISTORY_SINCE_ISO, DEFAULT_TIMEZONE, sumValidSecondsByDate, toCalendarDateIso } from "./activity-days";
+import { DEFAULT_TIMEZONE, sumValidSecondsByDate, toCalendarDateIso } from "./activity-days";
 
 /** Mesmo padrão de `./streak.ts` — idempotente, seguro com múltiplos imports/hot-reload. */
 registerGamificationEventHandlers();
@@ -81,7 +83,7 @@ async function sumPointsByDate(userId: string, timezone: string): Promise<Map<st
  * duplica: a `idempotencyKey` barra a duplicação; o risco é perder). Latente hoje (mock
  * single-threaded); no Prisma, upsert + emissão devem partilhar a mesma transação (ou outbox).
  */
-export async function recalculateDailyGoal(
+async function recalculateDailyGoalInTransaction(
   userId: string,
   now: Date,
   timezone: string = DEFAULT_TIMEZONE,
@@ -90,12 +92,13 @@ export async function recalculateDailyGoal(
   const date = toCalendarDateIso(now.toISOString(), timezone);
   const existing = await repos.dailyGoals.findByUserIdAndDate(userId, date);
 
-  const targetPoints = existing?.targetPoints ?? STUDY_TRACKING_OVERVIEW.dailyGoalTargetPoints;
+  const targetPoints =
+    existing?.targetPoints ?? (await getEffectiveBusinessConfig()).dailyGoalTargetPoints;
   const targetMinutes = existing?.targetMinutes ?? null;
 
   const [pointsByDate, sessions] = await Promise.all([
     sumPointsByDate(userId, timezone),
-    repos.studySessions.listRecentSessionsByUserId(userId, ALL_HISTORY_SINCE_ISO),
+    listUserActivitySamples(userId),
   ]);
   const secondsByDate = sumValidSecondsByDate(sessions, timezone);
 
@@ -103,10 +106,19 @@ export async function recalculateDailyGoal(
   const progressMinutes = Math.floor((secondsByDate.get(date) ?? 0) / 60);
 
   const wasAchieved = existing?.achieved ?? false;
-  const achievedNow = isGoalAchieved({ targetPoints, targetMinutes, progressPoints, progressMinutes });
+  const achievedNow = isGoalAchieved({
+    targetPoints,
+    targetMinutes,
+    progressPoints,
+    progressMinutes,
+  });
   const justAchieved = !wasAchieved && achievedNow;
   const achieved = wasAchieved || achievedNow;
-  const achievedAt = wasAchieved ? (existing?.achievedAt ?? null) : achievedNow ? now.toISOString() : null;
+  const achievedAt = wasAchieved
+    ? (existing?.achievedAt ?? null)
+    : achievedNow
+      ? now.toISOString()
+      : null;
 
   const updated = await repos.dailyGoals.upsert({
     userId,
@@ -145,7 +157,7 @@ export async function recalculateDailyGoal(
  * fechar para refletir progresso). Mesma semântica de idempotência de `recalculateDailyGoal`
  * (incluindo o mesmo TODO(MÉDIO — fase de banco) de atomicidade upsert+emit descrito lá).
  */
-export async function recalculateWeeklyGoal(
+async function recalculateWeeklyGoalInTransaction(
   userId: string,
   now: Date,
   timezone: string = DEFAULT_TIMEZONE,
@@ -156,12 +168,13 @@ export async function recalculateWeeklyGoal(
   const weekEndExclusive = addDaysIso(weekStart, 7);
 
   const existing = await repos.weeklyGoals.findByUserIdAndWeekStart(userId, weekStart);
-  const targetPoints = existing?.targetPoints ?? STUDY_TRACKING_OVERVIEW.weeklyGoalTargetPoints;
+  const targetPoints =
+    existing?.targetPoints ?? (await getEffectiveBusinessConfig()).weeklyGoalTargetPoints;
   const targetMinutes = existing?.targetMinutes ?? null;
 
   const [pointsByDate, sessions] = await Promise.all([
     sumPointsByDate(userId, timezone),
-    repos.studySessions.listRecentSessionsByUserId(userId, ALL_HISTORY_SINCE_ISO),
+    listUserActivitySamples(userId),
   ]);
   const secondsByDate = sumValidSecondsByDate(sessions, timezone);
 
@@ -174,10 +187,19 @@ export async function recalculateWeeklyGoal(
   const progressMinutes = Math.floor(progressSeconds / 60);
 
   const wasAchieved = existing?.achieved ?? false;
-  const achievedNow = isGoalAchieved({ targetPoints, targetMinutes, progressPoints, progressMinutes });
+  const achievedNow = isGoalAchieved({
+    targetPoints,
+    targetMinutes,
+    progressPoints,
+    progressMinutes,
+  });
   const justAchieved = !wasAchieved && achievedNow;
   const achieved = wasAchieved || achievedNow;
-  const achievedAt = wasAchieved ? (existing?.achievedAt ?? null) : achievedNow ? now.toISOString() : null;
+  const achievedAt = wasAchieved
+    ? (existing?.achievedAt ?? null)
+    : achievedNow
+      ? now.toISOString()
+      : null;
 
   const updated = await repos.weeklyGoals.upsert({
     userId,
@@ -207,4 +229,16 @@ export async function recalculateWeeklyGoal(
     achieved: updated.achieved,
     achievedAt: updated.achievedAt,
   };
+}
+
+export async function recalculateDailyGoal(
+  ...args: Parameters<typeof recalculateDailyGoalInTransaction>
+): ReturnType<typeof recalculateDailyGoalInTransaction> {
+  return inRepositoryTransaction(() => recalculateDailyGoalInTransaction(...args));
+}
+
+export async function recalculateWeeklyGoal(
+  ...args: Parameters<typeof recalculateWeeklyGoalInTransaction>
+): ReturnType<typeof recalculateWeeklyGoalInTransaction> {
+  return inRepositoryTransaction(() => recalculateWeeklyGoalInTransaction(...args));
 }

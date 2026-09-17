@@ -1,3 +1,4 @@
+import { ensureAuthenticatedUser } from "../helpers/authenticated-user";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Session as NextAuthSession } from "next-auth";
 import type { GeneratePlanInput } from "@/contracts/study-plan";
@@ -20,6 +21,7 @@ const { SUBJECT_IDS } = await import("@/mocks");
  * (plano de outro usuário sempre rejeitado) e idempotência do reorder.
  */
 function fakeSession(id: string): NextAuthSession {
+  ensureAuthenticatedUser(id);
   return {
     user: { id, role: "aluno", name: "Teste", email: "teste@example.com" },
     expires: new Date(Date.now() + 60_000).toISOString(),

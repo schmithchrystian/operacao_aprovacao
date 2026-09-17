@@ -1,14 +1,14 @@
 import type { ReactNode } from "react";
+import { redirect } from "next/navigation";
 import { StudentShell } from "@/components/layout/student-shell";
-import { requireUser } from "@/server/authorization";
+import { getCurrentSession } from "@/server/authorization";
 
 /**
- * Autorização real (server-side, ADR-0006): qualquer papel autenticado acessa a área
- * do aluno, mas é preciso estar autenticado — `requireUser` lança `AuthError` caso
- * contrário. O redirecionamento de UX para `/login` fica no `middleware.ts`.
+ * Revalida a sessão no servidor, incluindo bloqueio e revogação. As actions e
+ * serviços mantêm suas próprias guardas; o layout oferece uma saída para o login.
  */
 export default async function StudentLayout({ children }: { children: ReactNode }) {
-  await requireUser();
+  if (!(await getCurrentSession())) redirect("/login");
 
   return <StudentShell>{children}</StudentShell>;
 }

@@ -1,0 +1,11 @@
+npm notice run opapp@0.1.0 test
+npm notice run vitest run
+
+ RUN  v4.1.10 /Users/chrystian/Documents/ChatGPT/Prataforma Stdudy
+
+
+ Test Files  107 passed (107)
+      Tests  744 passed (744)
+   Start at  17:42:34
+   Duration  35.33s (transform 18.32s, setup 0ms, import 65.42s, tests 39.32s, environment 119.76s)
+

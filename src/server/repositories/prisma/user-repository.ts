@@ -9,28 +9,66 @@ const domainRoleBySystemRole: Record<SystemRole, Role> = {
   ADMIN: "admin",
 };
 
-/**
- * Stub Prisma — implementação real cabe ao agente `database` a partir da Fase de banco.
- * Proibido importar `@prisma/client` fora de `server/repositories/prisma/**` (ADR-0002).
- * PENDÊNCIA (Fase 17): a implementação real precisa mapear `Role` (domínio, pt-BR) ↔
- * `SystemRole` (Prisma: `STUDENT|TEACHER|MODERATOR|ADMIN`) — ver `prisma/schema.prisma`.
- */
+const systemRoleByDomainRole: Record<Role, SystemRole> = {
+  aluno: "STUDENT",
+  professor: "TEACHER",
+  moderador: "MODERATOR",
+  admin: "ADMIN",
+};
+const userSelect = {
+  id: true,
+  name: true,
+  email: true,
+  role: true,
+  isActive: true,
+  sessionVersion: true,
+  requiresEmailVerification: true,
+  emailVerified: true,
+  createdAt: true,
+  deletedAt: true,
+} as const;
+function toEntity(user: {
+  id: string;
+  name: string;
+  email: string;
+  role: SystemRole;
+  isActive: boolean;
+  sessionVersion: number;
+  requiresEmailVerification: boolean;
+  emailVerified: Date | null;
+  createdAt: Date;
+  deletedAt: Date | null;
+}): UserEntity {
+  return {
+    ...user,
+    role: domainRoleBySystemRole[user.role],
+    createdAt: user.createdAt.toISOString(),
+    deletedAt: user.deletedAt?.toISOString() ?? null,
+    emailVerified: user.emailVerified?.toISOString() ?? null,
+  };
+}
+
 export class PrismaUserRepository implements UserRepository {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findById(_id: string): Promise<UserEntity | null> {
-    throw new Error("not implemented: PrismaUserRepository.findById");
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async findByEmail(_email: string): Promise<UserEntity | null> {
-    throw new Error("not implemented: PrismaUserRepository.findByEmail");
-  }
-
-  async findCredentialsByEmail(email: string): Promise<UserCredentials | null> {
-    // O import tardio mantém os repositórios Prisma stubs seguros no modo mock, sem inicializar o client.
+  async findById(id: string): Promise<UserEntity | null> {
     const { prisma } = await import("@/server/db/prisma");
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { id, deletedAt: null },
+      select: userSelect,
+    });
+    return user ? toEntity(user) : null;
+  }
+  async findByEmail(email: string): Promise<UserEntity | null> {
+    const { prisma } = await import("@/server/db/prisma");
+    const user = await prisma.user.findUnique({
+      where: { email: email.trim().toLowerCase(), deletedAt: null },
+      select: userSelect,
+    });
+    return user ? toEntity(user) : null;
+  }
+  async findCredentialsByEmail(email: string): Promise<UserCredentials | null> {
+    const { prisma } = await import("@/server/db/prisma");
+    const user = await prisma.user.findUnique({
+      where: { email: email.trim().toLowerCase(), deletedAt: null },
       select: {
         id: true,
         name: true,
@@ -38,27 +76,43 @@ export class PrismaUserRepository implements UserRepository {
         passwordHash: true,
         role: true,
         isActive: true,
+        sessionVersion: true,
+        requiresEmailVerification: true,
+        emailVerified: true,
       },
     });
-
-    if (!user) {
-      return null;
-    }
-
-    return { ...user, role: domainRoleBySystemRole[user.role] };
+    return user
+      ? {
+          ...user,
+          role: domainRoleBySystemRole[user.role],
+          emailVerified: user.emailVerified?.toISOString() ?? null,
+        }
+      : null;
   }
-
   async list(): Promise<UserEntity[]> {
-    throw new Error("not implemented: PrismaUserRepository.list");
+    const { prisma } = await import("@/server/db/prisma");
+    return (await prisma.user.findMany({ where: { deletedAt: null }, select: userSelect })).map(
+      toEntity,
+    );
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async updateRole(_userId: string, _role: Role): Promise<UserEntity> {
-    throw new Error("not implemented: PrismaUserRepository.updateRole");
+  async updateRole(userId: string, role: Role): Promise<UserEntity> {
+    const { prisma } = await import("@/server/db/prisma");
+    return toEntity(
+      await prisma.user.update({
+        where: { id: userId, deletedAt: null },
+        data: { role: systemRoleByDomainRole[role] },
+        select: userSelect,
+      }),
+    );
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura da interface; stub sem implementação.
-  async setActive(_userId: string, _isActive: boolean): Promise<UserEntity> {
-    throw new Error("not implemented: PrismaUserRepository.setActive");
+  async setActive(userId: string, isActive: boolean): Promise<UserEntity> {
+    const { prisma } = await import("@/server/db/prisma");
+    return toEntity(
+      await prisma.user.update({
+        where: { id: userId, deletedAt: null },
+        data: { isActive },
+        select: userSelect,
+      }),
+    );
   }
 }
