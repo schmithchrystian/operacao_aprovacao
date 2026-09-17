@@ -12,6 +12,22 @@ import {
 import { addDaysIso, weekStartIso } from "./study-plan/date-utils";
 import { computeProgressForCourse } from "./courses/shared";
 
+function distributeWholeMinutes(secondsByDay: readonly number[]): number[] {
+  const minutes = secondsByDay.map((seconds) => Math.floor(seconds / 60));
+  let remaining =
+    Math.floor(secondsByDay.reduce((sum, seconds) => sum + seconds, 0) / 60) -
+    minutes.reduce((sum, value) => sum + value, 0);
+  const remainderOrder = secondsByDay
+    .map((seconds, index) => ({ index, remainder: seconds % 60 }))
+    .sort((left, right) => right.remainder - left.remainder || left.index - right.index);
+  for (const { index, remainder } of remainderOrder) {
+    if (remaining <= 0 || remainder <= 0) break;
+    minutes[index] = (minutes[index] ?? 0) + 1;
+    remaining -= 1;
+  }
+  return minutes;
+}
+
 /** Internal aggregation: caller has already authorized the requested owner. */
 export async function getPersistentDashboardData(userId: string) {
   const repos = getRepositories();
@@ -66,6 +82,9 @@ export async function getPersistentDashboardData(userId: string) {
   const seconds = sumValidSecondsByDate(samples, DEFAULT_TIMEZONE);
   const start = weekStartIso(toCalendarDateIso(now.toISOString(), DEFAULT_TIMEZONE));
   const weekdays: DashboardWeekday[] = ["seg", "ter", "qua", "qui", "sex", "sab", "dom"];
+  const weekdayMinutes = distributeWholeMinutes(
+    weekdays.map((_, index) => seconds.get(addDaysIso(start, index)) ?? 0),
+  );
   return {
     contest,
     ranking,
@@ -77,7 +96,7 @@ export async function getPersistentDashboardData(userId: string) {
       accuracyPercent: overview.questions.accuracyPercent,
       studyHoursSeries: weekdays.map((weekday, index) => ({
         weekday,
-        minutes: Math.floor((seconds.get(addDaysIso(start, index)) ?? 0) / 60),
+        minutes: weekdayMinutes[index] ?? 0,
       })),
       subjectPerformance: overview.subjectPerformance.map((row) => ({
         subject: row.subjectName,
